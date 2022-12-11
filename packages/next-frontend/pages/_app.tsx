@@ -7,6 +7,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 
 import { lightTheme } from "src/theme";
 import { createEmotionCache } from "src/utils/next/createEmotionCache";
+import { wrapper } from "src/store";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -44,4 +45,4 @@ function MyApp(props: MyAppProps) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
