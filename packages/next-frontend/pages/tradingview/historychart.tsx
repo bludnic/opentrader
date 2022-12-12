@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { coingeckoApi } from "src/lib/coingecko/apiClient";
-import { CGMarketChartPrice } from "src/lib/coingecko/client/types";
+import { CGMarketChartPrice } from "src/lib/coingecko/types";
 
 const HistoryChart = dynamic(
   () => import("src/components/tradingview/HistoryChart"),

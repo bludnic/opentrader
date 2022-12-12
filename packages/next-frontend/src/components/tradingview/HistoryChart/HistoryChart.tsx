@@ -3,7 +3,7 @@ import { useRef, useEffect, FC } from "react";
 import { createChart, LineData } from "lightweight-charts";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
-import { CGMarketChartPrice } from "src/lib/coingecko/client/types";
+import { CGMarketChartPrice } from "src/lib/coingecko/types";
 
 const componentName = "HistoryChart";
 const classes = {
