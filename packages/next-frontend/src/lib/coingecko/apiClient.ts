@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from "axios";
 import { CoinsApiFactory } from "src/lib/coingecko/client";
-import { CGMarketChartPrice } from "src/lib/coingecko/types";
+import { CGMarketChartPrice, CGOHLCChartPrice } from "src/lib/coingecko/types";
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_COINGECKO_API_BASEURL,
@@ -37,5 +37,24 @@ export const coingeckoApi = {
         },
       }
     );
+  },
+  /**
+   * Get coin's OHLC (open, high, low, close) prices for each period
+   *
+   * @param baseCurrency Base currency (e.g. bitcoin)
+   * @param quoteCurrency The target currency of market data (e.g. usd, eur, jpy, etc.)
+   * @param daysAgo Data up to number of days ago (e.g. 1, 14, 30, max)
+   */
+  getOHLCChartHistory(
+    baseCurrency: string,
+    quoteCurrency: string,
+    daysAgo: number
+  ): AxiosPromise<CGOHLCChartPrice[]> {
+    return client.get("/coins/{id}/ohlc".replace("{id}", baseCurrency), {
+      params: {
+        vs_currency: quoteCurrency,
+        days: daysAgo,
+      },
+    });
   },
 };
