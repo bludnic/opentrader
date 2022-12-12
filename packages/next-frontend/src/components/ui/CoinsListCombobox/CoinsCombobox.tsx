@@ -7,8 +7,8 @@ import Autocomplete, {
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
-import { CoinsListReply } from "src/lib/coingecko/client";
 import { VariableSizeListboxComponent } from "src/components/ui/CoinsListCombobox/VariableSizeList";
+import { Coin } from "src/components/ui/CoinsListCombobox/types";
 
 const StyledPopper = styled(Popper)({
   [`& .${autocompleteClasses.listbox}`]: {
@@ -26,7 +26,7 @@ const classes = {
 };
 
 type TypedAutocompleteProps = AutocompleteProps<
-  CoinsListReply,
+  Coin,
   undefined,
   undefined,
   false
@@ -40,7 +40,7 @@ const StyledAutocomplete = styled(Autocomplete as FC<TypedAutocompleteProps>)(
 );
 
 export type CoinsComboboxProps = {
-  coins: CoinsListReply[];
+  coins: Coin[];
   className?: string;
   AutocompleteProps?: TypedAutocompleteProps;
 };
