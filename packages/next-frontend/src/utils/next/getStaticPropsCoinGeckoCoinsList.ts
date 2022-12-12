@@ -2,12 +2,12 @@ import { GetStaticProps } from "next";
 import { coingeckoApi } from "src/lib/coingecko/apiClient";
 import { Coin } from "src/components/ui/CoinsListCombobox/types";
 
-export type GetStaticPropsCoinsListProps = {
+export type GetStaticPropsCoingeckoCoinsListProps = {
   coins: Coin[];
 };
 
-export const getStaticPropsCoinsList: GetStaticProps<
-  GetStaticPropsCoinsListProps
+export const getStaticPropsCoinGeckoCoinsList: GetStaticProps<
+  GetStaticPropsCoingeckoCoinsListProps
 > = async () => {
   const { data } = await coingeckoApi.getCoinsList();
 

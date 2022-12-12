@@ -1,11 +1,11 @@
 import { NextPage } from "next";
 import {
-  getStaticPropsCoinsList,
-  GetStaticPropsCoinsListProps,
-} from "src/utils/next/getStaticPropsCoinsList";
+  getStaticPropsCoinGeckoCoinsList,
+  GetStaticPropsCoingeckoCoinsListProps,
+} from "src/utils/next/getStaticPropsCoinGeckoCoinsList";
 import { CoinsCombobox } from "src/components/ui/CoinsListCombobox";
 
-type Props = {} & GetStaticPropsCoinsListProps;
+type Props = {} & GetStaticPropsCoingeckoCoinsListProps;
 
 const CoinsListNextPage: NextPage<Props> = (props) => {
   const { coins } = props;
@@ -19,4 +19,4 @@ const CoinsListNextPage: NextPage<Props> = (props) => {
 
 export default CoinsListNextPage;
 
-export const getStaticProps = getStaticPropsCoinsList;
+export const getStaticProps = getStaticPropsCoinGeckoCoinsList;
