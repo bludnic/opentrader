@@ -5,7 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "openapi:coingecko:generate": "node src/lib/coingecko/bin/openapi-generate.js",
+    "bootstrap": "npm install && npm run openapi:coingecko:generate"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
@@ -15,6 +17,7 @@
     "@mui/icons-material": "^5.3.0",
     "@mui/material": "^5.3.0",
     "@mui/styles": "^5.3.0",
+    "@openapitools/openapi-generator-cli": "^2.4.25",
     "@reduxjs/toolkit": "^1.7.1",
     "axios": "^0.25.0",
     "next": "12.0.7",

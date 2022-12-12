@@ -2,10 +2,19 @@ import { NextPage } from "next";
 import { useAppSelector, useAppDispatch } from "src/store/hooks";
 import { TodoState, TodoStatus, todoFetch } from "src/store/todo";
 import { useEffect } from "react";
+import {
+  getStaticPropsCoinsList,
+  GetStaticPropsCoinsListProps,
+} from "src/utils/next/getStaticPropsCoinsList";
 
-const CoinsListNextPage: NextPage = () => {
+type Props = {} & GetStaticPropsCoinsListProps;
+
+const CoinsListNextPage: NextPage<Props> = (props) => {
+  const { coins } = props;
   const todoState = useAppSelector<TodoState>((rootState) => rootState.todo);
   const dispatch = useAppDispatch();
+
+  console.log("coins", coins);
 
   useEffect(() => {
     dispatch(todoFetch(1));
@@ -27,3 +36,5 @@ const CoinsListNextPage: NextPage = () => {
 };
 
 export default CoinsListNextPage;
+
+export const getStaticProps = getStaticPropsCoinsList;
