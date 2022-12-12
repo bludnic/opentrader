@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import { CoinsApiFactory } from "src/lib/coingecko/client";
 import { CGMarketChartPrice } from "src/lib/coingecko/types";
 
