@@ -17,10 +17,17 @@ const Root = styled("div")(({ theme }) => ({
 type SimpleChartProps = {
   className?: string;
   lineSeriesData: LineData[];
+  chartWidth?: number;
+  chartHeight?: number;
 };
 
 export const SimpleChart: FC<SimpleChartProps> = (props) => {
-  const { className, lineSeriesData } = props;
+  const {
+    className,
+    lineSeriesData,
+    chartWidth = 400,
+    chartHeight = 300,
+  } = props;
   const chartRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -32,8 +39,8 @@ export const SimpleChart: FC<SimpleChartProps> = (props) => {
     }
 
     const chart = createChart(chartRef.current, {
-      width: 400,
-      height: 300,
+      width: chartWidth,
+      height: chartHeight,
     });
     const lineSeries = chart.addLineSeries();
     lineSeries.setData(lineSeriesData);
