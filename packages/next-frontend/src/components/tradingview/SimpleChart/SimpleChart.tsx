@@ -41,6 +41,9 @@ export const SimpleChart: FC<SimpleChartProps> = (props) => {
     const chart = createChart(chartRef.current, {
       width: chartWidth,
       height: chartHeight,
+      timeScale: {
+        barSpacing: 75,
+      },
     });
     const lineSeries = chart.addLineSeries();
     lineSeries.setData(lineSeriesData);
