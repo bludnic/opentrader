@@ -9,6 +9,7 @@ import {
   Query,
   Scope,
   Req,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ExchangeAccount } from 'src/common/decorators/exchange-account.decorator';
@@ -112,15 +113,14 @@ export class GridBotController {
     const gridBotService =
       this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
 
-    try {
-      const { botId } = query;
+    const { botId } = query;
 
+    try {
       const response = await gridBotService.syncMarketOrders(botId);
 
       return response;
     } catch (err) {
-      console.log(err);
-      return err;
+      throw new InternalServerErrorException(err.message);
     }
   }
 
