@@ -1,4 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
 import { ExchangeAccountMiddleware } from 'src/common/middlewares/exchange-account.middleware';
 import { CoreModule } from 'src/core/core.module';
 import { gridBotServiceFactory } from 'src/grid-bot/grid-bot-service.factory';
@@ -22,9 +24,10 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
     ScheduleModule.forRoot(),
     CoreModule,
     GridBotModule,
+    AppModule,
   ],
-  providers: [gridBotServiceFactory],
-  controllers: [GridBotController],
+  providers: [gridBotServiceFactory, AppService],
+  controllers: [GridBotController, AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer) {
