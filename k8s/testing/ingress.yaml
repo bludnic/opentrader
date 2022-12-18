@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: bifrost-ingress
   namespace: bifrost-testing
+  annotations:
+    networking.gke.io/managed-certificates: managed-cert
 spec:
   defaultBackend:
     service:

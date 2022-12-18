@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: managed-cert
+  namespace: bifrost-testing
+spec:
+  domains:
+    - rpc8.tech
