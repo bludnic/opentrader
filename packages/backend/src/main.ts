@@ -20,6 +20,8 @@ async function bootstrap() {
   });
   SwaggerModule.setup('bapi/swagger', app, document);
 
+  app.enableShutdownHooks();
+
   await app.listen(4000);
 }
 bootstrap();
