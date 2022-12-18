@@ -5,6 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:prod": "next start",
     "lint": "next lint",
     "openapi:coingecko:generate": "node src/lib/coingecko/bin/openapi-generate.js",
     "bootstrap": "npm install && npm run openapi:coingecko:generate"
