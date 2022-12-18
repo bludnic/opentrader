@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bifrost-backend
+  namespace: bifrost-testing
+  labels:
+    app: bifrost-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bifrost-backend
+  template:
+    metadata:
+      labels:
+        app: bifrost-backend
+    spec:
+      containers:
+        - name: bifrost-backend
+          image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo/backend:latest
+          ports:
+            - containerPort: 4000
+          livenessProbe:
+            httpGet:
+              path: /bapi/healthz
+              port: 4000
+          readinessProbe:
+            httpGet:
+              path: /bapi/healthz
+              port: 4000

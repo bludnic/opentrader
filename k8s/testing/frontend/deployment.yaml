@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bifrost-frontend
+  namespace: bifrost-testing
+  labels:
+    app: bifrost-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bifrost-frontend
+  template:
+    metadata:
+      labels:
+        app: bifrost-frontend
+    spec:
+      containers:
+        - name: bifrost-frontend
+          image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo/frontend:latest
+          ports:
+            - containerPort: 3000
