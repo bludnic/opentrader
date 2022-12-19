@@ -49,6 +49,11 @@ jobs:
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
 
+      # Configure Docker
+      - name: Configure Docker
+        run: |-
+          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
+
       # [Backend] Build the Docker image
       - name: Build Backend
         run: |-
@@ -61,7 +66,6 @@ jobs:
       # [Backend] Push the Docker image to Google Container Registry
       - name: Publish Backend
         run: |-
-          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
           docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_BACKEND_IMAGE_NAME:latest"
 
       # [Frontend] Build the Docker image
@@ -76,7 +80,6 @@ jobs:
       # [Frontend] Push the Docker image to Google Container Registry
       - name: Publish Frontend
         run: |-
-          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
           docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_FRONTEND_IMAGE_NAME:latest"
 
       # Set up kustomize
