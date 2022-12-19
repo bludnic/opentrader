@@ -15,6 +15,7 @@ spec:
       labels:
         app: bifrost-backend
     spec:
+      serviceAccountName: bifrost-service-account
       containers:
         - name: bifrost-backend
           image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/backend:latest

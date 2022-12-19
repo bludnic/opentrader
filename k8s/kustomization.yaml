@@ -5,6 +5,7 @@ resources:
   - testing/namespace.yaml
   - testing/managed-cert.yaml
   - testing/ingress.yaml
+  - testing/service-account.yaml
   - testing/backend/deployment.yaml
   - testing/backend/service.yaml
   - testing/frontend/deployment.yaml
