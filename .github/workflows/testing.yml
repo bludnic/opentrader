@@ -14,10 +14,12 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dev    # Add your cluster name here.
   GKE_ZONE: europe-west1-b   # Add your cluster zone here.
-  DEPLOYMENT_NAME: gke-test # Add your deployment name here.
+  GKE_BACKEND_DEPLOYMENT_NAME: bifrost-backend
+  GKE_FRONTEND_DEPLOYMENT_NAME: bifrost-frontend
   GAR_LOCATION: europe-west1 # Location of the Artifact Registry
   GAR_REPOSITORY: bifrost-repo-testing # Google Artifact Registry repository name
-  GAR_BACKEND_IMAGE: backend
+  GAR_BACKEND_IMAGE_NAME: backend
+  GAR_FRONTEND_IMAGE_NAME: frontend
 
 jobs:
   setup-build-publish-deploy:
@@ -47,20 +49,35 @@ jobs:
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
 
-      # Build the Docker image
-      - name: Build
+      # [Backend] Build the Docker image
+      - name: Build Backend
         run: |-
           docker build \
-            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/backend:latest" \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_BACKEND_IMAGE_NAME:latest" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             ./packages/backend
 
-      # Push the Docker image to Google Container Registry
-      - name: Publish
+      # [Backend] Push the Docker image to Google Container Registry
+      - name: Publish Backend
         run: |-
           gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
-          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/backend:latest"
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_BACKEND_IMAGE_NAME:latest"
+
+      # [Frontend] Build the Docker image
+      - name: Build Frontend
+        run: |-
+          docker build \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_FRONTEND_IMAGE_NAME:latest" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            ./packages/frontend
+
+      # [Frontend] Push the Docker image to Google Container Registry
+      - name: Publish Frontend
+        run: |-
+          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/$GAR_FRONTEND_IMAGE_NAME:latest"
 
       # Set up kustomize
       - name: Set up Kustomize
