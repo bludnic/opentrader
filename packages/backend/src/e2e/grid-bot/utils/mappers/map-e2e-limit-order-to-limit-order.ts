@@ -1,6 +1,6 @@
 import { OrderSideEnum, OrderStatusEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { OrderStatus } from 'src/core/exchanges/okx/types/exchange/trade/common/types/order-side.type';
-import { IGetLimitOrderResponse } from 'src/core/exchanges/okx/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
+import { OrderStatus } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
+import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { GridBotE2ELimitOrder } from 'src/e2e/grid-bot/orders/types';
 

@@ -1,7 +1,7 @@
 import {
   OrderSide,
   OrderStatus,
-} from 'src/core/exchanges/okx/types/exchange/trade/common/types/order-side.type';
+} from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 
 export interface IGetLimitOrderResponse {
   /**

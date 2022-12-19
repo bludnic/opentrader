@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OKXFacade } from 'src/core/exchanges/okx/okx-facade';
-import { IGetMarketPriceRequest } from 'src/core/exchanges/okx/types/exchange/public-data/get-market-price/get-market-price-request.interface';
-import { ICancelLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
-import { IGetLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
+import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
+import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
+import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 
 @Injectable()

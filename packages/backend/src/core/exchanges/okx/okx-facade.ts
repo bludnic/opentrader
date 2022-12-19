@@ -8,15 +8,15 @@ import { IOKXGetLimitOrderInputParams } from 'src/core/exchanges/okx/types/clien
 import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-response.interface';
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
-import { IAccountAsset } from 'src/core/exchanges/okx/types/exchange/account/account-asset/account-asset.interface';
-import { IGetMarketPriceRequest } from 'src/core/exchanges/okx/types/exchange/public-data/get-market-price/get-market-price-request.interface';
-import { IGetMarketPriceResponse } from 'src/core/exchanges/okx/types/exchange/public-data/get-market-price/get-market-price-response.interface';
-import { ICancelLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
-import { ICancelLimitOrderResponse } from 'src/core/exchanges/okx/types/exchange/trade/cancel-limit-order/cancel-limit-order-response.interface';
-import { IGetLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
-import { IGetLimitOrderResponse } from 'src/core/exchanges/okx/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
-import { IPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
+import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
+import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';
+import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
+import { ICancelLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-response.interface';
+import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
+import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
+import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
 
 export const OKXFacade = {
   accountAsset(data: IOKXGetAccountBalanceDetails): IAccountAsset {

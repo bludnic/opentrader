@@ -3,7 +3,7 @@ import {
   DealStatusEnum,
   IDeal,
 } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { calculateSymbolOKX } from 'src/grid-bot/utils/calculateSymbolOKX';
 
 export function calculateLimitOrdersFromDeals(

@@ -1,4 +1,4 @@
-import { OrderSide } from 'src/core/exchanges/okx/types/exchange/trade/common/types/order-side.type';
+import { OrderSide } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 
 export function generateOrderId(
   baseCurrency: string,

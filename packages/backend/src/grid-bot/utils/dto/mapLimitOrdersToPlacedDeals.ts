@@ -2,7 +2,7 @@ import {
   OrderSideEnum,
   OrderStatusEnum,
 } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/okx/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { PlacedDealDto } from 'src/grid-bot/types/service/place/placed-deal.dto';
 
 /**
