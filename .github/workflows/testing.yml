@@ -37,10 +37,10 @@ jobs:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ secrets.GKE_PROJECT }}
 
-      # Configure Docker to use the gcloud command-line tool as a credential
-      # helper for authentication
-      - run: |-
-          gcloud --quiet auth configure-docker
+      # Configure Docker to use Artifact Registry Docker repository
+      - name: Configure Docker
+        run: |-
+          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
 
       # Get the GKE credentials, so we can deploy to the cluster
       - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
@@ -48,11 +48,6 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
-
-      # Configure Docker
-      - name: Configure Docker
-        run: |-
-          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
 
       # [Backend] Build the Docker image
       - name: Build Backend
