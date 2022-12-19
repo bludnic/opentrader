@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bifrost-ingress
+  namespace: bifrost-testing
+  annotations:
+    networking.gke.io/managed-certificates: managed-cert
+spec:
+  defaultBackend:
+    service:
+      name: bifrost-frontend-service
+      port:
+        number: 3000
+  rules:
+    - http:
+        paths:
+          - path: /bapi
+            pathType: Prefix
+            backend:
+              service:
+                name: bifrost-backend-service
+                port:
+                  number: 4000
