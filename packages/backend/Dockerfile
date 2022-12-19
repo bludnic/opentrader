@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --dev
+ENV NODE_ENV production
+
+RUN npm run build
 
 CMD ["node", "dist/main"]

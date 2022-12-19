@@ -15,7 +15,10 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
   imports: [
     HttpModule,
     FirebaseModule.forRoot({
-      googleApplicationCredential: './firebase-credentials.json',
+      googleApplicationCredential:
+        process.env.NODE_ENV === 'production'
+          ? undefined
+          : './firebase-credentials.json',
     }),
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.development.local'],
