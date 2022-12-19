@@ -59,6 +59,7 @@ jobs:
       # Push the Docker image to Google Container Registry
       - name: Publish
         run: |-
+          gcloud auth configure-docker "$GAR_LOCATION-docker.pkg.dev"
           docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$GAR_REPOSITORY/backend:latest"
 
       # Set up kustomize
