@@ -14,6 +14,7 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dev    # Add your cluster name here.
   GKE_ZONE: europe-west1-b   # Add your cluster zone here.
+  GKE_NAMESPACE: bifrost-testing
   GKE_BACKEND_DEPLOYMENT_NAME: bifrost-backend
   GKE_FRONTEND_DEPLOYMENT_NAME: bifrost-frontend
   GAR_LOCATION: europe-west1 # Location of the Artifact Registry
@@ -87,6 +88,6 @@ jobs:
       - name: Deploy
         run: |-
           ./kustomize build ./k8s | kubectl apply -f -
-          kubectl rollout status deployment/$GKE_BACKEND_DEPLOYMENT_NAME
-          kubectl rollout status deployment/$GKE_FRONTEND_DEPLOYMENT_NAME
+          kubectl rollout status deployment/$GKE_BACKEND_DEPLOYMENT_NAME -n $GKE_NAMESPACE
+          kubectl rollout status deployment/$GKE_FRONTEND_DEPLOYMENT_NAME -n $GKE_NAMESPACE
           kubectl get services -o wide
