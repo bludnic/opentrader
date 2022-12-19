@@ -20,3 +20,12 @@ spec:
           image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/frontend:latest
           ports:
             - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_COINGECKO_API_BASEURL
+              value: "https://api.coingecko.com/api/v3"
+            - name: NEXT_PUBLIC_COINMARKETCAP_API_BASEURL
+              value: "https://pro-api.coinmarketcap.com/v1"
+            - name: NEXT_PUBLIC_COINMARKETCAP_API_KEY
+              value: "7465cc3d-d7d5-4e4c-8c82-3109e2161a4b"
+            - name: NEXT_PUBLIC_BIFROST_API_BASEURL
+              value: "http://localhost:4000/bapi"
