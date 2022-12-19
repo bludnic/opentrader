@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: bifrost-backend
-          image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo/backend:latest
+          image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/backend:latest
           ports:
             - containerPort: 4000
           livenessProbe:
