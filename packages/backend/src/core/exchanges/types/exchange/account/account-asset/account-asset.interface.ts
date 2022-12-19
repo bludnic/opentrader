@@ -4,7 +4,11 @@ export interface IAccountAsset {
    */
   currency: string;
   /**
-   * Cash Balance
+   * Total balance
    */
   balance: number;
+  /**
+   * Available balance
+   */
+  availableBalance: number;
 }

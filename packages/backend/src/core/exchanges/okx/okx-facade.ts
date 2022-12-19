@@ -23,6 +23,7 @@ export const OKXFacade = {
     return {
       currency: data.ccy,
       balance: Number(data.eq),
+      availableBalance: Number(data.availBal),
     };
   },
   accountAssets(data: IOKXGetAccountBalanceResponse): IAccountAsset[] {
