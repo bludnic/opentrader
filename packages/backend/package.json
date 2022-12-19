@@ -29,7 +29,7 @@
     "@nestjs/swagger": "^5.2.0",
     "big.js": "^6.1.1",
     "crypto-js": "^4.1.1",
-    "nestjs-firebase": "^8.2.1",
+    "firebase-admin": "^10.0.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

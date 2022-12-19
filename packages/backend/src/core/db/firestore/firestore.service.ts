@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectFirebaseAdmin, FirebaseAdmin } from 'nestjs-firebase';
+import { InjectFirebaseAdmin, FirebaseAdmin } from 'src/core/firebase';
 import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
 import { IDeal } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
 import { IExchangeAccount } from 'src/core/db/firestore/collections/exchange-accounts/exchange-account.interface';
