@@ -1,5 +1,7 @@
 FROM node:16-alpine as development
 
+RUN apk update && apk add openjdk8
+
 WORKDIR /var/app/frontend
 
 COPY package*.json ./
