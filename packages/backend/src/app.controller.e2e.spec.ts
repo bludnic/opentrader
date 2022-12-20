@@ -74,6 +74,20 @@ describe('AppController', () => {
 
       return mapE2ELimitOrderToLimitOrder(limitOrder, e2eData.current.price);
     },
+    accountAssets: async () => {
+      return [
+        {
+          currency: gridBotSettings.baseCurrency,
+          availableBalance: 10000,
+          balance: 10000,
+        },
+        {
+          currency: gridBotSettings.quoteCurrency,
+          availableBalance: 10000,
+          balance: 10000,
+        }
+      ]
+    }
   };
 
   beforeAll(async () => {

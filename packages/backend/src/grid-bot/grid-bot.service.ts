@@ -6,22 +6,28 @@ import {
   NotFoundException,
   Scope,
 } from '@nestjs/common';
+import big from 'big.js';
 import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
 import {
   DealBuyFilled,
   DealSellFilled,
   DealStatusEnum,
+  IDeal,
   OrderStatusEnum,
 } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { ICreateBotParams } from 'src/core/db/firestore/types/grid-bots/create-bot/create-bot-params.interface';
+import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
 
 import { SyncBotResponseBodyDto } from 'src/grid-bot/dto/sync-bot/sync-bot-response-body.dto';
+import { MissingCurrencyOnExchangeException } from 'src/grid-bot/exceptions/missing-currency-on-exchange.exception';
+import { NotEnoughFundsException } from 'src/grid-bot/exceptions/not-enough-funds.exception';
 import { IGridBotSettings } from 'src/grid-bot/types/grid-bot-settings.interface';
 import { SyncedDealDto } from 'src/grid-bot/types/service/sync/synced-deal.dto';
+import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
 import { calculateLimitOrdersFromDeals } from 'src/grid-bot/utils/calculateLimitOrdersFromDeals';
 import { calcInitialDealsByAssetPrice } from 'src/grid-bot/utils/deals/calcInitialDealsByAssetPrice';
 import { mapLimitOrdersToPlacedDeals } from 'src/grid-bot/utils/dto/mapLimitOrdersToPlacedDeals';
@@ -81,8 +87,6 @@ export class GridBotService {
       );
     }
 
-    // Будущая фича: сделать проверку на enoughFunds
-
     const currentAssetPrice = await this.getCurrentAssetPrice(
       bot.baseCurrency,
       bot.quoteCurrency,
@@ -103,6 +107,10 @@ export class GridBotService {
         })),
       },
     );
+
+    // Check enough funds to start the Bot
+    this.logger.debug(`Check enough funds to start Bot`);
+    await this.checkEnoughFundsToStartBot(bot, initialDeals);
 
     const limitOrders = calculateLimitOrdersFromDeals(initialDeals, bot);
     this.logger.debug(
@@ -382,5 +390,66 @@ export class GridBotService {
     }
 
     return syncedDeals;
+  }
+
+  public async checkEnoughFundsToStartBot(
+    bot: IBotFirestore,
+    deals: IDeal[],
+  ): Promise<void> {
+    const {
+      baseCurrencyAmount: baseCurrencyAmountRequired,
+      quoteCurrencyAmount: quoteCurrencyAmountRequired,
+    } = calculateInvestment(deals, bot.quantityPerGrid);
+    const assets = await this.exchange.accountAssets();
+
+    // check Base currency amount
+    await this.checkEnoughBalance(
+      bot.baseCurrency,
+      baseCurrencyAmountRequired,
+      assets,
+    );
+
+    // check Quote currency amount
+    await this.checkEnoughBalance(
+      bot.quoteCurrency,
+      quoteCurrencyAmountRequired,
+      assets,
+    );
+  }
+
+  private async checkEnoughBalance(
+    currencySymbol: string,
+    requiredAmount: number,
+    assets: IAccountAsset[],
+  ): Promise<void> {
+    const currencyAsset = assets.find(
+      (asset) => asset.currency === currencySymbol,
+    );
+
+    if (!currencyAsset) {
+      const errorMessage = `Missing currency asset ${currencyAsset} on the exchange`;
+
+      this.logger.debug(`[checkEnoughBalance] ${errorMessage}`);
+      throw new MissingCurrencyOnExchangeException(errorMessage);
+    }
+
+    // availableBalance < requiredAmount
+    if (big(currencyAsset.availableBalance).lt(requiredAmount)) {
+      const errorMessage =
+        `Not enough ${currencySymbol} funds to start the Bot. ` +
+        `Balance: ${currencyAsset.balance}; ` +
+        `Available Balance: ${currencyAsset.availableBalance}; ` +
+        `Required Amount: ${requiredAmount}`;
+
+      this.logger.debug(`[checkEnoughBalance]: ${errorMessage}`);
+      throw new NotEnoughFundsException(errorMessage);
+    }
+
+    this.logger.debug(
+      `[checkEnoughBalance]: Enough ${currencySymbol}. ` +
+        `Balance: ${currencyAsset.balance}; ` +
+        `Available Balance: ${currencyAsset.availableBalance}; ` +
+        `Required Amount: ${requiredAmount}`,
+    );
   }
 }
