@@ -6,7 +6,7 @@ metadata:
   labels:
     app: bifrost-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: bifrost-backend
@@ -15,10 +15,19 @@ spec:
       labels:
         app: bifrost-backend
     spec:
-      serviceAccountName: bifrost-service-account
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: bifrost-service-testing-secrets
       containers:
         - name: bifrost-backend
           image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/backend:latest
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
           ports:
             - containerPort: 4000
           livenessProbe:
