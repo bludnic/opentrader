@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { IUser } from 'src/core/db/firestore/types/users/user/user.interface';
+import { USER_ID_FIELD_PATH } from 'src/core/db/firestore/utils/constants';
+import { mapUserClaims } from 'src/core/db/firestore/utils/user/mapUserClaims';
 import { InjectFirebaseAdmin, FirebaseAdmin } from 'src/core/firebase';
 import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
 import { IDeal } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
@@ -14,6 +17,20 @@ import {
 @Injectable()
 export class FirestoreService {
   constructor(@InjectFirebaseAdmin() private firebase: FirebaseAdmin) {}
+
+  async getUserByIdToken(idToken: string): Promise<IUser> {
+    const { uid } = await this.firebase.auth.verifyIdToken(idToken, true);
+    const userRecord = await this.firebase.auth.getUser(uid);
+
+    const user: IUser = {
+      uid: userRecord.uid,
+      email: userRecord.email,
+      emailVerified: userRecord.emailVerified,
+      customClaims: mapUserClaims(userRecord.customClaims),
+    };
+
+    return user;
+  }
 
   async createBot(params: ICreateBotParams): Promise<IBotFirestore> {
     const createdAt = new Date().getTime();
@@ -99,5 +116,39 @@ export class FirestoreService {
       (documentData.data() as IExchangeAccount) || null; // type or null
 
     return data;
+  }
+
+  async getExchangeAccountsByUserId(
+    userId: string,
+  ): Promise<IExchangeAccount[]> {
+    const allExchangeAccounts = await this.firebase.db
+      .collection(ACCOUNT_COLLECTION)
+      .where(USER_ID_FIELD_PATH, '==', userId)
+      .get();
+
+    const exchangeAccounts = allExchangeAccounts.docs.map((doc) => doc.data());
+
+    return exchangeAccounts as IExchangeAccount[];
+  }
+
+  async createExchangeAccount(
+    exchangeAccount: IExchangeAccount,
+  ): Promise<IExchangeAccount> {
+    const converter = {
+      toFirestore: (data: IExchangeAccount) => data,
+      fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+        snap.data() as IExchangeAccount,
+    };
+
+    const document = this.firebase.db
+      .collection(ACCOUNT_COLLECTION)
+      .withConverter(converter)
+      .doc(exchangeAccount.id);
+
+    await document.set(exchangeAccount);
+
+    const result = await document.get();
+
+    return result.data();
   }
 }
