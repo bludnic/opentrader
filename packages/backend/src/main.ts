@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -21,6 +22,12 @@ async function bootstrap() {
   SwaggerModule.setup('bapi/swagger', app, document);
 
   app.enableShutdownHooks();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      whitelist: true,
+    }),
+  );
 
   await app.listen(4000);
 }
