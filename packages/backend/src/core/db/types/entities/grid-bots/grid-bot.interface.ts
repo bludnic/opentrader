@@ -3,7 +3,6 @@ import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 export interface IGridBot {
   id: string;
   name: string;
-  account: string; // reference
   baseCurrency: string; // e.g 1INCH
   quoteCurrency: string; // e.g USDT
   highPrice: number;
@@ -15,4 +14,5 @@ export interface IGridBot {
   deals: IDeal[];
 
   userId: string;
+  exchangeAccountId: string;
 }

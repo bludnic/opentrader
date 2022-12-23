@@ -1,7 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
-import { ExchangeAccountMiddleware } from 'src/common/middlewares/exchange-account.middleware';
 import { FirebaseUserMiddleware } from 'src/common/middlewares/firebase-user.middleware';
 import { CoreModule } from 'src/core/core.module';
 import { FirebaseModule } from 'src/core/firebase';
@@ -38,7 +37,6 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 })
 export class AppModule implements NestModule {
   configure(consumer) {
-    consumer.apply(ExchangeAccountMiddleware).forRoutes(GridBotController);
     consumer
       .apply(FirebaseUserMiddleware)
       .forRoutes(GridBotController, ExchangeAccountsController);

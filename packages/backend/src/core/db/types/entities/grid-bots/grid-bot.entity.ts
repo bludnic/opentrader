@@ -32,10 +32,6 @@ export class GridBotEntity implements IGridBot {
 
   @IsNotEmpty()
   @IsString()
-  account: string; // reference?
-
-  @IsNotEmpty()
-  @IsString()
   baseCurrency: string; // e.g 1INCH
 
   @IsNotEmpty()
@@ -82,6 +78,10 @@ export class GridBotEntity implements IGridBot {
   deals: IDeal[]; // @todo поменять на DTO
 
   userId: string;
+
+  @IsDefined()
+  @IsString()
+  exchangeAccountId: string;
 
   constructor(bot: GridBotEntity) {
     Object.assign(this, bot);

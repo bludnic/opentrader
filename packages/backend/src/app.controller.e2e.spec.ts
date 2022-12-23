@@ -3,15 +3,15 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
-import { X_EXCHANGE_ACCOUNT_ID_HEADER_KEY } from 'src/common/middlewares/exchange-account.middleware';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
-import { okxExchangeAccountDocumentId } from 'src/core/exchanges/utils/contexts/okx';
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
+import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { gridBotE2EHistoryData } from 'src/e2e/grid-bot/history-data';
 import { GridBotE2EHistoryData } from 'src/e2e/grid-bot/types';
 import { mapDealToE2EDeal } from 'src/e2e/grid-bot/utils/mappers/map-deal-to-e2e-deal';
@@ -24,7 +24,6 @@ import {
   GridBotServiceFactorySymbol,
 } from 'src/grid-bot/grid-bot-service.factory';
 import { GridBotService } from 'src/grid-bot/grid-bot.service';
-import { IGridBotSettings } from 'src/grid-bot/types/grid-bot-settings.interface';
 import * as request from 'supertest';
 import { user } from './e2e/grid-bot/user';
 
@@ -38,10 +37,6 @@ function* e2eDataGenerator(): Generator<GridBotE2EHistoryData> {
     yield gridBotE2EHistoryData[gridBotE2EHistoryData.length - 1];
   }
 }
-
-const exchangeAccountHeader = () => ({
-  [X_EXCHANGE_ACCOUNT_ID_HEADER_KEY]: okxExchangeAccountDocumentId,
-});
 
 const firebaseAuthorizationHeader = () => ({
   Authorization: 'Bearer master_key',
@@ -127,6 +122,18 @@ describe('AppController', () => {
                 firestoreService,
               );
             },
+            fromExchangeAccountId: async () => {
+              return new GridBotService(
+                exchangeService as IExchangeService, // I know what I am doing
+                firestoreService,
+              );
+            },
+            fromBotId: async () => {
+              return new GridBotService(
+                exchangeService as IExchangeService, // I know what I am doing
+                firestoreService,
+              );
+            },
           };
         },
         inject: [HttpService, ConfigService, FirestoreService],
@@ -149,12 +156,14 @@ describe('AppController', () => {
 
   describe('Create and start bot', () => {
     it(`/POST grid-bot/create`, async () => {
-      const requestBody: IGridBotSettings = gridBotSettings;
+      const requestBody: CreateGridBotDto = {
+        ...gridBotSettings,
+        exchangeAccountId: exchangeAccountMock.id,
+      };
       const expectedResponse: CreateBotResponseBodyDto = {
         bot: {
           id: gridBotSettings.id,
           name: gridBotSettings.name,
-          account: gridBotSettings.account,
           baseCurrency: gridBotSettings.baseCurrency,
           quoteCurrency: gridBotSettings.quoteCurrency,
           gridLevels: gridBotSettings.gridLevels,
@@ -166,13 +175,13 @@ describe('AppController', () => {
           deals: [],
           createdAt: 0, // can't know the exact value
           userId: user.uid,
+          exchangeAccountId: exchangeAccountMock.id,
         },
       };
       delete expectedResponse.bot.createdAt;
 
       await request(app.getHttpServer())
         .post('/grid-bot/create')
-        .set(exchangeAccountHeader())
         .set(firebaseAuthorizationHeader())
         .send(requestBody)
         .expect(201)
@@ -186,7 +195,6 @@ describe('AppController', () => {
     it('/PUT grid-bot/start', async () => {
       await request(app.getHttpServer())
         .put(`/grid-bot/start/${gridBotSettings.id}`)
-        .set(exchangeAccountHeader())
         .set(firebaseAuthorizationHeader())
         .expect(200);
 
@@ -219,7 +227,6 @@ describe('AppController', () => {
         it(`Day #${i + 1}: ${gridBotE2EHistoryData[i].time}`, async () => {
           await request(app.getHttpServer())
             .patch('/grid-bot/sync')
-            .set(exchangeAccountHeader())
             .set(firebaseAuthorizationHeader())
             .query(queryParams)
             .expect(200)

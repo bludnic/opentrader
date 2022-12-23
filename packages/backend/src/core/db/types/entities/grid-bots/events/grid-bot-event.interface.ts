@@ -5,7 +5,7 @@ export interface IGridBotEvent {
   eventCode: GridBotEventCodeEnum;
   message: string;
   createdAt: number;
-  data?: any; // additional context
+  data: object | null; // additional context
 
   botId: string;
 }

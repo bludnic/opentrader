@@ -23,7 +23,7 @@ export function mapLimitOrdersToPlacedDeals(
             status: OrderStatusEnum.Placed,
             price: limitOrder.price,
           }
-        : undefined;
+        : null;
 
     const sellOrder =
       limitOrder.side === OrderSideEnum.Sell
@@ -31,7 +31,7 @@ export function mapLimitOrdersToPlacedDeals(
             status: OrderStatusEnum.Placed,
             price: limitOrder.price,
           }
-        : undefined;
+        : null;
 
     return {
       buyOrder,
