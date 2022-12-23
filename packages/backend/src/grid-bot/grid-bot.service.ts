@@ -7,20 +7,22 @@ import {
   Scope,
 } from '@nestjs/common';
 import big from 'big.js';
-import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
+
+import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import {
   DealBuyFilled,
   DealSellFilled,
-  DealStatusEnum,
   IDeal,
-  OrderStatusEnum,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ICreateBotParams } from 'src/core/db/firestore/types/grid-bots/create-bot/create-bot-params.interface';
+} from 'src/core/db/types/entities/grid-bots/deals/types';
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
+import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 
 import { SyncBotResponseBodyDto } from 'src/grid-bot/dto/sync-bot/sync-bot-response-body.dto';
 import { MissingCurrencyOnExchangeException } from 'src/grid-bot/exceptions/missing-currency-on-exchange.exception';
@@ -48,18 +50,14 @@ export class GridBotService {
   ) {}
 
   async getBot(botId: string) {
-    const bot = await this.firestore.getBot({ id: botId });
+    const bot = await this.firestore.gridBot.findOne(botId);
     this.logger.debug(`getBot with ID ${bot.id}`);
 
     return bot;
   }
 
-  async createBot(params: IGridBotSettings) {
-    const createBotParams: ICreateBotParams = {
-      ...params,
-      enabled: false,
-    };
-    const bot = await this.firestore.createBot(createBotParams);
+  async createBot(dto: CreateBotRequestBodyDto, user: IUser) {
+    const bot = await this.firestore.gridBot.create(dto, user.uid);
 
     this.logger.debug(
       `The bot ${bot.id} with pair ${bot.baseCurrency}/${bot.quoteCurrency} was created succesfully`,
@@ -75,7 +73,7 @@ export class GridBotService {
   }
 
   async startBot(botId: string) {
-    const bot = await this.firestore.getBot({ id: botId });
+    const bot = await this.firestore.gridBot.findOne(botId);
 
     if (!bot) {
       throw new NotFoundException(`Bot with "${botId}" not found`);
@@ -143,20 +141,22 @@ export class GridBotService {
       }
     });
 
-    await this.firestore.updateDeals(botId, initialDeals);
+    await this.firestore.gridBot.updateDeals(initialDeals, botId);
     this.logger.debug(`All ${initialDeals.length} initial deals saved to DB`);
 
-    await this.firestore.updateBot({
-      id: botId,
-      enabled: true,
-    });
+    await this.firestore.gridBot.update(
+      {
+        enabled: true,
+      },
+      botId,
+    );
     this.logger.debug('Bot has been enabled');
 
     return this.getBot(botId);
   }
 
   async stopBot(botId: string) {
-    const bot = await this.firestore.getBot({ id: botId });
+    const bot = await this.firestore.gridBot.findOne(botId);
 
     if (bot.deals.length === 0) {
       throw new ConflictException(
@@ -166,12 +166,14 @@ export class GridBotService {
 
     await this.stopAllOrders(bot);
 
-    await this.firestore.updateDeals(botId, []);
+    await this.firestore.gridBot.updateDeals([], botId);
 
-    await this.firestore.updateBot({
-      id: botId,
-      enabled: false,
-    });
+    await this.firestore.gridBot.update(
+      {
+        enabled: false,
+      },
+      botId,
+    );
   }
 
   private async placeOrders(placeOrders: IPlaceLimitOrderRequest[]) {
@@ -182,7 +184,7 @@ export class GridBotService {
     return Promise.all(promises);
   }
 
-  private async stopAllOrders(bot: IBotFirestore) {
+  private async stopAllOrders(bot: IGridBot) {
     for (const deal of bot.deals) {
       // `too many requests` если отправлять запросы с меньшим интервалом
       // нужно прикрутить батчинг для отмены ордеров пачкой
@@ -230,7 +232,7 @@ export class GridBotService {
    * @param botId
    */
   async syncMarketOrders(botId: string): Promise<SyncBotResponseBodyDto> {
-    let bot = await this.firestore.getBot({ id: botId });
+    let bot = await this.firestore.gridBot.findOne(botId);
 
     if (!bot.enabled) {
       throw new ConflictException('Bot not started. Start the bot first.');
@@ -286,7 +288,7 @@ export class GridBotService {
       `Limit orders placed successfully (total: ${exchangeOrders.length})`,
     );
 
-    await this.firestore.updateDeals(botId, newDeals);
+    await this.firestore.gridBot.updateDeals(newDeals, botId);
     this.logger.debug('Deals updated');
 
     return {
@@ -303,7 +305,7 @@ export class GridBotService {
    *
    * @param bot
    */
-  async syncFilledStatus(bot: IBotFirestore): Promise<SyncedDealDto[]> {
+  async syncFilledStatus(bot: IGridBot): Promise<SyncedDealDto[]> {
     const syncedDeals: SyncedDealDto[] = [];
 
     for (const deal of bot.deals) {
@@ -331,7 +333,7 @@ export class GridBotService {
             status: DealStatusEnum.BuyFilled,
           };
 
-          await this.firestore.updateDeal(deal.id, bot.id, newDeal);
+          await this.firestore.gridBot.updateDeal(deal.id, bot.id, newDeal);
           this.logger.debug(
             `[BUY] Limit order was FILLED with price: ${limitBuyOrder.price} ${bot.quoteCurrency}`,
           );
@@ -367,7 +369,7 @@ export class GridBotService {
             status: DealStatusEnum.SellFilled,
           };
 
-          await this.firestore.updateDeal(deal.id, bot.id, newDeal);
+          await this.firestore.gridBot.updateDeal(deal.id, bot.id, newDeal);
           this.logger.debug(
             `[SELL] Limit order was FILLED with price: ${limitSellOrder.price} ${bot.quoteCurrency}`,
           );
@@ -393,7 +395,7 @@ export class GridBotService {
   }
 
   public async checkEnoughFundsToStartBot(
-    bot: IBotFirestore,
+    bot: IGridBot,
     deals: IDeal[],
   ): Promise<void> {
     const {

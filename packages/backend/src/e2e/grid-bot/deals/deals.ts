@@ -1,4 +1,5 @@
-import { DealStatusEnum, OrderStatusEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { GridBotE2EDeal } from 'src/e2e/grid-bot/deals/types';
 
 function deal(

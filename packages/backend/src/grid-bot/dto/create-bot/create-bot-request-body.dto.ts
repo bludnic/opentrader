@@ -1,16 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 
-export class CreateBotRequestBodyDto {
-  id: string;
-  name: string;
-  account: string; // reference
-  baseCurrency: string;
-  quoteCurrency: string;
-  gridLevels: number;
-  lowPrice: number;
-  highPrice: number;
-  @ApiProperty({
-    title: 'Amount to buy per grid level in baseCurrency',
-  })
-  quantityPerGrid: number;
-}
+export class CreateBotRequestBodyDto extends CreateGridBotDto {}

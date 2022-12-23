@@ -1,4 +1,5 @@
-import { OrderSideEnum, OrderStatusEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { OrderStatus } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';

@@ -1,4 +1,4 @@
-import { IDeal } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import {
   DOT_BUSD_BUY_FILLED_DEAL,
   DOT_BUSD_BUY_PLACED_DEAL,

@@ -1,14 +1,13 @@
-import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
-import {
-  DealStatusEnum,
-  IDeal,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { calculateSymbolOKX } from 'src/grid-bot/utils/calculateSymbolOKX';
 
 export function calculateLimitOrdersFromDeals(
   deals: IDeal[],
-  bot: IBotFirestore,
+  bot: IGridBot,
 ): IPlaceLimitOrderRequest[] {
   const orders: IPlaceLimitOrderRequest[] = [];
 

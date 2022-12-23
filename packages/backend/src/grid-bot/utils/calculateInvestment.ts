@@ -1,8 +1,6 @@
 import big from 'big.js';
-import {
-  DealStatusEnum,
-  IDeal,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 
 export type CalculateInvestmentResult = {
   baseCurrencyAmount: number;

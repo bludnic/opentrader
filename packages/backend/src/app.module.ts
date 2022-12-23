@@ -41,6 +41,6 @@ export class AppModule implements NestModule {
     consumer.apply(ExchangeAccountMiddleware).forRoutes(GridBotController);
     consumer
       .apply(FirebaseUserMiddleware)
-      .forRoutes(ExchangeAccountsController);
+      .forRoutes(GridBotController, ExchangeAccountsController);
   }
 }

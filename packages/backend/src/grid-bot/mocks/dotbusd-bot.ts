@@ -3,22 +3,23 @@
  *
  * Стоит завести больше ботов с разными сценариями.
  */
-import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import {
   DealBuyFilled,
   DealBuyPlaced,
   DealSellFilled,
   DealSellPlaced,
-  DealStatusEnum,
   IDeal,
-  OrderSideEnum,
-  OrderStatusEnum,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+} from 'src/core/db/types/entities/grid-bots/deals/types';
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { user } from 'src/e2e/grid-bot/user';
 
 export const DOT_BUSD_SYMBOL = 'DOT-BUSD';
 
-export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IBotFirestore = {
+export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   id: 'DOTBUSDBOT1',
   name: '[DOT/BUSD] Testing Bot #1',
   account: '/accounts/okx_account',
@@ -31,6 +32,8 @@ export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IBotFirestore = {
   lowPrice: 10,
   quantityPerGrid: 20,
   deals: [],
+
+  userId: user.uid,
 };
 
 export const DOT_BUSD_CURRENT_ASSET_PRICE_MOCK = 14.5;

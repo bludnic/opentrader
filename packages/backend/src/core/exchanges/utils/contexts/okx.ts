@@ -1,4 +1,4 @@
-import { ExchangeCode } from 'src/core/db/firestore/collections/exchange-accounts/enums/exchange-code.enum';
+import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
 import { IExchangeContext } from 'src/core/exchanges/types/exchange-context.interface';
 import { getExchangeConfig } from 'src/core/exchanges/utils/configs';
 
@@ -19,5 +19,6 @@ export const okxExchangeContext: IExchangeContext = {
       isDemoAccount: true,
     },
     userId: 'mock_user_id_1',
+    createdAt: 1928479190,
   },
 };

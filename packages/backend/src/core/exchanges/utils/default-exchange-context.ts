@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { IExchangeAccount } from 'src/core/db/firestore/collections/exchange-accounts/exchange-account.interface';
+import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 
 export const DefaultExchangeContext = Symbol('DefaultExchangeContext');
 
