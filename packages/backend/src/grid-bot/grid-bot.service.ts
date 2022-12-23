@@ -7,6 +7,8 @@ import {
   Scope,
 } from '@nestjs/common';
 import big from 'big.js';
+import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
@@ -27,7 +29,6 @@ import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-
 import { SyncBotResponseBodyDto } from 'src/grid-bot/dto/sync-bot/sync-bot-response-body.dto';
 import { MissingCurrencyOnExchangeException } from 'src/grid-bot/exceptions/missing-currency-on-exchange.exception';
 import { NotEnoughFundsException } from 'src/grid-bot/exceptions/not-enough-funds.exception';
-import { IGridBotSettings } from 'src/grid-bot/types/grid-bot-settings.interface';
 import { SyncedDealDto } from 'src/grid-bot/types/service/sync/synced-deal.dto';
 import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
 import { calculateLimitOrdersFromDeals } from 'src/grid-bot/utils/calculateLimitOrdersFromDeals';
@@ -152,6 +153,15 @@ export class GridBotService {
     );
     this.logger.debug('Bot has been enabled');
 
+    await this.firestore.gridBotEvents.create(
+      {
+        id: uuidv4(),
+        eventCode: GridBotEventCodeEnum.BotStarted,
+        message: 'Bot has been enabled',
+      },
+      botId,
+    );
+
     return this.getBot(botId);
   }
 
@@ -171,6 +181,17 @@ export class GridBotService {
     await this.firestore.gridBot.update(
       {
         enabled: false,
+      },
+      botId,
+    );
+
+    this.logger.debug(`Bot has been stopped`);
+
+    await this.firestore.gridBotEvents.create(
+      {
+        id: uuidv4(),
+        eventCode: GridBotEventCodeEnum.BotStopped,
+        message: 'Bot has been stopped',
       },
       botId,
     );
@@ -291,12 +312,24 @@ export class GridBotService {
     await this.firestore.gridBot.updateDeals(newDeals, botId);
     this.logger.debug('Deals updated');
 
-    return {
+    const result: SyncBotResponseBodyDto = {
       message: 'Deals synced successfully',
       currentAssetPrice,
       filledOrders: syncedDeals,
       placedOrders: mapLimitOrdersToPlacedDeals(limitOrders),
     };
+
+    await this.firestore.gridBotEvents.create(
+      {
+        id: uuidv4(),
+        eventCode: GridBotEventCodeEnum.BotSynced,
+        message: 'Bot synced successfully',
+        data: result,
+      },
+      botId,
+    );
+
+    return result;
   }
 
   /**

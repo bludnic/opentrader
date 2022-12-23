@@ -1,9 +1,4 @@
-import {
-  ApiExtraModels,
-  ApiProperty,
-  getSchemaPath,
-  refs,
-} from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDefined,
