@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
-import { IUser } from 'src/core/db/firestore/types/users/user/user.interface';
+import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { CreateExchangeAccountRequestBodyDto } from 'src/exchange-accounts/dto/create-exchange-account/create-exchange-account-request-body.dto';
 import { CreateExchangeAccountResponseBodyDto } from 'src/exchange-accounts/dto/create-exchange-account/create-exchange-account-response-body.dto';
 import { GetExchangeAccountsResponseBodyDto } from 'src/exchange-accounts/dto/get-exchange-accounts/get-exchange-accounts-response-body.dto';

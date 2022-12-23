@@ -1,4 +1,4 @@
-import { IUserClaims } from 'src/core/db/firestore/types/users/user/user-claims.interface';
+import { IUserClaims } from 'src/core/db/types/entities/users/user-claims/user-claims.interface';
 
 export function mapUserClaims(
   customClaims: {

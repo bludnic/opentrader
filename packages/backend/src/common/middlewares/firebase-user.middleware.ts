@@ -39,7 +39,7 @@ export class FirebaseUserMiddleware implements NestMiddleware {
     }
 
     try {
-      const user = await this.firestore.getUserByIdToken(idToken);
+      const user = await this.firestore.user.findOneByIdToken(idToken);
 
       (req as any)[REQ_USER_ACCOUNT_KEY] = user;
     } catch (err) {

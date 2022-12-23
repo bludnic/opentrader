@@ -5,6 +5,7 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { X_EXCHANGE_ACCOUNT_ID_HEADER_KEY } from 'src/common/middlewares/exchange-account.middleware';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
@@ -17,7 +18,6 @@ import { mapDealToE2EDeal } from 'src/e2e/grid-bot/utils/mappers/map-deal-to-e2e
 import { mapE2ELimitOrderToLimitOrder } from 'src/e2e/grid-bot/utils/mappers/map-e2e-limit-order-to-limit-order';
 
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
-import { StartBotRequestDto } from 'src/grid-bot/dto/start-bot/start-bot-request-body.dto';
 import { SyncBotQueryParamsDto } from 'src/grid-bot/dto/sync-bot/sync-bot-query-params.dto';
 import {
   GridBotServiceFactory,
@@ -26,6 +26,7 @@ import {
 import { GridBotService } from 'src/grid-bot/grid-bot.service';
 import { IGridBotSettings } from 'src/grid-bot/types/grid-bot-settings.interface';
 import * as request from 'supertest';
+import { user } from './e2e/grid-bot/user';
 
 function* e2eDataGenerator(): Generator<GridBotE2EHistoryData> {
   for (const day of gridBotE2EHistoryData) {
@@ -40,6 +41,10 @@ function* e2eDataGenerator(): Generator<GridBotE2EHistoryData> {
 
 const exchangeAccountHeader = () => ({
   [X_EXCHANGE_ACCOUNT_ID_HEADER_KEY]: okxExchangeAccountDocumentId,
+});
+
+const firebaseAuthorizationHeader = () => ({
+  Authorization: 'Bearer master_key',
 });
 
 describe('AppController', () => {
@@ -85,9 +90,15 @@ describe('AppController', () => {
           currency: gridBotSettings.quoteCurrency,
           availableBalance: 10000,
           balance: 10000,
-        }
-      ]
-    }
+        },
+      ];
+    },
+  };
+
+  const userRepository: Partial<UserRepository> = {
+    async findOneByIdToken() {
+      return user;
+    },
   };
 
   beforeAll(async () => {
@@ -120,6 +131,8 @@ describe('AppController', () => {
         },
         inject: [HttpService, ConfigService, FirestoreService],
       })
+      .overrideProvider(UserRepository)
+      .useValue(userRepository)
       .compile();
 
     app = moduleRef.createNestApplication();
@@ -152,6 +165,7 @@ describe('AppController', () => {
           enabled: false,
           deals: [],
           createdAt: 0, // can't know the exact value
+          userId: user.uid,
         },
       };
       delete expectedResponse.bot.createdAt;
@@ -159,6 +173,7 @@ describe('AppController', () => {
       await request(app.getHttpServer())
         .post('/grid-bot/create')
         .set(exchangeAccountHeader())
+        .set(firebaseAuthorizationHeader())
         .send(requestBody)
         .expect(201)
         .expect((res) => {
@@ -169,19 +184,15 @@ describe('AppController', () => {
     });
 
     it('/PUT grid-bot/start', async () => {
-      const requestBody: StartBotRequestDto = {
-        botId: gridBotSettings.id,
-      };
-
       await request(app.getHttpServer())
-        .put('/grid-bot/start')
+        .put(`/grid-bot/start/${gridBotSettings.id}`)
         .set(exchangeAccountHeader())
-        .send(requestBody)
+        .set(firebaseAuthorizationHeader())
         .expect(200);
 
-      const { deals } = await firestoreService.getBot({
-        id: gridBotSettings.id,
-      });
+      const { deals } = await firestoreService.gridBot.findOne(
+        gridBotSettings.id,
+      );
       const dealsSimplified = deals.map((deal) => mapDealToE2EDeal(deal));
 
       expect(dealsSimplified).toStrictEqual(e2eData.current.deals.reverse());
@@ -209,13 +220,14 @@ describe('AppController', () => {
           await request(app.getHttpServer())
             .patch('/grid-bot/sync')
             .set(exchangeAccountHeader())
+            .set(firebaseAuthorizationHeader())
             .query(queryParams)
             .expect(200)
             .send();
 
-          const { deals } = await firestoreService.getBot({
-            id: gridBotSettings.id,
-          });
+          const { deals } = await firestoreService.gridBot.findOne(
+            gridBotSettings.id,
+          );
           const dealsSimplified = deals.map((deal) => mapDealToE2EDeal(deal));
           const dealsSimplifiedSorted = [...dealsSimplified].sort((a, b) =>
             a.id > b.id ? 1 : -1,

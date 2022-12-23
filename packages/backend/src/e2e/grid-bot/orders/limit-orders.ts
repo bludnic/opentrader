@@ -1,4 +1,5 @@
-import { OrderSideEnum, OrderStatusEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { GridBotE2ELimitOrder } from './types';
 
 function limitOrder(

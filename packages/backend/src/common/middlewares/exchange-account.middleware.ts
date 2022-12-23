@@ -26,7 +26,7 @@ export class ExchangeAccountMiddleware implements NestMiddleware {
     }
 
     try {
-      const account = await this.firestore.getExchangeAccount(
+      const account = await this.firestore.exchangeAccount.findOne(
         xExchangeAccountId,
       );
 

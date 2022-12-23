@@ -10,17 +10,17 @@ import {
   Scope,
   Req,
   InternalServerErrorException,
+  Param,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ExchangeAccount } from 'src/common/decorators/exchange-account.decorator';
-import { IExchangeAccount } from 'src/core/db/firestore/collections/exchange-accounts/exchange-account.interface';
+import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
+import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
+import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
-import { GetBotQueryParamsDto } from 'src/grid-bot/dto/get-bot/get-bot-query-params.dto';
 import { GetBotResponseBodyDto } from 'src/grid-bot/dto/get-bot/get-bot-response-body.dto';
-import { StartBotRequestDto } from 'src/grid-bot/dto/start-bot/start-bot-request-body.dto';
 import { StartBotResponseBodyDto } from 'src/grid-bot/dto/start-bot/start-bot-response-body.dto';
-import { StopBotRequestBodyDto } from 'src/grid-bot/dto/stop-bot/stop-bot-request-body.dto';
 import { StopBotResponseBodyDto } from 'src/grid-bot/dto/stop-bot/stop-bot-response-body.dto';
 import { SyncBotQueryParamsDto } from 'src/grid-bot/dto/sync-bot/sync-bot-query-params.dto';
 import { SyncBotResponseBodyDto } from 'src/grid-bot/dto/sync-bot/sync-bot-response-body.dto';
@@ -40,15 +40,14 @@ export class GridBotController {
     private gridBotServiceFactory: GridBotServiceFactory,
   ) {}
 
-  @Get('/info')
+  @Get('/info/:id')
   async getBot(
-    @Query() query: GetBotQueryParamsDto,
+    @Param('id') botId: string,
     @ExchangeAccount() exchangeAccount: IExchangeAccount,
   ): Promise<GetBotResponseBodyDto> {
     const gridBotService =
       this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
 
-    const { botId } = query;
     const bot = await gridBotService.getBot(botId);
 
     return {
@@ -60,26 +59,26 @@ export class GridBotController {
   async createBot(
     @Body() body: CreateBotRequestBodyDto,
     @ExchangeAccount() exchangeAccount: IExchangeAccount,
+    @FirebaseUser() user: IUser,
   ): Promise<CreateBotResponseBodyDto> {
     const gridBotService =
       this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
 
-    const bot = await gridBotService.createBot(body);
+    const bot = await gridBotService.createBot(body, user);
 
     return {
       bot,
     };
   }
 
-  @Put('/start')
+  @Put('/start/:id')
   async startBot(
-    @Body() body: StartBotRequestDto,
+    @Param('id') botId: string,
     @ExchangeAccount() exchangeAccount: IExchangeAccount,
   ): Promise<StartBotResponseBodyDto> {
     const gridBotService =
       this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
 
-    const { botId } = body;
     const bot = await gridBotService.startBot(botId);
 
     return {
@@ -87,15 +86,13 @@ export class GridBotController {
     };
   }
 
-  @Put('/stop')
+  @Put('/stop/:id')
   async stopBot(
-    @Body() body: StopBotRequestBodyDto,
+    @Param('id') botId: string,
     @ExchangeAccount() exchangeAccount: IExchangeAccount,
   ): Promise<StopBotResponseBodyDto> {
     const gridBotService =
       this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
-
-    const { botId } = body;
 
     await gridBotService.stopBot(botId);
 

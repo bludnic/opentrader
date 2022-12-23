@@ -6,13 +6,9 @@
  *
  * @param deals
  */
-import {
-  DealBuyPlaced,
-  DealStatusEnum,
-  IDeal,
-  OrderStatusEnum,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { updateDealStatus } from 'src/core/db/firestore/utils/deal/updateDealStatus';
+import { updateDealStatus } from 'src/core/db/firestore/utils/deals/updateDealStatus';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 
 export function recalculateDealsDiff(deals: IDeal[]): IDeal[] {
   const newDeals: IDeal[] = deals.flatMap<IDeal>((deal) => {

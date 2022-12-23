@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { FactoryProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { ConfigService } from '@nestjs/config';
-import { ExchangeCode } from 'src/core/db/firestore/collections/exchange-accounts/enums/exchange-code.enum';
-import { IExchangeAccount } from 'src/core/db/firestore/collections/exchange-accounts/exchange-account.interface';
+import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service';
 import { IExchangeContext } from 'src/core/exchanges/types/exchange-context.interface';

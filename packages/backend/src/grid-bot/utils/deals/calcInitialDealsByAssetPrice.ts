@@ -1,11 +1,11 @@
-import { IBotFirestore } from 'src/core/db/firestore/collections/bots/bot-firestore.interface';
+import { createBuyPlacedDeal } from 'src/core/db/firestore/utils/deals/createBuyPlacedDeal';
+import { createSellPlacedDeal } from 'src/core/db/firestore/utils/deals/createSellPlacedDeal';
 import {
   DealBuyPlaced,
   DealSellPlaced,
   IDeal,
-} from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
-import { createBuyPlacedDeal } from 'src/core/db/firestore/utils/deal/createBuyPlacedDeal';
-import { createSellPlacedDeal } from 'src/core/db/firestore/utils/deal/createSellPlacedDeal';
+} from 'src/core/db/types/entities/grid-bots/deals/types';
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';
 import { isWaitingGridLevel } from 'src/grid-bot/utils/grid/isWaitingGridLevel';
 import { generateOrderId } from 'src/grid-bot/utils/orders/generateOrderId';
@@ -20,7 +20,7 @@ import { calculateGridStepSize } from 'src/grid-bot/utils/grid/calculateGridStep
  * @param currentAssetPrice
  */
 export function calcInitialDealsByAssetPrice(
-  bot: IBotFirestore,
+  bot: IGridBot,
   currentAssetPrice: number,
 ): IDeal[] {
   const gridLevels = calculateGridLevels(bot);

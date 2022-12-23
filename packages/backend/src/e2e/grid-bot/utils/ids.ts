@@ -1,4 +1,4 @@
-import { OrderSideEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { generateOrderId } from 'src/grid-bot/utils/orders/generateOrderId';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';

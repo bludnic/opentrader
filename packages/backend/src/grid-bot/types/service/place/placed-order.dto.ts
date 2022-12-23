@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from 'src/core/db/firestore/collections/bots/types/deal-firestore.interface';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 
 export class PlacedOrderDto {
   status: OrderStatusEnum;

@@ -1,4 +1,4 @@
-import { ExchangeAccountDto } from 'src/exchange-accounts/dto/common/exchange-account.dto';
+import { ExchangeAccountDto } from 'src/core/db/firestore/repositories/exchange-account/dto/exchange-account.dto';
 
 export class CreateExchangeAccountResponseBodyDto {
   exchangeAccount: ExchangeAccountDto;

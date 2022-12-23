@@ -1,5 +1,5 @@
-import { BotFirestoreDto } from 'src/core/db/firestore/collections/bots/bot-firestore.dto';
+import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 
 export class CreateBotResponseBodyDto {
-  bot: BotFirestoreDto;
+  bot: GridBotDto;
 }
