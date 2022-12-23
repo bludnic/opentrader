@@ -13,10 +13,9 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ExchangeAccount } from 'src/common/decorators/exchange-account.decorator';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
-import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
+import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
 import { GetBotResponseBodyDto } from 'src/grid-bot/dto/get-bot/get-bot-response-body.dto';
@@ -41,12 +40,8 @@ export class GridBotController {
   ) {}
 
   @Get('/info/:id')
-  async getBot(
-    @Param('id') botId: string,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
-  ): Promise<GetBotResponseBodyDto> {
-    const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+  async getBot(@Param('id') botId: string): Promise<GetBotResponseBodyDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
     const bot = await gridBotService.getBot(botId);
 
@@ -58,11 +53,12 @@ export class GridBotController {
   @Post('/create')
   async createBot(
     @Body() body: CreateBotRequestBodyDto,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
     @FirebaseUser() user: IUser,
   ): Promise<CreateBotResponseBodyDto> {
     const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+      await this.gridBotServiceFactory.fromExchangeAccountId(
+        body.exchangeAccountId,
+      );
 
     const bot = await gridBotService.createBot(body, user);
 
@@ -72,12 +68,8 @@ export class GridBotController {
   }
 
   @Put('/start/:id')
-  async startBot(
-    @Param('id') botId: string,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
-  ): Promise<StartBotResponseBodyDto> {
-    const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+  async startBot(@Param('id') botId: string): Promise<StartBotResponseBodyDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
     const bot = await gridBotService.startBot(botId);
 
@@ -87,12 +79,8 @@ export class GridBotController {
   }
 
   @Put('/stop/:id')
-  async stopBot(
-    @Param('id') botId: string,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
-  ): Promise<StopBotResponseBodyDto> {
-    const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+  async stopBot(@Param('id') botId: string): Promise<StopBotResponseBodyDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
     await gridBotService.stopBot(botId);
 
@@ -104,13 +92,11 @@ export class GridBotController {
 
   @Patch('/sync')
   async syncMarketOrders(
-    @Query() query: SyncBotQueryParamsDto,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
+    @Query() queryParams: SyncBotQueryParamsDto,
   ): Promise<SyncBotResponseBodyDto> {
-    const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+    const { botId } = queryParams;
 
-    const { botId } = query;
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
     try {
       const response = await gridBotService.syncMarketOrders(botId);
@@ -122,12 +108,9 @@ export class GridBotController {
   }
 
   @Get('/current-asset-price')
-  async currentAssetPrice(
-    @Req() req,
-    @ExchangeAccount() exchangeAccount: IExchangeAccount,
-  ) {
+  async currentAssetPrice(@Req() req) {
     const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccount);
+      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccountMock);
 
     const currentAssetPrice = await gridBotService.getCurrentAssetPrice(
       'ADA',

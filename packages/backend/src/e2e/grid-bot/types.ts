@@ -11,3 +11,14 @@ export type GridBotE2EHistoryData = {
   deals: GridBotE2EDeal[];
   orders: GridBotE2EActionOrder[]; // orders to be placed
 };
+
+export interface IGridBotSettings {
+  id: string;
+  name: string;
+  baseCurrency: string;
+  quoteCurrency: string;
+  gridLevels: number;
+  lowPrice: number;
+  highPrice: number;
+  quantityPerGrid: number;
+}

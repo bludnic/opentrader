@@ -39,6 +39,18 @@ export class GridBotRepository {
     return bots;
   }
 
+  async findAllEnabled(): Promise<GridBotEntity[]> {
+    const enabledBots = await this.firebase.db
+      .collection(BOT_COLLECTION)
+      .withConverter(converter)
+      .where('enabled', '==', true)
+      .get();
+
+    const bots = enabledBots.docs.map((doc) => new GridBotEntity(doc.data()));
+
+    return bots;
+  }
+
   async create(dto: CreateGridBotDto, userId: string): Promise<GridBotEntity> {
     const createdAt = new Date().getTime();
 

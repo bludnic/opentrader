@@ -15,6 +15,7 @@ import {
 } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { user } from 'src/e2e/grid-bot/user';
 
 export const DOT_BUSD_SYMBOL = 'DOT-BUSD';
@@ -22,7 +23,6 @@ export const DOT_BUSD_SYMBOL = 'DOT-BUSD';
 export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   id: 'DOTBUSDBOT1',
   name: '[DOT/BUSD] Testing Bot #1',
-  account: '/accounts/okx_account',
   baseCurrency: 'DOT',
   quoteCurrency: 'BUSD',
   enabled: false,
@@ -34,6 +34,7 @@ export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   deals: [],
 
   userId: user.uid,
+  exchangeAccountId: exchangeAccountMock.id,
 };
 
 export const DOT_BUSD_CURRENT_ASSET_PRICE_MOCK = 14.5;

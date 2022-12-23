@@ -158,6 +158,7 @@ export class GridBotService {
         id: uuidv4(),
         eventCode: GridBotEventCodeEnum.BotStarted,
         message: 'Bot has been enabled',
+        data: null,
       },
       botId,
     );
@@ -192,6 +193,7 @@ export class GridBotService {
         id: uuidv4(),
         eventCode: GridBotEventCodeEnum.BotStopped,
         message: 'Bot has been stopped',
+        data: null,
       },
       botId,
     );

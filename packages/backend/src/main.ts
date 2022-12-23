@@ -28,6 +28,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(4000);
 }

@@ -1,6 +1,7 @@
 import { DealEntity } from 'src/core/db/types/entities/grid-bots/deals/deal.entity';
 import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { user } from 'src/e2e/grid-bot/user';
 import {
   DOT_BUSD_BOT_WITH_NO_DEALS_MOCK,
@@ -25,7 +26,6 @@ describe('calcInitialDealsByAssetPrice', () => {
     const bot: IGridBot = {
       id: 'ADAUSDTBOT1',
       name: '[ADA/USDT] Testing Bot #1',
-      account: "'/accounts/okx_account'",
       baseCurrency: 'ADA',
       quoteCurrency: 'USDT',
       gridLevels: 4,
@@ -37,6 +37,7 @@ describe('calcInitialDealsByAssetPrice', () => {
       deals: [],
 
       userId: user.uid,
+      exchangeAccountId: exchangeAccountMock.id,
     };
 
     const deals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);
