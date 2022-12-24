@@ -321,15 +321,19 @@ export class GridBotService {
       placedOrders: mapLimitOrdersToPlacedDeals(limitOrders),
     };
 
-    await this.firestore.gridBotEvents.create(
-      {
-        id: uuidv4(),
-        eventCode: GridBotEventCodeEnum.BotSynced,
-        message: 'Bot synced successfully',
-        data: result,
-      },
-      botId,
-    );
+    // Save event only if something happened
+    // (too much events, especially when testing)
+    if (result.filledOrders.length > 0) {
+      await this.firestore.gridBotEvents.create(
+        {
+          id: uuidv4(),
+          eventCode: GridBotEventCodeEnum.BotSynced,
+          message: 'Bot synced successfully',
+          data: result,
+        },
+        botId,
+      );
+    }
 
     return result;
   }
