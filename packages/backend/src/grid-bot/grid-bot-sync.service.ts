@@ -8,12 +8,11 @@ import {
 
 @Injectable()
 export class GridBotSyncService {
-  private readonly logger = new Logger(GridBotSyncService.name);
-
   constructor(
     @Inject(GridBotServiceFactorySymbol)
     private gridBotServiceFactory: GridBotServiceFactory,
     private firestore: FirestoreService,
+    private readonly logger: Logger,
   ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)

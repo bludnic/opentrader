@@ -42,12 +42,11 @@ import { recalculateDealsDiff } from 'src/grid-bot/utils/recalculateDealsDiff';
   scope: Scope.REQUEST,
 })
 export class GridBotService {
-  private readonly logger = new Logger(GridBotService.name);
-
   constructor(
     @Inject(DefaultExchangeServiceFactorySymbol)
     private exchange: IExchangeService,
     private firestore: FirestoreService,
+    private readonly logger: Logger,
   ) {}
 
   async getBot(botId: string) {

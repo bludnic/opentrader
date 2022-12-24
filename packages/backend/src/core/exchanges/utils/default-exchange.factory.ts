@@ -1,4 +1,4 @@
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Logger } from '@nestjs/common';
 import { DefaultExchangeService } from 'src/core/exchanges/utils/default-exchange.service';
 
 export const DefaultExchangeServiceFactorySymbol = Symbol(
@@ -7,8 +7,8 @@ export const DefaultExchangeServiceFactorySymbol = Symbol(
 
 export const defaultExchangeServiceProvider: FactoryProvider = {
   provide: DefaultExchangeServiceFactorySymbol,
-  useFactory: (): DefaultExchangeService => {
-    return new DefaultExchangeService();
+  useFactory: (logger: Logger): DefaultExchangeService => {
+    return new DefaultExchangeService(logger);
   },
-  inject: [],
+  inject: [Logger],
 };

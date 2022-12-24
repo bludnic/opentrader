@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
@@ -122,35 +122,40 @@ describe('AppController', () => {
           httpService: HttpService,
           configService: ConfigService,
           firestoreService: FirestoreService,
+          logger: Logger,
         ): GridBotServiceFactory => {
           return {
             create: () => {
               return new GridBotService(
                 exchangeService as IExchangeService, // I know what I am doing
                 firestoreService,
+                logger,
               );
             },
             fromExchangeAccount: () => {
               return new GridBotService(
                 exchangeService as IExchangeService, // I know what I am doing
                 firestoreService,
+                logger,
               );
             },
             fromExchangeAccountId: async () => {
               return new GridBotService(
                 exchangeService as IExchangeService, // I know what I am doing
                 firestoreService,
+                logger,
               );
             },
             fromBotId: async () => {
               return new GridBotService(
                 exchangeService as IExchangeService, // I know what I am doing
                 firestoreService,
+                logger,
               );
             },
           };
         },
-        inject: [HttpService, ConfigService, FirestoreService],
+        inject: [HttpService, ConfigService, FirestoreService, Logger],
       })
       .overrideProvider(UserRepository)
       .useValue(userRepository)
