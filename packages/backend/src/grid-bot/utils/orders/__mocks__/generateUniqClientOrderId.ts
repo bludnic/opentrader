@@ -1,6 +1,8 @@
 import { OrderSide } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 
-export function generateOrderId(
+// DO NOT IMPORT!
+// This is a mock function for tests.
+function generateUniqClientOrderIdMockFn(
   baseCurrency: string,
   quoteCurrency: string,
   gridNumber: number,
@@ -10,3 +12,7 @@ export function generateOrderId(
 
   return `${baseCurrency}${quoteCurrency}${gridNumber}${sideSymbol}`;
 }
+
+module.exports = {
+  generateUniqClientOrderId: generateUniqClientOrderIdMockFn,
+};

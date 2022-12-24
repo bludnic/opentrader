@@ -214,20 +214,24 @@ export class GridBotService {
 
       if (deal.buyOrder) {
         await this.exchange.cancelLimitOrder({
-          clientOrderId: deal.buyOrder.id,
+          clientOrderId: deal.buyOrder.clientOrderId,
           symbol: `${bot.baseCurrency}-${bot.quoteCurrency}`,
         });
-        this.logger.debug(`Buy order with ${deal.buyOrder.id} was cancelled`);
+        this.logger.debug(
+          `Buy order with ${deal.buyOrder.clientOrderId} was cancelled`,
+        );
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       if (deal.sellOrder) {
         await this.exchange.cancelLimitOrder({
-          clientOrderId: deal.sellOrder.id,
+          clientOrderId: deal.sellOrder.clientOrderId,
           symbol: `${bot.baseCurrency}-${bot.quoteCurrency}`,
         });
-        this.logger.debug(`Sell order with ${deal.sellOrder.id} was cancelled`);
+        this.logger.debug(
+          `Sell order with ${deal.sellOrder.clientOrderId} was cancelled`,
+        );
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
@@ -357,7 +361,7 @@ export class GridBotService {
         // the bot is started such status should not exist.
       } else if (deal.status === DealStatusEnum.BuyPlaced) {
         const limitBuyOrder = await this.exchange.getLimitOrder({
-          clientOrderId: deal.buyOrder.id,
+          clientOrderId: deal.buyOrder.clientOrderId,
           symbol: `${bot.baseCurrency}-${bot.quoteCurrency}`,
         });
 
@@ -394,7 +398,7 @@ export class GridBotService {
         // order status was already synced, nothing to do
       } else if (deal.status === DealStatusEnum.SellPlaced) {
         const limitSellOrder = await this.exchange.getLimitOrder({
-          clientOrderId: deal.sellOrder.id,
+          clientOrderId: deal.sellOrder.clientOrderId,
           symbol: `${bot.baseCurrency}-${bot.quoteCurrency}`,
         });
 

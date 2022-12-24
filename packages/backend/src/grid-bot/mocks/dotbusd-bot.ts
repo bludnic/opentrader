@@ -43,13 +43,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     id: 'DOTBUSD1',
     buyOrder: {
-      id: 'DOTBUSD1B',
+      clientOrderId: 'DOTBUSD1B',
       price: 10,
       status: OrderStatusEnum.Placed,
       side: OrderSideEnum.Buy,
     },
     sellOrder: {
-      id: 'DOTBUSD1S',
+      clientOrderId: 'DOTBUSD1S',
       price: 12,
       status: OrderStatusEnum.Idle,
       side: OrderSideEnum.Sell,
@@ -59,13 +59,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     id: 'DOTBUSD2',
     buyOrder: {
-      id: 'DOTBUSD2B',
+      clientOrderId: 'DOTBUSD2B',
       price: 12,
       status: OrderStatusEnum.Placed,
       side: OrderSideEnum.Buy,
     },
     sellOrder: {
-      id: 'DOTBUSD2S',
+      clientOrderId: 'DOTBUSD2S',
       price: 14,
       status: OrderStatusEnum.Idle,
       side: OrderSideEnum.Sell,
@@ -76,13 +76,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
     // current
     id: 'DOTBUSD3',
     buyOrder: {
-      id: 'DOTBUSD3B',
+      clientOrderId: 'DOTBUSD3B',
       price: 14,
       status: OrderStatusEnum.Filled,
       side: OrderSideEnum.Buy,
     },
     sellOrder: {
-      id: 'DOTBUSD3S',
+      clientOrderId: 'DOTBUSD3S',
       price: 16,
       status: OrderStatusEnum.Placed,
       side: OrderSideEnum.Sell,
@@ -93,13 +93,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     id: 'DOTBUSD4',
     buyOrder: {
-      id: 'DOTBUSD4B',
+      clientOrderId: 'DOTBUSD4B',
       price: 16,
       status: OrderStatusEnum.Filled,
       side: OrderSideEnum.Buy,
     },
     sellOrder: {
-      id: 'DOTBUSD4S',
+      clientOrderId: 'DOTBUSD4S',
       price: 18,
       status: OrderStatusEnum.Placed,
       side: OrderSideEnum.Sell,
@@ -109,13 +109,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     id: 'DOTBUSD5',
     buyOrder: {
-      id: 'DOTBUSD5B',
+      clientOrderId: 'DOTBUSD5B',
       price: 18,
       status: OrderStatusEnum.Filled,
       side: OrderSideEnum.Buy,
     },
     sellOrder: {
-      id: 'DOTBUSD5S',
+      clientOrderId: 'DOTBUSD5S',
       price: 20,
       status: OrderStatusEnum.Placed,
       side: OrderSideEnum.Sell,
@@ -127,13 +127,13 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
 export const DOT_BUSD_BUY_FILLED_DEAL: DealBuyFilled = {
   id: 'DOTBUSD1',
   buyOrder: {
-    id: 'DOTBUSD1B',
+    clientOrderId: 'DOTBUSD1B',
     price: 10,
     status: OrderStatusEnum.Filled,
     side: OrderSideEnum.Buy,
   },
   sellOrder: {
-    id: 'DOTBUSD1S',
+    clientOrderId: 'DOTBUSD1S',
     price: 12,
     status: OrderStatusEnum.Idle,
     side: OrderSideEnum.Sell,
@@ -144,13 +144,13 @@ export const DOT_BUSD_BUY_FILLED_DEAL: DealBuyFilled = {
 export const DOT_BUSD_SELL_PLACED_DEAL: DealSellPlaced = {
   id: 'DOTBUSD1',
   buyOrder: {
-    id: 'DOTBUSD1B',
+    clientOrderId: 'DOTBUSD1B',
     price: 10,
     status: OrderStatusEnum.Filled,
     side: OrderSideEnum.Buy,
   },
   sellOrder: {
-    id: 'DOTBUSD1S',
+    clientOrderId: 'DOTBUSD1S',
     price: 12,
     status: OrderStatusEnum.Placed,
     side: OrderSideEnum.Sell,
@@ -161,13 +161,13 @@ export const DOT_BUSD_SELL_PLACED_DEAL: DealSellPlaced = {
 export const DOT_BUSD_SELL_FILLED_DEAL: DealSellFilled = {
   id: 'DOTBUSD5',
   buyOrder: {
-    id: 'DOTBUSD5B',
+    clientOrderId: 'DOTBUSD5B',
     price: 18,
     status: OrderStatusEnum.Filled,
     side: OrderSideEnum.Buy,
   },
   sellOrder: {
-    id: 'DOTBUSD5S',
+    clientOrderId: 'DOTBUSD5S',
     price: 20,
     status: OrderStatusEnum.Filled,
     side: OrderSideEnum.Sell,
@@ -178,13 +178,13 @@ export const DOT_BUSD_SELL_FILLED_DEAL: DealSellFilled = {
 export const DOT_BUSD_BUY_PLACED_DEAL: DealBuyPlaced = {
   id: 'DOTBUSD5',
   buyOrder: {
-    id: 'DOTBUSD5B',
+    clientOrderId: 'DOTBUSD5B',
     price: 18,
     status: OrderStatusEnum.Placed,
     side: OrderSideEnum.Buy,
   },
   sellOrder: {
-    id: 'DOTBUSD5S',
+    clientOrderId: 'DOTBUSD5S',
     price: 20,
     status: OrderStatusEnum.Idle,
     side: OrderSideEnum.Sell,

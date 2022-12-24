@@ -5,7 +5,7 @@ export type BaseOrder<
   Side extends OrderSideEnum,
   Status extends OrderStatusEnum,
 > = {
-  id: string;
+  clientOrderId: string; // generated uniq id for exchange
   price: number;
   side: Side;
   status: Status;

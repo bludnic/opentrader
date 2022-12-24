@@ -8,10 +8,10 @@ import {
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';
 import { isWaitingGridLevel } from 'src/grid-bot/utils/grid/isWaitingGridLevel';
-import { generateOrderId } from 'src/grid-bot/utils/orders/generateOrderId';
 import { calcSellPriceByGridLevel } from 'src/grid-bot/utils/orders/calcSellPriceByGridLevel';
 import { calculateGridLevels } from 'src/grid-bot/utils/grid/calculateGridLevels';
 import { calculateGridStepSize } from 'src/grid-bot/utils/grid/calculateGridStepSize';
+import { generateUniqClientOrderId } from 'src/grid-bot/utils/orders/generateUniqClientOrderId';
 
 /**
  * Calculate initial Deals based on current asset price when bot started.
@@ -44,13 +44,13 @@ export function calcInitialDealsByAssetPrice(
       bot.quoteCurrency,
       gridNumber,
     );
-    const buyOrderId = generateOrderId(
+    const buyOrderId = generateUniqClientOrderId(
       bot.baseCurrency,
       bot.quoteCurrency,
       gridNumber,
       'buy',
     );
-    const sellOrderId = generateOrderId(
+    const sellOrderId = generateUniqClientOrderId(
       bot.baseCurrency,
       bot.quoteCurrency,
       gridNumber,

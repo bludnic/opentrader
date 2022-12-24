@@ -16,7 +16,7 @@ export function createBuyFilledDeal(
     id: dealId,
     buyOrder: createBuyFilledOrder(buyOrderId, buyOrderPrice),
     sellOrder: {
-      id: sellOrderId,
+      clientOrderId: sellOrderId,
       price: sellOrderPrice,
       side: OrderSideEnum.Sell,
       status: OrderStatusEnum.Idle,

@@ -3,7 +3,7 @@ import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enu
 import { SellOrderPlaced } from 'src/core/db/types/entities/grid-bots/orders/types';
 
 export class SellOrderPlacedEntity implements SellOrderPlaced {
-  id: string;
+  clientOrderId: string;
   price: number;
   side: OrderSideEnum.Sell;
   status: OrderStatusEnum.Placed;

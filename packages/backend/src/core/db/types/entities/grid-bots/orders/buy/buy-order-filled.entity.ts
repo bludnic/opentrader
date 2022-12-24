@@ -3,7 +3,7 @@ import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enu
 import { BuyOrderFilled } from 'src/core/db/types/entities/grid-bots/orders/types';
 
 export class BuyOrderFilledEntity implements BuyOrderFilled {
-  id: string;
+  clientOrderId: string;
   price: number;
   side: OrderSideEnum.Buy;
   status: OrderStatusEnum.Filled;

@@ -42,6 +42,8 @@ const firebaseAuthorizationHeader = () => ({
   Authorization: 'Bearer master_key',
 });
 
+jest.mock('src/grid-bot/utils/orders/generateUniqClientOrderId');
+
 describe('AppController', () => {
   let app: INestApplication;
   let e2eDataGen = e2eDataGenerator();
@@ -71,6 +73,12 @@ describe('AppController', () => {
       const limitOrder = e2eData.current.limitOrders.find(
         (order) => order.clientOrderId === params.clientOrderId,
       );
+
+      if (!limitOrder) {
+        throw new Error(
+          `getLimitOrder: limit order ${params.clientOrderId} not found in e2eData`,
+        );
+      }
 
       return mapE2ELimitOrderToLimitOrder(limitOrder, e2eData.current.price);
     },
