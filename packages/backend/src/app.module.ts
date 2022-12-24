@@ -7,6 +7,7 @@ import { FirebaseModule } from 'src/core/firebase';
 import { ExchangeAccountsController } from 'src/exchange-accounts/exchange-accounts.controller';
 import { ExchangeAccountsModule } from 'src/exchange-accounts/exchange-accounts.module';
 import { gridBotServiceFactory } from 'src/grid-bot/grid-bot-service.factory';
+import { GridBotSyncService } from 'src/grid-bot/grid-bot-sync.service';
 import { GridBotController } from 'src/grid-bot/grid-bot.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule } from '@nestjs/config';
@@ -32,7 +33,7 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
     ExchangeAccountsModule,
     AppModule,
   ],
-  providers: [gridBotServiceFactory, AppService],
+  providers: [gridBotServiceFactory, AppService, GridBotSyncService],
   controllers: [GridBotController, AppController],
 })
 export class AppModule implements NestModule {
