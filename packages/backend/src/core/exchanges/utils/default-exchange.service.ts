@@ -2,7 +2,7 @@ import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 
 export class DefaultExchangeService implements IExchangeService {
-  private readonly logger = new Logger(DefaultExchangeService.name);
+  constructor(private readonly logger: Logger) {}
 
   throwDependencyError(): Promise<never> {
     const error = new Error(

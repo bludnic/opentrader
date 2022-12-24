@@ -25,9 +25,10 @@ export function extractBearerToken(
 
 @Injectable()
 export class FirebaseUserMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(FirebaseUserMiddleware.name);
-
-  constructor(private readonly firestore: FirestoreService) {}
+  constructor(
+    private readonly firestore: FirestoreService,
+    private readonly logger: Logger,
+  ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
     const idToken = extractBearerToken(req.headers);
@@ -43,7 +44,7 @@ export class FirebaseUserMiddleware implements NestMiddleware {
 
       (req as any)[REQ_USER_ACCOUNT_KEY] = user;
     } catch (err) {
-      this.logger.debug(err.message);
+      this.logger.error('FirebaseUserMiddleware.use', err);
       throw new NotFoundException(err.message);
     }
 

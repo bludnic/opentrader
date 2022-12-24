@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { CoreModule } from 'src/core/core.module';
 import { defaultExchangeServiceProvider } from 'src/core/exchanges/utils/default-exchange.factory';
@@ -14,6 +14,7 @@ import { GridBotService } from './grid-bot.service';
     GridBotService,
     gridBotServiceFactory,
     defaultExchangeServiceProvider,
+    Logger,
   ],
 })
 export class GridBotModule {}

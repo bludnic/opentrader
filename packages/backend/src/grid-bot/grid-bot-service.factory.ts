@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
@@ -26,6 +26,7 @@ export const gridBotServiceFactory: FactoryProvider = {
     httpService: HttpService,
     configService: ConfigService,
     firestoreService: FirestoreService,
+    logger: Logger
   ): GridBotServiceFactory => {
     return {
       create: (ctx) => {
@@ -40,7 +41,11 @@ export const gridBotServiceFactory: FactoryProvider = {
             );
             const exchangeService = new OkxExchangeService(clientService);
 
-            return new GridBotService(exchangeService, firestoreService);
+            return new GridBotService(
+              exchangeService,
+              firestoreService,
+              logger,
+            );
           }
         }
       },
@@ -56,7 +61,11 @@ export const gridBotServiceFactory: FactoryProvider = {
             );
             const exchangeService = new OkxExchangeService(clientService);
 
-            return new GridBotService(exchangeService, firestoreService);
+            return new GridBotService(
+              exchangeService,
+              firestoreService,
+              logger,
+            );
           }
         }
       },
@@ -76,7 +85,11 @@ export const gridBotServiceFactory: FactoryProvider = {
             );
             const exchangeService = new OkxExchangeService(clientService);
 
-            return new GridBotService(exchangeService, firestoreService);
+            return new GridBotService(
+              exchangeService,
+              firestoreService,
+              logger,
+            );
           }
         }
       },
@@ -97,11 +110,15 @@ export const gridBotServiceFactory: FactoryProvider = {
             );
             const exchangeService = new OkxExchangeService(clientService);
 
-            return new GridBotService(exchangeService, firestoreService);
+            return new GridBotService(
+              exchangeService,
+              firestoreService,
+              logger,
+            );
           }
         }
       },
     };
   },
-  inject: [HttpService, ConfigService, FirestoreService],
+  inject: [HttpService, ConfigService, FirestoreService, Logger],
 };

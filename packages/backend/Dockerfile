@@ -9,6 +9,7 @@ RUN npm install
 COPY . .
 
 ENV NODE_ENV production
+ENV ENVIRONMENT testing
 
 RUN npm run build
 

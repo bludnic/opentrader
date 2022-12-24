@@ -1,6 +1,12 @@
 import { HttpModule } from '@nestjs/axios';
+import { WinstonModule } from 'nest-winston';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
+import { Environment } from 'src/common/enums/environment.enum';
+import {
+  winstonJsonConsoleTransport,
+  winstonNestLikeTransport,
+} from 'src/common/helpers/logging/logging-transports';
 import { FirebaseUserMiddleware } from 'src/common/middlewares/firebase-user.middleware';
 import { CoreModule } from 'src/core/core.module';
 import { FirebaseModule } from 'src/core/firebase';
@@ -10,13 +16,33 @@ import { gridBotServiceFactory } from 'src/grid-bot/grid-bot-service.factory';
 import { GridBotSyncService } from 'src/grid-bot/grid-bot-sync.service';
 import { GridBotController } from 'src/grid-bot/grid-bot.controller';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ConfigModule } from '@nestjs/config';
-import { Module, NestModule } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 
 @Module({
   imports: [
     HttpModule,
+    WinstonModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const isDevelopment =
+          config.get<string>('ENVIRONMENT') === Environment.Development;
+        console.log(
+          'environment',
+          config.get<string>('ENVIRONMENT'),
+          isDevelopment,
+        );
+
+        return {
+          transports: [
+            ...(isDevelopment
+              ? [winstonNestLikeTransport]
+              : [winstonJsonConsoleTransport]),
+          ],
+        };
+      },
+    }),
     FirebaseModule.forRoot({
       googleApplicationCredential:
         process.env.NODE_ENV === 'production'
@@ -33,7 +59,7 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
     ExchangeAccountsModule,
     AppModule,
   ],
-  providers: [gridBotServiceFactory, AppService, GridBotSyncService],
+  providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],
 })
 export class AppModule implements NestModule {
