@@ -20,4 +20,17 @@ export class UserRepository {
 
     return user;
   }
+
+  async findByUid(uid: string): Promise<UserEntity> {
+    const userRecord = await this.firebase.auth.getUser(uid);
+
+    const user = new UserEntity({
+      uid: userRecord.uid,
+      email: userRecord.email,
+      emailVerified: userRecord.emailVerified,
+      customClaims: mapUserClaims(userRecord.customClaims),
+    });
+
+    return user;
+  }
 }
