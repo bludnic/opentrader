@@ -7,7 +7,9 @@ import {
   Scope,
 } from '@nestjs/common';
 import big from 'big.js';
+import { delay } from 'src/common/helpers/delay';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -198,12 +200,24 @@ export class GridBotService {
     );
   }
 
-  private async placeOrders(placeOrders: IPlaceLimitOrderRequest[]) {
-    const promises = placeOrders.map((placeOrder, i) => {
-      return this.exchange.placeLimitOrder(placeOrder);
-    });
+  private async placeOrders(
+    placeOrders: IPlaceLimitOrderRequest[],
+  ): Promise<IPlaceLimitOrderResponse[]> {
+    const placedOrders: IPlaceLimitOrderResponse[] = [];
 
-    return Promise.all(promises);
+    for (const orderToPlace of placeOrders) {
+      const order = await this.exchange.placeLimitOrder(orderToPlace);
+      placedOrders.push(order);
+      this.logger.debug(
+        `Order with id ${orderToPlace.clientOrderId} was placed`,
+        order,
+      );
+      console.log('order', order);
+
+      await delay(1000);
+    }
+
+    return placedOrders;
   }
 
   private async stopAllOrders(bot: IGridBot) {
@@ -220,7 +234,7 @@ export class GridBotService {
           `Buy order with ${deal.buyOrder.clientOrderId} was cancelled`,
         );
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await delay(1000);
       }
 
       if (deal.sellOrder) {
@@ -232,7 +246,7 @@ export class GridBotService {
           `Sell order with ${deal.sellOrder.clientOrderId} was cancelled`,
         );
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await delay(1000);
       }
     }
   }
