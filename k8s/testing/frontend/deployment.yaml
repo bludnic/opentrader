@@ -18,6 +18,7 @@ spec:
       containers:
         - name: bifrost-frontend
           image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

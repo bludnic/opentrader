@@ -22,6 +22,7 @@ spec:
       containers:
         - name: bifrost-backend
           image: europe-west1-docker.pkg.dev/bifrost-b7611/bifrost-repo-testing/backend:latest
+          imagePullPolicy: Always
           volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google
