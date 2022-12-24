@@ -14,7 +14,7 @@ export function calculateLimitOrdersFromDeals(
   deals.forEach((deal) => {
     if (deal.status === DealStatusEnum.BuyPlaced) {
       const order: IPlaceLimitOrderRequest = {
-        clientOrderId: `${deal.buyOrder.id}`,
+        clientOrderId: `${deal.buyOrder.clientOrderId}`,
         symbol: calculateSymbolOKX(bot.baseCurrency, bot.quoteCurrency),
         price: deal.buyOrder.price,
         quantity: bot.quantityPerGrid,
@@ -24,7 +24,7 @@ export function calculateLimitOrdersFromDeals(
       orders.push(order);
     } else if (deal.status === DealStatusEnum.SellPlaced) {
       const order: IPlaceLimitOrderRequest = {
-        clientOrderId: `${deal.sellOrder.id}`,
+        clientOrderId: `${deal.sellOrder.clientOrderId}`,
         symbol: calculateSymbolOKX(bot.baseCurrency, bot.quoteCurrency),
         price: deal.sellOrder.price,
         quantity: bot.quantityPerGrid,

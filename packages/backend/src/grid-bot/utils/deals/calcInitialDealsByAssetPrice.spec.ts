@@ -13,6 +13,8 @@ import { calcInitialDealsByAssetPrice } from 'src/grid-bot/utils/deals/calcIniti
 const bot: IGridBot = DOT_BUSD_BOT_WITH_NO_DEALS_MOCK;
 const currentAssetPrice = DOT_BUSD_CURRENT_ASSET_PRICE_MOCK;
 
+jest.mock('src/grid-bot/utils/orders/generateUniqClientOrderId');
+
 describe('calcInitialDealsByAssetPrice', () => {
   it('should calculate initial deals', () => {
     const deals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);

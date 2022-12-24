@@ -13,13 +13,13 @@ export function createBuyPlacedDeal(
   return {
     id: dealId,
     buyOrder: {
-      id: buyOrderId,
+      clientOrderId: buyOrderId,
       price: buyOrderPrice,
       side: OrderSideEnum.Buy,
       status: OrderStatusEnum.Placed,
     },
     sellOrder: {
-      id: sellOrderId,
+      clientOrderId: sellOrderId,
       price: sellOrderPrice,
       side: OrderSideEnum.Sell,
       status: OrderStatusEnum.Idle,

@@ -7,7 +7,7 @@ export function createBuyFilledOrder(
   boughtPrice: number,
 ): BuyOrderFilled {
   return {
-    id: orderId,
+    clientOrderId: orderId,
     side: OrderSideEnum.Buy,
     status: OrderStatusEnum.Filled,
     price: boughtPrice,
