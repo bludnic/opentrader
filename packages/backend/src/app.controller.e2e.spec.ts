@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { before } from '@nestjs/swagger/dist/plugin';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -73,6 +74,12 @@ describe('AppController', () => {
       );
 
       return mapE2ELimitOrderToLimitOrder(limitOrder, e2eData.current.price);
+    },
+    cancelLimitOrder: async (request) => {
+      return {
+        orderId: `mock_${request.clientOrderId}`, // maybe use uuid,
+        clientOrderId: request.clientOrderId,
+      };
     },
     accountAssets: async () => {
       return [
@@ -247,6 +254,17 @@ describe('AppController', () => {
         });
       }
     });
+
+    // it's too slow (about 20s)
+    // @todo mock delay in `GridBotService.stopAllOrders()`
+    // it('/PUT /grid-bot/stop', async () => {
+    //   await request(app.getHttpServer())
+    //     .put(`/grid-bot/stop/${gridBotSettings.id}`)
+    //     .set(firebaseAuthorizationHeader())
+    //     .expect(200);
+    // }, 30000);
+    //
+    // it.todo('clean bot.events');
   });
 
   afterAll(async () => {
