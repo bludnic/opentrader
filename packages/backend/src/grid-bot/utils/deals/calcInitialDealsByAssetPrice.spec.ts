@@ -48,4 +48,46 @@ describe('calcInitialDealsByAssetPrice', () => {
       { sellOrder: { price: 1.14 } },
     ]);
   });
+
+  it('weird ETH/USDT', () => {
+    const bot: IGridBot = {
+      id: 'ETHUSDTBOT1',
+      name: '[ETH/USDT] Testing Bot #2',
+      baseCurrency: 'ETH',
+      quoteCurrency: 'USDT',
+      gridLevels: 16,
+      lowPrice: 2500,
+      highPrice: 2800,
+      quantityPerGrid: 0.1,
+      enabled: false,
+      createdAt: 1643502168575,
+
+      deals: [],
+      userId: user.uid,
+      exchangeAccountId: exchangeAccountMock.id,
+    };
+
+    const currentAssetPrice = 2610;
+    const deals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);
+
+    expect(deals).toHaveLength(15);
+    expect(deals).toMatchObject([
+      { buyOrder: { price: 2500 } },
+      { buyOrder: { price: 2520 } },
+      { buyOrder: { price: 2540 } },
+      { buyOrder: { price: 2560 } },
+      { buyOrder: { price: 2580 } },
+      { buyOrder: { price: 2600 } },
+      // current { sellOrder: { price: 2620 } },
+      { sellOrder: { price: 2640 } },
+      { sellOrder: { price: 2660 } },
+      { sellOrder: { price: 2680 } },
+      { sellOrder: { price: 2700 } },
+      { sellOrder: { price: 2720 } },
+      { sellOrder: { price: 2740 } },
+      { sellOrder: { price: 2760 } },
+      { sellOrder: { price: 2780 } },
+      { sellOrder: { price: 2800 } },
+    ]);
+  });
 });
