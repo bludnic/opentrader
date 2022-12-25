@@ -66,14 +66,16 @@ export class GridBotEntity implements IGridBot {
   createdAt: number;
 
   @ApiProperty({
-    type: () => Object,
-    oneOf: [
-      { $ref: getSchemaPath(DealIdleEntity) },
-      { $ref: getSchemaPath(DealBuyPlacedEntity) },
-      { $ref: getSchemaPath(DealBuyFilledEntity) },
-      { $ref: getSchemaPath(DealSellPlacedEntity) },
-      { $ref: getSchemaPath(DealSellFilledEntity) },
-    ],
+    type: 'array',
+    items: {
+      oneOf: [
+        { $ref: getSchemaPath(DealIdleEntity) },
+        { $ref: getSchemaPath(DealBuyPlacedEntity) },
+        { $ref: getSchemaPath(DealBuyFilledEntity) },
+        { $ref: getSchemaPath(DealSellPlacedEntity) },
+        { $ref: getSchemaPath(DealSellFilledEntity) },
+      ],
+    },
   })
   deals: IDeal[]; // @todo поменять на DTO
 
