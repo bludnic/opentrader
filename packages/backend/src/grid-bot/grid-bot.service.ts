@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import big from 'big.js';
 import { delay } from 'src/common/helpers/delay';
+import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -56,6 +58,12 @@ export class GridBotService {
     this.logger.debug(`getBot with ID ${bot.id}`);
 
     return bot;
+  }
+
+  async getBots(): Promise<GridBotDto[]> {
+    const bots = await this.firestore.gridBot.findAll();
+
+    return bots.sort((left, right) => left.createdAt - right.createdAt);
   }
 
   async createBot(dto: CreateBotRequestBodyDto, user: IUser) {
@@ -509,5 +517,13 @@ export class GridBotService {
         `Available Balance: ${currencyAsset.availableBalance}; ` +
         `Required Amount: ${requiredAmount}`,
     );
+  }
+
+  async getBotEvents(): Promise<GridBotEventEntity[]> {
+    const events = await this.firestore.gridBotEvents.findAll();
+
+    const sortedEvents = events.sort((a, b) => a.createdAt - b.createdAt);
+
+    return sortedEvents;
   }
 }

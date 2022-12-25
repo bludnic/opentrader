@@ -39,6 +39,20 @@ export class GridBotRepository {
     return bots;
   }
 
+  async findAllByUserId(userId: string): Promise<GridBotEntity[]> {
+    const allBots = await this.firebase.db
+      .collection(BOT_COLLECTION)
+      .withConverter(converter)
+      .where('userId', '==', userId)
+      .get();
+
+    const bots = allBots.docs
+      .map((doc) => new GridBotEntity(doc.data()))
+      .sort((left, right) => left.createdAt - right.createdAt);
+
+    return bots;
+  }
+
   async findAllEnabled(): Promise<GridBotEntity[]> {
     const enabledBots = await this.firebase.db
       .collection(BOT_COLLECTION)

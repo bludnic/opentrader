@@ -14,11 +14,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
+import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
 import { GetBotResponseBodyDto } from 'src/grid-bot/dto/get-bot/get-bot-response-body.dto';
+import { GetBotsListResponseDto } from 'src/grid-bot/dto/get-bots-list/get-bots-list-response.dto';
 import { StartBotResponseBodyDto } from 'src/grid-bot/dto/start-bot/start-bot-response-body.dto';
 import { StopBotResponseBodyDto } from 'src/grid-bot/dto/stop-bot/stop-bot-response-body.dto';
 import { SyncBotQueryParamsDto } from 'src/grid-bot/dto/sync-bot/sync-bot-query-params.dto';
@@ -37,7 +39,17 @@ export class GridBotController {
   constructor(
     @Inject(GridBotServiceFactorySymbol)
     private gridBotServiceFactory: GridBotServiceFactory,
+    private firestore: FirestoreService,
   ) {}
+
+  @Get()
+  async getBots(@FirebaseUser() user: IUser): Promise<GetBotsListResponseDto> {
+    const bots = await this.firestore.gridBot.findAllByUserId(user.uid);
+
+    return {
+      bots,
+    };
+  }
 
   @Get('/info/:id')
   async getBot(@Param('id') botId: string): Promise<GetBotResponseBodyDto> {
@@ -119,6 +131,17 @@ export class GridBotController {
 
     return {
       currentAssetPrice,
+    };
+  }
+
+  @Get('/:id/events')
+  async getEvents(@Param('id') botId: string) {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
+
+    const events = await gridBotService.getBotEvents();
+
+    return {
+      events,
     };
   }
 }
