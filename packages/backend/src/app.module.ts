@@ -28,11 +28,6 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
       useFactory: (config: ConfigService) => {
         const isDevelopment =
           config.get<string>('ENVIRONMENT') === Environment.Development;
-        console.log(
-          'environment',
-          config.get<string>('ENVIRONMENT'),
-          isDevelopment,
-        );
 
         return {
           transports: [
