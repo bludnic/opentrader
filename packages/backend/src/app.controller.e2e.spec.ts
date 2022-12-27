@@ -223,7 +223,7 @@ describe('AppController', () => {
       const dealsSimplified = deals.map((deal) => mapDealToE2EDeal(deal));
 
       expect(dealsSimplified).toStrictEqual(e2eData.current.deals.reverse());
-    });
+    }, 30000);
 
     describe('/PATH grid-bot/sync', () => {
       const queryParams: SyncBotQueryParamsDto = {
