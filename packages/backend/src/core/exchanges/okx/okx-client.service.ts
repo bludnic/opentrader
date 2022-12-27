@@ -14,6 +14,7 @@ import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/t
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderRequestBody } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-request-body.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
+import { throwExceptionIfErrorResponse } from 'src/core/exchanges/okx/utils/errors/throwExceptionIfErrorResponse';
 import { okexAuthHeaders } from 'src/core/exchanges/okx/utils/okexAuthHeaders';
 import { IExchangeContext } from 'src/core/exchanges/types/exchange-context.interface';
 import { DefaultExchangeContext } from 'src/core/exchanges/utils/default-exchange-context';
@@ -54,7 +55,8 @@ export class OKXClientService {
           ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
         },
       })
-      .toPromise();
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
   }
 
   /**
@@ -89,7 +91,8 @@ export class OKXClientService {
           ...okexAuthHeaders(this.ctx, METHOD, REQUEST_PATH, requestBody),
         },
       })
-      .toPromise();
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl, requestBody));
   }
 
   /**
@@ -118,7 +121,8 @@ export class OKXClientService {
           ...okexAuthHeaders(this.ctx, METHOD, REQUEST_PATH, requestBody),
         },
       })
-      .toPromise();
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl, requestBody));
   }
 
   /**
@@ -149,7 +153,8 @@ export class OKXClientService {
           ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
         },
       })
-      .toPromise();
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
   }
 
   getMarketPrice(
@@ -177,6 +182,7 @@ export class OKXClientService {
           ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
         },
       })
-      .toPromise();
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
   }
 }

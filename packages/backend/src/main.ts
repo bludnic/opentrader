@@ -1,12 +1,15 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { OkxApiExceptionFilter } from 'src/core/exchanges/okx/utils/errors/okx-api-exception.filter';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  const logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
+
+  app.useLogger(logger);
   app.setGlobalPrefix('bapi');
   app.enableCors();
 
@@ -30,6 +33,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.useGlobalFilters(new OkxApiExceptionFilter(logger));
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(4000);
