@@ -263,7 +263,7 @@ describe('AppController', () => {
           );
 
           expect(dealsSimplifiedSorted).toEqual(e2eDealsSorted);
-        });
+        }, 10000);
       }
     });
 
