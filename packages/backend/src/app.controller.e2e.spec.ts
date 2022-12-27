@@ -43,6 +43,7 @@ const firebaseAuthorizationHeader = () => ({
 });
 
 jest.mock('src/grid-bot/utils/orders/generateUniqClientOrderId');
+jest.mock('src/common/helpers/delay');
 
 describe('AppController', () => {
   let app: INestApplication;
@@ -223,7 +224,7 @@ describe('AppController', () => {
       const dealsSimplified = deals.map((deal) => mapDealToE2EDeal(deal));
 
       expect(dealsSimplified).toStrictEqual(e2eData.current.deals.reverse());
-    }, 30000);
+    });
 
     describe('/PATH grid-bot/sync', () => {
       const queryParams: SyncBotQueryParamsDto = {
@@ -263,20 +264,18 @@ describe('AppController', () => {
           );
 
           expect(dealsSimplifiedSorted).toEqual(e2eDealsSorted);
-        }, 10000);
+        });
       }
     });
 
-    // it's too slow (about 20s)
-    // @todo mock delay in `GridBotService.stopAllOrders()`
-    // it('/PUT /grid-bot/stop', async () => {
-    //   await request(app.getHttpServer())
-    //     .put(`/grid-bot/stop/${gridBotSettings.id}`)
-    //     .set(firebaseAuthorizationHeader())
-    //     .expect(200);
-    // }, 30000);
-    //
-    // it.todo('clean bot.events');
+    it('/PUT /grid-bot/stop', async () => {
+      await request(app.getHttpServer())
+        .put(`/grid-bot/stop/${gridBotSettings.id}`)
+        .set(firebaseAuthorizationHeader())
+        .expect(200);
+    });
+
+    it.todo('clean bot.events');
   });
 
   afterAll(async () => {
