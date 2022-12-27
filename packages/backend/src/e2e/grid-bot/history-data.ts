@@ -862,7 +862,7 @@ let gridBotE2EHistoryDataRaw: GridBotE2EHistoryData[] = [
   },
   {
     time: '2019-05-05',
-    price: 12.1,
+    price: 11.75,
     limitOrders: [
       sellPlaced(sellId(10), 19, 20),
       sellPlaced(sellId(9), 18, 19),
@@ -873,11 +873,7 @@ let gridBotE2EHistoryDataRaw: GridBotE2EHistoryData[] = [
       sellPlaced(sellId(5), 14, 15),
       sellPlaced(sellId(4), 13, 14),
       sellPlaced(sellId(3), 12, 13),
-      buyFilled(sellId(2), 11, 12),
-      // Важно отметить, почему тут не sellFilled.
-      // Так как за промежуток одного синка цена пересекла buy и sell гриды одновременно
-      // следовательно buy заполнился но sell нет, так как ордер еще не был выставлен
-      // sell будет выставлен в след. синке и заполнится мгновенно.
+      sellPlaced(sellId(2), 11, 12),
       buyPlaced(buyId(1), 10, 11),
     ],
     deals: [
@@ -890,10 +886,10 @@ let gridBotE2EHistoryDataRaw: GridBotE2EHistoryData[] = [
       dealSellPlaced(dealId(5), 14, 15),
       dealSellPlaced(dealId(4), 13, 14),
       dealSellPlaced(dealId(3), 12, 13),
-      dealSellPlaced(dealId(2), 11, 12), // по логике должен быть dealSellFilled, но нет, смотри коммент выше
+      dealSellPlaced(dealId(2), 11, 12),
       dealBuyPlaced(dealId(1), 10, 11),
     ],
-    orders: [sell(12)],
+    orders: [],
   },
   {
     time: '2019-05-06',
@@ -924,8 +920,7 @@ let gridBotE2EHistoryDataRaw: GridBotE2EHistoryData[] = [
       dealBuyPlaced(dealId(2), 11, 12),
       dealBuyPlaced(dealId(1), 10, 11),
     ],
-    orders: [],
-    // ордеров тут нет, однако заполнился sellFilled под номером 2, смотри коммент выше
+    orders: [sell(12)],
   },
   {
     time: '2019-05-07',

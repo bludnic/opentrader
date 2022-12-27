@@ -66,8 +66,8 @@ export const gridBotE2ETestingData: GridBotE2ETestingData[] = [
   { time: "2019-05-02", price: 11.1, orders: [buy(12)] },
   { time: "2019-05-03", price: 12.5, orders: [] },
   { time: "2019-05-04", price: 10.3, orders: [buy(11)] },
-  { time: "2019-05-05", price: 12.1, orders: [sell(12)] },
-  { time: "2019-05-06", price: 12.5, orders: [] },
+  { time: "2019-05-05", price: 11.75, orders: [] },
+  { time: "2019-05-06", price: 12.5, orders: [sell(12)] },
   {
     time: "2019-05-07",
     price: 16.2,
