@@ -89,7 +89,6 @@ export const OKXFacade = {
       clientOrderId: order.clOrdId,
       side: order.side,
       quantity: Number(order.sz),
-      filledQuantity: Number(order.fillSz),
       price: Number(order.px),
       createdAt: Number(order.cTime),
       status: order.state,

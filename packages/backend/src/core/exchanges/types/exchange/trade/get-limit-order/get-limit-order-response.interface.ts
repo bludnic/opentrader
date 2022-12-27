@@ -18,10 +18,6 @@ export interface IGetLimitOrderResponse {
    */
   quantity: number;
   /**
-   * Filled quantity.
-   */
-  filledQuantity: number;
-  /**
    * Order price.
    */
   price: number;

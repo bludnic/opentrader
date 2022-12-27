@@ -80,7 +80,7 @@ describe('AppController', () => {
         );
       }
 
-      return mapE2ELimitOrderToLimitOrder(limitOrder, e2eData.current.price);
+      return mapE2ELimitOrderToLimitOrder(limitOrder);
     },
     cancelLimitOrder: async (request) => {
       return {

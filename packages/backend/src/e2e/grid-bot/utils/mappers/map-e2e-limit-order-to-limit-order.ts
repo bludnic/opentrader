@@ -1,10 +1,8 @@
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
 import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { OrderStatus } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { GridBotE2ELimitOrder } from 'src/e2e/grid-bot/orders/types';
-
 
 function mapOrderStatusEnumToOrderStatusString(
   status: OrderStatusEnum,
@@ -18,30 +16,14 @@ function mapOrderStatusEnumToOrderStatusString(
   return 'live'; // 'canceled' | 'partially_filled'
 }
 
-function isE2EOrderFilled(
-  orderPrice: number,
-  orderSide: OrderSideEnum,
-  currentAssetPrice: number,
-) {
-  if (orderSide === OrderSideEnum.Buy) {
-    return currentAssetPrice <= orderPrice;
-  }
-
-  return currentAssetPrice >= orderPrice;
-}
-
 export function mapE2ELimitOrderToLimitOrder(
   order: GridBotE2ELimitOrder,
-  currentAssetPrice: number,
 ): IGetLimitOrderResponse {
   return {
     exchangeOrderId: 'mock',
     clientOrderId: order.clientOrderId,
     side: order.side,
     quantity: gridBotSettings.quantityPerGrid,
-    filledQuantity: isE2EOrderFilled(order.price, order.side, currentAssetPrice)
-      ? gridBotSettings.quantityPerGrid
-      : 0, // эмулируем заполняемость ордера
     price: order.price,
     status: mapOrderStatusEnumToOrderStatusString(order.status),
     createdAt: 0,
