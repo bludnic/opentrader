@@ -83,10 +83,11 @@ export class GridBotController {
   async startBot(@Param('id') botId: string): Promise<StartBotResponseBodyDto> {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
-    const bot = await gridBotService.startBot(botId);
+    const { bot, currentAssetPrice } = await gridBotService.startBot(botId);
 
     return {
       bot,
+      currentAssetPrice,
     };
   }
 

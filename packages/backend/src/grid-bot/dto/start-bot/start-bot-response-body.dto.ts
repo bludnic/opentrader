@@ -2,4 +2,5 @@ import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid
 
 export class StartBotResponseBodyDto {
   bot: GridBotDto;
+  currentAssetPrice: number;
 }

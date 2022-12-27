@@ -172,7 +172,12 @@ export class GridBotService {
       botId,
     );
 
-    return this.getBot(botId);
+    const updatedBot = await this.getBot(botId);
+
+    return {
+      bot: updatedBot,
+      currentAssetPrice,
+    };
   }
 
   async stopBot(botId: string) {
