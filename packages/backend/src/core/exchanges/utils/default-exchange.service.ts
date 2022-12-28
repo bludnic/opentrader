@@ -19,4 +19,5 @@ export class DefaultExchangeService implements IExchangeService {
   placeLimitOrder = this.throwDependencyError;
   cancelLimitOrder = this.throwDependencyError;
   getMarketPrice = this.throwDependencyError;
+  getCandlesticks = this.throwDependencyError;
 }

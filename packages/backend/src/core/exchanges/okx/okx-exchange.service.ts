@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OKXFacade } from 'src/core/exchanges/okx/okx-facade';
+import { IGetCandlesticksRequest } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/get-candlesticks-request.interface';
 import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
 import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
 import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
@@ -46,6 +47,14 @@ export class OkxExchangeService implements IExchangeService {
     const inputParams = OKXFacade.getMarketPriceInputParams(params);
     const { data } = await this.okxClient.getMarketPrice(inputParams);
     const response = OKXFacade.getMarketPriceOutput(data.data);
+
+    return response;
+  }
+
+  async getCandlesticks(params: IGetCandlesticksRequest) {
+    const inputParams = OKXFacade.getCandlesticksInputParams(params);
+    const { data } = await this.okxClient.getCandlesticks(inputParams);
+    const response = OKXFacade.getCandlesticksOutput(data.data);
 
     return response;
   }
