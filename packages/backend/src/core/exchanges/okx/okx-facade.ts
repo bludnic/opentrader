@@ -94,6 +94,7 @@ export const OKXFacade = {
       side: order.side,
       quantity: Number(order.sz),
       price: Number(order.px),
+      fee: Number(order.fee),
       createdAt: Number(order.cTime),
       status: order.state,
     };

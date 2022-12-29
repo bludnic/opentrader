@@ -5,6 +5,7 @@ import { SellOrderPlaced } from 'src/core/db/types/entities/grid-bots/orders/typ
 export class SellOrderPlacedEntity implements SellOrderPlaced {
   clientOrderId: string;
   price: number;
+  fee: number;
   side: OrderSideEnum.Sell;
   status: OrderStatusEnum.Placed;
 

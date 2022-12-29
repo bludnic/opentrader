@@ -3,5 +3,6 @@ import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enu
 export class SyncedOrderDto {
   status: OrderStatusEnum;
   price: number;
+  fee: number;
   current: boolean;
 }

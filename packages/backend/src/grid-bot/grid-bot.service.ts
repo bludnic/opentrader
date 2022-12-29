@@ -8,10 +8,14 @@ import {
 } from '@nestjs/common';
 import big from 'big.js';
 import { delay } from 'src/common/helpers/delay';
+import { CreateCompletedDealDto } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/dto/create-completed-deal.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { CompletedDealEntity } from 'src/core/db/types/entities/grid-bots/completed-deals/completed-deal.entity';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import { getCompletedDealsFromCurrentDeals } from 'src/grid-bot/utils/completed-deals/getCompletedDealsFromCurrentDeals';
+import { generateUniqId } from 'src/grid-bot/utils/generateUniqId';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -307,7 +311,19 @@ export class GridBotService {
 
     bot = await this.getBot(botId); // get actual deals after sync
 
+    // Save completed deals to DB
+    this.logger.debug('Get Completed Deals from current Deals');
+    const completedDeals = getCompletedDealsFromCurrentDeals(bot.deals);
+    this.logger.debug(`Completed deals amount: ${completedDeals.length}`, {
+      completedDeals,
+    });
+
+    if (completedDeals.length > 0) {
+      await this.saveCompletedDeals(completedDeals, bot);
+    }
+
     // Recalculate deals after updating filled status
+    this.logger.debug('Starting the process of recalculating new deals');
     const newDeals = recalculateDeals(bot.deals);
     const newDealsDiff = recalculateDealsDiff(bot.deals);
     this.logger.debug('Recalculate new deals diff', {
@@ -398,6 +414,7 @@ export class GridBotService {
             buyOrder: {
               ...deal.buyOrder,
               status: OrderStatusEnum.Filled,
+              fee: limitBuyOrder.fee, // update filled order fee
             },
             status: DealStatusEnum.BuyFilled,
           };
@@ -411,6 +428,7 @@ export class GridBotService {
             dealId: deal.id,
             buyOrder: {
               price: deal.buyOrder.price,
+              fee: deal.buyOrder.fee, // update filled order fee
               status: OrderStatusEnum.Filled,
               current: false,
             },
@@ -434,6 +452,7 @@ export class GridBotService {
             sellOrder: {
               ...deal.sellOrder,
               status: OrderStatusEnum.Filled,
+              fee: limitSellOrder.fee,
             },
             status: DealStatusEnum.SellFilled,
           };
@@ -446,6 +465,7 @@ export class GridBotService {
             dealId: deal.id,
             sellOrder: {
               price: deal.sellOrder.price,
+              fee: deal.sellOrder.fee,
               status: OrderStatusEnum.Filled,
               current: false,
             },
@@ -522,6 +542,33 @@ export class GridBotService {
         `Available Balance: ${currencyAsset.availableBalance}; ` +
         `Required Amount: ${requiredAmount}`,
     );
+  }
+
+  private async saveCompletedDeals(
+    completedDeals: CreateCompletedDealDto[],
+    bot: IGridBot,
+  ): Promise<void> {
+    this.logger.debug('Process of saving CompletedDeals started');
+
+    for (const deal of completedDeals) {
+      const dealId = generateUniqId();
+
+      this.logger.debug(`Save CompletedDeal ${dealId}`);
+      await this.firestore.gridBotCompletedDeals.create(deal, dealId, bot.id);
+      this.logger.debug(`CompletedDeal saved successfully ${dealId}`);
+    }
+
+    this.logger.debug(
+      `Process of saving CompletedDeals completed successfully`,
+    );
+  }
+
+  async getCompletedDeals(): Promise<CompletedDealEntity[]> {
+    const deals = await this.firestore.gridBotCompletedDeals.findAll();
+
+    const sortedDeals = deals.sort((a, b) => a.createdAt - b.createdAt);
+
+    return sortedDeals;
   }
 
   async getBotEvents(): Promise<GridBotEventEntity[]> {

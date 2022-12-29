@@ -5,6 +5,7 @@ import { BuyOrderFilled } from 'src/core/db/types/entities/grid-bots/orders/type
 export class BuyOrderFilledEntity implements BuyOrderFilled {
   clientOrderId: string;
   price: number;
+  fee: number;
   side: OrderSideEnum.Buy;
   status: OrderStatusEnum.Filled;
 

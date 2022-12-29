@@ -5,6 +5,7 @@ import { BuyOrderPlaced } from 'src/core/db/types/entities/grid-bots/orders/type
 export class BuyOrderPlacedEntity implements BuyOrderPlaced {
   clientOrderId: string;
   price: number;
+  fee: number;
   side: OrderSideEnum.Buy;
   status: OrderStatusEnum.Placed;
 

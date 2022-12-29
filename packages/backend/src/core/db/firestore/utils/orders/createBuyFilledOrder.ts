@@ -11,5 +11,7 @@ export function createBuyFilledOrder(
     side: OrderSideEnum.Buy,
     status: OrderStatusEnum.Filled,
     price: boughtPrice,
+    // this function is used for generating initialDeals when bot started, so we don't have the information about the fees
+    fee: 0,
   };
 }

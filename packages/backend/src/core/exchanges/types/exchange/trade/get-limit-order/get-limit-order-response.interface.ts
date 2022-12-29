@@ -22,6 +22,16 @@ export interface IGetLimitOrderResponse {
    */
   price: number;
   /**
+   * Fee.
+   *
+   * Negative number represents the user transaction fee charged by the platform.
+   * Positive number represents rebate.
+   *
+   * fee in Base Currency, if `order.side == "buy"`
+   * fee in Quote Currency, if `order.side == "sell"`
+   */
+  fee: number;
+  /**
    * Order status.
    */
   status: OrderStatus;

@@ -4,7 +4,6 @@ import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
 import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { DealSellPlaced } from 'src/core/db/types/entities/grid-bots/deals/types';
 
-
 export function createSellPlacedDeal(
   dealId: string,
   buyOrderId: string,
@@ -18,6 +17,8 @@ export function createSellPlacedDeal(
     sellOrder: {
       clientOrderId: sellOrderId,
       price: sellOrderPrice,
+      // this function is used for generating initialDeals when bot started, so we don't have the information about the fees
+      fee: 0,
       side: OrderSideEnum.Sell,
       status: OrderStatusEnum.Placed,
     },

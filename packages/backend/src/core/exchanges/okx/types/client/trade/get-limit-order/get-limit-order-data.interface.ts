@@ -21,6 +21,13 @@ export interface IOKXGetLimitOrderData {
    */
   px: string;
   /**
+   * Fee.
+   *
+   * Negative number represents the user transaction fee charged by the platform.
+   * Positive number represents rebate.
+   */
+  fee: string;
+  /**
    * Trade quantity
    */
   sz: string;

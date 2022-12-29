@@ -25,6 +25,7 @@ export function mapE2ELimitOrderToLimitOrder(
     side: order.side,
     quantity: gridBotSettings.quantityPerGrid,
     price: order.price,
+    fee: 0, // doesn't matter the value
     status: mapOrderStatusEnumToOrderStatusString(order.status),
     createdAt: 0,
   };
