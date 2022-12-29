@@ -564,14 +564,16 @@ export class GridBotService {
     );
   }
 
-  async getCompletedDeals(botId: string): Promise<CompletedDealWithProfitDto[]> {
+  async getCompletedDeals(
+    botId: string,
+  ): Promise<CompletedDealWithProfitDto[]> {
     const deals = await this.firestore.gridBotCompletedDeals.findAll(botId);
     const dealsWithProfit = deals.map((deal) =>
       populateCompletedDealWithProfit(deal),
     );
 
     const sortedDeals = dealsWithProfit.sort(
-      (a, b) => a.createdAt - b.createdAt,
+      (a, b) => b.createdAt - a.createdAt, // newest first
     );
 
     return sortedDeals;
