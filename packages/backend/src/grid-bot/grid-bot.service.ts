@@ -11,10 +11,11 @@ import { delay } from 'src/common/helpers/delay';
 import { CreateCompletedDealDto } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/dto/create-completed-deal.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
-import { CompletedDealEntity } from 'src/core/db/types/entities/grid-bots/completed-deals/completed-deal.entity';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import { CompletedDealWithProfitDto } from 'src/grid-bot/dto/get-completed-deals/types/completed-deal-with-profit.dto';
 import { getCompletedDealsFromCurrentDeals } from 'src/grid-bot/utils/completed-deals/getCompletedDealsFromCurrentDeals';
+import { populateCompletedDealWithProfit } from 'src/grid-bot/utils/completed-deals/populateCompletedDealWithProfit';
 import { generateUniqId } from 'src/grid-bot/utils/generateUniqId';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -563,10 +564,15 @@ export class GridBotService {
     );
   }
 
-  async getCompletedDeals(): Promise<CompletedDealEntity[]> {
+  async getCompletedDeals(): Promise<CompletedDealWithProfitDto[]> {
     const deals = await this.firestore.gridBotCompletedDeals.findAll();
+    const dealsWithProfit = deals.map((deal) =>
+      populateCompletedDealWithProfit(deal),
+    );
 
-    const sortedDeals = deals.sort((a, b) => a.createdAt - b.createdAt);
+    const sortedDeals = dealsWithProfit.sort(
+      (a, b) => a.createdAt - b.createdAt,
+    );
 
     return sortedDeals;
   }

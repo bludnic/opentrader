@@ -1,5 +1,5 @@
-import { CompletedDealDto } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/dto/completed-deal.dto';
+import { CompletedDealWithProfitDto } from './types/completed-deal-with-profit.dto';
 
 export class GetCompletedDealsResponseBodyDto {
-  completedDeals: CompletedDealDto[];
+  completedDeals: CompletedDealWithProfitDto[];
 }
