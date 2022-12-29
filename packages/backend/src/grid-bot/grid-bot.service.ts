@@ -564,8 +564,8 @@ export class GridBotService {
     );
   }
 
-  async getCompletedDeals(): Promise<CompletedDealWithProfitDto[]> {
-    const deals = await this.firestore.gridBotCompletedDeals.findAll();
+  async getCompletedDeals(botId: string): Promise<CompletedDealWithProfitDto[]> {
+    const deals = await this.firestore.gridBotCompletedDeals.findAll(botId);
     const dealsWithProfit = deals.map((deal) =>
       populateCompletedDealWithProfit(deal),
     );

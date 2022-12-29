@@ -26,10 +26,11 @@ export class GridBotCompletedDealsRepository {
     return new CompletedDealEntity(documentData.data());
   }
 
-  async findAll(): Promise<CompletedDealEntity[]> {
+  async findAll(botId: string): Promise<CompletedDealEntity[]> {
     const allEvents = await this.firebase.db
       .collection(BOT_COMPLETED_DEALS)
       .withConverter(converter)
+      .where('botId', '==', botId)
       .get();
 
     const events = allEvents.docs.map(

@@ -146,7 +146,7 @@ export class GridBotController {
   ): Promise<GetCompletedDealsResponseBodyDto> {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
-    const completedDeals = await gridBotService.getCompletedDeals();
+    const completedDeals = await gridBotService.getCompletedDeals(botId);
 
     return {
       completedDeals,
