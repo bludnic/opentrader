@@ -58,4 +58,12 @@ export class OkxExchangeService implements IExchangeService {
 
     return response;
   }
+
+  async getTradingFeeRates(params) {
+    const inputParams = OKXFacade.getTradingFeeRatesInputParams(params);
+    const { data } = await this.okxClient.getTradingFeeRates(inputParams);
+    const response = OKXFacade.getTradingFeeRatesOutput(data.data);
+
+    return response;
+  }
 }

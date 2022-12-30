@@ -3,6 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { IOKXGetAccountBalanceInputParams } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-input-params.interface';
 import { IOKXGetAccountBalanceResponse } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-response.interface';
+import { IOKXGetTradingFeeRatesInputParams } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-input-params.interface';
+import { IOKXGetTradeFeeRatesResponse } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-response.interface';
+
 import { OKXResponse } from 'src/core/exchanges/okx/types/client/common/OKXResponse';
 import { IOKXGetCandlesticksInputParams } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-input-params.interface';
 import { IOKXGetCandlesticksResponse } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-response.interface';
@@ -210,6 +213,35 @@ export class OKXClientService {
 
     return this.httpService
       .request<OKXResponse<IOKXGetCandlesticksResponse>>({
+        method: METHOD,
+        url: fullRequestUrl,
+        headers: {
+          ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
+        },
+      })
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
+  }
+
+  getTradingFeeRates(
+    params: IOKXGetTradingFeeRatesInputParams,
+  ): AxiosPromise<OKXResponse<IOKXGetTradeFeeRatesResponse>> {
+    const { apiUrl } = this.ctx.exchangeConfig;
+
+    const METHOD = 'GET';
+    const REQUEST_PATH = '/api/v5/account/trade-fee';
+
+    const requestUrlParams = new URLSearchParams();
+    requestUrlParams.set('instType', params.instType);
+    requestUrlParams.set('instId', params.instId);
+
+    const requestPathWithParams = `${REQUEST_PATH}${
+      requestUrlParams.toString() ? `?${requestUrlParams}` : ''
+    }`;
+    const fullRequestUrl = `${apiUrl}${requestPathWithParams}`;
+
+    return this.httpService
+      .request<OKXResponse<IOKXGetTradeFeeRatesResponse>>({
         method: METHOD,
         url: fullRequestUrl,
         headers: {
