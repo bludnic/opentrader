@@ -6,7 +6,7 @@ const client = axios.create({
 
 export const bifrostApi = {
   okxMarketPriceCandles() {
-    return client.get('/okex/market/mark-price-candles')
+    return client.get("/okex/market/mark-price-candles");
   },
   okxMarketTrades() {
     return client.get("/okex/market/trades");
