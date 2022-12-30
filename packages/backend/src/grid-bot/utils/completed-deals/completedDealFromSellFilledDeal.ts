@@ -7,11 +7,9 @@ export function completedDealFromSellFilledDeal(
   return {
     buyOrder: {
       price: deal.buyOrder.price,
-      feeInBaseCurrency: deal.buyOrder.fee,
     },
     sellOrder: {
       price: deal.sellOrder.price,
-      feeInQuoteCurrency: deal.sellOrder.fee,
     },
   };
 }

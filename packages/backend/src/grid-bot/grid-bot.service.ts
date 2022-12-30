@@ -415,7 +415,6 @@ export class GridBotService {
             buyOrder: {
               ...deal.buyOrder,
               status: OrderStatusEnum.Filled,
-              fee: limitBuyOrder.fee, // update filled order fee
             },
             status: DealStatusEnum.BuyFilled,
           };
@@ -429,7 +428,6 @@ export class GridBotService {
             dealId: deal.id,
             buyOrder: {
               price: deal.buyOrder.price,
-              fee: deal.buyOrder.fee, // update filled order fee
               status: OrderStatusEnum.Filled,
               current: false,
             },
@@ -453,7 +451,6 @@ export class GridBotService {
             sellOrder: {
               ...deal.sellOrder,
               status: OrderStatusEnum.Filled,
-              fee: limitSellOrder.fee,
             },
             status: DealStatusEnum.SellFilled,
           };
@@ -466,7 +463,6 @@ export class GridBotService {
             dealId: deal.id,
             sellOrder: {
               price: deal.sellOrder.price,
-              fee: deal.sellOrder.fee,
               status: OrderStatusEnum.Filled,
               current: false,
             },
@@ -482,6 +478,25 @@ export class GridBotService {
     }
 
     return syncedDeals;
+  }
+
+  private async getMakerTradingFee(
+    baseCurrency: string,
+    quoteCurrency: string,
+  ): Promise<number> {
+    this.logger.log(`Get Trading Fee for ${baseCurrency}/${quoteCurrency}`);
+
+    const { makerFee } = await this.exchange.getTradingFeeRates({
+      baseCurrency,
+      quoteCurrency,
+    });
+
+    this.logger.debug(
+      `Trading Maker Fee for ${baseCurrency}/${quoteCurrency} is ${makerFee}`,
+      makerFee,
+    );
+
+    return makerFee;
   }
 
   public async checkEnoughFundsToStartBot(
@@ -567,9 +582,17 @@ export class GridBotService {
   async getCompletedDeals(
     botId: string,
   ): Promise<CompletedDealWithProfitDto[]> {
+    const bot = await this.firestore.gridBot.findOne(botId);
     const deals = await this.firestore.gridBotCompletedDeals.findAll(botId);
+
+    // Retrieving maker trading fee
+    const fee = await this.getMakerTradingFee(
+      bot.baseCurrency,
+      bot.quoteCurrency,
+    );
+
     const dealsWithProfit = deals.map((deal) =>
-      populateCompletedDealWithProfit(deal),
+      populateCompletedDealWithProfit(deal, bot.quantityPerGrid, fee),
     );
 
     const sortedDeals = dealsWithProfit.sort(
