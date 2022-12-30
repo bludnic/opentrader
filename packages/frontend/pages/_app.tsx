@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 
-import { lightTheme } from "src/theme";
+import { darkTheme } from 'src/theme';
 import { createEmotionCache } from "src/utils/next/createEmotionCache";
 import { wrapper } from "src/store";
 
@@ -36,7 +36,7 @@ function MyApp(props: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Component {...pageProps} />
