@@ -1,4 +1,8 @@
 import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
+import { IGetTradingFeeRatesRequest } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-request.interface';
+import { IGetTradingFeeRatesResponse } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-response.interface';
+import { IGetCandlesticksRequest } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/get-candlesticks-request.interface';
+import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
 import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
 import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';
 import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
@@ -20,4 +24,8 @@ export interface IExchangeService {
   getMarketPrice(
     params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse>;
+  getCandlesticks(params: IGetCandlesticksRequest): Promise<ICandlestick[]>;
+  getTradingFeeRates(
+    params: IGetTradingFeeRatesRequest,
+  ): Promise<IGetTradingFeeRatesResponse>;
 }

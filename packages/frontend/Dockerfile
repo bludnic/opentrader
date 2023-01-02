@@ -11,6 +11,7 @@ RUN npm install
 COPY . .
 
 RUN npm run openapi:coingecko:generate
+RUN npm run openapi:bifrost:generate
 RUN npm run build
 
 CMD ["npm", "run", "start:prod"]

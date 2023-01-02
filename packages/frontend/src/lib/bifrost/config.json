@@ -1,0 +1,9 @@
+{
+  "sortParamsByRequiredFlag": true,
+  "ensureUniqueParams": true,
+  "allowUnicodeIdentifiers": false,
+  "modelPropertyNaming": "original",
+  "supportsES6": false,
+  "npmName": "bifrost-api",
+  "npmVersion": "0.1.0"
+}

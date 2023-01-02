@@ -22,6 +22,7 @@ import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
 import { GetBotResponseBodyDto } from 'src/grid-bot/dto/get-bot/get-bot-response-body.dto';
 import { GetBotsListResponseDto } from 'src/grid-bot/dto/get-bots-list/get-bots-list-response.dto';
+import { GetCompletedDealsResponseBodyDto } from 'src/grid-bot/dto/get-completed-deals/get-completed-deals-response-body.dto';
 import { StartBotResponseBodyDto } from 'src/grid-bot/dto/start-bot/start-bot-response-body.dto';
 import { StopBotResponseBodyDto } from 'src/grid-bot/dto/stop-bot/stop-bot-response-body.dto';
 import { SyncBotQueryParamsDto } from 'src/grid-bot/dto/sync-bot/sync-bot-query-params.dto';
@@ -136,6 +137,19 @@ export class GridBotController {
 
     return {
       currentAssetPrice,
+    };
+  }
+
+  @Get('/:id/completed-deals')
+  async getCompletedDeals(
+    @Param('id') botId: string,
+  ): Promise<GetCompletedDealsResponseBodyDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
+
+    const completedDeals = await gridBotService.getCompletedDeals(botId);
+
+    return {
+      completedDeals,
     };
   }
 

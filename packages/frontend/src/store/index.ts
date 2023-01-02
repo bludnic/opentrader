@@ -2,14 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware, { Task } from "redux-saga";
 import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
+import { gridBotsApi } from "src/sections/grid-bot/common/store/api";
 
 import rootSaga from "./rootSaga";
-import { TodoActionTypes, todoReducer, TodoState } from "src/store/todo";
+import { todoReducer, TodoState } from "src/store/todo";
 
 export type RootState = {
   todo: TodoState;
+  [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
 };
-export type RootActionTypes = TodoActionTypes; // @todo deprecated, use `typeof rootReducer.dispatch` instead
 
 export interface SagaStore extends Store<RootState> {
   sagaTask: Task;
@@ -23,6 +24,7 @@ const makeStore = (context: Context) => {
   const store = configureStore({
     reducer: {
       todo: todoReducer,
+      gridBotsApi: gridBotsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().prepend(sagaMiddleware),
@@ -38,9 +40,6 @@ const makeStore = (context: Context) => {
 export type AppDispatch = ReturnType<typeof makeStore>["dispatch"];
 
 // export an assembled wrapper
-export const wrapper = createWrapper<Store<RootState, RootActionTypes>>(
-  makeStore,
-  {
-    debug: process.env.NODE_ENV === "development",
-  }
-);
+export const wrapper = createWrapper<Store<RootState>>(makeStore, {
+  debug: process.env.NODE_ENV === "development",
+});

@@ -48,7 +48,8 @@ export class GridBotRepository {
 
     const bots = allBots.docs
       .map((doc) => new GridBotEntity(doc.data()))
-      .sort((left, right) => left.createdAt - right.createdAt);
+      .sort((left, right) => right.createdAt - left.createdAt)
+      .sort((left, right) => (right.enabled ? 1 : -1));
 
     return bots;
   }

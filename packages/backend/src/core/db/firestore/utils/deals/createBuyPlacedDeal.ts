@@ -15,12 +15,16 @@ export function createBuyPlacedDeal(
     buyOrder: {
       clientOrderId: buyOrderId,
       price: buyOrderPrice,
+      // this function is used for generating initialDeals when bot started, so we don't have the information about the fees
+      fee: 0,
       side: OrderSideEnum.Buy,
       status: OrderStatusEnum.Placed,
     },
     sellOrder: {
       clientOrderId: sellOrderId,
       price: sellOrderPrice,
+      // this function is used for generating initialDeals when bot started, so we don't have the information about the fees
+      fee: 0,
       side: OrderSideEnum.Sell,
       status: OrderStatusEnum.Idle,
     },

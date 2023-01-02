@@ -1,5 +1,9 @@
 import { IOKXGetAccountBalanceResponse } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-response.interface';
 import { IOKXGetAccountBalanceDetails } from 'src/core/exchanges/okx/types/client/account/balance/types/get-account-balance-details.interface';
+import { IOKXGetTradingFeeRatesInputParams } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-input-params.interface';
+import { IOKXGetTradeFeeRatesResponse } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-response.interface';
+import { IOKXGetCandlesticksInputParams } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-input-params.interface';
+import { IOKXGetCandlesticksResponse } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-response.interface';
 import { IOKXGetMarketPriceInputParams } from 'src/core/exchanges/okx/types/client/public-data/get-market-price/get-market-price-input-params.interface';
 import { IOKXGetMarketPriceResponse } from 'src/core/exchanges/okx/types/client/public-data/get-market-price/get-market-price-response.interface';
 import { IOKXCancelLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-input-params.interface';
@@ -9,6 +13,10 @@ import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/t
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
 import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
+import { IGetTradingFeeRatesRequest } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-request.interface';
+import { IGetTradingFeeRatesResponse } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-response.interface';
+import { IGetCandlesticksRequest } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/get-candlesticks-request.interface';
+import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
 import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
 import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';
 import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
@@ -111,6 +119,48 @@ export const OKXFacade = {
       symbol: asset.instId,
       price: Number(asset.markPx),
       timestamp: Number(asset.ts),
+    };
+  },
+
+  getCandlesticksInputParams(
+    data: IGetCandlesticksRequest,
+  ): IOKXGetCandlesticksInputParams {
+    return {
+      instId: `${data.symbol}-SWAP`,
+      bar: data.bar,
+      limit: String(data.limit),
+    };
+  },
+  getCandlesticksOutput(data: IOKXGetCandlesticksResponse): ICandlestick[] {
+    const candlesticks = data;
+
+    return candlesticks.map((candlestick) => ({
+      timestamp: Number(candlestick[0]),
+      open: Number(candlestick[1]),
+      high: Number(candlestick[2]),
+      low: Number(candlestick[3]),
+      close: Number(candlestick[4]),
+    }));
+  },
+
+  getTradingFeeRatesInputParams(
+    data: IGetTradingFeeRatesRequest,
+  ): IOKXGetTradingFeeRatesInputParams {
+    const { baseCurrency, quoteCurrency } = data;
+
+    return {
+      instId: `${baseCurrency}-${quoteCurrency}`,
+      instType: 'SPOT',
+    };
+  },
+  getTradingFeeRatesOutput(
+    data: IOKXGetTradeFeeRatesResponse,
+  ): IGetTradingFeeRatesResponse {
+    const tradingFee = data[0];
+
+    return {
+      makerFee: Math.abs(Number(tradingFee.maker)), // converts negative number to positive
+      takerFee: Math.abs(Number(tradingFee.taker)), // converts negative number to positive
     };
   },
 };

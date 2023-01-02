@@ -7,6 +7,10 @@ export type BaseOrder<
 > = {
   clientOrderId: string; // generated uniq id for exchange
   price: number;
+  /**
+   * `0` if order is not filled yet
+   */
+  fee: number;
   side: Side;
   status: Status;
 };

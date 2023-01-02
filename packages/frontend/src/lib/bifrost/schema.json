@@ -1,0 +1,825 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/bapi/grid-bot": {
+      "get": {
+        "operationId": "getBots",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBotsListResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/info/{id}": {
+      "get": {
+        "operationId": "getBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/create": {
+      "post": {
+        "operationId": "createBot",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBotRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/start/{id}": {
+      "put": {
+        "operationId": "startBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/stop/{id}": {
+      "put": {
+        "operationId": "stopBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StopBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/sync": {
+      "patch": {
+        "operationId": "syncMarketOrders",
+        "parameters": [
+          {
+            "name": "botId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/current-asset-price/{baseCurrency}/{quoteCurrency}": {
+      "get": {
+        "operationId": "currentAssetPrice",
+        "parameters": [
+          {
+            "name": "baseCurrency",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "quoteCurrency",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/completed-deals": {
+      "get": {
+        "operationId": "getCompletedDeals",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCompletedDealsResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/events": {
+      "get": {
+        "operationId": "getEvents",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/place-limit-order": {
+      "post": {
+        "operationId": "putOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "201": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/get-limit-order/{clientOrderId}": {
+      "get": {
+        "operationId": "getOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "clientOrderId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/get-candlesticks/{baseCurrency}/{quoteCurrency}": {
+      "get": {
+        "operationId": "getCandlesticks",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "baseCurrency",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "quoteCurrency",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi": {
+      "get": {
+        "operationId": "getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/healthz": {
+      "get": {
+        "operationId": "healthCheck",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/bapi/exchange-accounts/accounts": {
+      "get": {
+        "operationId": "getAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExchangeAccountsResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Exchange Accounts"]
+      }
+    },
+    "/bapi/exchange-accounts/account": {
+      "post": {
+        "operationId": "createAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExchangeAccountRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateExchangeAccountResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Exchange Accounts"]
+      }
+    }
+  },
+  "info": {
+    "title": "Bifrost Swagger UI",
+    "description": "Bifrost API Schema <a href=\"/bapi/swagger-json\" target=\"_blank\">schema.json</a>",
+    "version": "dev",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "BuyOrderIdleEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "SellOrderIdleEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "DealIdleEntity": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/BuyOrderIdleEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Idle",
+              "BuyPlaced",
+              "BuyFilled",
+              "SellPlaced",
+              "SellFilled"
+            ]
+          },
+          "id": { "type": "string" }
+        },
+        "required": ["buyOrder", "sellOrder", "status", "id"]
+      },
+      "BuyOrderPlacedEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "DealBuyPlacedEntity": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/BuyOrderPlacedEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Idle",
+              "BuyPlaced",
+              "BuyFilled",
+              "SellPlaced",
+              "SellFilled"
+            ]
+          },
+          "id": { "type": "string" }
+        },
+        "required": ["buyOrder", "sellOrder", "status", "id"]
+      },
+      "BuyOrderFilledEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "DealBuyFilledEntity": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Idle",
+              "BuyPlaced",
+              "BuyFilled",
+              "SellPlaced",
+              "SellFilled"
+            ]
+          },
+          "id": { "type": "string" }
+        },
+        "required": ["buyOrder", "sellOrder", "status", "id"]
+      },
+      "SellOrderPlacedEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "DealSellPlacedEntity": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SellOrderPlacedEntity" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Idle",
+              "BuyPlaced",
+              "BuyFilled",
+              "SellPlaced",
+              "SellFilled"
+            ]
+          },
+          "id": { "type": "string" }
+        },
+        "required": ["buyOrder", "sellOrder", "status", "id"]
+      },
+      "SellOrderFilledEntity": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] }
+        },
+        "required": ["clientOrderId", "price", "fee", "side", "status"]
+      },
+      "DealSellFilledEntity": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SellOrderFilledEntity" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Idle",
+              "BuyPlaced",
+              "BuyFilled",
+              "SellPlaced",
+              "SellFilled"
+            ]
+          },
+          "id": { "type": "string" }
+        },
+        "required": ["buyOrder", "sellOrder", "status", "id"]
+      },
+      "GridBotDto": {
+        "type": "object",
+        "properties": {
+          "quantityPerGrid": {
+            "type": "number",
+            "title": "Amount to buy per grid level in baseCurrency"
+          },
+          "deals": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/DealIdleEntity" },
+                { "$ref": "#/components/schemas/DealBuyPlacedEntity" },
+                { "$ref": "#/components/schemas/DealBuyFilledEntity" },
+                { "$ref": "#/components/schemas/DealSellPlacedEntity" },
+                { "$ref": "#/components/schemas/DealSellFilledEntity" }
+              ]
+            }
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "highPrice": { "type": "number" },
+          "lowPrice": { "type": "number" },
+          "gridLevels": { "type": "number" },
+          "enabled": { "type": "boolean" },
+          "createdAt": { "type": "number" },
+          "userId": { "type": "string" },
+          "exchangeAccountId": { "type": "string" }
+        },
+        "required": [
+          "quantityPerGrid",
+          "deals",
+          "id",
+          "name",
+          "baseCurrency",
+          "quoteCurrency",
+          "highPrice",
+          "lowPrice",
+          "gridLevels",
+          "enabled",
+          "createdAt",
+          "userId",
+          "exchangeAccountId"
+        ]
+      },
+      "GetBotsListResponseDto": {
+        "type": "object",
+        "properties": {
+          "bots": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GridBotDto" }
+          }
+        },
+        "required": ["bots"]
+      },
+      "GetBotResponseBodyDto": {
+        "type": "object",
+        "properties": { "bot": { "$ref": "#/components/schemas/GridBotDto" } },
+        "required": ["bot"]
+      },
+      "CreateBotRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "quantityPerGrid": {
+            "type": "number",
+            "title": "Amount to buy per grid level in baseCurrency"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "highPrice": { "type": "number" },
+          "lowPrice": { "type": "number" },
+          "gridLevels": { "type": "number" },
+          "exchangeAccountId": { "type": "string" }
+        },
+        "required": [
+          "quantityPerGrid",
+          "id",
+          "name",
+          "baseCurrency",
+          "quoteCurrency",
+          "highPrice",
+          "lowPrice",
+          "gridLevels",
+          "exchangeAccountId"
+        ]
+      },
+      "CreateBotResponseBodyDto": {
+        "type": "object",
+        "properties": { "bot": { "$ref": "#/components/schemas/GridBotDto" } },
+        "required": ["bot"]
+      },
+      "StartBotResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "bot": { "$ref": "#/components/schemas/GridBotDto" },
+          "currentAssetPrice": { "type": "number" }
+        },
+        "required": ["bot", "currentAssetPrice"]
+      },
+      "StopBotResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "botId": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["botId", "message"]
+      },
+      "SyncedOrderDto": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "current": { "type": "boolean" }
+        },
+        "required": ["status", "price", "fee", "current"]
+      },
+      "SyncedDealDto": {
+        "type": "object",
+        "properties": {
+          "dealId": { "type": "string" },
+          "buyOrder": { "$ref": "#/components/schemas/SyncedOrderDto" },
+          "sellOrder": { "$ref": "#/components/schemas/SyncedOrderDto" }
+        },
+        "required": ["dealId"]
+      },
+      "PlacedOrderDto": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "price": { "type": "number" }
+        },
+        "required": ["status", "price"]
+      },
+      "PlacedDealDto": {
+        "type": "object",
+        "properties": {
+          "buyOrder": {
+            "nullable": true,
+            "allOf": [{ "$ref": "#/components/schemas/PlacedOrderDto" }]
+          },
+          "sellOrder": {
+            "nullable": true,
+            "allOf": [{ "$ref": "#/components/schemas/PlacedOrderDto" }]
+          }
+        },
+        "required": ["buyOrder", "sellOrder"]
+      },
+      "SyncBotResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "currentAssetPrice": { "type": "number" },
+          "filledOrders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SyncedDealDto" }
+          },
+          "placedOrders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlacedDealDto" }
+          }
+        },
+        "required": [
+          "message",
+          "currentAssetPrice",
+          "filledOrders",
+          "placedOrders"
+        ]
+      },
+      "CompletedDealBuyOrderEntity": {
+        "type": "object",
+        "properties": {
+          "feeInBaseCurrency": {
+            "type": "number",
+            "description": "Fee in Base Currency"
+          },
+          "price": { "type": "number" }
+        },
+        "required": ["feeInBaseCurrency", "price"]
+      },
+      "CompletedDealSellOrderEntity": {
+        "type": "object",
+        "properties": {
+          "feeInQuoteCurrency": {
+            "type": "number",
+            "description": "Fee in Quote Currency"
+          },
+          "price": { "type": "number" }
+        },
+        "required": ["feeInQuoteCurrency", "price"]
+      },
+      "CompletedDealWithProfitDto": {
+        "type": "object",
+        "properties": {
+          "buyOrder": {
+            "$ref": "#/components/schemas/CompletedDealBuyOrderEntity"
+          },
+          "sellOrder": {
+            "$ref": "#/components/schemas/CompletedDealSellOrderEntity"
+          },
+          "grossProfit": { "type": "number" },
+          "netProfit": { "type": "number" },
+          "id": { "type": "string" },
+          "createdAt": { "type": "number" },
+          "botId": { "type": "string" }
+        },
+        "required": [
+          "buyOrder",
+          "sellOrder",
+          "grossProfit",
+          "netProfit",
+          "id",
+          "createdAt",
+          "botId"
+        ]
+      },
+      "GetCompletedDealsResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "completedDeals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompletedDealWithProfitDto"
+            }
+          }
+        },
+        "required": ["completedDeals"]
+      },
+      "ExchangeCredentialsDto": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "enum": ["okx"] },
+          "apiKey": { "type": "string" },
+          "secretKey": { "type": "string" },
+          "passphrase": { "type": "string" },
+          "isDemoAccount": { "type": "boolean" }
+        },
+        "required": [
+          "code",
+          "apiKey",
+          "secretKey",
+          "passphrase",
+          "isDemoAccount"
+        ]
+      },
+      "ExchangeAccountDto": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/ExchangeCredentialsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["okx"] },
+          "userId": { "type": "string" },
+          "createdAt": { "type": "number" }
+        },
+        "required": [
+          "credentials",
+          "id",
+          "name",
+          "exchangeCode",
+          "userId",
+          "createdAt"
+        ]
+      },
+      "GetExchangeAccountsResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "exchangeAccounts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ExchangeAccountDto" }
+          }
+        },
+        "required": ["exchangeAccounts"]
+      },
+      "CreateExchangeAccountRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/ExchangeCredentialsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["okx"] }
+        },
+        "required": ["credentials", "id", "name", "exchangeCode"]
+      },
+      "CreateExchangeAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "exchangeAccount": {
+            "$ref": "#/components/schemas/ExchangeAccountDto"
+          }
+        },
+        "required": ["exchangeAccount"]
+      }
+    }
+  }
+}

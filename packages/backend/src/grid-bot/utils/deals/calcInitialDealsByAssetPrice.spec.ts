@@ -92,4 +92,40 @@ describe('calcInitialDealsByAssetPrice', () => {
       { sellOrder: { price: 2800 } },
     ]);
   });
+
+  it('weird NEAR/USDT', () => {
+    const bot: IGridBot = {
+      id: 'NEARUSDT1',
+      name: 'NEAR Long Bot',
+      baseCurrency: 'NEAR',
+      quoteCurrency: 'USDT',
+      gridLevels: 10,
+      lowPrice: 7.5,
+      highPrice: 12,
+      quantityPerGrid: 10,
+      enabled: false,
+      createdAt: 1643502168575,
+
+      deals: [],
+      userId: user.uid,
+      exchangeAccountId: exchangeAccountMock.id,
+    };
+
+    const currentAssetPrice = 9.8;
+    const deals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);
+
+    expect(deals).toHaveLength(9);
+    expect(deals).toMatchObject([
+      { buyOrder: { price: 7.5 } },
+      { buyOrder: { price: 8 } },
+      { buyOrder: { price: 8.5 } },
+      { buyOrder: { price: 9 } },
+      { buyOrder: { price: 9.5 } },
+      // current { buyOrder: { price: 10 } },
+      { sellOrder: { price: 10.5 } },
+      { sellOrder: { price: 11 } },
+      { sellOrder: { price: 11.5 } },
+      { sellOrder: { price: 12 } },
+    ]);
+  });
 });

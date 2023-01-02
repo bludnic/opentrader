@@ -3,7 +3,12 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { IOKXGetAccountBalanceInputParams } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-input-params.interface';
 import { IOKXGetAccountBalanceResponse } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-response.interface';
+import { IOKXGetTradingFeeRatesInputParams } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-input-params.interface';
+import { IOKXGetTradeFeeRatesResponse } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-response.interface';
+
 import { OKXResponse } from 'src/core/exchanges/okx/types/client/common/OKXResponse';
+import { IOKXGetCandlesticksInputParams } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-input-params.interface';
+import { IOKXGetCandlesticksResponse } from 'src/core/exchanges/okx/types/client/market-data/get-candlesticks/get-candlesticks-response.interface';
 import { IOKXGetMarketPriceInputParams } from 'src/core/exchanges/okx/types/client/public-data/get-market-price/get-market-price-input-params.interface';
 import { IOKXGetMarketPriceResponse } from 'src/core/exchanges/okx/types/client/public-data/get-market-price/get-market-price-response.interface';
 import { IOKXCancelLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-input-params.interface';
@@ -176,6 +181,67 @@ export class OKXClientService {
 
     return this.httpService
       .request<OKXResponse<IOKXGetMarketPriceResponse>>({
+        method: METHOD,
+        url: fullRequestUrl,
+        headers: {
+          ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
+        },
+      })
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
+  }
+
+  getCandlesticks(
+    params: IOKXGetCandlesticksInputParams,
+  ): AxiosPromise<OKXResponse<IOKXGetCandlesticksResponse>> {
+    const { apiUrl } = this.ctx.exchangeConfig;
+
+    const METHOD = 'GET';
+    const REQUEST_PATH = '/api/v5/market/candles';
+
+    const requestUrlParams = new URLSearchParams();
+    requestUrlParams.set('instId', params.instId);
+    if (params.bar) requestUrlParams.set('bar', params.bar);
+    if (params.after) requestUrlParams.set('after', params.after);
+    if (params.before) requestUrlParams.set('before', params.before);
+    if (params.limit) requestUrlParams.set('limit', params.limit);
+
+    const requestPathWithParams = `${REQUEST_PATH}${
+      requestUrlParams.toString() ? `?${requestUrlParams}` : ''
+    }`;
+    const fullRequestUrl = `${apiUrl}${requestPathWithParams}`;
+
+    return this.httpService
+      .request<OKXResponse<IOKXGetCandlesticksResponse>>({
+        method: METHOD,
+        url: fullRequestUrl,
+        headers: {
+          ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
+        },
+      })
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
+  }
+
+  getTradingFeeRates(
+    params: IOKXGetTradingFeeRatesInputParams,
+  ): AxiosPromise<OKXResponse<IOKXGetTradeFeeRatesResponse>> {
+    const { apiUrl } = this.ctx.exchangeConfig;
+
+    const METHOD = 'GET';
+    const REQUEST_PATH = '/api/v5/account/trade-fee';
+
+    const requestUrlParams = new URLSearchParams();
+    requestUrlParams.set('instType', params.instType);
+    requestUrlParams.set('instId', params.instId);
+
+    const requestPathWithParams = `${REQUEST_PATH}${
+      requestUrlParams.toString() ? `?${requestUrlParams}` : ''
+    }`;
+    const fullRequestUrl = `${apiUrl}${requestPathWithParams}`;
+
+    return this.httpService
+      .request<OKXResponse<IOKXGetTradeFeeRatesResponse>>({
         method: METHOD,
         url: fullRequestUrl,
         headers: {

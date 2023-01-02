@@ -41,3 +41,6 @@ yarn-error.log*
 
 # coingecko
 src/lib/coingecko/client
+
+# bifrost swagger
+src/lib/bifrost/client
