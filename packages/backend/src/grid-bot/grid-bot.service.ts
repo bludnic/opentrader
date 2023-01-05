@@ -225,7 +225,7 @@ export class GridBotService {
       const order = await this.exchange.placeLimitOrder(orderToPlace);
       placedOrders.push(order);
       this.logger.debug(
-        `Order with id ${orderToPlace.clientOrderId} was placed`,
+        `Order with ID: ${orderToPlace.clientOrderId}; Price: ${orderToPlace.price} was placed`,
         order,
       );
       console.log('order', order);
