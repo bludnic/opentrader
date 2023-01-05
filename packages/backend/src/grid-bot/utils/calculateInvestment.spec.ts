@@ -8,8 +8,11 @@ describe('calculateInvestment', () => {
       quoteCurrencyAmount: 120 / 10 + 120 / 12, // 2 Buy Orders
     };
 
-    expect(calculateInvestment(DOT_BUSD_DEALS_MOCK, 120)).toStrictEqual(
-      expectedResult,
-    );
+    const deals = DOT_BUSD_DEALS_MOCK.map((deal) => ({
+      ...deal,
+      quantity: 120,
+    }));
+
+    expect(calculateInvestment(deals)).toStrictEqual(expectedResult);
   });
 });

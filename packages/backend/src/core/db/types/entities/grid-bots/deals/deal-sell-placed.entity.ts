@@ -11,6 +11,8 @@ import {
 export class DealSellPlacedEntity implements DealSellPlaced {
   id: string;
 
+  quantity: number;
+
   @ApiProperty({
     type: () => BuyOrderFilledEntity,
   })

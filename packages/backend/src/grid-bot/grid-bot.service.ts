@@ -16,6 +16,7 @@ import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trad
 import { CompletedDealWithProfitDto } from 'src/grid-bot/dto/get-completed-deals/types/completed-deal-with-profit.dto';
 import { getCompletedDealsFromCurrentDeals } from 'src/grid-bot/utils/completed-deals/getCompletedDealsFromCurrentDeals';
 import { populateCompletedDealWithProfit } from 'src/grid-bot/utils/completed-deals/populateCompletedDealWithProfit';
+import { calcInitialDealsByGridLines } from 'src/grid-bot/utils/deals/calcInitialDealsByGridLines';
 import { generateUniqId } from 'src/grid-bot/utils/generateUniqId';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,7 +42,6 @@ import { NotEnoughFundsException } from 'src/grid-bot/exceptions/not-enough-fund
 import { SyncedDealDto } from 'src/grid-bot/types/service/sync/synced-deal.dto';
 import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
 import { calculateLimitOrdersFromDeals } from 'src/grid-bot/utils/calculateLimitOrdersFromDeals';
-import { calcInitialDealsByAssetPrice } from 'src/grid-bot/utils/deals/calcInitialDealsByAssetPrice';
 import { mapLimitOrdersToPlacedDeals } from 'src/grid-bot/utils/dto/mapLimitOrdersToPlacedDeals';
 import { checkOrderFilled } from 'src/grid-bot/utils/orders/checkOrderFilled';
 import { recalculateDeals } from 'src/grid-bot/utils/recalculateDeals';
@@ -77,10 +77,8 @@ export class GridBotService {
     this.logger.debug(
       `The bot ${bot.id} with pair ${bot.baseCurrency}/${bot.quoteCurrency} was created succesfully`,
       {
-        gridLevels: bot.gridLevels,
-        quantityPerGrid: bot.quantityPerGrid,
-        highPrice: bot.highPrice,
-        lowPrice: bot.lowPrice,
+        gridLines: bot.gridLines,
+        gridLinesLength: bot.gridLines.length,
       },
     );
 
@@ -108,7 +106,7 @@ export class GridBotService {
       `Current ${bot.baseCurrency} asset price is ${currentAssetPrice} ${bot.quoteCurrency}`,
     );
 
-    const initialDeals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);
+    const initialDeals = calcInitialDealsByGridLines(bot, currentAssetPrice);
     this.logger.debug(
       `Calculate initial deals (total: ${initialDeals.length})`,
       {
@@ -506,7 +504,7 @@ export class GridBotService {
     const {
       baseCurrencyAmount: baseCurrencyAmountRequired,
       quoteCurrencyAmount: quoteCurrencyAmountRequired,
-    } = calculateInvestment(deals, bot.quantityPerGrid);
+    } = calculateInvestment(deals);
     const assets = await this.exchange.accountAssets();
 
     // check Base currency amount
@@ -592,7 +590,7 @@ export class GridBotService {
     );
 
     const dealsWithProfit = deals.map((deal) =>
-      populateCompletedDealWithProfit(deal, bot.quantityPerGrid, fee),
+      populateCompletedDealWithProfit(deal, fee),
     );
 
     const sortedDeals = dealsWithProfit.sort(

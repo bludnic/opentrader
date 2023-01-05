@@ -1,10 +1,12 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDefined,
   IsNotEmpty,
   IsNumber,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import { DealBuyFilledEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-filled.entity';
 import { DealBuyPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-placed.entity';
@@ -13,6 +15,8 @@ import { DealSellFilledEntity } from 'src/core/db/types/entities/grid-bots/deals
 import { DealSellPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-sell-placed.entity';
 import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { GridLineEntity } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.entity';
+import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 
 @ApiExtraModels(
   DealIdleEntity,
@@ -38,24 +42,14 @@ export class GridBotEntity implements IGridBot {
   @IsString()
   quoteCurrency: string; // e.g USDT
 
-  @IsDefined()
-  @IsNumber()
-  highPrice: number;
-
-  @IsDefined()
-  @IsNumber()
-  lowPrice: number;
-
-  @IsDefined()
-  @IsNumber()
-  gridLevels: number;
-
   @ApiProperty({
-    title: 'Amount to buy per grid level in baseCurrency',
+    type: () => GridLineEntity,
+    isArray: true,
   })
   @IsDefined()
-  @IsNumber()
-  quantityPerGrid: number;
+  @ValidateNested()
+  @Type(() => GridLineEntity)
+  gridLines: IGridLine[];
 
   @IsDefined()
   @IsBoolean()

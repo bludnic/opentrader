@@ -3,7 +3,6 @@ import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum'
 import { DealSellFilled } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { BuyOrderFilledEntity } from 'src/core/db/types/entities/grid-bots/orders/buy/buy-order-filled.entity';
 import { SellOrderFilledEntity } from 'src/core/db/types/entities/grid-bots/orders/sell/sell-order-filled.entity';
-import { SellOrderIdleEntity } from 'src/core/db/types/entities/grid-bots/orders/sell/sell-order-idle.entity';
 
 import {
   BuyOrderFilled,
@@ -12,6 +11,8 @@ import {
 
 export class DealSellFilledEntity implements DealSellFilled {
   id: string;
+
+  quantity: number;
 
   @ApiProperty({
     type: () => BuyOrderFilledEntity,

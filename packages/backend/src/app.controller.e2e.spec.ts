@@ -186,10 +186,7 @@ describe('AppController', () => {
           name: gridBotSettings.name,
           baseCurrency: gridBotSettings.baseCurrency,
           quoteCurrency: gridBotSettings.quoteCurrency,
-          gridLevels: gridBotSettings.gridLevels,
-          lowPrice: gridBotSettings.lowPrice,
-          highPrice: gridBotSettings.highPrice,
-          quantityPerGrid: gridBotSettings.quantityPerGrid,
+          gridLines: gridBotSettings.gridLines,
 
           enabled: false,
           deals: [],

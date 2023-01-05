@@ -18,6 +18,8 @@ import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { user } from 'src/e2e/grid-bot/user';
 
+export const DOT_BUSD_QUANTITY_PER_GRID = 20;
+
 export const DOT_BUSD_SYMBOL = 'DOT-BUSD';
 
 export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
@@ -27,10 +29,14 @@ export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   quoteCurrency: 'BUSD',
   enabled: false,
   createdAt: 1643502168575,
-  gridLevels: 6,
-  highPrice: 20,
-  lowPrice: 10,
-  quantityPerGrid: 20,
+  gridLines: [
+    { price: 10, quantity: 20 },
+    { price: 12, quantity: 20 },
+    { price: 14, quantity: 20 },
+    { price: 16, quantity: 20 },
+    { price: 18, quantity: 20 },
+    { price: 20, quantity: 20 },
+  ],
   deals: [],
 
   userId: user.uid,
@@ -42,6 +48,7 @@ export const DOT_BUSD_CURRENT_ASSET_PRICE_MOCK = 14.5;
 export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     id: 'DOTBUSD1',
+    quantity: DOT_BUSD_QUANTITY_PER_GRID,
     buyOrder: {
       clientOrderId: 'DOTBUSD1B',
       price: 10,
@@ -60,6 +67,7 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   },
   {
     id: 'DOTBUSD2',
+    quantity: DOT_BUSD_QUANTITY_PER_GRID,
     buyOrder: {
       clientOrderId: 'DOTBUSD2B',
       price: 12,
@@ -79,6 +87,7 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
     // current
     id: 'DOTBUSD3',
+    quantity: DOT_BUSD_QUANTITY_PER_GRID,
     buyOrder: {
       clientOrderId: 'DOTBUSD3B',
       price: 14,
@@ -98,6 +107,7 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   // sell orders
   {
     id: 'DOTBUSD4',
+    quantity: DOT_BUSD_QUANTITY_PER_GRID,
     buyOrder: {
       clientOrderId: 'DOTBUSD4B',
       price: 16,
@@ -116,6 +126,7 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   },
   {
     id: 'DOTBUSD5',
+    quantity: DOT_BUSD_QUANTITY_PER_GRID,
     buyOrder: {
       clientOrderId: 'DOTBUSD5B',
       price: 18,
@@ -136,6 +147,7 @@ export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
 
 export const DOT_BUSD_BUY_FILLED_DEAL: DealBuyFilled = {
   id: 'DOTBUSD1',
+  quantity: DOT_BUSD_QUANTITY_PER_GRID,
   buyOrder: {
     clientOrderId: 'DOTBUSD1B',
     price: 10,
@@ -155,6 +167,7 @@ export const DOT_BUSD_BUY_FILLED_DEAL: DealBuyFilled = {
 
 export const DOT_BUSD_SELL_PLACED_DEAL: DealSellPlaced = {
   id: 'DOTBUSD1',
+  quantity: DOT_BUSD_QUANTITY_PER_GRID,
   buyOrder: {
     clientOrderId: 'DOTBUSD1B',
     price: 10,
@@ -174,6 +187,7 @@ export const DOT_BUSD_SELL_PLACED_DEAL: DealSellPlaced = {
 
 export const DOT_BUSD_SELL_FILLED_DEAL: DealSellFilled = {
   id: 'DOTBUSD5',
+  quantity: DOT_BUSD_QUANTITY_PER_GRID,
   buyOrder: {
     clientOrderId: 'DOTBUSD5B',
     price: 18,
@@ -193,6 +207,7 @@ export const DOT_BUSD_SELL_FILLED_DEAL: DealSellFilled = {
 
 export const DOT_BUSD_BUY_PLACED_DEAL: DealBuyPlaced = {
   id: 'DOTBUSD5',
+  quantity: DOT_BUSD_QUANTITY_PER_GRID,
   buyOrder: {
     clientOrderId: 'DOTBUSD5B',
     price: 18,
