@@ -215,69 +215,6 @@
         "tags": ["Grid Bot"]
       }
     },
-    "/bapi/grid-bot/{id}/place-limit-order": {
-      "post": {
-        "operationId": "putOrder",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": { "201": { "description": "" } },
-        "tags": ["Grid Bot"]
-      }
-    },
-    "/bapi/grid-bot/{id}/get-limit-order/{clientOrderId}": {
-      "get": {
-        "operationId": "getOrder",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "clientOrderId",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": { "200": { "description": "" } },
-        "tags": ["Grid Bot"]
-      }
-    },
-    "/bapi/grid-bot/{id}/get-candlesticks/{baseCurrency}/{quoteCurrency}": {
-      "get": {
-        "operationId": "getCandlesticks",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "baseCurrency",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "quoteCurrency",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": { "200": { "description": "" } },
-        "tags": ["Grid Bot"]
-      }
-    },
     "/bapi": {
       "get": {
         "operationId": "getHello",
@@ -310,6 +247,52 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetExchangeAccountsResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Exchange Accounts"]
+      }
+    },
+    "/bapi/exchange-accounts/account/{id}": {
+      "get": {
+        "operationId": "getAccount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExchangeAccountResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Exchange Accounts"]
+      },
+      "put": {
+        "operationId": "updateAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExchangeAccountRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateExchangeAccountResponseBodyDto"
                 }
               }
             }
@@ -635,10 +618,9 @@
         "properties": {
           "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
           "price": { "type": "number" },
-          "fee": { "type": "number" },
           "current": { "type": "boolean" }
         },
-        "required": ["status", "price", "fee", "current"]
+        "required": ["status", "price", "current"]
       },
       "SyncedDealDto": {
         "type": "object",
@@ -694,25 +676,13 @@
       },
       "CompletedDealBuyOrderEntity": {
         "type": "object",
-        "properties": {
-          "feeInBaseCurrency": {
-            "type": "number",
-            "description": "Fee in Base Currency"
-          },
-          "price": { "type": "number" }
-        },
-        "required": ["feeInBaseCurrency", "price"]
+        "properties": { "price": { "type": "number" } },
+        "required": ["price"]
       },
       "CompletedDealSellOrderEntity": {
         "type": "object",
-        "properties": {
-          "feeInQuoteCurrency": {
-            "type": "number",
-            "description": "Fee in Quote Currency"
-          },
-          "price": { "type": "number" }
-        },
-        "required": ["feeInQuoteCurrency", "price"]
+        "properties": { "price": { "type": "number" } },
+        "required": ["price"]
       },
       "CompletedDealWithProfitDto": {
         "type": "object",
@@ -751,10 +721,11 @@
         },
         "required": ["completedDeals"]
       },
+      "ExchangeCode": { "type": "string", "enum": ["okx"] },
       "ExchangeCredentialsDto": {
         "type": "object",
         "properties": {
-          "code": { "type": "string", "enum": ["okx"] },
+          "code": { "$ref": "#/components/schemas/ExchangeCode" },
           "apiKey": { "type": "string" },
           "secretKey": { "type": "string" },
           "passphrase": { "type": "string" },
@@ -771,20 +742,20 @@
       "ExchangeAccountDto": {
         "type": "object",
         "properties": {
+          "exchangeCode": { "$ref": "#/components/schemas/ExchangeCode" },
           "credentials": {
             "$ref": "#/components/schemas/ExchangeCredentialsDto"
           },
           "id": { "type": "string" },
           "name": { "type": "string" },
-          "exchangeCode": { "type": "string", "enum": ["okx"] },
           "userId": { "type": "string" },
           "createdAt": { "type": "number" }
         },
         "required": [
+          "exchangeCode",
           "credentials",
           "id",
           "name",
-          "exchangeCode",
           "userId",
           "createdAt"
         ]
@@ -799,17 +770,46 @@
         },
         "required": ["exchangeAccounts"]
       },
+      "GetExchangeAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "exchangeAccount": {
+            "$ref": "#/components/schemas/ExchangeAccountDto"
+          }
+        },
+        "required": ["exchangeAccount"]
+      },
+      "UpdateExchangeAccountRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "exchangeCode": { "$ref": "#/components/schemas/ExchangeCode" },
+          "credentials": {
+            "$ref": "#/components/schemas/ExchangeCredentialsDto"
+          },
+          "name": { "type": "string" }
+        },
+        "required": ["exchangeCode", "credentials", "name"]
+      },
+      "UpdateExchangeAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "exchangeAccount": {
+            "$ref": "#/components/schemas/ExchangeAccountDto"
+          }
+        },
+        "required": ["exchangeAccount"]
+      },
       "CreateExchangeAccountRequestBodyDto": {
         "type": "object",
         "properties": {
+          "exchangeCode": { "$ref": "#/components/schemas/ExchangeCode" },
           "credentials": {
             "$ref": "#/components/schemas/ExchangeCredentialsDto"
           },
           "id": { "type": "string" },
-          "name": { "type": "string" },
-          "exchangeCode": { "type": "string", "enum": ["okx"] }
+          "name": { "type": "string" }
         },
-        "required": ["credentials", "id", "name", "exchangeCode"]
+        "required": ["exchangeCode", "credentials", "id", "name"]
       },
       "CreateExchangeAccountResponseBodyDto": {
         "type": "object",

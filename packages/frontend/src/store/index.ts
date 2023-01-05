@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware, { Task } from "redux-saga";
 import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
+import { exchangeAccountsApi } from 'src/sections/exchange-accounts/common/store/api';
 import { gridBotsApi } from "src/sections/grid-bot/common/store/api";
 
 import rootSaga from "./rootSaga";
@@ -10,6 +11,7 @@ import { todoReducer, TodoState } from "src/store/todo";
 export type RootState = {
   todo: TodoState;
   [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
+  [exchangeAccountsApi.reducerPath]: ReturnType<typeof exchangeAccountsApi.reducer>;
 };
 
 export interface SagaStore extends Store<RootState> {
@@ -25,6 +27,7 @@ const makeStore = (context: Context) => {
     reducer: {
       todo: todoReducer,
       gridBotsApi: gridBotsApi.reducer,
+      exchangeAccountsApi: exchangeAccountsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().prepend(sagaMiddleware),

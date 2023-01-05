@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { CreateExchangeAccountRequestBodyDto } from 'src/exchange-accounts/dto/create-exchange-account/create-exchange-account-request-body.dto';
 import { CreateExchangeAccountResponseBodyDto } from 'src/exchange-accounts/dto/create-exchange-account/create-exchange-account-response-body.dto';
+import { GetExchangeAccountResponseBodyDto } from 'src/exchange-accounts/dto/get-exchange-account/get-exchange-account-response-body.dto';
 import { GetExchangeAccountsResponseBodyDto } from 'src/exchange-accounts/dto/get-exchange-accounts/get-exchange-accounts-response-body.dto';
+import { UpdateExchangeAccountRequestBodyDto } from 'src/exchange-accounts/dto/update-exchange-account/update-exchange-account-request-body.dto';
+import { UpdateExchangeAccountResponseBodyDto } from 'src/exchange-accounts/dto/update-exchange-account/update-exchange-account-response-body.dto';
 import { ExchangeAccountsService } from 'src/exchange-accounts/exchange-accounts.service';
 
 @Controller({
@@ -24,6 +27,34 @@ export class ExchangeAccountsController {
 
     return {
       exchangeAccounts,
+    };
+  }
+
+  @Get('/account/:id')
+  async getAccount(
+    @Param('id') accountId,
+  ): Promise<GetExchangeAccountResponseBodyDto> {
+    const exchangeAccount = await this.accountsService.getExchangeAccount(
+      accountId,
+    );
+
+    return {
+      exchangeAccount,
+    };
+  }
+
+  @Put('/account/:id')
+  async updateAccount(
+    @Param('id') accountId,
+    @Body() body: UpdateExchangeAccountRequestBodyDto,
+  ): Promise<UpdateExchangeAccountResponseBodyDto> {
+    const exchangeAccount = await this.accountsService.updateExchangeAccount(
+      body,
+      accountId,
+    );
+
+    return {
+      exchangeAccount,
     };
   }
 

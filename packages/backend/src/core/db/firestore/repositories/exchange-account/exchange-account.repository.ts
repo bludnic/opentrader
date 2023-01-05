@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { firestore } from 'firebase-admin';
 import { CreateExchangeAccountDto } from 'src/core/db/firestore/repositories/exchange-account/dto/create-exchange-account.dto';
+import { UpdateExchangeAccountDto } from 'src/core/db/firestore/repositories/exchange-account/dto/update-exchange-account.dto';
 import { ACCOUNT_COLLECTION } from 'src/core/db/firestore/utils/collections';
 import { USER_ID_FIELD_PATH } from 'src/core/db/firestore/utils/constants';
 import { ExchangeAccountEntity } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.entity';
@@ -58,6 +59,22 @@ export class ExchangeAccountRepository {
     };
 
     await document.set(entity);
+
+    const result = await document.get();
+
+    return new ExchangeAccountEntity(result.data());
+  }
+
+  async update(
+    dto: UpdateExchangeAccountDto,
+    accountId: string,
+  ): Promise<ExchangeAccountEntity> {
+    const document = this.firebase.db
+      .collection(ACCOUNT_COLLECTION)
+      .withConverter(converter)
+      .doc(accountId);
+
+    await document.update(dto);
 
     const result = await document.get();
 

@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
@@ -48,6 +49,19 @@ export const Drawer: FC<DrawerProps> = (props) => {
       </Toolbar>
       <Divider />
       <List>
+        <Link href={"/exchange-accounts"}>
+          <ListItem
+            button
+            component="a"
+            selected={"/exchange-accounts" === router.pathname}
+          >
+            <ListItemIcon>
+              <AccountBalanceIcon fontSize="medium" />
+            </ListItemIcon>
+            <ListItemText primary={"Accounts"} />
+          </ListItem>
+        </Link>
+
         <Link href={"/grid-bot/"}>
           <ListItem
             button
