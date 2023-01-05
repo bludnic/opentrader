@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDefined,
@@ -9,6 +10,10 @@ import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum'
 import { IExchangeCredentials } from 'src/core/db/types/entities/exchange-accounts/exchange-credentials/exchange-credentials.interface';
 
 export class ExchangeCredentialsDto implements IExchangeCredentials {
+  @ApiProperty({
+    enum: ExchangeCode,
+    enumName: 'ExchangeCode',
+  })
   @IsNotEmpty()
   @IsEnum(ExchangeCode)
   code: ExchangeCode;

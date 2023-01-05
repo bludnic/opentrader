@@ -21,6 +21,10 @@ export class ExchangeAccountEntity implements IExchangeAccount {
   @IsString()
   name: string;
 
+  @ApiProperty({
+    enum: ExchangeCode,
+    enumName: 'ExchangeCode',
+  })
   @IsDefined()
   @IsEnum(ExchangeCode)
   exchangeCode: ExchangeCode;
