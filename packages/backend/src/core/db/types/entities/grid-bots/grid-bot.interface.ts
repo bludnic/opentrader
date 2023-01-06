@@ -1,5 +1,6 @@
-import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
-import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
+import { IDeal } from './deals/types';
+import { IGridLine } from './grid-lines/grid-line.interface';
+import { InitialInvestment } from './investment/initial-investment.interface';
 
 export interface IGridBot {
   id: string;
@@ -10,6 +11,8 @@ export interface IGridBot {
   enabled: boolean;
   createdAt: number;
   deals: IDeal[];
+
+  initialInvestment: InitialInvestment;
 
   userId: string;
   exchangeAccountId: string;

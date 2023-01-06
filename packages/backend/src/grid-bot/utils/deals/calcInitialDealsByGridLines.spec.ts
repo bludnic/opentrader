@@ -1,8 +1,6 @@
 import { DealEntity } from 'src/core/db/types/entities/grid-bots/deals/deal.entity';
 import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
-import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
-import { user } from 'src/e2e/grid-bot/user';
 import {
   DOT_BUSD_BOT_WITH_NO_DEALS_MOCK,
   DOT_BUSD_CURRENT_ASSET_PRICE_MOCK,
@@ -18,7 +16,12 @@ jest.mock('src/grid-bot/utils/orders/generateUniqClientOrderId');
 
 describe('calcInitialDealsByGridLines', () => {
   it('should calculate initial deals', () => {
-    const deals = calcInitialDealsByGridLines(bot, currentAssetPrice);
+    const deals = calcInitialDealsByGridLines(
+      bot.gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
     const expectedDeals: DealEntity<IDeal>[] = DOT_BUSD_DEALS_MOCK;
 
     expect(deals).toStrictEqual(expectedDeals);
@@ -26,21 +29,14 @@ describe('calcInitialDealsByGridLines', () => {
 
   it('check that the sell order price is calculated using big.js', () => {
     const currentAssetPrice = 1.13;
-    const bot: IGridBot = {
-      id: 'ADAUSDTBOT1',
-      name: '[ADA/USDT] Testing Bot #1',
-      baseCurrency: 'ADA',
-      quoteCurrency: 'USDT',
-      gridLines: calcGridLines(1.14, 1.11, 4, 5),
-      enabled: false,
-      createdAt: 1643502168575,
-      deals: [],
+    const gridLines = calcGridLines(1.14, 1.11, 4, 5);
 
-      userId: user.uid,
-      exchangeAccountId: exchangeAccountMock.id,
-    };
-
-    const deals = calcInitialDealsByGridLines(bot, currentAssetPrice);
+    const deals = calcInitialDealsByGridLines(
+      gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
 
     expect(deals).toMatchObject([
       { sellOrder: { price: 1.12 } },
@@ -50,22 +46,15 @@ describe('calcInitialDealsByGridLines', () => {
   });
 
   it('weird ETH/USDT', () => {
-    const bot: IGridBot = {
-      id: 'ETHUSDTBOT1',
-      name: '[ETH/USDT] Testing Bot #2',
-      baseCurrency: 'ETH',
-      quoteCurrency: 'USDT',
-      gridLines: calcGridLines(2800, 2500, 16, 0.1),
-      enabled: false,
-      createdAt: 1643502168575,
-
-      deals: [],
-      userId: user.uid,
-      exchangeAccountId: exchangeAccountMock.id,
-    };
-
     const currentAssetPrice = 2610;
-    const deals = calcInitialDealsByGridLines(bot, currentAssetPrice);
+    const gridLines = calcGridLines(2800, 2500, 16, 0.1);
+
+    const deals = calcInitialDealsByGridLines(
+      gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
 
     expect(deals).toHaveLength(15);
     expect(deals).toMatchObject([
@@ -89,22 +78,15 @@ describe('calcInitialDealsByGridLines', () => {
   });
 
   it('weird NEAR/USDT', () => {
-    const bot: IGridBot = {
-      id: 'NEARUSDT1',
-      name: 'NEAR Long Bot',
-      baseCurrency: 'NEAR',
-      quoteCurrency: 'USDT',
-      gridLines: calcGridLines(12, 7.5, 10, 10),
-      enabled: false,
-      createdAt: 1643502168575,
-
-      deals: [],
-      userId: user.uid,
-      exchangeAccountId: exchangeAccountMock.id,
-    };
-
     const currentAssetPrice = 9.8;
-    const deals = calcInitialDealsByGridLines(bot, currentAssetPrice);
+    const gridLines = calcGridLines(12, 7.5, 10, 10);
+
+    const deals = calcInitialDealsByGridLines(
+      gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
 
     expect(deals).toHaveLength(9);
     expect(deals).toMatchObject([

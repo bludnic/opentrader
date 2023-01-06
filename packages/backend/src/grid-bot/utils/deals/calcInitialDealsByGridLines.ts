@@ -5,44 +5,42 @@ import {
   DealSellPlaced,
   IDeal,
 } from 'src/core/db/types/entities/grid-bots/deals/types';
-import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';
 import { nextGridLinePrice } from 'src/grid-bot/utils/deals/nextGridLinePrice';
 import { isWaitingGridLine } from 'src/grid-bot/utils/grid/isWaitingGridLine';
 import { generateUniqClientOrderId } from 'src/grid-bot/utils/orders/generateUniqClientOrderId';
 
 export function calcInitialDealsByGridLines(
-  bot: IGridBot,
+  gridLines: IGridLine[],
+  baseCurrency: string,
+  quoteCurrency: string,
   currentAssetPrice: number,
 ): IDeal[] {
-  return bot.gridLines.flatMap<IDeal>((gridLine, i) => {
-    if (i === bot.gridLines.length - 1) {
+  return gridLines.flatMap<IDeal>((gridLine, i) => {
+    if (i === gridLines.length - 1) {
       // skip last grid level because it has no TP
       return [];
     }
 
     const gridNumber = i + 1;
 
-    const dealId = generateDealId(
-      bot.baseCurrency,
-      bot.quoteCurrency,
-      gridNumber,
-    );
+    const dealId = generateDealId(baseCurrency, quoteCurrency, gridNumber);
     const buyOrderId = generateUniqClientOrderId(
-      bot.baseCurrency,
-      bot.quoteCurrency,
+      baseCurrency,
+      quoteCurrency,
       gridNumber,
       'buy',
     );
     const sellOrderId = generateUniqClientOrderId(
-      bot.baseCurrency,
-      bot.quoteCurrency,
+      baseCurrency,
+      quoteCurrency,
       gridNumber,
       'sell',
     );
-    const sellOrderPrice = nextGridLinePrice(bot.gridLines, i);
+    const sellOrderPrice = nextGridLinePrice(gridLines, i);
 
-    if (isWaitingGridLine(gridLine, bot.gridLines, currentAssetPrice)) {
+    if (isWaitingGridLine(gridLine, gridLines, currentAssetPrice)) {
       const deal: DealSellPlaced = createSellPlacedDeal(
         dealId,
         buyOrderId,

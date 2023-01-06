@@ -4,18 +4,18 @@ import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
-import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
+import { gridBotInitialInvestment, gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { gridBotE2EHistoryData } from 'src/e2e/grid-bot/history-data';
 import { GridBotE2EHistoryData } from 'src/e2e/grid-bot/types';
 import { mapDealToE2EDeal } from 'src/e2e/grid-bot/utils/mappers/map-deal-to-e2e-deal';
 import { mapE2ELimitOrderToLimitOrder } from 'src/e2e/grid-bot/utils/mappers/map-e2e-limit-order-to-limit-order';
+import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
 import { SyncBotQueryParamsDto } from 'src/grid-bot/dto/sync-bot/sync-bot-query-params.dto';
@@ -176,7 +176,7 @@ describe('AppController', () => {
 
   describe('Create and start bot', () => {
     it(`/POST grid-bot/create`, async () => {
-      const requestBody: CreateGridBotDto = {
+      const requestBody: CreateBotRequestBodyDto = {
         ...gridBotSettings,
         exchangeAccountId: exchangeAccountMock.id,
       };
@@ -187,6 +187,7 @@ describe('AppController', () => {
           baseCurrency: gridBotSettings.baseCurrency,
           quoteCurrency: gridBotSettings.quoteCurrency,
           gridLines: gridBotSettings.gridLines,
+          initialInvestment: gridBotInitialInvestment, // can't know the exact value
 
           enabled: false,
           deals: [],
@@ -196,6 +197,7 @@ describe('AppController', () => {
         },
       };
       delete expectedResponse.bot.createdAt;
+      delete expectedResponse.bot.initialInvestment;
 
       await request(app.getHttpServer())
         .post('/grid-bot/create')

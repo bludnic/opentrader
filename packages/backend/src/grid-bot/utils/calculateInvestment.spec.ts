@@ -5,7 +5,7 @@ describe('calculateInvestment', () => {
   it('should calculate investment', () => {
     const expectedResult = {
       baseCurrencyAmount: 120 + 120 + 120, // 3 Sell orders
-      quoteCurrencyAmount: 120 / 10 + 120 / 12, // 2 Buy Orders
+      quoteCurrencyAmount: 120 * 10 + 120 * 12, // 2 Buy Orders
     };
 
     const deals = DOT_BUSD_DEALS_MOCK.map((deal) => ({

@@ -9,11 +9,13 @@ import {
 import big from 'big.js';
 import { delay } from 'src/common/helpers/delay';
 import { CreateCompletedDealDto } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/dto/create-completed-deal.dto';
+import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
 import { CompletedDealWithProfitDto } from 'src/grid-bot/dto/get-completed-deals/types/completed-deal-with-profit.dto';
+import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
 import { getCompletedDealsFromCurrentDeals } from 'src/grid-bot/utils/completed-deals/getCompletedDealsFromCurrentDeals';
 import { populateCompletedDealWithProfit } from 'src/grid-bot/utils/completed-deals/populateCompletedDealWithProfit';
 import { calcInitialDealsByGridLines } from 'src/grid-bot/utils/deals/calcInitialDealsByGridLines';
@@ -72,7 +74,22 @@ export class GridBotService {
   }
 
   async createBot(dto: CreateBotRequestBodyDto, user: IUser) {
-    const bot = await this.firestore.gridBot.create(dto, user.uid);
+    const currentAssetPrice = await this.getCurrentAssetPrice(
+      dto.baseCurrency,
+      dto.quoteCurrency,
+    );
+    const initialInvestment = calcInitialInvestmentByGridLines(
+      dto.gridLines,
+      dto.baseCurrency,
+      dto.quoteCurrency,
+      currentAssetPrice,
+    );
+
+    const botEntity: CreateGridBotDto = {
+      ...dto,
+      initialInvestment,
+    };
+    const bot = await this.firestore.gridBot.create(botEntity, user.uid);
 
     this.logger.debug(
       `The bot ${bot.id} with pair ${bot.baseCurrency}/${bot.quoteCurrency} was created succesfully`,
@@ -106,7 +123,12 @@ export class GridBotService {
       `Current ${bot.baseCurrency} asset price is ${currentAssetPrice} ${bot.quoteCurrency}`,
     );
 
-    const initialDeals = calcInitialDealsByGridLines(bot, currentAssetPrice);
+    const initialDeals = calcInitialDealsByGridLines(
+      bot.gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
     this.logger.debug(
       `Calculate initial deals (total: ${initialDeals.length})`,
       {

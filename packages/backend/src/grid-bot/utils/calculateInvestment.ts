@@ -24,7 +24,7 @@ export function calculateInvestment(deals: IDeal[]): CalculateInvestmentResult {
 
   let quoteCurrencyAmount = deals.reduce((amount, deal) => {
     if (deal.status === DealStatusEnum.BuyPlaced) {
-      const quoteAmountPerGrid = big(deal.quantity).div(deal.buyOrder.price);
+      const quoteAmountPerGrid = big(deal.quantity).times(deal.buyOrder.price);
 
       return big(amount).plus(quoteAmountPerGrid).toNumber();
     }

@@ -14,12 +14,16 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
+import { calcInitialInvestmentInQuote } from "src/utils/grid-bot/calcInitialInvestmentInQuote";
+import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
+import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
 import { BotStatusChip } from "./BotStatusChip";
 import { Bull } from "src/components/ui/Bull";
 import { FC } from "react";
 import { GridBotDto } from "src/lib/bifrost/client";
 import { SxProps } from "@mui/system";
-import { Theme } from '@mui/material';
+import { Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const componentName = "BotCard";
@@ -51,6 +55,15 @@ export interface BotCardProps {
 export const BotCard: FC<BotCardProps> = (props) => {
   const { bot, className, sx } = props;
 
+  const initialInvestmentInQuote = calcInitialInvestmentInQuote(
+    bot.initialInvestment
+  );
+  const averageQuantityPerGrid = calcAverageQuantityPerGrid(bot.gridLines);
+  const gridLevels = bot.gridLines.length;
+
+  const lowPrice = findLowestGridLinePrice(bot.gridLines);
+  const highPrice = findHighestGridLinePrice(bot.gridLines);
+
   return (
     <Root className={clsx(classes.root, className)} sx={sx}>
       <CardContent>
@@ -81,7 +94,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
           {bot.baseCurrency}/{bot.quoteCurrency} <Bull />{" "}
           <Tooltip title="Investment">
             <span>
-              {bot.quantityPerGrid * bot.gridLevels} {bot.baseCurrency}
+              {initialInvestmentInQuote} {bot.quoteCurrency}
             </span>
           </Tooltip>
         </Typography>
@@ -100,7 +113,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
               </Tooltip>
               <ListItemText
                 primary={"High price"}
-                secondary={`${bot.highPrice} ${bot.quoteCurrency}`}
+                secondary={`${highPrice} ${bot.quoteCurrency}`}
               />
             </ListItem>
 
@@ -112,7 +125,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
               </Tooltip>
               <ListItemText
                 primary={"Low price"}
-                secondary={`${bot.lowPrice} ${bot.quoteCurrency}`}
+                secondary={`${lowPrice} ${bot.quoteCurrency}`}
               />
             </ListItem>
           </List>
@@ -125,8 +138,8 @@ export const BotCard: FC<BotCardProps> = (props) => {
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
-                primary="Quantity per grid"
-                secondary={`${bot.quantityPerGrid} ${bot.baseCurrency}`}
+                primary="Avg. Quantity per grid"
+                secondary={`${averageQuantityPerGrid} ${bot.baseCurrency}`}
               />
             </ListItem>
 
@@ -137,10 +150,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
                 </ListItemIcon>
               </Tooltip>
 
-              <ListItemText
-                primary="Grid levels"
-                secondary={`${bot.gridLevels}`}
-              />
+              <ListItemText primary="Grid levels" secondary={gridLevels} />
             </ListItem>
           </List>
         </Box>
