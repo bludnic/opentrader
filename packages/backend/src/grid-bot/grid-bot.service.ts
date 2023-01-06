@@ -532,7 +532,7 @@ export class GridBotService {
     );
 
     if (!currencyAsset) {
-      const errorMessage = `Missing currency asset ${currencyAsset} on the exchange`;
+      const errorMessage = `You dont have required asset ${currencySymbol} on your exchange account`;
 
       this.logger.debug(`[checkEnoughBalance] ${errorMessage}`);
       throw new MissingCurrencyOnExchangeException(errorMessage);
