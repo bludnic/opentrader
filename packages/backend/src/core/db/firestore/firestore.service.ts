@@ -3,6 +3,8 @@ import { ExchangeAccountRepository } from 'src/core/db/firestore/repositories/ex
 import { GridBotCompletedDealsRepository } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/grid-bot-completed-deals.repository';
 import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/grid-bot.repository';
 import { GridBotEventsRepository } from 'src/core/db/firestore/repositories/grid-bot-events/grid-bot-events.repository';
+import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/twitter-signal-events.repository';
+import { TwitterSignalsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/twitter-signals.repository';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 
 @Injectable()
@@ -13,5 +15,7 @@ export class FirestoreService {
     public gridBot: GridBotRepository,
     public gridBotEvents: GridBotEventsRepository,
     public gridBotCompletedDeals: GridBotCompletedDealsRepository,
+    public marketplaceTwitterSignals: TwitterSignalsRepository,
+    public marketplaceTwitterSignalEvents: TwitterSignalEventsRepository,
   ) {}
 }

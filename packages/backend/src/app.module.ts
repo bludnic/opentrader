@@ -19,6 +19,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
     GridBotModule,
     ExchangeAccountsModule,
     AppModule,
+    MarketplaceModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],

@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { OkxApiExceptionFilter } from 'src/core/exchanges/okx/utils/errors/okx-api-exception.filter';
+import { TwitterApiExceptionFilter } from 'src/core/twitter-api/utils/client/errors/twitter-api-exception.filter';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -35,6 +36,7 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new OkxApiExceptionFilter(logger));
+  app.useGlobalFilters(new TwitterApiExceptionFilter(logger));
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(4000);

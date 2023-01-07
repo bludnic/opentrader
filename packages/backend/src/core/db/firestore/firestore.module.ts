@@ -5,6 +5,8 @@ import { GridBotCompletedDealsRepository } from 'src/core/db/firestore/repositor
 import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/grid-bot.repository';
 import { GridBotEventsRepository } from 'src/core/db/firestore/repositories/grid-bot-events/grid-bot-events.repository';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
+import { TwitterSignalsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/twitter-signals.repository';
+import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/twitter-signal-events.repository';
 
 @Module({
   imports: [],
@@ -15,6 +17,8 @@ import { UserRepository } from 'src/core/db/firestore/repositories/user/user.rep
     GridBotRepository,
     GridBotEventsRepository,
     GridBotCompletedDealsRepository,
+    TwitterSignalsRepository,
+    TwitterSignalEventsRepository,
   ],
   providers: [
     FirestoreService,
@@ -23,6 +27,8 @@ import { UserRepository } from 'src/core/db/firestore/repositories/user/user.rep
     GridBotRepository,
     GridBotEventsRepository,
     GridBotCompletedDealsRepository,
+    TwitterSignalsRepository,
+    TwitterSignalEventsRepository,
   ],
 })
 export class FirestoreModule {}
