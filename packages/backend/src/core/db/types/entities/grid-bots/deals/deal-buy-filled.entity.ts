@@ -11,6 +11,8 @@ import {
 export class DealBuyFilledEntity implements DealBuyFilled {
   id: string;
 
+  quantity: number;
+
   @ApiProperty({
     type: () => BuyOrderFilledEntity,
   })

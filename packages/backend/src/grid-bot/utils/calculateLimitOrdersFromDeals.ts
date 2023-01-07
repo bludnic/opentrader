@@ -1,4 +1,3 @@
-
 import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
 import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
@@ -17,7 +16,7 @@ export function calculateLimitOrdersFromDeals(
         clientOrderId: `${deal.buyOrder.clientOrderId}`,
         symbol: calculateSymbolOKX(bot.baseCurrency, bot.quoteCurrency),
         price: deal.buyOrder.price,
-        quantity: bot.quantityPerGrid,
+        quantity: deal.quantity,
         side: 'buy',
       };
 
@@ -27,7 +26,7 @@ export function calculateLimitOrdersFromDeals(
         clientOrderId: `${deal.sellOrder.clientOrderId}`,
         symbol: calculateSymbolOKX(bot.baseCurrency, bot.quoteCurrency),
         price: deal.sellOrder.price,
-        quantity: bot.quantityPerGrid,
+        quantity: deal.quantity,
         side: 'sell',
       };
 

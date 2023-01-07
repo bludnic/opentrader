@@ -4,23 +4,22 @@ import { CompletedDealWithProfitDto } from 'src/grid-bot/dto/get-completed-deals
 
 export function populateCompletedDealWithProfit(
   completedDeal: CompletedDealEntity,
-  quantityPerGrid: number,
   makerTradingFeeRatio: number,
 ): CompletedDealWithProfitDto {
-  const { buyOrder, sellOrder } = completedDeal;
+  const { buyOrder, sellOrder, quantity } = completedDeal;
 
   const grossProfit = big(sellOrder.price)
     .minus(buyOrder.price)
-    .times(quantityPerGrid)
+    .times(quantity)
     .toNumber();
 
   // Converts Base currency into Quote by Market Price.
-  const buyOrderFee = big(quantityPerGrid)
+  const buyOrderFee = big(quantity)
     .times(makerTradingFeeRatio)
     .times(buyOrder.price)
     .toNumber();
 
-  const sellOrderFee = big(quantityPerGrid)
+  const sellOrderFee = big(quantity)
     .times(sellOrder.price)
     .times(makerTradingFeeRatio);
 

@@ -25,6 +25,6 @@ export function okexAuthHeaders(
     // @see https://www.okex.com/docs-v5/en/#overview-demo-trading-services
     'x-simulated-trading': ctx.exchangeAccount.credentials.isDemoAccount
       ? '1'
-      : undefined,
+      : '',
   };
 }

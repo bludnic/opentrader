@@ -20,4 +20,5 @@ export type GridBotE2ELimitOrder = {
   status: OrderStatusEnum;
   side: OrderSideEnum;
   price: number;
+  quantity: number;
 };
