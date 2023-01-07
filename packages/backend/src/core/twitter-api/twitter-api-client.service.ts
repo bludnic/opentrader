@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosPromise } from 'axios';
 import { throwExceptionIfErrorHttpStatus } from 'src/core/twitter-api/utils/client/errors/throwExceptionIfErrorHttpStatus';
+import { recentTweetsReplaceWithEmptyArrayIfDataIsUndefined } from 'src/core/twitter-api/utils/client/recentTweetsReplaceWithEmptyArrayIfDataIsUndefined';
 import { TwitterApiResponse } from './types/client/common/twitter-api-response';
 import { ITweetsSearchRecentMeta } from './types/client/tweets-search-recent/types/tweets-search-recent-meta.interface';
 import { ITweetsSearchRecentInputParams } from './types/client/tweets-search-recent/tweets-search-recent-input-params.interface';
@@ -52,6 +53,7 @@ export class TwitterApiClientService {
         },
       })
       .toPromise()
+      .then(recentTweetsReplaceWithEmptyArrayIfDataIsUndefined)
       .catch(throwExceptionIfErrorHttpStatus(fullRequestUrl));
   }
 }

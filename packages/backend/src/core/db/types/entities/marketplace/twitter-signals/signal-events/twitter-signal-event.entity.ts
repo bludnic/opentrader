@@ -27,7 +27,7 @@ export class TwitterSignalEventEntity implements ITwitterSignalEvent {
   @IsDefined()
   tweet: ITweetBrief;
 
-  createdAt: number;
+  parsedAt: string; // ISO
 
   constructor(signalEvent: TwitterSignalEventEntity) {
     Object.assign(this, signalEvent);

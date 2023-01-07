@@ -6,5 +6,5 @@ export interface ITwitterSignalEvent {
 
   tweet: ITweetBrief;
 
-  createdAt: number; // timestamp
+  parsedAt: string; // ISO
 }

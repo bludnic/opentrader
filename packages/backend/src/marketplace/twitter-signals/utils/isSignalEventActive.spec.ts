@@ -14,7 +14,7 @@ const tweet: TweetBriefEntity = {
 
 const signalEventBase: TwitterSignalEventDto = {
   id: 'asK9flk822ls',
-  createdAt: 1648922290541,
+  parsedAt: '2022-04-01T00:00:00.000Z',
   signalId: 'elon-tweets-doge',
   tweet,
 };

@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { GetTwitterSignalEventsListResponseBodyDto } from 'src/marketplace/twitter-signals/dto/signal-events/get-signal-events-list/get-twitter-signal-events-list-response-body.dto';
+import { GetTwitterSignalEventsListResponseBodyDto } from './dto/signal-events/get-signal-events-list/get-twitter-signal-events-list-response-body.dto';
+import { ParseTweetsBySignalResponseBodyDto } from './dto/signals/parse-tweets-by-signal/parse-tweets-by-signal-response-body.dto';
+import { TwitterSignalsService } from './twitter-signals.service';
 import { CreateTwitterSignalRequestBodyDto } from './dto/signals/create-signal/create-twitter-signal-request-body.dto';
 import { CreateTwitterSignalResponseBodyDto } from './dto/signals/create-signal/create-twitter-signal-response-body.dto';
 import { GetTwitterSignalResponseBodyDto } from './dto/signals/get-signal/get-twitter-signal-response-body.dto';
@@ -10,7 +12,10 @@ import { UpdateTwitterSignalResponseBodyDto } from './dto/signals/update-signal/
 
 @Controller('marketplace/twitter/signals')
 export class TwitterSignalsController {
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(
+    private readonly firestoreService: FirestoreService,
+    private readonly twitterSignalsService: TwitterSignalsService,
+  ) {}
 
   @Get()
   async signals(): Promise<GetTwitterSignalsListResponseBodyDto> {
@@ -73,6 +78,22 @@ export class TwitterSignalsController {
 
     return {
       signal,
+    };
+  }
+
+  // for debugging purposes
+  @Patch('/:id/parse')
+  async parseTweetsBySignal(
+    @Param('id') signalId: string,
+  ): Promise<ParseTweetsBySignalResponseBodyDto> {
+    const signal =
+      await this.firestoreService.marketplaceTwitterSignals.findOne(signalId);
+    const parsedTweets = await this.twitterSignalsService.parseNewTweets(
+      signal,
+    );
+
+    return {
+      parsedTweets,
     };
   }
 }

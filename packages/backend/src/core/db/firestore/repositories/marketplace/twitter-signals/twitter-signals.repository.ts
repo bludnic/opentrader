@@ -38,6 +38,13 @@ export class TwitterSignalsRepository {
     return docs;
   }
 
+  async findAllEnabled(): Promise<TwitterSignalEntity[]> {
+    const signals = await this.findAll();
+    const enabledSignals = signals.filter((signal) => signal.enabled);
+
+    return enabledSignals;
+  }
+
   async create(dto: CreateTwitterSignalDto): Promise<TwitterSignalEntity> {
     const createdAt = new Date().getTime();
 

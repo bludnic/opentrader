@@ -56,14 +56,40 @@ export class TwitterSignalEventsRepository {
   async create(
     dto: CreateTwitterSignalEventDto,
   ): Promise<TwitterSignalEventEntity> {
-    const createdAt = new Date().getTime();
+    const parsedAt = new Date().toISOString();
 
     const document = this.firebase.db
       .collection(MARKETPLACE_TWITTER_SIGNAL_EVENTS)
       .doc(dto.id);
     const entity: ITwitterSignalEvent = {
       ...dto,
-      createdAt,
+      parsedAt,
+    };
+
+    await document.set(entity);
+
+    return entity;
+  }
+
+  async createIfNotExists(
+    dto: CreateTwitterSignalEventDto,
+  ): Promise<TwitterSignalEventEntity> {
+    // Check if signal already exists
+    // If yes, do nothing
+    const signalEventDb = await this.findOne(dto.id);
+    const signalAlreadyExists = !!(signalEventDb && signalEventDb.signalId);
+    if (signalAlreadyExists) {
+      return signalEventDb;
+    }
+
+    const parsedAt = new Date().toISOString();
+
+    const document = this.firebase.db
+      .collection(MARKETPLACE_TWITTER_SIGNAL_EVENTS)
+      .doc(dto.id);
+    const entity: ITwitterSignalEvent = {
+      ...dto,
+      parsedAt,
     };
 
     await document.set(entity);

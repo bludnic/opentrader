@@ -1,5 +1,6 @@
 import { parseISO } from 'date-fns';
+import { utcDateNowISO } from './utcDateNowISO';
 
 export function utcDateNow(): Date {
-  return parseISO(new Date().toISOString());
+  return parseISO(utcDateNowISO());
 }

@@ -3,5 +3,5 @@ import { TwitterSignalEventEntity } from 'src/core/db/types/entities/marketplace
 
 export class UpdateTwitterSignalEventDto extends OmitType(
   TwitterSignalEventEntity,
-  ['createdAt'] as const,
+  ['parsedAt'] as const,
 ) {}
