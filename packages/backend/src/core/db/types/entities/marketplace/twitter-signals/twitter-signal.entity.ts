@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDefined, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsDefined, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { TweetCoinEntity } from './common/types/tweet-coin.entity';
+import { ITweetCoin } from './common/types/tweet-coin.interface';
 import { ITwitterSignal } from './twitter-signal.interface';
 
 export class TwitterSignalEntity implements ITwitterSignal {
@@ -28,6 +31,14 @@ export class TwitterSignalEntity implements ITwitterSignal {
   @IsDefined()
   @IsBoolean()
   enabled: boolean;
+
+  @ApiProperty({
+    type: () => TweetCoinEntity,
+  })
+  @ValidateNested()
+  @Type(() => TweetCoinEntity)
+  @IsDefined()
+  coins: ITweetCoin[];
 
   createdAt: number;
 

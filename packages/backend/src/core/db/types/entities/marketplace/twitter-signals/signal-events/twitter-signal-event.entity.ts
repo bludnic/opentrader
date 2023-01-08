@@ -6,6 +6,8 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { TweetCoinEntity } from 'src/core/db/types/entities/marketplace/twitter-signals/common/types/tweet-coin.entity';
+import { ITweetCoin } from 'src/core/db/types/entities/marketplace/twitter-signals/common/types/tweet-coin.interface';
 import { ITweetBrief } from './types/tweet/tweet-brief.interface';
 import { TweetBriefEntity } from './types/tweet/tweet-brief.entity';
 import { ITwitterSignalEvent } from './twitter-signal-event.interface';
@@ -26,6 +28,14 @@ export class TwitterSignalEventEntity implements ITwitterSignalEvent {
   @Type(() => TweetBriefEntity)
   @IsDefined()
   tweet: ITweetBrief;
+
+  @ApiProperty({
+    type: () => TweetCoinEntity,
+  })
+  @ValidateNested()
+  @Type(() => TweetCoinEntity)
+  @IsDefined()
+  coins: ITweetCoin[];
 
   parsedAt: string; // ISO
 

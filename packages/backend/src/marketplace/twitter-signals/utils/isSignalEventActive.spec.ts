@@ -17,6 +17,7 @@ const signalEventBase: TwitterSignalEventDto = {
   parsedAt: '2022-04-01T00:00:00.000Z',
   signalId: 'elon-tweets-doge',
   tweet,
+  coins: [],
 };
 
 describe('isSignalEventActive', () => {

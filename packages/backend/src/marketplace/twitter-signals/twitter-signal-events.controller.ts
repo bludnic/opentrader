@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { filterActiveEvents } from 'src/marketplace/twitter-signals/utils/filterActiveEvents';
+import { TwitterSignalsService } from 'src/marketplace/twitter-signals/twitter-signals.service';
 import { CreateTwitterSignalEventRequestBodyDto } from './dto/signal-events/create-signal-event/create-twitter-signal-event-request-body.dto';
 import { CreateTwitterSignalEventResponseBodyDto } from './dto/signal-events/create-signal-event/create-twitter-signal-event-response-body.dto';
 import { GetTwitterSignalEventResponseBodyDto } from './dto/signal-events/get-signal-event/get-twitter-signal-event-response-body.dto';
@@ -10,12 +10,14 @@ import { UpdateTwitterSignalEventResponseBodyDto } from './dto/signal-events/upd
 
 @Controller('marketplace/twitter/signal/events')
 export class TwitterSignalEventsController {
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(
+    private firestoreService: FirestoreService,
+    private readonly twitterSignalsService: TwitterSignalsService,
+  ) {}
 
   @Get()
   async signalEvents(): Promise<GetTwitterSignalEventsListResponseBodyDto> {
-    const signalEvents =
-      await this.firestoreService.marketplaceTwitterSignalEvents.findAll();
+    const signalEvents = await this.twitterSignalsService.signalEvents();
 
     return {
       signalEvents,
@@ -24,12 +26,10 @@ export class TwitterSignalEventsController {
 
   @Get('/active')
   async activeSignalEvents(): Promise<GetTwitterSignalEventsListResponseBodyDto> {
-    const signalEvents =
-      await this.firestoreService.marketplaceTwitterSignalEvents.findAll();
-    const activeSignalEvents = filterActiveEvents(signalEvents);
+    const signalEvents = await this.twitterSignalsService.activeSignalEvents();
 
     return {
-      signalEvents: activeSignalEvents,
+      signalEvents,
     };
   }
 

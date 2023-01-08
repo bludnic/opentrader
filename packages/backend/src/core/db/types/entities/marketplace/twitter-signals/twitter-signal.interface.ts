@@ -1,3 +1,5 @@
+import { ITweetCoin } from './common/types/tweet-coin.interface';
+
 export interface ITwitterSignal {
   id: string;
   name: string;
@@ -16,6 +18,8 @@ export interface ITwitterSignal {
    * Should cron watch for this signal?
    */
   enabled: boolean;
+
+  coins: ITweetCoin[];
 
   createdAt: number; // timestamp
 }

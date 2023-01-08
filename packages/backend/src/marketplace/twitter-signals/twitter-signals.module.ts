@@ -7,7 +7,7 @@ import { TwitterSignalEventsController } from './twitter-signal-events.controlle
 
 @Module({
   imports: [CoreModule],
-  exports: [],
+  exports: [TwitterSignalsService],
   providers: [Logger, TwitterSignalsService, TwitterSignalsWatcherService],
   controllers: [TwitterSignalsController, TwitterSignalEventsController],
 })

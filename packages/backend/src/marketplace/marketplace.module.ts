@@ -5,7 +5,7 @@ import { MarketplaceController } from './marketplace.controller';
 
 @Module({
   imports: [CoreModule, TwitterSignalsModule],
-  exports: [],
+  exports: [TwitterSignalsModule],
   controllers: [MarketplaceController],
 })
 export class MarketplaceModule {}

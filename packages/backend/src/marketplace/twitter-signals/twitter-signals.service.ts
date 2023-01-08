@@ -1,16 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { TwitterSignalEventDto } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/dto/twitter-signal-event.dto';
 import { TwitterSignalDto } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/dto/twitter-signal.dto';
 import { TwitterApiClientService } from 'src/core/twitter-api/twitter-api-client.service';
 import { RecentTweetDto } from 'src/core/twitter-api/types/client/tweets-search-recent/dto/recent-tweet.dto';
 import { IRecentTweet } from 'src/core/twitter-api/types/client/tweets-search-recent/types/recent-tweet.interface';
 import { convertTweetToSignalEvent } from 'src/marketplace/twitter-signals/utils/convertTweetToSignalEvent';
+import { filterActiveEvents } from 'src/marketplace/twitter-signals/utils/filterActiveEvents';
 
 @Injectable()
 export class TwitterSignalsService {
   constructor(
     private readonly twitterApi: TwitterApiClientService,
-    private readonly firebase: FirestoreService,
+    private readonly firestore: FirestoreService,
     private readonly logger: Logger,
   ) {}
 
@@ -33,10 +35,10 @@ export class TwitterSignalsService {
       tweets,
     );
     for (const tweet of tweets) {
-      const newSignalEvent = convertTweetToSignalEvent(tweet, signal.id);
+      const newSignalEvent = convertTweetToSignalEvent(tweet, signal.coins, signal.id);
 
       try {
-        await this.firebase.marketplaceTwitterSignalEvents.createIfNotExists(
+        await this.firestore.marketplaceTwitterSignalEvents.createIfNotExists(
           newSignalEvent,
         );
         this.logger.debug(
@@ -56,5 +58,20 @@ export class TwitterSignalsService {
     );
 
     return tweets;
+  }
+
+  public async signalEvents(): Promise<TwitterSignalEventDto[]> {
+    const signalEvents =
+      await this.firestore.marketplaceTwitterSignalEvents.findAll();
+
+    return signalEvents;
+  }
+
+  public async activeSignalEvents(): Promise<TwitterSignalEventDto[]> {
+    const signalEvents =
+      await this.firestore.marketplaceTwitterSignalEvents.findAll();
+    const activeSignalEvents = filterActiveEvents(signalEvents);
+
+    return activeSignalEvents;
   }
 }
