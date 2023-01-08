@@ -4,10 +4,7 @@ import { GridBotEntity } from 'src/core/db/types/entities/grid-bots/grid-bot.ent
 export class UpdateGridBotDto extends PartialType(
   PickType(GridBotEntity, [
     'name',
-    'highPrice',
-    'lowPrice',
-    'gridLevels',
-    'quantityPerGrid',
+    'gridLines',
     'enabled',
     'deals',
   ]),

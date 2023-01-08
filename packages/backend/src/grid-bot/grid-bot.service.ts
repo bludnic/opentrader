@@ -9,13 +9,16 @@ import {
 import big from 'big.js';
 import { delay } from 'src/common/helpers/delay';
 import { CreateCompletedDealDto } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/dto/create-completed-deal.dto';
+import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
 import { CompletedDealWithProfitDto } from 'src/grid-bot/dto/get-completed-deals/types/completed-deal-with-profit.dto';
+import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
 import { getCompletedDealsFromCurrentDeals } from 'src/grid-bot/utils/completed-deals/getCompletedDealsFromCurrentDeals';
 import { populateCompletedDealWithProfit } from 'src/grid-bot/utils/completed-deals/populateCompletedDealWithProfit';
+import { calcInitialDealsByGridLines } from 'src/grid-bot/utils/deals/calcInitialDealsByGridLines';
 import { generateUniqId } from 'src/grid-bot/utils/generateUniqId';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,7 +44,6 @@ import { NotEnoughFundsException } from 'src/grid-bot/exceptions/not-enough-fund
 import { SyncedDealDto } from 'src/grid-bot/types/service/sync/synced-deal.dto';
 import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
 import { calculateLimitOrdersFromDeals } from 'src/grid-bot/utils/calculateLimitOrdersFromDeals';
-import { calcInitialDealsByAssetPrice } from 'src/grid-bot/utils/deals/calcInitialDealsByAssetPrice';
 import { mapLimitOrdersToPlacedDeals } from 'src/grid-bot/utils/dto/mapLimitOrdersToPlacedDeals';
 import { checkOrderFilled } from 'src/grid-bot/utils/orders/checkOrderFilled';
 import { recalculateDeals } from 'src/grid-bot/utils/recalculateDeals';
@@ -72,15 +74,28 @@ export class GridBotService {
   }
 
   async createBot(dto: CreateBotRequestBodyDto, user: IUser) {
-    const bot = await this.firestore.gridBot.create(dto, user.uid);
+    const currentAssetPrice = await this.getCurrentAssetPrice(
+      dto.baseCurrency,
+      dto.quoteCurrency,
+    );
+    const initialInvestment = calcInitialInvestmentByGridLines(
+      dto.gridLines,
+      dto.baseCurrency,
+      dto.quoteCurrency,
+      currentAssetPrice,
+    );
+
+    const botEntity: CreateGridBotDto = {
+      ...dto,
+      initialInvestment,
+    };
+    const bot = await this.firestore.gridBot.create(botEntity, user.uid);
 
     this.logger.debug(
       `The bot ${bot.id} with pair ${bot.baseCurrency}/${bot.quoteCurrency} was created succesfully`,
       {
-        gridLevels: bot.gridLevels,
-        quantityPerGrid: bot.quantityPerGrid,
-        highPrice: bot.highPrice,
-        lowPrice: bot.lowPrice,
+        gridLines: bot.gridLines,
+        gridLinesLength: bot.gridLines.length,
       },
     );
 
@@ -108,7 +123,12 @@ export class GridBotService {
       `Current ${bot.baseCurrency} asset price is ${currentAssetPrice} ${bot.quoteCurrency}`,
     );
 
-    const initialDeals = calcInitialDealsByAssetPrice(bot, currentAssetPrice);
+    const initialDeals = calcInitialDealsByGridLines(
+      bot.gridLines,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+      currentAssetPrice,
+    );
     this.logger.debug(
       `Calculate initial deals (total: ${initialDeals.length})`,
       {
@@ -227,7 +247,7 @@ export class GridBotService {
       const order = await this.exchange.placeLimitOrder(orderToPlace);
       placedOrders.push(order);
       this.logger.debug(
-        `Order with id ${orderToPlace.clientOrderId} was placed`,
+        `Order with ID: ${orderToPlace.clientOrderId}; Price: ${orderToPlace.price} was placed`,
         order,
       );
       console.log('order', order);
@@ -506,7 +526,7 @@ export class GridBotService {
     const {
       baseCurrencyAmount: baseCurrencyAmountRequired,
       quoteCurrencyAmount: quoteCurrencyAmountRequired,
-    } = calculateInvestment(deals, bot.quantityPerGrid);
+    } = calculateInvestment(deals);
     const assets = await this.exchange.accountAssets();
 
     // check Base currency amount
@@ -534,7 +554,7 @@ export class GridBotService {
     );
 
     if (!currencyAsset) {
-      const errorMessage = `Missing currency asset ${currencyAsset} on the exchange`;
+      const errorMessage = `You dont have required asset ${currencySymbol} on your exchange account`;
 
       this.logger.debug(`[checkEnoughBalance] ${errorMessage}`);
       throw new MissingCurrencyOnExchangeException(errorMessage);
@@ -592,7 +612,7 @@ export class GridBotService {
     );
 
     const dealsWithProfit = deals.map((deal) =>
-      populateCompletedDealWithProfit(deal, bot.quantityPerGrid, fee),
+      populateCompletedDealWithProfit(deal, fee),
     );
 
     const sortedDeals = dealsWithProfit.sort(

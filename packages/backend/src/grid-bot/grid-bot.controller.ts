@@ -15,7 +15,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';

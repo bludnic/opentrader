@@ -9,9 +9,11 @@ export function createBuyPlacedDeal(
   buyOrderPrice: number,
   sellOrderId: string,
   sellOrderPrice: number,
+  quantity: number,
 ): DealBuyPlaced {
   return {
     id: dealId,
+    quantity,
     buyOrder: {
       clientOrderId: buyOrderId,
       price: buyOrderPrice,

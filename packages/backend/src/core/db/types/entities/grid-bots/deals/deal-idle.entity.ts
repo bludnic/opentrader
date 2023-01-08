@@ -11,6 +11,8 @@ import {
 export class DealIdleEntity implements DealIdle {
   id: string;
 
+  quantity: number;
+
   @ApiProperty({
     type: () => BuyOrderIdleEntity,
   })

@@ -378,9 +378,10 @@
               "SellFilled"
             ]
           },
-          "id": { "type": "string" }
+          "id": { "type": "string" },
+          "quantity": { "type": "number" }
         },
-        "required": ["buyOrder", "sellOrder", "status", "id"]
+        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
       },
       "BuyOrderPlacedEntity": {
         "type": "object",
@@ -408,9 +409,10 @@
               "SellFilled"
             ]
           },
-          "id": { "type": "string" }
+          "id": { "type": "string" },
+          "quantity": { "type": "number" }
         },
-        "required": ["buyOrder", "sellOrder", "status", "id"]
+        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
       },
       "BuyOrderFilledEntity": {
         "type": "object",
@@ -438,9 +440,10 @@
               "SellFilled"
             ]
           },
-          "id": { "type": "string" }
+          "id": { "type": "string" },
+          "quantity": { "type": "number" }
         },
-        "required": ["buyOrder", "sellOrder", "status", "id"]
+        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
       },
       "SellOrderPlacedEntity": {
         "type": "object",
@@ -468,9 +471,10 @@
               "SellFilled"
             ]
           },
-          "id": { "type": "string" }
+          "id": { "type": "string" },
+          "quantity": { "type": "number" }
         },
-        "required": ["buyOrder", "sellOrder", "status", "id"]
+        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
       },
       "SellOrderFilledEntity": {
         "type": "object",
@@ -498,16 +502,50 @@
               "SellFilled"
             ]
           },
-          "id": { "type": "string" }
+          "id": { "type": "string" },
+          "quantity": { "type": "number" }
         },
-        "required": ["buyOrder", "sellOrder", "status", "id"]
+        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
+      },
+      "GridLineDto": {
+        "type": "object",
+        "properties": {
+          "price": { "type": "number" },
+          "quantity": { "type": "number" }
+        },
+        "required": ["price", "quantity"]
+      },
+      "BaseCurrencyInvestmentDto": {
+        "type": "object",
+        "properties": {
+          "quantity": { "type": "number" },
+          "price": { "type": "number" }
+        },
+        "required": ["quantity", "price"]
+      },
+      "QuoteCurrencyInvestmentDto": {
+        "type": "object",
+        "properties": { "quantity": { "type": "number" } },
+        "required": ["quantity"]
+      },
+      "InitialInvestmentDto": {
+        "type": "object",
+        "properties": {
+          "baseCurrency": {
+            "$ref": "#/components/schemas/BaseCurrencyInvestmentDto"
+          },
+          "quoteCurrency": {
+            "$ref": "#/components/schemas/QuoteCurrencyInvestmentDto"
+          }
+        },
+        "required": ["baseCurrency", "quoteCurrency"]
       },
       "GridBotDto": {
         "type": "object",
         "properties": {
-          "quantityPerGrid": {
-            "type": "number",
-            "title": "Amount to buy per grid level in baseCurrency"
+          "gridLines": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GridLineDto" }
           },
           "deals": {
             "type": "array",
@@ -521,28 +559,26 @@
               ]
             }
           },
+          "initialInvestment": {
+            "$ref": "#/components/schemas/InitialInvestmentDto"
+          },
           "id": { "type": "string" },
           "name": { "type": "string" },
           "baseCurrency": { "type": "string" },
           "quoteCurrency": { "type": "string" },
-          "highPrice": { "type": "number" },
-          "lowPrice": { "type": "number" },
-          "gridLevels": { "type": "number" },
           "enabled": { "type": "boolean" },
           "createdAt": { "type": "number" },
           "userId": { "type": "string" },
           "exchangeAccountId": { "type": "string" }
         },
         "required": [
-          "quantityPerGrid",
+          "gridLines",
           "deals",
+          "initialInvestment",
           "id",
           "name",
           "baseCurrency",
           "quoteCurrency",
-          "highPrice",
-          "lowPrice",
-          "gridLevels",
           "enabled",
           "createdAt",
           "userId",
@@ -567,28 +603,22 @@
       "CreateBotRequestBodyDto": {
         "type": "object",
         "properties": {
-          "quantityPerGrid": {
-            "type": "number",
-            "title": "Amount to buy per grid level in baseCurrency"
+          "gridLines": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GridLineDto" }
           },
           "id": { "type": "string" },
           "name": { "type": "string" },
           "baseCurrency": { "type": "string" },
           "quoteCurrency": { "type": "string" },
-          "highPrice": { "type": "number" },
-          "lowPrice": { "type": "number" },
-          "gridLevels": { "type": "number" },
           "exchangeAccountId": { "type": "string" }
         },
         "required": [
-          "quantityPerGrid",
+          "gridLines",
           "id",
           "name",
           "baseCurrency",
           "quoteCurrency",
-          "highPrice",
-          "lowPrice",
-          "gridLevels",
           "exchangeAccountId"
         ]
       },
@@ -696,6 +726,7 @@
           "grossProfit": { "type": "number" },
           "netProfit": { "type": "number" },
           "id": { "type": "string" },
+          "quantity": { "type": "number" },
           "createdAt": { "type": "number" },
           "botId": { "type": "string" }
         },
@@ -705,6 +736,7 @@
           "grossProfit",
           "netProfit",
           "id",
+          "quantity",
           "createdAt",
           "botId"
         ]

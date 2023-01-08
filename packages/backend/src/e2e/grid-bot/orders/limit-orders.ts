@@ -1,5 +1,6 @@
 import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
 import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { gridBotQuantityPerGrid } from 'src/e2e/grid-bot/bot-settings';
 import { GridBotE2ELimitOrder } from './types';
 
 function limitOrder(
@@ -13,6 +14,7 @@ function limitOrder(
     status,
     side,
     price,
+    quantity: gridBotQuantityPerGrid,
   };
 }
 

@@ -33,6 +33,8 @@ export class CompletedDealEntity implements ICompletedDeal {
   })
   sellOrder: ICompletedDealSellOrder;
 
+  quantity: number;
+
   createdAt: number;
   botId: string;
 
