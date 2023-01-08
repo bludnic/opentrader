@@ -5,11 +5,14 @@ describe('calculateInvestment', () => {
   it('should calculate investment', () => {
     const expectedResult = {
       baseCurrencyAmount: 120 + 120 + 120, // 3 Sell orders
-      quoteCurrencyAmount: 120 / 10 + 120 / 12, // 2 Buy Orders
+      quoteCurrencyAmount: 120 * 10 + 120 * 12, // 2 Buy Orders
     };
 
-    expect(calculateInvestment(DOT_BUSD_DEALS_MOCK, 120)).toStrictEqual(
-      expectedResult,
-    );
+    const deals = DOT_BUSD_DEALS_MOCK.map((deal) => ({
+      ...deal,
+      quantity: 120,
+    }));
+
+    expect(calculateInvestment(deals)).toStrictEqual(expectedResult);
   });
 });

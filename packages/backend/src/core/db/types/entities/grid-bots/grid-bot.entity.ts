@@ -1,11 +1,15 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDefined,
   IsNotEmpty,
   IsNumber,
   IsString,
+  ValidateNested,
 } from 'class-validator';
+import { GridLineDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-line.dto';
+import { InitialInvestmentDto } from 'src/core/db/firestore/repositories/grid-bot/dto/initial-investment.dto';
 import { DealBuyFilledEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-filled.entity';
 import { DealBuyPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-placed.entity';
 import { DealIdleEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-idle.entity';
@@ -13,6 +17,8 @@ import { DealSellFilledEntity } from 'src/core/db/types/entities/grid-bots/deals
 import { DealSellPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-sell-placed.entity';
 import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
+import { InitialInvestment } from 'src/core/db/types/entities/grid-bots/investment/initial-investment.interface';
 
 @ApiExtraModels(
   DealIdleEntity,
@@ -38,24 +44,14 @@ export class GridBotEntity implements IGridBot {
   @IsString()
   quoteCurrency: string; // e.g USDT
 
-  @IsDefined()
-  @IsNumber()
-  highPrice: number;
-
-  @IsDefined()
-  @IsNumber()
-  lowPrice: number;
-
-  @IsDefined()
-  @IsNumber()
-  gridLevels: number;
-
   @ApiProperty({
-    title: 'Amount to buy per grid level in baseCurrency',
+    type: () => GridLineDto,
+    isArray: true,
   })
   @IsDefined()
-  @IsNumber()
-  quantityPerGrid: number;
+  @ValidateNested()
+  @Type(() => GridLineDto)
+  gridLines: IGridLine[];
 
   @IsDefined()
   @IsBoolean()
@@ -78,6 +74,11 @@ export class GridBotEntity implements IGridBot {
     },
   })
   deals: IDeal[]; // @todo поменять на DTO
+
+  @ApiProperty({
+    type: () => InitialInvestmentDto,
+  })
+  initialInvestment: InitialInvestment;
 
   userId: string;
 

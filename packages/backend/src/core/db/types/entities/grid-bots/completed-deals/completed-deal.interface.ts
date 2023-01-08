@@ -7,6 +7,8 @@ export interface ICompletedDeal {
   buyOrder: ICompletedDealBuyOrder;
   sellOrder: ICompletedDealSellOrder;
 
+  quantity: number;
+
   createdAt: number; // timestamp
   botId: string;
 }

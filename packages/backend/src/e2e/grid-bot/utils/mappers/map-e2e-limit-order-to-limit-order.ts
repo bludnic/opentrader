@@ -1,7 +1,6 @@
 import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
 import { OrderStatus } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
-import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { GridBotE2ELimitOrder } from 'src/e2e/grid-bot/orders/types';
 
 function mapOrderStatusEnumToOrderStatusString(
@@ -23,7 +22,7 @@ export function mapE2ELimitOrderToLimitOrder(
     exchangeOrderId: 'mock',
     clientOrderId: order.clientOrderId,
     side: order.side,
-    quantity: gridBotSettings.quantityPerGrid,
+    quantity: order.quantity,
     price: order.price,
     status: mapOrderStatusEnumToOrderStatusString(order.status),
     createdAt: 0,

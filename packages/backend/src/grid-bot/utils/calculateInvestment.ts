@@ -12,15 +12,11 @@ export type CalculateInvestmentResult = {
  * required to place Buy/Sell limit orders on the exchange.
  *
  * @param deals
- * @param quantityPerGrid
  */
-export function calculateInvestment(
-  deals: IDeal[],
-  quantityPerGrid: number,
-): CalculateInvestmentResult {
+export function calculateInvestment(deals: IDeal[]): CalculateInvestmentResult {
   let baseCurrencyAmount = deals.reduce((amount, deal) => {
     if (deal.status === DealStatusEnum.SellPlaced) {
-      return big(amount).plus(quantityPerGrid).toNumber();
+      return big(amount).plus(deal.quantity).toNumber();
     }
 
     return amount;
@@ -28,7 +24,7 @@ export function calculateInvestment(
 
   let quoteCurrencyAmount = deals.reduce((amount, deal) => {
     if (deal.status === DealStatusEnum.BuyPlaced) {
-      const quoteAmountPerGrid = big(quantityPerGrid).div(deal.buyOrder.price);
+      const quoteAmountPerGrid = big(deal.quantity).times(deal.buyOrder.price);
 
       return big(amount).plus(quoteAmountPerGrid).toNumber();
     }

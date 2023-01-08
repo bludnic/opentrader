@@ -11,5 +11,6 @@ export function completedDealFromSellFilledDeal(
     sellOrder: {
       price: deal.sellOrder.price,
     },
+    quantity: deal.quantity,
   };
 }

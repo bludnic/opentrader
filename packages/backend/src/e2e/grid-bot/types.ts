@@ -1,3 +1,4 @@
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { GridBotE2EDeal } from 'src/e2e/grid-bot/deals/types';
 import {
   GridBotE2EActionOrder,
@@ -12,13 +13,7 @@ export type GridBotE2EHistoryData = {
   orders: GridBotE2EActionOrder[]; // orders to be placed
 };
 
-export interface IGridBotSettings {
-  id: string;
-  name: string;
-  baseCurrency: string;
-  quoteCurrency: string;
-  gridLevels: number;
-  lowPrice: number;
-  highPrice: number;
-  quantityPerGrid: number;
-}
+export type IGridBotSettings = Pick<
+  IGridBot,
+  'id' | 'name' | 'baseCurrency' | 'quoteCurrency' | 'gridLines'
+>;

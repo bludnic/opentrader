@@ -16,6 +16,7 @@ export type BaseDeal<
   DEAL_STATUS extends DealStatusEnum,
 > = {
   id: string;
+  quantity: number;
   buyOrder: BUY_ORDER;
   sellOrder: SELL_ORDER;
   status: DEAL_STATUS;
