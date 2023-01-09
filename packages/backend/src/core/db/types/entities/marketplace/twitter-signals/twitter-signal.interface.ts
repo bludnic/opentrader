@@ -19,7 +19,7 @@ export interface ITwitterSignal {
    */
   enabled: boolean;
 
-  coins: ITweetCoin[];
+  coin: ITweetCoin;
 
   createdAt: number; // timestamp
 }

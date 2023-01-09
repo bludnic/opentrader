@@ -5,14 +5,14 @@ import { utcDateNowISO } from './utcDateNowISO';
 
 export function convertTweetToSignalEvent(
   tweet: IRecentTweet,
-  coins: ITweetCoin[],
+  coin: ITweetCoin,
   signalId: string,
 ): TwitterSignalEventDto {
   return {
     id: tweet.id, // maybe use nanoid
     signalId: signalId,
     parsedAt: utcDateNowISO(),
-    coins,
+    coin,
     tweet,
   };
 }

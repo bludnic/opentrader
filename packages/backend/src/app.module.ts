@@ -12,6 +12,7 @@ import { CoreModule } from 'src/core/core.module';
 import { FirebaseModule } from 'src/core/firebase';
 import { ExchangeAccountsController } from 'src/exchange-accounts/exchange-accounts.controller';
 import { ExchangeAccountsModule } from 'src/exchange-accounts/exchange-accounts.module';
+import { ExperimentsModule } from 'src/experiments/experiments.module';
 import { gridBotServiceFactory } from 'src/grid-bot/grid-bot-service.factory';
 import { GridBotSyncService } from 'src/grid-bot/grid-bot-sync.service';
 import { GridBotController } from 'src/grid-bot/grid-bot.controller';
@@ -19,6 +20,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
+import { ThreeCommasApiModule } from 'src/shared/3commas-api/3commas-api.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 
 @Module({
@@ -55,6 +57,8 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
     ExchangeAccountsModule,
     AppModule,
     MarketplaceModule,
+    ThreeCommasApiModule,
+    ExperimentsModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],

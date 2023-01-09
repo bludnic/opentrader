@@ -40,3 +40,6 @@ lerna-debug.log*
 
 # firebase
 firebase-credentials.json
+
+# 3commas-api
+src/shared/3commas-api/swagger/client

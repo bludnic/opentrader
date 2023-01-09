@@ -1,6 +1,6 @@
 import { TwitterSignalEventDto } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/dto/twitter-signal-event.dto';
 import { TweetBriefEntity } from 'src/core/db/types/entities/marketplace/twitter-signals/signal-events/types/tweet/tweet-brief.entity';
-import { isSignalEventActive } from 'src/marketplace/twitter-signals/utils/isSignalEventActive';
+import { isSignalEventActive } from './isSignalEventActive';
 
 // "Date now" is mocked as "2022-04-01T10:00:00.000Z"
 jest.mock('src/marketplace/twitter-signals/utils/utcDateNow');
@@ -17,7 +17,10 @@ const signalEventBase: TwitterSignalEventDto = {
   parsedAt: '2022-04-01T00:00:00.000Z',
   signalId: 'elon-tweets-doge',
   tweet,
-  coins: [],
+  coin: {
+    baseCurrency: 'DOGE',
+    quoteCurrency: 'USDT',
+  },
 };
 
 describe('isSignalEventActive', () => {

@@ -4,6 +4,7 @@ import { TwitterSignalEventDto } from 'src/core/db/firestore/repositories/market
 import { TwitterSignalDto } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/dto/twitter-signal.dto';
 import { TwitterApiClientService } from 'src/core/twitter-api/twitter-api-client.service';
 import { RecentTweetDto } from 'src/core/twitter-api/types/client/tweets-search-recent/dto/recent-tweet.dto';
+import { TweetsSearchTweetField } from 'src/core/twitter-api/types/client/tweets-search-recent/enums/tweets-search-tweet-field.enum';
 import { IRecentTweet } from 'src/core/twitter-api/types/client/tweets-search-recent/types/recent-tweet.interface';
 import { convertTweetToSignalEvent } from 'src/marketplace/twitter-signals/utils/convertTweetToSignalEvent';
 import { filterActiveEvents } from 'src/marketplace/twitter-signals/utils/filterActiveEvents';
@@ -26,6 +27,11 @@ export class TwitterSignalsService {
 
     const res = await this.twitterApi.searchRecentTweets({
       query: signal.twitterQuery,
+      'tweet.fields': [
+        TweetsSearchTweetField.AuthorId,
+        TweetsSearchTweetField.CreatedAt,
+        TweetsSearchTweetField.Text,
+      ],
     });
 
     const tweets: IRecentTweet[] = res.data.data;
@@ -35,7 +41,11 @@ export class TwitterSignalsService {
       tweets,
     );
     for (const tweet of tweets) {
-      const newSignalEvent = convertTweetToSignalEvent(tweet, signal.coins, signal.id);
+      const newSignalEvent = convertTweetToSignalEvent(
+        tweet,
+        signal.coin,
+        signal.id,
+      );
 
       try {
         await this.firestore.marketplaceTwitterSignalEvents.createIfNotExists(

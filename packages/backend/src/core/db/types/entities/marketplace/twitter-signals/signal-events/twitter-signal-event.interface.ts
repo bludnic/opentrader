@@ -7,7 +7,7 @@ export interface ITwitterSignalEvent {
 
   tweet: ITweetBrief;
 
-  coins: ITweetCoin[];
+  coin: ITweetCoin;
 
   parsedAt: string; // ISO
 }

@@ -38,7 +38,7 @@ export class TwitterSignalEntity implements ITwitterSignal {
   @ValidateNested()
   @Type(() => TweetCoinEntity)
   @IsDefined()
-  coins: ITweetCoin[];
+  coin: ITweetCoin;
 
   createdAt: number;
 
