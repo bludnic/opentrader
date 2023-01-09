@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { ThreeCommasAccountRepository } from 'src/core/db/firestore/repositories/3commas-account/3commas-account.repository';
 import { ExchangeAccountRepository } from 'src/core/db/firestore/repositories/exchange-account/exchange-account.repository';
 import { GridBotCompletedDealsRepository } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/grid-bot-completed-deals.repository';
 import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/grid-bot.repository';
@@ -19,6 +20,7 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     GridBotCompletedDealsRepository,
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
+    ThreeCommasAccountRepository,
   ],
   providers: [
     FirestoreService,
@@ -29,6 +31,7 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     GridBotCompletedDealsRepository,
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
+    ThreeCommasAccountRepository,
   ],
 })
 export class FirestoreModule {}

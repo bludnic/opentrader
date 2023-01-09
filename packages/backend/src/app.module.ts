@@ -1,5 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { WinstonModule } from 'nest-winston';
+import { ThreeCommasAccountsController } from 'src/3commas-accounts/3commas-accounts.controller';
+import { ThreeCommasAccountsModule } from 'src/3commas-accounts/3commas-accounts.module';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
 import { Environment } from 'src/common/enums/environment.enum';
@@ -59,6 +61,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
     MarketplaceModule,
     ThreeCommasApiModule,
     ExperimentsModule,
+    ThreeCommasAccountsModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],
@@ -67,6 +70,10 @@ export class AppModule implements NestModule {
   configure(consumer) {
     consumer
       .apply(FirebaseUserMiddleware)
-      .forRoutes(GridBotController, ExchangeAccountsController);
+      .forRoutes(
+        GridBotController,
+        ExchangeAccountsController,
+        ThreeCommasAccountsController,
+      );
   }
 }

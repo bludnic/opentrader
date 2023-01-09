@@ -5,3 +5,4 @@ export const ACCOUNT_COLLECTION = 'accounts';
 export const MARKETPLACE_TWITTER_SIGNALS = 'marketplace_twitter_signals';
 export const MARKETPLACE_TWITTER_SIGNAL_EVENTS =
   'marketplace_twitter_signal_events';
+export const THREE_COMMAS_EXCHANGE_ACCOUNTS_COLLECTION = '3commas_accounts';
