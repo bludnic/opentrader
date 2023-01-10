@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
+import PendingIcon from '@mui/icons-material/Pending';
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
 import List from "@mui/material/List";
@@ -49,6 +50,19 @@ export const Drawer: FC<DrawerProps> = (props) => {
       </Toolbar>
       <Divider />
       <List>
+        <Link href={"/3commas/accounts"}>
+          <ListItem
+            button
+            component="a"
+            selected={"/3commas/accounts" === router.pathname}
+          >
+            <ListItemIcon>
+              <PendingIcon fontSize="medium" />
+            </ListItemIcon>
+            <ListItemText primary={"3Commas Accounts"} />
+          </ListItem>
+        </Link>
+
         <Link href={"/exchange-accounts"}>
           <ListItem
             button
@@ -58,7 +72,7 @@ export const Drawer: FC<DrawerProps> = (props) => {
             <ListItemIcon>
               <AccountBalanceIcon fontSize="medium" />
             </ListItemIcon>
-            <ListItemText primary={"Accounts"} />
+            <ListItemText primary={"Exchange Accounts"} />
           </ListItem>
         </Link>
 

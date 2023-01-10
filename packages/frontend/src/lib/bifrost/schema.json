@@ -329,6 +329,573 @@
         },
         "tags": ["Exchange Accounts"]
       }
+    },
+    "/bapi/marketplace/signal": {
+      "get": {
+        "operationId": "signal",
+        "parameters": [
+          {
+            "name": "query",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "tweet.fields",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "array", "items": { "type": "string" } }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signals": {
+      "get": {
+        "operationId": "signals",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalsListResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSignal",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTwitterSignalRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTwitterSignalResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signals/{signalId}/events": {
+      "get": {
+        "operationId": "specificSignalEvents",
+        "parameters": [
+          {
+            "name": "signalId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalEventsListResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signals/{id}": {
+      "get": {
+        "operationId": "signal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateSignal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTwitterSignalRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTwitterSignalResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signals/{id}/parse": {
+      "patch": {
+        "operationId": "parseTweetsBySignal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParseTweetsBySignalResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signal/events": {
+      "get": {
+        "operationId": "signalEvents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalEventsListResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSignalEvent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTwitterSignalEventRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTwitterSignalEventResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signal/events/active": {
+      "get": {
+        "operationId": "activeSignalEvents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalEventsListResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/marketplace/twitter/signal/events/{id}": {
+      "get": {
+        "operationId": "signalEvent",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTwitterSignalEventResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateSignalEvent",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTwitterSignalEventRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTwitterSignalEventResponseBodyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/signal-events": {
+      "get": {
+        "operationId": "signalEvents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TwitterSignalEventDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/active-signal-events": {
+      "get": {
+        "operationId": "activeSignalEvents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TwitterSignalEventDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/smart-trades-history": {
+      "get": {
+        "operationId": "smartTradesHistory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/bots": {
+      "get": {
+        "operationId": "getAllBots",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/TweetTradingBotDto" }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/bot/{id}": {
+      "get": {
+        "operationId": "getBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TweetTradingBotDto" }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/bot/create": {
+      "post": {
+        "operationId": "createBot",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTweetTradingBotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TweetTradingBotDto" }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/bot/update/{id}": {
+      "put": {
+        "operationId": "updateBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTweetTradingBotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TweetTradingBotDto" }
+              }
+            }
+          }
+        },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/experiments/3c-tweet-trading/run-matching": {
+      "get": {
+        "operationId": "runMatching",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Experiments / Tweet Trading"]
+      }
+    },
+    "/bapi/3commas-accounts/accounts": {
+      "get": {
+        "operationId": "getAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Get3CommasAccountsResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["3Commas Accounts"]
+      }
+    },
+    "/bapi/3commas-accounts/account/{id}": {
+      "get": {
+        "operationId": "getAccount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Get3CommasAccountResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["3Commas Accounts"]
+      },
+      "put": {
+        "operationId": "updateAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Update3CommasAccountRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Update3CommasAccountResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["3Commas Accounts"]
+      }
+    },
+    "/bapi/3commas-accounts/account": {
+      "post": {
+        "operationId": "createAccount",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Create3CommasAccountRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Create3CommasAccountResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["3Commas Accounts"]
+      }
     }
   },
   "info": {
@@ -851,6 +1418,390 @@
           }
         },
         "required": ["exchangeAccount"]
+      },
+      "TweetCoinEntity": {
+        "type": "object",
+        "properties": {
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" }
+        },
+        "required": ["baseCurrency", "quoteCurrency"]
+      },
+      "TwitterSignalDto": {
+        "type": "object",
+        "properties": {
+          "twitterQuery": {
+            "type": "string",
+            "description": "The `query` parameter that is passed to the Twitter API"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Should cron watch for this signal?"
+          },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "createdAt": { "type": "number" }
+        },
+        "required": [
+          "twitterQuery",
+          "enabled",
+          "coin",
+          "id",
+          "name",
+          "description",
+          "createdAt"
+        ]
+      },
+      "GetTwitterSignalsListResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signals": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TwitterSignalDto" }
+          }
+        },
+        "required": ["signals"]
+      },
+      "TweetBriefEntity": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "author_id": { "type": "string" },
+          "created_at": { "type": "string" }
+        },
+        "required": ["id", "text", "author_id", "created_at"]
+      },
+      "TwitterSignalEventDto": {
+        "type": "object",
+        "properties": {
+          "tweet": { "$ref": "#/components/schemas/TweetBriefEntity" },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "signalId": { "type": "string" },
+          "parsedAt": { "type": "string" }
+        },
+        "required": ["tweet", "coin", "id", "signalId", "parsedAt"]
+      },
+      "GetTwitterSignalEventsListResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signalEvents": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TwitterSignalEventDto" }
+          }
+        },
+        "required": ["signalEvents"]
+      },
+      "GetTwitterSignalResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signal": { "$ref": "#/components/schemas/TwitterSignalDto" }
+        },
+        "required": ["signal"]
+      },
+      "CreateTwitterSignalRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "twitterQuery": {
+            "type": "string",
+            "description": "The `query` parameter that is passed to the Twitter API"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Should cron watch for this signal?"
+          },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": [
+          "twitterQuery",
+          "enabled",
+          "coin",
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "CreateTwitterSignalResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signal": { "$ref": "#/components/schemas/TwitterSignalDto" }
+        },
+        "required": ["signal"]
+      },
+      "UpdateTwitterSignalRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "twitterQuery": {
+            "type": "string",
+            "description": "The `query` parameter that is passed to the Twitter API"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Should cron watch for this signal?"
+          },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": [
+          "twitterQuery",
+          "enabled",
+          "coin",
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "UpdateTwitterSignalResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signal": { "$ref": "#/components/schemas/TwitterSignalDto" }
+        },
+        "required": ["signal"]
+      },
+      "RecentTweetDto": {
+        "type": "object",
+        "properties": {
+          "author_id": { "type": "string" },
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "created_at": { "type": "string" }
+        },
+        "required": ["author_id", "id", "text", "created_at"]
+      },
+      "ParseTweetsBySignalResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "parsedTweets": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RecentTweetDto" }
+          }
+        },
+        "required": ["parsedTweets"]
+      },
+      "GetTwitterSignalEventResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signalEvent": {
+            "$ref": "#/components/schemas/TwitterSignalEventDto"
+          }
+        },
+        "required": ["signalEvent"]
+      },
+      "CreateTwitterSignalEventRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "tweet": { "$ref": "#/components/schemas/TweetBriefEntity" },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "signalId": { "type": "string" }
+        },
+        "required": ["tweet", "coin", "id", "signalId"]
+      },
+      "CreateTwitterSignalEventResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signalEvent": {
+            "$ref": "#/components/schemas/TwitterSignalEventDto"
+          }
+        },
+        "required": ["signalEvent"]
+      },
+      "UpdateTwitterSignalEventRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "tweet": { "$ref": "#/components/schemas/TweetBriefEntity" },
+          "coin": { "$ref": "#/components/schemas/TweetCoinEntity" },
+          "id": { "type": "string" },
+          "signalId": { "type": "string" }
+        },
+        "required": ["tweet", "coin", "id", "signalId"]
+      },
+      "UpdateTwitterSignalEventResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "signalEvent": {
+            "$ref": "#/components/schemas/TwitterSignalEventDto"
+          }
+        },
+        "required": ["signalEvent"]
+      },
+      "TweetTradingBotSmartTradeSettingsDto": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "number", "description": "3commas accountId" },
+          "volume": { "type": "number", "description": "Volume to buy" },
+          "takeProfitPercent": { "type": "number" },
+          "stopLossPercent": { "type": "number" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "note": { "type": "string" }
+        },
+        "required": [
+          "accountId",
+          "volume",
+          "takeProfitPercent",
+          "stopLossPercent",
+          "baseCurrency",
+          "quoteCurrency",
+          "note"
+        ]
+      },
+      "TweetTradingBotDto": {
+        "type": "object",
+        "properties": {
+          "smartTradeSettings": {
+            "$ref": "#/components/schemas/TweetTradingBotSmartTradeSettingsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "watchSignalsIds": { "type": "array", "items": { "type": "string" } },
+          "usedSignalEventsIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "createdAt": { "type": "string" }
+        },
+        "required": [
+          "smartTradeSettings",
+          "id",
+          "name",
+          "enabled",
+          "watchSignalsIds",
+          "usedSignalEventsIds",
+          "createdAt"
+        ]
+      },
+      "CreateTweetTradingBotDto": {
+        "type": "object",
+        "properties": {
+          "smartTradeSettings": {
+            "$ref": "#/components/schemas/TweetTradingBotSmartTradeSettingsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "watchSignalsIds": { "type": "array", "items": { "type": "string" } },
+          "usedSignalEventsIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": [
+          "smartTradeSettings",
+          "id",
+          "name",
+          "enabled",
+          "watchSignalsIds",
+          "usedSignalEventsIds"
+        ]
+      },
+      "UpdateTweetTradingBotDto": {
+        "type": "object",
+        "properties": {
+          "smartTradeSettings": {
+            "$ref": "#/components/schemas/TweetTradingBotSmartTradeSettingsDto"
+          },
+          "name": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "watchSignalsIds": { "type": "array", "items": { "type": "string" } },
+          "usedSignalEventsIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": [
+          "smartTradeSettings",
+          "name",
+          "enabled",
+          "watchSignalsIds",
+          "usedSignalEventsIds"
+        ]
+      },
+      "ThreeCommasAccountCredentialsDto": {
+        "type": "object",
+        "properties": {
+          "isPaperAccount": {
+            "type": "boolean",
+            "description": "If set to `true` then Paper Account will be used, otherwise Real Account will be used."
+          },
+          "apiKey": { "type": "string" },
+          "secretKey": { "type": "string" }
+        },
+        "required": ["isPaperAccount", "apiKey", "secretKey"]
+      },
+      "ThreeCommasAccountDto": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/ThreeCommasAccountCredentialsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "userId": { "type": "string" },
+          "createdAt": { "type": "number" }
+        },
+        "required": ["credentials", "id", "name", "userId", "createdAt"]
+      },
+      "Get3CommasAccountsResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ThreeCommasAccountDto" }
+          }
+        },
+        "required": ["accounts"]
+      },
+      "Get3CommasAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "account": { "$ref": "#/components/schemas/ThreeCommasAccountDto" }
+        },
+        "required": ["account"]
+      },
+      "Update3CommasAccountRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/ThreeCommasAccountCredentialsDto"
+          },
+          "name": { "type": "string" }
+        },
+        "required": ["credentials", "name"]
+      },
+      "Update3CommasAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "account": { "$ref": "#/components/schemas/ThreeCommasAccountDto" }
+        },
+        "required": ["account"]
+      },
+      "Create3CommasAccountRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/ThreeCommasAccountCredentialsDto"
+          },
+          "id": { "type": "string" },
+          "name": { "type": "string" }
+        },
+        "required": ["credentials", "id", "name"]
+      },
+      "Create3CommasAccountResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "account": { "$ref": "#/components/schemas/ThreeCommasAccountDto" }
+        },
+        "required": ["account"]
       }
     }
   }
