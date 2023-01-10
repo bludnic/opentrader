@@ -3,7 +3,7 @@ import {
   CreateExchangeAccountRequestBodyDto,
   CreateExchangeAccountResponseBodyDto,
   ExchangeAccountDto,
-  GetBotResponseBodyDto,
+  GetExchangeAccountResponseBodyDto,
   GetExchangeAccountsResponseBodyDto,
   UpdateExchangeAccountRequestBodyDto,
   UpdateExchangeAccountResponseBodyDto,
@@ -26,16 +26,17 @@ export const exchangeAccountsApi = createApi({
         },
       }),
     }),
-    getExchange: builder.query<GetBotResponseBodyDto, ExchangeAccountDto["id"]>(
-      {
-        query: (accountId) => ({
-          url: `/account/${accountId}`,
-          headers: {
-            Authorization: "Bearer master_trader_99", // harcoded
-          },
-        }),
-      }
-    ),
+    getExchange: builder.query<
+      GetExchangeAccountResponseBodyDto,
+      ExchangeAccountDto["id"]
+    >({
+      query: (accountId) => ({
+        url: `/account/${accountId}`,
+        headers: {
+          Authorization: "Bearer master_trader_99", // harcoded
+        },
+      }),
+    }),
     createAccount: builder.mutation<
       CreateExchangeAccountResponseBodyDto,
       CreateExchangeAccountRequestBodyDto
