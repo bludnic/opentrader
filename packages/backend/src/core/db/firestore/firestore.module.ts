@@ -5,6 +5,7 @@ import { ExchangeAccountRepository } from 'src/core/db/firestore/repositories/ex
 import { GridBotCompletedDealsRepository } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/grid-bot-completed-deals.repository';
 import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/grid-bot.repository';
 import { GridBotEventsRepository } from 'src/core/db/firestore/repositories/grid-bot-events/grid-bot-events.repository';
+import { TweetTradingBotsRepository } from 'src/core/db/firestore/repositories/tweet-trading-bots/tweet-trading-bots.repository';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { TwitterSignalsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/twitter-signals.repository';
 import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/twitter-signal-events.repository';
@@ -21,6 +22,7 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,
+    TweetTradingBotsRepository,
   ],
   providers: [
     FirestoreService,
@@ -32,6 +34,7 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,
+    TweetTradingBotsRepository,
   ],
 })
 export class FirestoreModule {}

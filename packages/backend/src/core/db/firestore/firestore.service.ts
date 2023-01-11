@@ -6,6 +6,7 @@ import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/g
 import { GridBotEventsRepository } from 'src/core/db/firestore/repositories/grid-bot-events/grid-bot-events.repository';
 import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/twitter-signal-events.repository';
 import { TwitterSignalsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/twitter-signals.repository';
+import { TweetTradingBotsRepository } from 'src/core/db/firestore/repositories/tweet-trading-bots/tweet-trading-bots.repository';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 
 @Injectable()
@@ -19,5 +20,6 @@ export class FirestoreService {
     public marketplaceTwitterSignals: TwitterSignalsRepository,
     public marketplaceTwitterSignalEvents: TwitterSignalEventsRepository,
     public threeCommasAccount: ThreeCommasAccountRepository,
+    public tweetTradingBots: TweetTradingBotsRepository,
   ) {}
 }
