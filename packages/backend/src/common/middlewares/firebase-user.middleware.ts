@@ -11,7 +11,7 @@ import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 
 export const REQ_USER_ACCOUNT_KEY = 'user';
 
-const masterKey = 'master_trader_99';
+const masterKey = 'master_trader_RyyznhU25bWSRYw3';
 const masterUserId = 'd3RcKHXukfOYq3Z27MNj2ZnbLQd2';
 
 export function extractBearerToken(

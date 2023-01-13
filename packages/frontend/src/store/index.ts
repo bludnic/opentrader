@@ -4,7 +4,10 @@ import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
 import { threeCommasAccountsApi } from 'src/sections/3commas-accounts/common/store/api';
 import { exchangeAccountsApi } from 'src/sections/exchange-accounts/common/store/api';
-import { gridBotsApi } from "src/sections/grid-bot/common/store/api";
+import { gridBotsApi } from "src/sections/grid-bot/common/store/api/botsApi";
+import {
+  gridBotCompletedDealsApi
+} from 'src/sections/grid-bot/common/store/api/completedDealsApi';
 
 import rootSaga from "./rootSaga";
 import { todoReducer, TodoState } from "src/store/todo";
@@ -12,6 +15,7 @@ import { todoReducer, TodoState } from "src/store/todo";
 export type RootState = {
   todo: TodoState;
   [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
+  [gridBotCompletedDealsApi.reducerPath]: ReturnType<typeof gridBotCompletedDealsApi.reducer>;
   [exchangeAccountsApi.reducerPath]: ReturnType<typeof exchangeAccountsApi.reducer>;
   [threeCommasAccountsApi.reducerPath]: ReturnType<typeof threeCommasAccountsApi.reducer>;
 };
@@ -29,6 +33,7 @@ const makeStore = (context: Context) => {
     reducer: {
       todo: todoReducer,
       gridBotsApi: gridBotsApi.reducer,
+      gridBotCompletedDealsApi: gridBotCompletedDealsApi.reducer,
       exchangeAccountsApi: exchangeAccountsApi.reducer,
       threeCommasAccountsApi: threeCommasAccountsApi.reducer,
     },

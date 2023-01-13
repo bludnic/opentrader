@@ -1,13 +1,12 @@
 import { CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
-import { gridBotApi } from "src/lib/bifrost/api/gridBot";
-import { CompletedDealWithProfitDto } from "src/lib/bifrost/client";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
-import { useLazyGetBotQuery } from "src/sections/grid-bot/common/store/api";
+import { useLazyGetBotQuery } from "src/sections/grid-bot/common/store/api/botsApi";
+import { useLazyGetCompletedDealsQuery } from "src/sections/grid-bot/common/store/api/completedDealsApi";
 import { CompletedDealsCard } from "src/sections/grid-bot/pages/bot/components/CompletedDealsCard";
 import { GridsCard } from "./components/GridsCard";
 
@@ -29,26 +28,21 @@ export const BotPage: FC<BotPageProps> = (props) => {
 
   const router = useRouter();
 
-  const [fetchBot, { data, isLoading, error }] = useLazyGetBotQuery();
+  const [fetchBot, botQuery] = useLazyGetBotQuery();
   useEffect(() => {
     if (!router.query.id) return;
 
     fetchBot(String(router.query.id));
   }, [router.query.id]);
 
-  const [completedDeals, setCompletedDeals] = useState<
-    CompletedDealWithProfitDto[] | null
-  >(null);
-
+  const [fetchCompletedDeals, dealsQuery] = useLazyGetCompletedDealsQuery();
   useEffect(() => {
     if (!router.query.id) return;
 
-    gridBotApi
-      .getCompletedDeals(String(router.query.id))
-      .then((res) => setCompletedDeals(res.data.completedDeals));
+    fetchCompletedDeals(String(router.query.id));
   }, [router.query.id]);
 
-  if (isLoading) {
+  if (botQuery.isLoading) {
     return (
       <Root
         className={classes.root}
@@ -70,7 +64,7 @@ export const BotPage: FC<BotPageProps> = (props) => {
     );
   }
 
-  if (error) {
+  if (botQuery.error) {
     return (
       <Root
         className={classes.root}
@@ -87,12 +81,12 @@ export const BotPage: FC<BotPageProps> = (props) => {
           title: "Grid Bots",
         }}
       >
-        {JSON.stringify(error)}
+        {JSON.stringify(botQuery.error)}
       </Root>
     );
   }
 
-  if (!data) return null;
+  if (!botQuery.data) return null;
 
   return (
     <Root
@@ -112,15 +106,18 @@ export const BotPage: FC<BotPageProps> = (props) => {
     >
       <Grid container spacing={4}>
         <Grid item xl={6} xs={12}>
-          <BotCard bot={data.bot} />
+          <BotCard bot={botQuery.data.bot} />
 
-          <GridsCard bot={data.bot} sx={{ mt: 2 }} />
+          <GridsCard bot={botQuery.data.bot} sx={{ mt: 2 }} />
         </Grid>
 
         <Grid container item xl={6} xs={12}>
           <Grid item xs={12}>
-            {completedDeals ? (
-              <CompletedDealsCard bot={data.bot} deals={completedDeals} />
+            {dealsQuery.data ? (
+              <CompletedDealsCard
+                bot={botQuery.data.bot}
+                deals={dealsQuery.data.completedDeals}
+              />
             ) : null}
           </Grid>
         </Grid>

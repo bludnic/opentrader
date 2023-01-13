@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { FC } from "react";
 import { MainLayout } from "src/layouts/main";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
-import { useGetBotsQuery } from "src/sections/grid-bot/common/store/api";
+import { useGetBotsQuery } from "src/sections/grid-bot/common/store/api/botsApi";
 
 const componentName = "GridBotsListPage";
 const classes = {

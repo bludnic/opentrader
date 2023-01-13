@@ -4,31 +4,24 @@ import {
   GetBotsListResponseDto,
   GridBotDto,
 } from "src/lib/bifrost/client";
+import { prepareAuthHeaderHandler } from "src/utils/rtk/prepareAuthHeaderHandler";
 
 // Define a service using a base URL and expected endpoints
 export const gridBotsApi = createApi({
   reducerPath: "gridBotsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BIFROST_API_BASEURL}/grid-bot`,
-    headers: {
-      Authorization: "Bearer master_trader_99", // harcoded
-    },
+    prepareHeaders: prepareAuthHeaderHandler,
   }),
   endpoints: (builder) => ({
     getBots: builder.query<GetBotsListResponseDto, void>({
       query: () => ({
         url: "",
-        headers: {
-          Authorization: "Bearer master_trader_99", // harcoded
-        },
       }),
     }),
     getBot: builder.query<GetBotResponseBodyDto, GridBotDto["id"]>({
       query: (botId) => ({
         url: `/info/${botId}`,
-        headers: {
-          Authorization: "Bearer master_trader_99", // harcoded
-        },
       }),
     }),
     startBot: builder.mutation<void, Pick<GridBotDto, "id">>({

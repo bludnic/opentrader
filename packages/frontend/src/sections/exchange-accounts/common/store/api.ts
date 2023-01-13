@@ -8,22 +8,18 @@ import {
   UpdateExchangeAccountRequestBodyDto,
   UpdateExchangeAccountResponseBodyDto,
 } from "src/lib/bifrost/client";
+import { prepareAuthHeaderHandler } from "src/utils/rtk/prepareAuthHeaderHandler";
 
 export const exchangeAccountsApi = createApi({
   reducerPath: "exchangeAccountsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BIFROST_API_BASEURL}/exchange-accounts`,
-    headers: {
-      Authorization: "Bearer master_trader_99", // harcoded
-    },
+    prepareHeaders: prepareAuthHeaderHandler,
   }),
   endpoints: (builder) => ({
     getExchanges: builder.query<GetExchangeAccountsResponseBodyDto, void>({
       query: () => ({
         url: "/accounts",
-        headers: {
-          Authorization: "Bearer master_trader_99", // harcoded
-        },
       }),
     }),
     getExchange: builder.query<
@@ -32,9 +28,6 @@ export const exchangeAccountsApi = createApi({
     >({
       query: (accountId) => ({
         url: `/account/${accountId}`,
-        headers: {
-          Authorization: "Bearer master_trader_99", // harcoded
-        },
       }),
     }),
     createAccount: builder.mutation<
@@ -44,9 +37,6 @@ export const exchangeAccountsApi = createApi({
       query: (body) => ({
         url: "/account",
         method: "POST",
-        headers: {
-          Authorization: "Bearer master_trader_99", // harcoded
-        },
         body,
       }),
     }),
@@ -63,9 +53,6 @@ export const exchangeAccountsApi = createApi({
         return {
           url: `/account/${accountId}`,
           method: "PUT",
-          headers: {
-            Authorization: "Bearer master_trader_99", // harcoded
-          },
           body,
         };
       },
