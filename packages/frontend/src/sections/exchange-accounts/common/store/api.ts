@@ -17,12 +17,15 @@ export const exchangeAccountsApi = createApi({
     prepareHeaders: prepareAuthHeaderHandler,
   }),
   endpoints: (builder) => ({
-    getExchanges: builder.query<GetExchangeAccountsResponseBodyDto, void>({
+    getExchangeAccounts: builder.query<
+      GetExchangeAccountsResponseBodyDto,
+      void
+    >({
       query: () => ({
         url: "/accounts",
       }),
     }),
-    getExchange: builder.query<
+    getExchangeAccount: builder.query<
       GetExchangeAccountResponseBodyDto,
       ExchangeAccountDto["id"]
     >({
@@ -30,7 +33,7 @@ export const exchangeAccountsApi = createApi({
         url: `/account/${accountId}`,
       }),
     }),
-    createAccount: builder.mutation<
+    createExchangeAccount: builder.mutation<
       CreateExchangeAccountResponseBodyDto,
       CreateExchangeAccountRequestBodyDto
     >({
@@ -40,7 +43,7 @@ export const exchangeAccountsApi = createApi({
         body,
       }),
     }),
-    updateAccount: builder.mutation<
+    updateExchangeAccount: builder.mutation<
       UpdateExchangeAccountResponseBodyDto,
       {
         accountId: ExchangeAccountDto["id"];
@@ -61,21 +64,21 @@ export const exchangeAccountsApi = createApi({
 });
 
 const {
-  useGetExchangesQuery,
-  useLazyGetExchangeQuery,
+  useGetExchangeAccountsQuery,
+  useLazyGetExchangeAccountQuery,
 
-  useGetExchangeQuery,
-  useLazyGetExchangesQuery,
+  useGetExchangeAccountQuery,
+  useLazyGetExchangeAccountsQuery,
 
-  useCreateAccountMutation,
-  useUpdateAccountMutation,
+  useCreateExchangeAccountMutation,
+  useUpdateExchangeAccountMutation,
 } = exchangeAccountsApi;
 
 export {
-  useGetExchangesQuery,
-  useLazyGetExchangeQuery,
-  useGetExchangeQuery,
-  useLazyGetExchangesQuery,
-  useCreateAccountMutation,
-  useUpdateAccountMutation,
+  useGetExchangeAccountsQuery,
+  useLazyGetExchangeAccountQuery,
+  useGetExchangeAccountQuery,
+  useLazyGetExchangeAccountsQuery,
+  useCreateExchangeAccountMutation,
+  useUpdateExchangeAccountMutation,
 };

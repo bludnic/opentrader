@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
-import { useLazyGetExchangesQuery } from "src/sections/exchange-accounts/common/store/api";
+import { useLazyGetExchangeAccountsQuery } from "src/sections/exchange-accounts/common/store/api";
 import { AccountsListTable } from "src/sections/exchange-accounts/pages/accounts-list/components/AccountsListTable/AccountsListTable";
 import { CreateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountDialog/CreateAccountDialog";
 import { UpdateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/UpdateAccountDialog/UpdateAccountDialog";
@@ -31,17 +31,16 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
   const [selectedAccount, setSelectedAccount] =
     useState<ExchangeAccountDto | null>(null);
 
-  const [fetchExchanges, { data }] =
-    useLazyGetExchangesQuery();
+  const [fetchAccounts, { data }] = useLazyGetExchangeAccountsQuery();
 
   useEffect(() => {
-    fetchExchanges();
+    fetchAccounts();
   }, []);
 
   const exchangeAccounts = data ? data.exchangeAccounts : [];
 
   const handleRefetch = () => {
-    fetchExchanges();
+    fetchAccounts();
   };
 
   return (

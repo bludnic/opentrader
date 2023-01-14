@@ -16,7 +16,7 @@ import { SecretKeyField } from "./fields/SecretKeyField";
 import { SerializedError } from "@reduxjs/toolkit";
 import { fromFormValuesToDto } from "./utils/create/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
-import { useCreateAccountMutation } from "src/sections/exchange-accounts/common/store/api";
+import { useCreateExchangeAccountMutation } from "src/sections/exchange-accounts/common/store/api";
 
 const componentName = "CreateAccountForm";
 const classes = {
@@ -41,7 +41,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const { className, onCreated, onError } = props;
 
   const [createAccount, { isLoading, isSuccess, isError, error }] =
-    useCreateAccountMutation();
+    useCreateExchangeAccountMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -118,12 +118,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
         onSubmit={handleSubmit}
         validate={validate}
         initialValues={initialValues}
-        render={({
-          handleSubmit,
-          submitting,
-          values,
-          hasValidationErrors,
-        }) => (
+        render={({ handleSubmit, submitting, values, hasValidationErrors }) => (
           <form onSubmit={handleSubmit} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
