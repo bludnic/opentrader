@@ -73,13 +73,16 @@ export class TwitterSignalEventsRepository {
 
   async createIfNotExists(
     dto: CreateTwitterSignalEventDto,
-  ): Promise<TwitterSignalEventEntity> {
+  ): Promise<{ signalEvent: TwitterSignalEventEntity, isNew: boolean }> {
     // Check if signal already exists
     // If yes, do nothing
     const signalEventDb = await this.findOne(dto.id);
     const signalAlreadyExists = !!(signalEventDb && signalEventDb.signalId);
     if (signalAlreadyExists) {
-      return signalEventDb;
+      return {
+        signalEvent: signalEventDb,
+        isNew: false
+      }
     }
 
     const parsedAt = new Date().toISOString();
@@ -94,7 +97,10 @@ export class TwitterSignalEventsRepository {
 
     await document.set(entity);
 
-    return entity;
+    return {
+      signalEvent: entity,
+      isNew: true
+    };
   }
 
   async update(
