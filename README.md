@@ -16,11 +16,6 @@ $ npm -v
 $ java -version
 ```
 
-## Configuration
-
-## Firebase credentials
-
-
 ## Backend configuration
 
 1. Create environment file `.env.development.local`
@@ -34,7 +29,7 @@ $ cp .env.sample .env.development.local
 
 3. Copy the `firebase-credentials.json` into the `packages/backend` directory
 
-### Frontend
+### Frontend configuration
 
 1. Copy `.env` configuration
 
