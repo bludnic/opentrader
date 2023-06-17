@@ -61,6 +61,10 @@ export const GridsTableItem: FC<GridsTableItemProps> = (props) => {
         {deal.status}
       </TableCell>
 
+      <TableCell component="th" align="right">
+        {deal.quantity}
+      </TableCell>
+
       <TableCell align="right">{orderPrice}</TableCell>
       <TableCell align="right">{orderSide}</TableCell>
     </StyledTableRow>

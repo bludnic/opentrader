@@ -35,7 +35,10 @@ export const GridsTable: FC<GridsTableProps> = (props) => {
   return (
     <StyledTableContainer className={clsx(classes.root, className)}>
       <Table size="small" aria-label="a dense table">
-        <GridsTableHead />
+        <GridsTableHead
+          baseCurrency={bot.baseCurrency}
+          quoteCurrency={bot.quoteCurrency}
+        />
 
         {deals.length > 0 ? (
           <TableBody>
