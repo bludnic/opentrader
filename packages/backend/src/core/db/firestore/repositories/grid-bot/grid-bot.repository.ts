@@ -88,13 +88,7 @@ export class GridBotRepository {
 
     await document.update(dto);
 
-    const newDocument = await this.firebase.db
-      .collection(BOT_COLLECTION)
-      .withConverter(converter)
-      .doc('id')
-      .get();
-
-    return new GridBotEntity(newDocument.data());
+    return this.findOne(botId);
   }
 
   async updateDeals(deals: IDeal[], botId: string): Promise<GridBotEntity> {
