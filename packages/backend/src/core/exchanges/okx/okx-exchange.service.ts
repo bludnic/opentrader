@@ -7,6 +7,7 @@ import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trad
 import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
+import { ITradingPairSymbolRequest } from 'src/core/exchanges/types/exchange/helpers/trading-pair-symbol/trading-pair-symbol-request.interface';
 
 @Injectable()
 export class OkxExchangeService implements IExchangeService {
@@ -65,5 +66,14 @@ export class OkxExchangeService implements IExchangeService {
     const response = OKXFacade.getTradingFeeRatesOutput(data.data);
 
     return response;
+  }
+
+  /**
+   * OKx uses the `BTC-USDT` format for annotating trading pairs
+   */
+  tradingPairSymbol(params) {
+    const { baseCurrency, quoteCurrency } = params;
+
+    return `${baseCurrency}-${quoteCurrency}`;
   }
 }

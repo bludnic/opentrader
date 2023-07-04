@@ -11,6 +11,7 @@ import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/g
 import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import { ITradingPairSymbolRequest } from './exchange/helpers/trading-pair-symbol/trading-pair-symbol-request.interface';
 
 export interface IExchangeService {
   accountAssets(): Promise<IAccountAsset[]>;
@@ -28,4 +29,5 @@ export interface IExchangeService {
   getTradingFeeRates(
     params: IGetTradingFeeRatesRequest,
   ): Promise<IGetTradingFeeRatesResponse>;
+  tradingPairSymbol(params: ITradingPairSymbolRequest): string;
 }
