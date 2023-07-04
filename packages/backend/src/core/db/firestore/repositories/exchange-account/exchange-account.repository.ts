@@ -18,14 +18,27 @@ const converter: firestore.FirestoreDataConverter<IExchangeAccount> = {
 export class ExchangeAccountRepository {
   constructor(@InjectFirebaseAdmin() private firebase: FirebaseAdmin) {}
 
-  async findOne(id): Promise<ExchangeAccountEntity> {
+  async findOne(exchangeAccountId: string): Promise<ExchangeAccountEntity> {
     const document = this.firebase.db
       .collection(ACCOUNT_COLLECTION)
       .withConverter(converter)
-      .doc(id);
+      .doc(exchangeAccountId);
     const documentData = await document.get();
 
     return new ExchangeAccountEntity(documentData.data());
+  }
+
+  async findAll(): Promise<ExchangeAccountEntity[]> {
+    const allExchangeAccounts = await this.firebase.db
+      .collection(ACCOUNT_COLLECTION)
+      .withConverter(converter)
+      .get();
+
+    const exchangeAccounts = allExchangeAccounts.docs.map(
+      (doc) => new ExchangeAccountEntity(doc.data()),
+    );
+
+    return exchangeAccounts;
   }
 
   async findAllByUserId(userId: string): Promise<ExchangeAccountEntity[]> {
