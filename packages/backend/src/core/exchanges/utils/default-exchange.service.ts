@@ -4,7 +4,7 @@ import { IExchangeService } from 'src/core/exchanges/types/exchange-service.inte
 export class DefaultExchangeService implements IExchangeService {
   constructor(private readonly logger: Logger) {}
 
-  throwDependencyError(): Promise<never> {
+  throwDependencyError(): never {
     const error = new Error(
       `The 'ExchangeService' dependency should be injected manually. This factory is needed only to avoid the DI error in Nest.js`,
     );
@@ -21,4 +21,5 @@ export class DefaultExchangeService implements IExchangeService {
   getMarketPrice = this.throwDependencyError;
   getCandlesticks = this.throwDependencyError;
   getTradingFeeRates = this.throwDependencyError;
+  tradingPairSymbol = this.throwDependencyError;
 }
