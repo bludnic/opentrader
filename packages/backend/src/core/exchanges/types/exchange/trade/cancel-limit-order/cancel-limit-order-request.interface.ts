@@ -1,10 +1,24 @@
-export interface ICancelLimitOrderRequest {
+type ICancelLimitOrderRequestData = {
   /**
-   * Instrument ID, e.g. `BTC-USD`
+   * e.g. ADA-USDT
    */
   symbol: string;
+}
+
+type ICancelLimitOrderRequestWithClientOrderId = {
   /**
-   * Exchange-supplied Order ID
+   * Client-supplied order ID
    */
   clientOrderId: string;
-}
+} & ICancelLimitOrderRequestData;
+
+type ICancelLimitOrderRequestWithExchangeOrderId = {
+  /**
+   * Order ID provided by the exchange
+   */
+  exchangeOrderId: string;
+} & ICancelLimitOrderRequestData;
+
+export type ICancelLimitOrderRequest = 
+  ICancelLimitOrderRequestWithClientOrderId |
+  ICancelLimitOrderRequestWithExchangeOrderId

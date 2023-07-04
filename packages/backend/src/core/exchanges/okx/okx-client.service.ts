@@ -110,9 +110,14 @@ export class OKXClientService {
 
     const METHOD = 'POST';
     const REQUEST_PATH = '/api/v5/trade/cancel-order';
+
+    const clientOrderId = 'clOrdId' in params ? params.clOrdId : undefined;
+    const exchangeOrderId = 'ordId' in params ? params.ordId : undefined;
+
     const requestBody: IOKXCancelLimitOrderRequestBody = {
       instId: params.instId,
-      clOrdId: params.clOrdId,
+      clOrdId: clientOrderId,
+      ordId: exchangeOrderId
     };
 
     const fullRequestUrl = `${apiUrl}${REQUEST_PATH}`;
@@ -141,9 +146,19 @@ export class OKXClientService {
     const METHOD = 'GET';
     const REQUEST_PATH = '/api/v5/trade/order';
 
+    const clientOrderId = 'clOrdId' in params ? params.clOrdId : undefined;
+    const exchangeOrderId = 'ordId' in params ? params.ordId : undefined;
+
     const requestUrlParams = new URLSearchParams();
     requestUrlParams.set('instId', params.instId);
-    requestUrlParams.set('clOrdId', params.clOrdId);
+
+    if (clientOrderId) {
+      requestUrlParams.set('clOrdId', clientOrderId);
+    }
+
+    if (exchangeOrderId) {
+      requestUrlParams.set('ordId', exchangeOrderId);
+    }
 
     const requestPathWithParams = `${REQUEST_PATH}${
       requestUrlParams.toString() ? `?${requestUrlParams}` : ''

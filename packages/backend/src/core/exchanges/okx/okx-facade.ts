@@ -66,6 +66,13 @@ export const OKXFacade = {
   cancelLimitOrderInputParams(
     data: ICancelLimitOrderRequest,
   ): IOKXCancelLimitOrderInputParams {
+    if('exchangeOrderId' in data) {
+      return {
+        instId: data.symbol,
+        ordId: data.exchangeOrderId,
+      };
+    }
+
     return {
       instId: data.symbol,
       clOrdId: data.clientOrderId,
@@ -84,6 +91,13 @@ export const OKXFacade = {
   getLimitOrderInputParams(
     data: IGetLimitOrderRequest,
   ): IOKXGetLimitOrderInputParams {
+    if ('exchangeOrderId' in data) {
+      return {
+        instId: data.symbol,
+        ordId: data.exchangeOrderId,
+      }
+    }
+
     return {
       instId: data.symbol,
       clOrdId: data.clientOrderId,
