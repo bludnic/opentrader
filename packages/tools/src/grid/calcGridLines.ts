@@ -1,6 +1,6 @@
 import big from 'big.js';
-import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
-import { calcGridStepSize } from 'src/grid-bot/utils/grid/calcGridStepSize';
+import { calcGridStepSize } from './calcGridStepSize';
+import { IGridLine } from './types/grid-line.interface';
 
 // Note: Use this function only for tests purposes
 // to avoid boilerplate

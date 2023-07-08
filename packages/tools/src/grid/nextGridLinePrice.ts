@@ -1,4 +1,4 @@
-import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
+import { IGridLine } from "./types/grid-line.interface";
 
 export function nextGridLinePrice(
   gridLines: IGridLine[],

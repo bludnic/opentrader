@@ -7,7 +7,7 @@ import {
   DOT_BUSD_DEALS_MOCK,
 } from 'src/grid-bot/mocks/dotbusd-bot';
 import { calcInitialDealsByGridLines } from 'src/grid-bot/utils/deals/calcInitialDealsByGridLines';
-import { calcGridLines } from 'src/grid-bot/utils/grid/calcGridLines';
+import { calcGridLines } from '@bifrost/tools';
 
 const bot: IGridBot = DOT_BUSD_BOT_WITH_NO_DEALS_MOCK;
 const currentAssetPrice = DOT_BUSD_CURRENT_ASSET_PRICE_MOCK;

@@ -7,8 +7,7 @@ import {
 } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';
-import { nextGridLinePrice } from 'src/grid-bot/utils/deals/nextGridLinePrice';
-import { isWaitingGridLine } from 'src/grid-bot/utils/grid/isWaitingGridLine';
+import { isWaitingGridLine, nextGridLinePrice } from '@bifrost/tools';
 import { generateUniqClientOrderId } from 'src/grid-bot/utils/orders/generateUniqClientOrderId';
 
 export function calcInitialDealsByGridLines(

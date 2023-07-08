@@ -1,5 +1,5 @@
-import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { isWaitingGridLine } from './isWaitingGridLine';
+import { IGridLine } from './types/grid-line.interface';
 
 const gridLines: IGridLine[] = [
   {

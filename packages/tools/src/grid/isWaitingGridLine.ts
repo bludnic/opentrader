@@ -1,7 +1,6 @@
 import big from 'big.js';
-import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
+import { IGridLine } from './types/grid-line.interface';
 
-import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
 
 export function isWaitingGridLine(
   gridLine: IGridLine,
