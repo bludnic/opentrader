@@ -20,7 +20,6 @@ export function computeGridFromCurrentAssetPrice(
       }
  
       const sellOrderPrice = nextGridLinePrice(gridLines, i);
-      console.log('gridLinePrice buy:sell', gridLine.price, sellOrderPrice)
 
       if (
         isWaitingGridLine(gridLine, gridLines, currentAssetPrice) ||
