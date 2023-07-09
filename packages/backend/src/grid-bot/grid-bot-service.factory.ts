@@ -8,6 +8,8 @@ import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service';
 import { IExchangeContext } from 'src/core/exchanges/types/exchange-context.interface';
 import { getExchangeContextByAccount } from 'src/core/exchanges/utils/contexts';
+import { SmartTradePrivateService } from 'src/core/smart-trade/smart-trade-private.service';
+import { SmartTradePublicService } from 'src/core/smart-trade/smart-trade-public.service';
 
 import { GridBotService } from 'src/grid-bot/grid-bot.service';
 
@@ -40,10 +42,21 @@ export const gridBotServiceFactory: FactoryProvider = {
               ctx,
             );
             const exchangeService = new OkxExchangeService(clientService);
+            const smartTradePublicService = new SmartTradePublicService(
+              firestoreService,
+              logger
+            );
+            const smartTradePrivateService = new SmartTradePrivateService(
+              exchangeService,
+              firestoreService,
+              logger
+            );
 
             return new GridBotService(
               exchangeService,
               firestoreService,
+              smartTradePublicService,
+              smartTradePrivateService,
               logger,
             );
           }
@@ -60,10 +73,21 @@ export const gridBotServiceFactory: FactoryProvider = {
               ctx,
             );
             const exchangeService = new OkxExchangeService(clientService);
+            const smartTradePublicService = new SmartTradePublicService(
+              firestoreService,
+              logger
+            );
+            const smartTradePrivateService = new SmartTradePrivateService(
+              exchangeService,
+              firestoreService,
+              logger
+            );
 
             return new GridBotService(
               exchangeService,
               firestoreService,
+              smartTradePublicService,
+              smartTradePrivateService,
               logger,
             );
           }
@@ -84,10 +108,21 @@ export const gridBotServiceFactory: FactoryProvider = {
               ctx,
             );
             const exchangeService = new OkxExchangeService(clientService);
+            const smartTradePublicService = new SmartTradePublicService(
+              firestoreService,
+              logger
+            );
+            const smartTradePrivateService = new SmartTradePrivateService(
+              exchangeService,
+              firestoreService,
+              logger
+            );
 
             return new GridBotService(
               exchangeService,
               firestoreService,
+              smartTradePublicService,
+              smartTradePrivateService,
               logger,
             );
           }
@@ -109,10 +144,21 @@ export const gridBotServiceFactory: FactoryProvider = {
               ctx,
             );
             const exchangeService = new OkxExchangeService(clientService);
+            const smartTradePublicService = new SmartTradePublicService(
+              firestoreService,
+              logger
+            );
+            const smartTradePrivateService = new SmartTradePrivateService(
+              exchangeService,
+              firestoreService,
+              logger
+            );
 
             return new GridBotService(
               exchangeService,
               firestoreService,
+              smartTradePublicService,
+              smartTradePrivateService,
               logger,
             );
           }

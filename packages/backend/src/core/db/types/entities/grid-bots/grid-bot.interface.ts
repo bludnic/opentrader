@@ -1,6 +1,6 @@
-import { IDeal } from './deals/types';
 import { IGridLine } from './grid-lines/grid-line.interface';
 import { InitialInvestment } from './investment/initial-investment.interface';
+import { IGridBotSmartTradeRef } from './smart-trades/smart-trade-ref.interface';
 
 export interface IGridBot {
   id: string;
@@ -10,7 +10,7 @@ export interface IGridBot {
   gridLines: IGridLine[]; // quantity per each grid
   enabled: boolean;
   createdAt: number;
-  deals: IDeal[];
+  smartTrades: IGridBotSmartTradeRef[];
 
   initialInvestment: InitialInvestment;
 

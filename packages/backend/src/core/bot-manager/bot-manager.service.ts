@@ -9,7 +9,7 @@ import { IBotControl } from "./types/bot-control.interface";
 
 export class BotManagerService {
     constructor(
-        private user: IUser,
+        private userId: string,
         private bot: IBotControl,
         private exchange: IExchangeService,
         private smartTradePublicService: SmartTradePublicService,
@@ -33,14 +33,14 @@ export class BotManagerService {
 
                 let smartTrade: ISmartTrade
                 try {
-                    console.log('[BotManager] SmartTrade already exists', effect.payload.id)
                     // throws error if a Smart Trade with this ID doesn't exists
                     smartTrade = await this.smartTradePublicService.get(effect.payload.id)
+                    console.log('[BotManager] SmartTrade already exists', effect.payload.id)
                 } catch {
                     console.log('[BotManager] Placing SmartTrade', effect.payload.id)
                     smartTrade = await this.smartTradePublicService.create(
                         effect.payload,
-                        this.user
+                        this.userId
                     )
                     await this.bot.onCreateSmartTrade(effect.key, smartTrade)
                 }

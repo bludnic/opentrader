@@ -1,17 +1,31 @@
-import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
+import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { GridBotE2EDeal } from 'src/e2e/grid-bot/deals/types';
 
-export function mapDealToE2EDeal(deal: IDeal): GridBotE2EDeal {
+// @todo rename to `mapSmartTradeToE2EDeal` and refactor the logic
+export function mapDealToE2EDeal(smartTrade: ISmartTrade): GridBotE2EDeal {
+  const dealStatus = smartTrade.buyOrder.status === OrderStatusEnum.Idle
+    ? DealStatusEnum.Idle
+    : smartTrade.buyOrder.status === OrderStatusEnum.Placed
+      ? DealStatusEnum.BuyPlaced
+      : smartTrade.buyOrder.status === OrderStatusEnum.Filled
+        ? DealStatusEnum.BuyFilled
+        : smartTrade.sellOrder.status === OrderStatusEnum.Idle ||
+          smartTrade.sellOrder.status === OrderStatusEnum.Placed
+          ? DealStatusEnum.SellPlaced
+          : DealStatusEnum.SellPlaced
+
   return {
-    id: deal.id,
-    status: deal.status,
+    id: smartTrade.id,
+    status: dealStatus,
     buy: {
-      price: deal.buyOrder.price,
-      status: deal.buyOrder.status,
+      price: smartTrade.buyOrder.price,
+      status: smartTrade.buyOrder.status,
     },
     sell: {
-      price: deal.sellOrder.price,
-      status: deal.sellOrder.status,
+      price: smartTrade.sellOrder.price,
+      status: smartTrade.sellOrder.status,
     },
   };
 }

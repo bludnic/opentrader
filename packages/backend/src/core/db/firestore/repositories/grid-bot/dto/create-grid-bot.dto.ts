@@ -4,6 +4,6 @@ import { GridBotEntity } from 'src/core/db/types/entities/grid-bots/grid-bot.ent
 export class CreateGridBotDto extends OmitType(GridBotEntity, [
   'enabled',
   'createdAt',
-  'deals',
+  'smartTrades',
   'userId',
 ] as const) {}

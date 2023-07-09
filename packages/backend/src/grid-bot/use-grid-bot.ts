@@ -2,12 +2,13 @@ import { useSmartTrade } from "src/core/bot-manager/effects"
 import { useExchange } from "src/core/bot-manager/effects/useExchange"
 import { ISmartTrade } from "src/core/db/types/entities/smart-trade/smart-trade.interface"
 import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface"
+import { IGetMarketPriceResponse } from "src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface"
 import { GridBotControl } from "./grid-bot-control"
 import { computeGridFromCurrentAssetPrice } from "./utils/grid/computeGridFromCurrentAssetPrice"
 
 export function* useGridBot(bot: GridBotControl) {
     const exchange: IExchangeService = yield useExchange();
-    const currentAssetPrice = yield exchange.getMarketPrice({
+    const { price }: IGetMarketPriceResponse = yield exchange.getMarketPrice({
         symbol: exchange.tradingPairSymbol({
             baseCurrency: bot.baseCurrency(),
             quoteCurrency: bot.quoteCurrency()
@@ -15,14 +16,12 @@ export function* useGridBot(bot: GridBotControl) {
     })
     const gridLevels = computeGridFromCurrentAssetPrice(
         bot.entity.gridLines,
-        currentAssetPrice
+        price
     )
-
-    console.log('[useGridBot] Current AVAX/USDT price is', currentAssetPrice)
 
     for (const [index, grid] of gridLevels.entries()) {
         const smartTrade: ISmartTrade = yield useSmartTrade(`${index}`, {
-            id: `AVAX_USDT_GRID_${index}`,
+            id: `${bot.entity.id}_${index}`,
             botId: bot.id(),
             exchangeAccountId: bot.exchangeAccountId(),
             baseCurrency: bot.baseCurrency(),

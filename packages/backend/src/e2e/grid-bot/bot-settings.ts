@@ -10,8 +10,6 @@ const gridLines = calcGridLines(20, 10, 11, gridBotQuantityPerGrid);
 
 export const gridBotInitialInvestment = calcInitialInvestmentByGridLines(
   gridLines,
-  baseCurrency,
-  quoteCurrency,
   1, // doesn't matter
 );
 

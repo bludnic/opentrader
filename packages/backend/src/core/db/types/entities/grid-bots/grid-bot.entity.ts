@@ -10,22 +10,14 @@ import {
 } from 'class-validator';
 import { GridLineDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-line.dto';
 import { InitialInvestmentDto } from 'src/core/db/firestore/repositories/grid-bot/dto/initial-investment.dto';
-import { DealBuyFilledEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-filled.entity';
-import { DealBuyPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-buy-placed.entity';
-import { DealIdleEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-idle.entity';
-import { DealSellFilledEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-sell-filled.entity';
-import { DealSellPlacedEntity } from 'src/core/db/types/entities/grid-bots/deals/deal-sell-placed.entity';
-import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { InitialInvestment } from 'src/core/db/types/entities/grid-bots/investment/initial-investment.interface';
+import { GridBotSmartTradeRefEntity } from './smart-trades/smart-trade-ref.entity';
+import { IGridBotSmartTradeRef } from './smart-trades/smart-trade-ref.interface';
 
 @ApiExtraModels(
-  DealIdleEntity,
-  DealBuyPlacedEntity,
-  DealBuyFilledEntity,
-  DealSellPlacedEntity,
-  DealSellFilledEntity,
+  GridBotSmartTradeRefEntity
 )
 export class GridBotEntity implements IGridBot {
   @IsNotEmpty()
@@ -65,15 +57,11 @@ export class GridBotEntity implements IGridBot {
     type: 'array',
     items: {
       oneOf: [
-        { $ref: getSchemaPath(DealIdleEntity) },
-        { $ref: getSchemaPath(DealBuyPlacedEntity) },
-        { $ref: getSchemaPath(DealBuyFilledEntity) },
-        { $ref: getSchemaPath(DealSellPlacedEntity) },
-        { $ref: getSchemaPath(DealSellFilledEntity) },
+        { $ref: getSchemaPath(GridBotSmartTradeRefEntity) },
       ],
     },
   })
-  deals: IDeal[]; // @todo поменять на DTO
+  smartTrades: IGridBotSmartTradeRef[];
 
   @ApiProperty({
     type: () => InitialInvestmentDto,

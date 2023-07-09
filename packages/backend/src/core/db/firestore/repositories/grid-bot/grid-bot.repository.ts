@@ -3,9 +3,9 @@ import { firestore } from 'firebase-admin';
 import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { UpdateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/update-grid-bot.dto';
 import { BOT_COLLECTION } from 'src/core/db/firestore/utils/collections';
-import { IDeal } from 'src/core/db/types/entities/grid-bots/deals/types';
 import { GridBotEntity } from 'src/core/db/types/entities/grid-bots/grid-bot.entity';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { IGridBotSmartTradeRef } from 'src/core/db/types/entities/grid-bots/smart-trades/smart-trade-ref.interface';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'src/core/firebase';
 
 const converter: firestore.FirestoreDataConverter<IGridBot> = {
@@ -24,8 +24,14 @@ export class GridBotRepository {
       .withConverter(converter)
       .doc(id);
     const documentData = await document.get();
+    const data = documentData.data();
 
-    return new GridBotEntity(documentData.data());
+    const normalizedData: IGridBot = {
+      ...data,
+      gridLines: [...data.gridLines].sort((left, right) => left.price - right.price)
+    }
+
+    return new GridBotEntity(normalizedData);
   }
 
   async findAll(): Promise<GridBotEntity[]> {
@@ -73,7 +79,7 @@ export class GridBotRepository {
     const entity: IGridBot = {
       ...dto,
       enabled: false,
-      deals: [],
+      smartTrades: [],
       createdAt,
       userId,
     };
@@ -91,18 +97,18 @@ export class GridBotRepository {
     return this.findOne(botId);
   }
 
-  async updateDeals(deals: IDeal[], botId: string): Promise<GridBotEntity> {
+  async updateSmartTradesRefs(smartTradesRefs: IGridBotSmartTradeRef[], botId: string): Promise<GridBotEntity> {
     const document = this.firebase.db
       .collection(BOT_COLLECTION)
       .withConverter(converter)
       .doc(botId);
 
-    const newBot: Pick<IGridBot, 'deals'> = {
-      deals,
+    const newBot: Pick<IGridBot, 'smartTrades'> = {
+      smartTrades: smartTradesRefs,
     };
 
     await document.update({
-      deals: newBot.deals,
+      smartTrades: newBot.smartTrades,
     });
 
     const res = await document.get();
@@ -110,20 +116,17 @@ export class GridBotRepository {
     return new GridBotEntity(res.data());
   }
 
-  async updateDeal(orderId: string, botId: string, deal: IDeal): Promise<void> {
+  async updateSmartTradeRef(smartTradeRef: IGridBotSmartTradeRef, botId: string): Promise<void> {
     const bot = await this.findOne(botId);
 
-    const newDeals = bot.deals.map((dealDb) => {
-      if (dealDb.id === deal.id) {
-        return deal;
-      }
-
-      return dealDb;
+    const newSmartTrades = bot.smartTrades.filter((smartTradeRefDb) => {
+      return smartTradeRefDb.key !== smartTradeRef.key
     });
+    newSmartTrades.push(smartTradeRef)
 
     const newBot: UpdateGridBotDto = {
       ...bot,
-      deals: newDeals,
+      smartTrades: newSmartTrades,
     };
 
     await this.update(newBot, botId);

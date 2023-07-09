@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { ThreeCommasAccountRepository } from 'src/core/db/firestore/repositories/3commas-account/3commas-account.repository';
 import { ExchangeAccountRepository } from 'src/core/db/firestore/repositories/exchange-account/exchange-account.repository';
-import { GridBotCompletedDealsRepository } from 'src/core/db/firestore/repositories/grid-bot-completed-deals/grid-bot-completed-deals.repository';
 import { GridBotRepository } from 'src/core/db/firestore/repositories/grid-bot/grid-bot.repository';
 import { GridBotEventsRepository } from 'src/core/db/firestore/repositories/grid-bot-events/grid-bot-events.repository';
 import { TweetTradingBotsRepository } from 'src/core/db/firestore/repositories/tweet-trading-bots/tweet-trading-bots.repository';
@@ -20,7 +19,6 @@ import { SmartTradeRepository } from './repositories/smart-trade/smart-trade.rep
     ExchangeAccountRepository,
     GridBotRepository,
     GridBotEventsRepository,
-    GridBotCompletedDealsRepository,
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,
@@ -34,7 +32,6 @@ import { SmartTradeRepository } from './repositories/smart-trade/smart-trade.rep
     ExchangeAccountRepository,
     GridBotRepository,
     GridBotEventsRepository,
-    GridBotCompletedDealsRepository,
     TwitterSignalsRepository,
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,

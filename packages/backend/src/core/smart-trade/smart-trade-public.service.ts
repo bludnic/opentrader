@@ -19,8 +19,12 @@ export class SmartTradePublicService {
         return this.firestore.smartTrade.findAllByUserId(userId);
     }
 
-    create (smartTrade: CreateSmartTradeRequestBodyDto, user: IUser): Promise<ISmartTrade> {
-        return this.firestore.smartTrade.create(smartTrade, user.uid)
+    getAllByBotId(botId: string) {
+        return this.firestore.smartTrade.findAllByBotId(botId)
+    }
+
+    create (smartTrade: CreateSmartTradeRequestBodyDto, userId: string): Promise<ISmartTrade> {
+        return this.firestore.smartTrade.create(smartTrade, userId)
     }
 
     cancel() {

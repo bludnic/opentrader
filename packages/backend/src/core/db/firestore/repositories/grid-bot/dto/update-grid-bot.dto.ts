@@ -6,6 +6,5 @@ export class UpdateGridBotDto extends PartialType(
     'name',
     'gridLines',
     'enabled',
-    'deals',
   ]),
 ) {}

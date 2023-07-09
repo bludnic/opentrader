@@ -36,10 +36,10 @@ export class GridBotSyncService {
       );
 
       const gridBotService = await this.gridBotServiceFactory.fromBotId(bot.id);
-      const syncResponse = await gridBotService.syncMarketOrders(bot.id);
-      this.logger.debug('Sync response', {
-        syncResponse,
-      });
+      
+      // @todo compare last smart trade updated time with last bot sync time
+      // smartTrade.updatedTime > bot.updatedTime then runBotTemplate
+      await gridBotService.runBotTemplate(bot);
 
       const endSyncBotTime = new Date().toISOString();
       this.logger.debug(

@@ -75,7 +75,7 @@ export class SmartTradingController {
     ): Promise<CreateSmartTradeResponseBodyDto> {
         const smartTradePublicService = this.smartTradePublicServiceFactory.create();
 
-        const smartTrade = await smartTradePublicService.create(body, user);
+        const smartTrade = await smartTradePublicService.create(body, user.uid);
 
         return {
             smartTrade,
@@ -140,7 +140,7 @@ export class SmartTradingController {
       .fromExchangeAccountId(exchangeAccountId);
 
       const botManager = new BotManagerService(
-        user,
+        user.uid,
         gridBotControl,
         exchangeService,
         this.smartTradePublicServiceFactory.create()
