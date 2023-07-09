@@ -1,0 +1,57 @@
+import { OrderSideEnum } from "src/core/db/types/entities/trade-bot/orders/enums/order-side.enum";
+import { IBotTemplate } from "../types/BotTemplate";
+import { calcOkxSymbol } from "../utils/calcOkxSymbol";
+
+const clientOrderId = 'ORD1';
+
+const tradeService: any;
+
+const tradesIds = [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+]
+
+export const advancedGrid: IBotTemplate = {
+    async onStart({ logger, ordersService, bot }) {
+        logger.debug(`[AdvancedGrid] onStart() called`);
+
+        for (let tradeId of tradesIds) {
+            await tradeService.place(tradeId, {
+                symbol: calcOkxSymbol(bot.baseCurrency, bot.quoteCurrency),
+                quantity: 1,
+                status: 'BuyFilled',
+                buy: {
+                    price: 10,
+                },
+                sell: {
+                    price: 20
+                }
+            })
+        }
+
+        console.log(`[AdvancedGrid] Trades with IDs: ${tradesIds} created`)
+    },
+
+    async onChange({ logger, bot, ordersService }) {
+        logger.debug(`[AdvancedGrid] onChange() called`);
+
+        const trades = await tradeService.get(tradesIds);
+
+        for (let trade of trades) {
+            if (trade.isCompleted()) {
+                await trade.replace()
+            }
+        }
+    },
+
+    async onStop({ logger, ordersService, bot }) {
+        logger.debug(`[AdvancedGrid] onStop() called`);
+
+        await tradeService.cancel(tradesIds);
+
+        console.log(`[AdvancedGrid] Trades with IDs: ${tradeIds} was cancelled`)
+    }
+}

@@ -1,6 +1,6 @@
 import { IGridBotSettings } from 'src/e2e/grid-bot/types';
 import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
-import { calcGridLines } from 'src/grid-bot/utils/grid/calcGridLines';
+import { calcGridLines } from '@bifrost/tools';
 
 export const gridBotQuantityPerGrid = 5;
 

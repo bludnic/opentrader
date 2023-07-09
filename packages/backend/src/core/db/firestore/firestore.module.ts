@@ -9,6 +9,8 @@ import { TweetTradingBotsRepository } from 'src/core/db/firestore/repositories/t
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { TwitterSignalsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signals/twitter-signals.repository';
 import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/twitter-signal-events.repository';
+import { TradeBotRepository } from './repositories/trade-bot/trade-bot.repository';
+import { SmartTradeRepository } from './repositories/smart-trade/smart-trade.repository';
 
 @Module({
   imports: [],
@@ -23,6 +25,8 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,
     TweetTradingBotsRepository,
+    SmartTradeRepository,
+    TradeBotRepository,
   ],
   providers: [
     FirestoreService,
@@ -35,6 +39,8 @@ import { TwitterSignalEventsRepository } from 'src/core/db/firestore/repositorie
     TwitterSignalEventsRepository,
     ThreeCommasAccountRepository,
     TweetTradingBotsRepository,
+    SmartTradeRepository,
+    TradeBotRepository,
   ],
 })
 export class FirestoreModule {}

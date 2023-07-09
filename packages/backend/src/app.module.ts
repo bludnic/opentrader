@@ -24,6 +24,10 @@ import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 import { ThreeCommasApiModule } from 'src/shared/3commas-api/3commas-api.module';
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
+import { SmartTradingModule } from './smart-trading/smart-trading.module';
+import { TradeBotModule  } from './trade-bot/trade-bot.module';
+import { TradeBotController } from './trade-bot/trade-bot.controller';
+import { SmartTradingController } from './smart-trading/smart-trading.controller';
 
 @Module({
   imports: [
@@ -62,6 +66,8 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
     ThreeCommasApiModule,
     TweetTradingModule,
     ThreeCommasAccountsModule,
+    SmartTradingModule,
+    TradeBotModule
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],
@@ -71,7 +77,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(FirebaseUserMiddleware)
       .forRoutes(
+        SmartTradingController,
         GridBotController,
+        TradeBotController,
         ExchangeAccountsController,
         ThreeCommasAccountsController,
       );

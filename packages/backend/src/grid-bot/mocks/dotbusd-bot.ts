@@ -18,10 +18,13 @@ import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { user } from 'src/e2e/grid-bot/user';
+import { IGridBotLevel } from '../types/grid-bot-level.interface';
 
 export const DOT_BUSD_QUANTITY_PER_GRID = 20;
 
 export const DOT_BUSD_SYMBOL = 'DOT-BUSD';
+
+export const DOT_BUSD_CURRENT_ASSET_PRICE_MOCK = 14.5;
 
 export const DOT_BUSD_GRID_LINES: IGridLine[] = [
   { price: 10, quantity: 20 },
@@ -31,6 +34,29 @@ export const DOT_BUSD_GRID_LINES: IGridLine[] = [
   { price: 18, quantity: 20 },
   { price: 20, quantity: 20 },
 ];
+
+export const DOT_BUSD_GRID_INITIAL_GRID_LEVELS: IGridBotLevel[] = [
+  {
+    buy: { price: 10, status: OrderStatusEnum.Idle, quantity: 20 },
+    sell: { price: 12, status: OrderStatusEnum.Idle, quantity: 20 }
+  },
+  {
+    buy: { price: 12, status: OrderStatusEnum.Idle, quantity: 20 },
+    sell: { price: 14, status: OrderStatusEnum.Idle, quantity: 20 }
+  },
+  {
+    buy: { price: 14, status: OrderStatusEnum.Filled, quantity: 20 },
+    sell: { price: 16, status: OrderStatusEnum.Idle, quantity: 20 }
+  },
+  {
+    buy: { price: 16, status: OrderStatusEnum.Filled, quantity: 20 },
+    sell: { price: 18, status: OrderStatusEnum.Idle, quantity: 20 }
+  },
+  {
+    buy: { price: 18, status: OrderStatusEnum.Filled, quantity: 20 },
+    sell: { price: 20, status: OrderStatusEnum.Idle, quantity: 20 }
+  },
+]
 
 export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   id: 'DOTBUSDBOT1',
@@ -55,8 +81,6 @@ export const DOT_BUSD_BOT_WITH_NO_DEALS_MOCK: IGridBot = {
   userId: user.uid,
   exchangeAccountId: exchangeAccountMock.id,
 };
-
-export const DOT_BUSD_CURRENT_ASSET_PRICE_MOCK = 14.5;
 
 export const DOT_BUSD_DEALS_MOCK: IDeal[] = [
   {
