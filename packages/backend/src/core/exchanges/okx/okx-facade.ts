@@ -143,6 +143,8 @@ export const OKXFacade = {
       instId: `${data.symbol}-SWAP`,
       bar: data.bar,
       limit: String(data.limit),
+      before: data.before ? String(data.before) : undefined,
+      after: data.after ? String(data.after) : undefined
     };
   },
   getCandlesticksOutput(data: IOKXGetCandlesticksResponse): ICandlestick[] {

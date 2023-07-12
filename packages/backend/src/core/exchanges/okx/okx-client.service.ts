@@ -212,7 +212,7 @@ export class OKXClientService {
     const { apiUrl } = this.ctx.exchangeConfig;
 
     const METHOD = 'GET';
-    const REQUEST_PATH = '/api/v5/market/candles';
+    const REQUEST_PATH = '/api/v5/market/history-mark-price-candles';
 
     const requestUrlParams = new URLSearchParams();
     requestUrlParams.set('instId', params.instId);
