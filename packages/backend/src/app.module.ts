@@ -28,6 +28,7 @@ import { SmartTradingModule } from './smart-trading/smart-trading.module';
 import { TradeBotModule  } from './trade-bot/trade-bot.module';
 import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
+import { BacktestingModule } from './backtesting/backtesting.module';
 
 @Module({
   imports: [
@@ -67,7 +68,8 @@ import { SmartTradingController } from './smart-trading/smart-trading.controller
     TweetTradingModule,
     ThreeCommasAccountsModule,
     SmartTradingModule,
-    TradeBotModule
+    TradeBotModule,
+    BacktestingModule
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],
@@ -81,7 +83,7 @@ export class AppModule implements NestModule {
         GridBotController,
         TradeBotController,
         ExchangeAccountsController,
-        ThreeCommasAccountsController,
+        ThreeCommasAccountsController
       );
   }
 }
