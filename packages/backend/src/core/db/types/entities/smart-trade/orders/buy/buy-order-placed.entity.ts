@@ -11,6 +11,7 @@ export class SmartBuyOrderPlacedEntity implements SmartBuyOrderPlaced {
   status: OrderStatusEnum.Placed;
   quantity: number;
   createdAt: number;
+  updatedAt: number;
 
   constructor(order: SmartBuyOrderPlaced) {
     Object.assign(this, order);

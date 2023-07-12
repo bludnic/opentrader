@@ -21,7 +21,7 @@ export class TradeBotSyncService {
         this.botTemplate = simpleGrid; // @todo hardcoded
     }
     
-    @Cron(CronExpression.EVERY_10_SECONDS)
+    @Cron(CronExpression.EVERY_30_MINUTES)
     async sync() {
         const startSyncTime = new Date().toISOString();
 

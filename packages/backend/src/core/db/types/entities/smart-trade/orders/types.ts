@@ -34,6 +34,10 @@ export type BaseSmartOrder<
      * Creation time, Unix timestamp format in milliseconds, e.g. `1597026383085`
      */
     createdAt: number;
+    /**
+     * Updated time (e.g. update status to Filled), Unix timestamp format in milliseconds, e.g. `1597026383085`
+     */
+    updatedAt: number;
 };
 
 export type SmartBuyOrderIdle = BaseSmartOrder<OrderSideEnum.Buy, OrderStatusEnum.Idle>;

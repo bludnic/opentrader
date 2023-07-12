@@ -11,6 +11,7 @@ export class SmartSellOrderFilledEntity implements SmartSellOrderFilled {
   status: OrderStatusEnum.Filled;
   quantity: number;
   createdAt: number;
+  updatedAt: number;
 
   constructor(order: SmartSellOrderFilled) {
     Object.assign(this, order);

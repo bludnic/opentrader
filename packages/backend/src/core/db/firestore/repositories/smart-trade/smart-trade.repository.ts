@@ -7,6 +7,7 @@ import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enu
 import { SmartBuyOrder, SmartSellOrder } from 'src/core/db/types/entities/smart-trade/orders/types';
 import { SmartTradeEntity } from 'src/core/db/types/entities/smart-trade/smart-trade.entity';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
+import { uniqId } from 'src/core/db/utils/uniqId';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'src/core/firebase';
 import { CreateSmartTradeDto } from './dto/create-smart-trade/create-smart-trade.dto';
 
@@ -96,15 +97,16 @@ export class SmartTradeRepository {
     dto: CreateSmartTradeDto,
     userId: string
   ): Promise<SmartTradeEntity> {
-    const { id, comment, quantity, buy, sell, baseCurrency, quoteCurrency, exchangeAccountId, botId } = dto;
+    const docId = uniqId();
+    const { comment, quantity, buy, sell, baseCurrency, quoteCurrency, exchangeAccountId, botId } = dto;
     const createdAt = new Date().getTime();
 
     const document = this.firebase.db
       .collection(SMART_TRADE_COLLECTION)
-      .doc(dto.id);
+      .doc(docId);
 
     const entity: ISmartTrade = {
-      id,
+      id: docId,
       baseCurrency,
       quoteCurrency,
       comment: comment || '',
@@ -117,7 +119,8 @@ export class SmartTradeRepository {
         status: buy.status || OrderStatusEnum.Idle,
         side: OrderSideEnum.Buy,
         fee: 0,
-        createdAt
+        createdAt,
+        updatedAt: createdAt
       },
       sellOrder: {
         clientOrderId: sell.clientOrderId || '',
@@ -127,7 +130,8 @@ export class SmartTradeRepository {
         status: sell.status || OrderStatusEnum.Idle,
         side: OrderSideEnum.Sell,
         fee: 0,
-        createdAt
+        createdAt,
+        updatedAt: createdAt
       },
       createdAt,
       updatedAt: createdAt,
@@ -165,6 +169,7 @@ export class SmartTradeRepository {
       buyOrder: {
         ...smartTrade.buyOrder,
         ...dto,
+        updatedAt
       }
     }
 
@@ -191,10 +196,38 @@ export class SmartTradeRepository {
       updatedAt,
       sellOrder: {
         ...smartTrade.sellOrder,
-        ...dto
+        ...dto,
+        updatedAt
       }
     }
 
     return this.update(newSmartTrade);
+  }
+
+  async testSet() { // @todo remove
+    const documentId = uniqId()
+    const document = this.firebase.db
+      .collection('testing_remove')
+      .doc(documentId);
+
+    console.log('document.id1', document.id)
+    console.log('document.id2', document.id)
+
+    await document.set({
+      documentId,
+      hello: 'world'
+    })
+
+    return document
+  }
+
+  async testGet(id: string) { // @todo remove
+    const document = this.firebase.db
+      .collection('testing_remove')
+      .doc(id)
+
+    const documentData = await document.get();
+
+    return documentData.data();
   }
 }

@@ -11,6 +11,7 @@ export class SmartBuyOrderIdleEntity implements SmartBuyOrderIdle {
   status: OrderStatusEnum.Idle;
   quantity: number;
   createdAt: number;
+  updatedAt: number;
 
   constructor(order: SmartBuyOrderIdle) {
     Object.assign(this, order);

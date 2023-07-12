@@ -1,18 +1,15 @@
 import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface";
-import { SmartTradePublicService } from "src/core/smart-trade/smart-trade-public.service";
 import { ISmartTrade } from "../db/types/entities/smart-trade/smart-trade.interface";
-import { IUser } from "../db/types/entities/users/user/user.interface";
 import { BotTemplate } from "./bot-template/types/bot-template.type";
-import { isExchangeEffect } from "./effects/utils/isExchangeEffect";
-import { isSmartTradeEffect } from "./effects/utils/isSmartTradeEffect";
+import { isUseExchangeEffect } from "./effects/utils/isUseExchangeEffect";
+import { isReplaceSmartTradeEffect } from "./effects/utils/isReplaceSmartTradeEffect";
+import { isUseSmartTradeEffect } from "./effects/utils/isUseSmartTradeEffect";
 import { IBotControl } from "./types/bot-control.interface";
 
 export class BotManagerService {
     constructor(
-        private userId: string,
         private bot: IBotControl,
         private exchange: IExchangeService,
-        private smartTradePublicService: SmartTradePublicService,
     ) {}
 
     async process(botTemplate: BotTemplate): Promise<void> {
@@ -24,31 +21,46 @@ export class BotManagerService {
 
         for (; !item.done;) {
             if (item.value instanceof Promise) {
-                console.log('isPromise', item.value)
                 const result = await item.value;
 
                 item = generator.next(result);
-            } else if (isSmartTradeEffect(item.value)) {
+            } else if (isUseSmartTradeEffect(item.value)) {
                 const effect = item.value;
 
-                let smartTrade: ISmartTrade
-                try {
-                    // throws error if a Smart Trade with this ID doesn't exists
-                    smartTrade = await this.smartTradePublicService.get(effect.payload.id)
-                    console.log('[BotManager] SmartTrade already exists', effect.payload.id)
-                } catch {
-                    console.log('[BotManager] Placing SmartTrade', effect.payload.id)
-                    smartTrade = await this.smartTradePublicService.create(
-                        effect.payload,
-                        this.userId
+                let smartTrade: ISmartTrade | null = await this.bot.getSmartTrade(effect.key);
+
+                if (smartTrade) {
+                    // console.log('[BotManager] SmartTrade already exists', smartTrade.id)
+                } else {
+                    console.log('[BotManager] Placing SmartTrade', effect.key)
+                    smartTrade = await this.bot.createSmartTrade(
+                        effect.key,
+                        effect.payload
                     )
-                    await this.bot.onCreateSmartTrade(effect.key, smartTrade)
                 }
 
                 item = generator.next(smartTrade)
-            } else if (isExchangeEffect(item.value)) {
-                console.log('isExchangeEffect', item.value)
+            } else if (isReplaceSmartTradeEffect(item.value)) {
+                const effect = item.value;
+                const { buyOrder, sellOrder, quantity, baseCurrency, quoteCurrency } = effect.payload;
 
+                console.log('[BotManager] Replacing SmartTrade', effect.key)
+                let st: ISmartTrade | null = await this.bot.getSmartTrade(effect.key); // todo remove
+                console.log(st);
+
+                const smartTrade = await this.bot.createSmartTrade(
+                    effect.key,
+                    {
+                        buy: { price: buyOrder.price },
+                        sell: { price: sellOrder.price },
+                        quantity,
+                        baseCurrency,
+                        quoteCurrency
+                    }
+                )
+
+                item = generator.next(smartTrade)
+            } else if (isUseExchangeEffect(item.value)) {
                 item = generator.next(this.exchange)
             } else {
                 throw Error('Unsupported effect')

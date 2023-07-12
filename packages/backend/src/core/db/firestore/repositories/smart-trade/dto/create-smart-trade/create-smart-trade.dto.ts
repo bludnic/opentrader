@@ -6,7 +6,6 @@ import { CreateSmartTradeBuyOrderDto } from "./types/create-buy-order.dto";
 import { CreateSmartTradeSellOrderDto } from "./types/create-sell-order.dto";
 
 export class CreateSmartTradeDto extends PickType(SmartTradeEntity, [
-  'id',
   'comment',
   'quantity',
   'baseCurrency',

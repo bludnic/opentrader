@@ -147,6 +147,7 @@ export class GridBotService {
 
   async runBotTemplate(bot: GridBotDto) {
     const botControl = new GridBotControl(
+      this.smartTradePublicService,
       this.exchange,
       bot,
       this.firestore,
@@ -154,10 +155,8 @@ export class GridBotService {
     );
 
     const botManager = new BotManagerService(
-      bot.userId,
       botControl,
       this.exchange,
-      this.smartTradePublicService,
     );
 
     await botManager.process(useGridBot);

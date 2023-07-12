@@ -10,6 +10,9 @@ export type UseSmartTradeParams = {
     quoteCurrency: string;
 }
 
-export type UseSmartTradePayload = CreateSmartTradeRequestBodyDto
+export type UseSmartTradePayload = Omit<
+    CreateSmartTradeRequestBodyDto,
+    'botId' | 'exchangeAccountId'
+>;
 
-export type SmartTradeEffect = BaseEffect<typeof USE_SMART_TRADE, UseSmartTradePayload, string>;
+export type UseSmartTradeEffect = BaseEffect<typeof USE_SMART_TRADE, UseSmartTradePayload, string>;

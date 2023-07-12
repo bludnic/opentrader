@@ -15,7 +15,7 @@ export class GridBotSyncService {
     private readonly logger: Logger,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_MINUTE)
   async handleSync() {
     const startSyncTime = new Date().toISOString();
 

@@ -10,7 +10,8 @@ export class CreateSmartTradeBuyOrderDto extends OmitType(SmartBuyOrderEntity, [
     'quantity',
     'status',
     'fee',
-    'createdAt'
+    'createdAt',
+    'updatedAt'
   ] as const) {
     @IsString()
     @IsOptional()

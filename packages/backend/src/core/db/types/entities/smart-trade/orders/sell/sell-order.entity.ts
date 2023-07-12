@@ -36,6 +36,7 @@ export class SmartSellOrderEntity<T = SmartSellOrder> implements BaseSmartOrder<
   fee: number;
 
   createdAt: number;
+  updatedAt: number;
 
   constructor(smartSellOrder: SmartSellOrderEntity) {
     Object.assign(this, smartSellOrder);

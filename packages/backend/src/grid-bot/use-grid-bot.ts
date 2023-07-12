@@ -1,5 +1,7 @@
 import { useSmartTrade } from "src/core/bot-manager/effects"
+import { replaceSmartTrade } from "src/core/bot-manager/effects/replaceSmartTrade"
 import { useExchange } from "src/core/bot-manager/effects/useExchange"
+import { OrderStatusEnum } from "src/core/db/types/common/enums/order-status.enum"
 import { ISmartTrade } from "src/core/db/types/entities/smart-trade/smart-trade.interface"
 import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface"
 import { IGetMarketPriceResponse } from "src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface"
@@ -21,9 +23,6 @@ export function* useGridBot(bot: GridBotControl) {
 
     for (const [index, grid] of gridLevels.entries()) {
         const smartTrade: ISmartTrade = yield useSmartTrade(`${index}`, {
-            id: `${bot.entity.id}_${index}`,
-            botId: bot.id(),
-            exchangeAccountId: bot.exchangeAccountId(),
             baseCurrency: bot.baseCurrency(),
             quoteCurrency: bot.quoteCurrency(),
             buy: {
@@ -37,10 +36,18 @@ export function* useGridBot(bot: GridBotControl) {
             quantity: grid.buy.quantity // or grid.sell.quantity
         })
 
-        const isFinished = smartTrade.sellOrder && smartTrade.sellOrder.status === 'filled';
+        const isFinished =
+            smartTrade.sellOrder &&
+            smartTrade.sellOrder.status === OrderStatusEnum.Filled;
+
         if (isFinished) {
             // yield smartTrade.replace()
-            console.log('[useGridBot] SmartTrade finished ' + smartTrade.id)
+            const smartTradeRef = bot.entity.smartTrades.find(smartTradeRef => smartTradeRef.smartTradeId === smartTrade.id)
+            console.log(`[useGridBot] SmartTrade finished Key: ${smartTradeRef.key} ID: ${smartTradeRef.smartTradeId}. Replacing it..`)
+
+            const newSmartTrade = yield replaceSmartTrade(smartTradeRef.key, smartTrade)
+
+            console.log(`[useGridBot] SmartTrade with ID ${newSmartTrade.id} was replaced succesfully`)
         }
     }
 }

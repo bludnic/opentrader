@@ -22,10 +22,6 @@ import { GetSmartTradeResponseBodyDto } from 'src/core/smart-trade/dto/get-smart
 import { GetSmartTradesListResponseDto } from 'src/core/smart-trade/dto/get-smart-trades-list/get-smart-trades-list-response.dto';
 import { SyncSmartTradesQueryParamsDto } from 'src/core/smart-trade/dto/sync-smart-trades/sync-smart-trades-query-params.dto';
 import { SyncSmartTradesResponseBodyDto } from 'src/core/smart-trade/dto/sync-smart-trades/sync-smart-trades-response-body.dto';
-import { IBotControl } from 'src/core/bot-manager/types/bot-control.interface';
-import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
-import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
-import { useGridBot } from 'src/trade-bot/bot-templates/useGridBot';
 import { ExchangeFactory, ExchangeFactorySymbol } from 'src/core/exchanges/exchange.factory';
 
 @Controller({
@@ -40,7 +36,6 @@ export class SmartTradingController {
         @Inject(SmartTradePrivateServiceFactorySymbol)
         private smartTradePrivateServiceFactory: SmartTradePrivateServiceFactory,
         private firestore: FirestoreService,
-
 
         // experiments @todo remove
         @Inject(ExchangeFactorySymbol)
@@ -101,55 +96,5 @@ export class SmartTradingController {
         } catch (err) {
             throw new InternalServerErrorException(err.message);
         }
-    }
-
-    @Get('/testing-processing')
-    async process(@FirebaseUser() user: IUser) {
-      const exchangeAccountId = 'okx_demo';
-
-      class GridBotControl implements IBotControl {
-        async stop() {
-          console.log('[GridBotControl] Stop command received')
-        }
-  
-        async onCreateSmartTrade(key: string, smartTrade: ISmartTrade): Promise<void> {
-          console.log(`[GridBotControl] onCreateSmartTrade (key:${key})`, smartTrade)
-        }
-  
-        id() {
-          return 'GRID_TEST_1'
-        }
-  
-        baseCurrency() {
-          return 'AVAX'
-        }
-  
-        quoteCurrency() {
-          return 'USDT'
-        }
-  
-        exchangeAccountId() {
-          return exchangeAccountId
-        }
-      }
-
-      const gridBotControl = new GridBotControl();
-  
-      const exchangeService = await this.exchangeFactory.createFromExchangeAccountId(exchangeAccountId)
-      const smartTradePrivateService = await this.smartTradePrivateServiceFactory
-      .fromExchangeAccountId(exchangeAccountId);
-
-      const botManager = new BotManagerService(
-        user.uid,
-        gridBotControl,
-        exchangeService,
-        this.smartTradePublicServiceFactory.create()
-      )
-
-      await botManager.process(useGridBot)
-
-      return {
-        processed: true
-      }
     }
 }
