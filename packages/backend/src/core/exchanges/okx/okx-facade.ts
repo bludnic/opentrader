@@ -142,7 +142,7 @@ export const OKXFacade = {
     return {
       instId: `${data.symbol}-SWAP`,
       bar: data.bar,
-      limit: String(data.limit),
+      limit: data.limit ? String(data.limit) : undefined,
       before: data.before ? String(data.before) : undefined,
       after: data.after ? String(data.after) : undefined
     };
