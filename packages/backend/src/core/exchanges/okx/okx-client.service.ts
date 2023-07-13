@@ -235,7 +235,12 @@ export class OKXClientService {
         },
       })
       .toPromise()
-      .then(throwExceptionIfErrorResponse(fullRequestUrl));
+      .then(throwExceptionIfErrorResponse(fullRequestUrl))
+      .catch(err => {
+        console.log(err);
+
+        throw err;
+      })
   }
 
   getTradingFeeRates(

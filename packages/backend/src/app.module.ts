@@ -29,6 +29,7 @@ import { TradeBotModule  } from './trade-bot/trade-bot.module';
 import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
 import { BacktestingModule } from './backtesting/backtesting.module';
+import { CandlesticksModule } from './candlesticks/candlesticks.module';
 
 @Module({
   imports: [
@@ -69,7 +70,8 @@ import { BacktestingModule } from './backtesting/backtesting.module';
     ThreeCommasAccountsModule,
     SmartTradingModule,
     TradeBotModule,
-    BacktestingModule
+    BacktestingModule,
+    CandlesticksModule
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],
