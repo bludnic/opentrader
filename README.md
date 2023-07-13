@@ -14,6 +14,9 @@ $ npm -v
 
 # Check Java is installed
 $ java -version
+
+# Docker should be installed
+$ docker -v
 ```
 
 ## Backend configuration
@@ -45,6 +48,15 @@ localStorage.setItem('auth_token', 'YOUR_TOKEN_HERE')
 ```
 
 ## Bootstrap
+
+### Postgres service
+
+```bash
+$ docker-compose up -d postgres-db # start service
+$ docker-compose -p bifrost stop postgres-db # stop service
+```
+
+### Frontend & Backend
 
 ```bash
 $ turbo run bootstrap
