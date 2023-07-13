@@ -12,7 +12,7 @@
     "bootstrap": "npm install && npm run openapi:coingecko:generate && npm run openapi:bifrost:generate"
   },
   "dependencies": {
-    "@bifrost/tools": "^0.0.1",
+    "@bifrost/tools": "*",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",

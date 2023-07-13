@@ -18,10 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "openapi:3commas:generate": "node src/shared/3commas-api/swagger/bin/openapi-generate.js"
+    "openapi:3commas:generate": "node src/shared/3commas-api/swagger/bin/openapi-generate.js",
+    "bootstrap": "npm run build"
   },
   "dependencies": {
-    "@bifrost/tools": "^0.0.1",
+    "@bifrost/tools": "*",
     "@nestjs/axios": "^0.0.4",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",

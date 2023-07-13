@@ -6,10 +6,10 @@
 # NodeJS v16 required
 $ node -v
 
-# Install Lerna globally (v6 required)
-$ npm i -g lerna
+# Install Turborepo globally (v1.8 required)
+$ npm install turbo --global
 
-# Check npm version (v8 required)
+# Check npm version (v9 required)
 $ npm -v
 
 # Check Java is installed
@@ -47,8 +47,8 @@ localStorage.setItem('auth_token', 'YOUR_TOKEN_HERE')
 ## Bootstrap
 
 ```bash
-$ lerna bootstrap
-$ lerna run dev --stream # runs both frontend and backend dev servers
+$ turbo run bootstrap
+$ turbo run dev # runs both frontend and backend dev servers
 ```
 
 - Frontend: http://localhost:3000
