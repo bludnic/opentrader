@@ -1,15 +1,24 @@
-import { Body, Controller, Get, Inject, Logger, Param, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Logger,
+  Param,
+  Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { InjectRepository } from '@nestjs/typeorm';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { CandlestickEntity } from 'src/core/db/postgres/entities/candlestick.entity';
 import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
 import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
+import { Repository } from 'typeorm';
 import { GetCandlesticksHistoryReseponseDto } from './dto/get-candlesticks-history/get-candlesticks-history-response.dto';
-import * as fs from 'fs';
 import {
   ExchangeFactory,
   ExchangeFactorySymbol,
 } from 'src/core/exchanges/exchange.factory';
-import { delay } from 'src/common/helpers/delay';
 import { CandlesticksService } from 'src/candlesticks/candlesticks.service';
 
 @Controller({
@@ -21,7 +30,9 @@ export class CandlesticksController {
     private readonly firestore: FirestoreService,
     @Inject(ExchangeFactorySymbol)
     private readonly exchangeFactory: ExchangeFactory,
-    private readonly logger: Logger
+    private readonly logger: Logger,
+    @InjectRepository(CandlestickEntity)
+    private readonly candlesticks: Repository<CandlestickEntity>,
   ) {}
 
   @Get('/history/:baseCurrency/:quoteCurrency')
@@ -34,6 +45,8 @@ export class CandlesticksController {
       baseCurrency,
       quoteCurrency,
     );
+
+    // const candlesticks = await this.candlesticks.find();
 
     return {
       candlesticks: history.candlesticks,
@@ -76,10 +89,10 @@ export class CandlesticksController {
       this.logger,
     );
 
-    candlesticksService.downloadHistory(baseCurrency, quoteCurrency)
+    candlesticksService.downloadHistory(baseCurrency, quoteCurrency);
 
     return {
-      polling: true
-    }
+      polling: true,
+    };
   }
 }

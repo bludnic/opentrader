@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { WinstonModule } from 'nest-winston';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThreeCommasAccountsController } from 'src/3commas-accounts/3commas-accounts.controller';
 import { ThreeCommasAccountsModule } from 'src/3commas-accounts/3commas-accounts.module';
 import { AppController } from 'src/app.controller';
@@ -10,6 +11,9 @@ import {
   winstonNestLikeTransport,
 } from 'src/common/helpers/logging/logging-transports';
 import { FirebaseUserMiddleware } from 'src/common/middlewares/firebase-user.middleware';
+import { getTypeOrmConfig } from 'src/config/utils/getTypeOrmConfig';
+import { postgresConfig } from 'src/config/postgres.config';
+import { envValidationSchema } from 'src/config/utils/envValidationSchema';
 import { CoreModule } from 'src/core/core.module';
 import { FirebaseModule } from 'src/core/firebase';
 import { ExchangeAccountsController } from 'src/exchange-accounts/exchange-accounts.controller';
@@ -33,6 +37,13 @@ import { CandlesticksModule } from './candlesticks/candlesticks.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development', '.env.development.local'],
+      load: [postgresConfig],
+      validationSchema: envValidationSchema,
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRoot(getTypeOrmConfig()),
     HttpModule,
     WinstonModule.forRootAsync({
       inject: [ConfigService],
@@ -55,10 +66,6 @@ import { CandlesticksModule } from './candlesticks/candlesticks.module';
           ? undefined
           : './firebase-credentials.json',
     }),
-    ConfigModule.forRoot({
-      envFilePath: ['.env.development', '.env.development.local'],
-      isGlobal: true,
-    }),
     ScheduleModule.forRoot(),
     CoreModule,
     GridBotModule,
@@ -71,7 +78,7 @@ import { CandlesticksModule } from './candlesticks/candlesticks.module';
     SmartTradingModule,
     TradeBotModule,
     BacktestingModule,
-    CandlesticksModule
+    CandlesticksModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],

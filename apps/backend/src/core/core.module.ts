@@ -6,8 +6,20 @@ import { BotManagerModule } from './bot-manager/bot-manager.module';
 import { SmartTradeModule } from './smart-trade/smart-trade.module';
 
 @Module({
-  imports: [DatabaseModule, ExchangesModule, TwitterApiModule, SmartTradeModule, BotManagerModule],
-  exports: [DatabaseModule, ExchangesModule, TwitterApiModule, SmartTradeModule, BotManagerModule],
+  imports: [
+    DatabaseModule,
+    ExchangesModule,
+    TwitterApiModule,
+    SmartTradeModule,
+    BotManagerModule,
+  ],
+  exports: [
+    DatabaseModule,
+    ExchangesModule,
+    TwitterApiModule,
+    SmartTradeModule,
+    BotManagerModule,
+  ],
   providers: [],
 })
 export class CoreModule {}
