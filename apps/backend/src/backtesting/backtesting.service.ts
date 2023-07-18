@@ -1,70 +1,74 @@
-import { useGridBot } from "src/grid-bot/use-grid-bot";
-import { BotManagerService } from "../core/bot-manager/bot-manager.service";
-import { TestingDb } from "./testing-db";
-import { TestingExchangeService } from "./testing-exchange.service";
-import { TestBotControl } from "./test-bot-control";
-import { uniqId } from "src/core/db/utils/uniqId";
-import { ETH_USDT } from './history/ETH_USDT_90_DAYS_REAL_ACCOUNT';
-import { OrderStatusEnum } from "src/core/db/types/common/enums/order-status.enum";
-import { ICandlestick } from "src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface";
-import { ITrade } from "./types/trade.interface";
-import { ISmartTrade } from "src/core/db/types/entities/smart-trade/smart-trade.interface";
+import { IBotControl } from 'src/core/bot-manager/types/bot-control.interface';
+import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { BotManagerService } from '../core/bot-manager/bot-manager.service';
+import { TestingDb } from './testing-db';
+import { TestingExchangeService } from './testing-exchange.service';
+import { TestBotControl } from './test-bot-control';
+import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
+import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 
 export class BacktestingService {
-    constructor() {}
+  private createManager(bot: IGridBot) {
+    const db = new TestingDb();
+    const botControl = new TestBotControl(db, bot);
+    const testingExchange = new TestingExchangeService();
 
-    private createManager() {
-        const db = new TestingDb()
-        const botControl = new TestBotControl(db)
-        const testingExchange = new TestingExchangeService()
+    const manager = new BotManagerService(botControl, testingExchange);
 
-        const manager = new BotManagerService(botControl, testingExchange)
+    return {
+      manager,
+      db,
+    };
+  }
 
-        return {
-            manager,
-            db
-        }
+  async run(
+    bot: IGridBot,
+    botControl: (bot: IBotControl) => Generator,
+    candles: ICandlestick[],
+  ): Promise<{
+    smartTrades: ISmartTrade[];
+    finishedSmartTrades: ISmartTrade[];
+    finishedSmartTradesCount: number;
+    totalProfit: number;
+  }> {
+    const { manager, db } = this.createManager(bot);
+
+    for (const [index, candle] of candles.entries()) {
+      console.log(
+        `Process candle #${index} with time #${candle.timestamp} of ${candles.length} with close price:`,
+        candle.close,
+      );
+      await manager.process(botControl);
+
+      db.smartTrades.forEach((smartTrade) => {
+        db.markIdleAsPlaced(smartTrade.id);
+      });
+
+      db.smartTrades.forEach((smartTrade) => {
+        db.processSmartTrade(smartTrade.id, candle);
+      });
     }
 
-    async run(candlesParam: ICandlestick[]): Promise<{
-        smartTrades: ISmartTrade[],
-        finishedSmartTrades: ISmartTrade[],
-        finishedSmartTradesCount: number,
-        totalProfit: number,
-    }> {
-        const candles = candlesParam.sort((left, right) => left.timestamp - right.timestamp)
-        const { manager, db } = this.createManager();
+    const finishedSmartTrades = db.smartTrades.filter(
+      (smartTrade) =>
+        smartTrade.sellOrder &&
+        smartTrade.sellOrder.status === OrderStatusEnum.Filled,
+    );
+    const totalProfit = finishedSmartTrades.reduce((acc, curr) => {
+      const priceDiff = curr.sellOrder.price - curr.buyOrder.price;
+      const profit = priceDiff * curr.buyOrder.quantity;
 
-        for (const [index, candle] of candles.entries()) {
-            console.log(`Process candle #${index} with time #${candle.timestamp} of ${candles.length} with close price:`, candle.close)
-            await manager.process(useGridBot);
+      return acc + profit;
+    }, 0);
 
-            db.smartTrades.forEach(smartTrade => {
-                db.markIdleAsPlaced(smartTrade.id)
-            });
+    console.log('run return');
 
-            db.smartTrades.forEach(smartTrade => {
-                db.processSmartTrade(smartTrade.id, candle)
-            })
-        }
-
-        const finishedSmartTrades = db.smartTrades.filter(
-            smartTrade => smartTrade.sellOrder && smartTrade.sellOrder.status === OrderStatusEnum.Filled
-        )
-        const totalProfit = finishedSmartTrades.reduce((acc, curr) => {
-            const priceDiff = curr.sellOrder.price - curr.buyOrder.price;
-            const profit = priceDiff * curr.buyOrder.quantity;
-
-            return acc + profit
-        }, 0)
-  
-        console.log('run return')
-
-        return {
-          smartTrades: db.smartTrades,
-          finishedSmartTrades,
-          finishedSmartTradesCount: finishedSmartTrades.length,
-          totalProfit: totalProfit
-        }
-    }
+    return {
+      smartTrades: db.smartTrades,
+      finishedSmartTrades,
+      finishedSmartTradesCount: finishedSmartTrades.length,
+      totalProfit: totalProfit,
+    };
+  }
 }

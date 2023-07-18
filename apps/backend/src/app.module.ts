@@ -29,7 +29,7 @@ import { ThreeCommasApiModule } from 'src/shared/3commas-api/3commas-api.module'
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { SmartTradingModule } from './smart-trading/smart-trading.module';
-import { TradeBotModule  } from './trade-bot/trade-bot.module';
+import { TradeBotModule } from './trade-bot/trade-bot.module';
 import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
 import { BacktestingModule } from './backtesting/backtesting.module';
@@ -92,7 +92,7 @@ export class AppModule implements NestModule {
         GridBotController,
         TradeBotController,
         ExchangeAccountsController,
-        ThreeCommasAccountsController
+        ThreeCommasAccountsController,
       );
   }
 }

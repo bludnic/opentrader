@@ -1,4 +1,5 @@
 import { daysAgoToTimestamp } from 'src/candlesticks/utils/daysAgoToTimestamp';
+import { MAX_CANDLESTICKS_HISTORY_DAYS } from 'src/core/db/firestore/utils/candlesticks/constants';
 
 const todayDate = new Date('2022-08-31T00:00:00Z'); // 31 Aug 2022
 const todayDateString = todayDate.toISOString().slice(0, 10);

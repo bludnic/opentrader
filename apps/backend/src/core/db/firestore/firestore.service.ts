@@ -9,7 +9,6 @@ import { TweetTradingBotsRepository } from 'src/core/db/firestore/repositories/t
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { TradeBotRepository } from './repositories/trade-bot/trade-bot.repository';
 import { SmartTradeRepository } from './repositories/smart-trade/smart-trade.repository';
-import { CandlesticksHistoryRepository } from './repositories/candlesticks-history/candlesticks-history.repository';
 
 @Injectable()
 export class FirestoreService {
@@ -24,6 +23,5 @@ export class FirestoreService {
     public tweetTradingBots: TweetTradingBotsRepository,
     public smartTrade: SmartTradeRepository,
     public tradeBot: TradeBotRepository,
-    public candlesticksHistory: CandlesticksHistoryRepository
   ) {}
 }

@@ -1,25 +1,24 @@
 import {
-  Body,
   Controller,
   Get,
   Inject,
   Logger,
+  NotFoundException,
   Param,
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRepository } from '@nestjs/typeorm';
+import { GetCandlesticksHistoryResponseDto } from 'src/candlesticks/dto/get-candlesticks-history/get-candlesticks-history-response.dto';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { CandlestickEntity } from 'src/core/db/postgres/entities/candlestick.entity';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
-import { Repository } from 'typeorm';
-import { GetCandlesticksHistoryReseponseDto } from './dto/get-candlesticks-history/get-candlesticks-history-response.dto';
+import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
 import {
   ExchangeFactory,
   ExchangeFactorySymbol,
 } from 'src/core/exchanges/exchange.factory';
-import { CandlesticksService } from 'src/candlesticks/candlesticks.service';
+import {
+  CandlesticksServiceFactory,
+  CandlesticksServiceFactorySymbol,
+} from 'src/candlesticks/candlesticks-service.factory';
 
 @Controller({
   path: 'candlesticks',
@@ -31,65 +30,51 @@ export class CandlesticksController {
     @Inject(ExchangeFactorySymbol)
     private readonly exchangeFactory: ExchangeFactory,
     private readonly logger: Logger,
-    @InjectRepository(CandlestickEntity)
-    private readonly candlesticks: Repository<CandlestickEntity>,
+    @Inject(CandlesticksServiceFactorySymbol)
+    private readonly candlesticksServiceFactory: CandlesticksServiceFactory,
   ) {}
 
   @Get('/history/:baseCurrency/:quoteCurrency')
   async getCandlesticksHistory(
     @Param('baseCurrency') baseCurrency: string,
     @Param('quoteCurrency') quoteCurrency: string,
-  ): Promise<GetCandlesticksHistoryReseponseDto> {
-    const history = await this.firestore.candlesticksHistory.findOne(
-      ExchangeCode.OKX,
-      baseCurrency,
-      quoteCurrency,
-    );
+  ): Promise<GetCandlesticksHistoryResponseDto> {
+    const symbol = symbolId(baseCurrency, quoteCurrency);
 
-    // const candlesticks = await this.candlesticks.find();
+    const candlesticksService =
+      await this.candlesticksServiceFactory.fromExchangeAccountId(
+        'okx_real_testing',
+      );
+
+    const history = await candlesticksService.candlesticksHistory.findOne({
+      where: {
+        symbol,
+      },
+      relations: ['candlesticks'],
+    });
+
+    if (!history) {
+      throw new NotFoundException(
+        `[CandlesticksController] Not found history data for ${symbol} symbol`,
+      );
+    }
 
     return {
-      candlesticks: history.candlesticks,
-      updatedAt: history.updatedAt,
+      history,
     };
   }
 
   @Put('/history/:baseCurrency/:quoteCurrency')
-  async updateCandlesticksHistory(
-    @Param('baseCurrency') baseCurrency: string,
-    @Param('quoteCurrency') quoteCurrency: string,
-    @Body('candles') candles: ICandlestick[],
-  ): Promise<any> {
-    const result = await this.firestore.candlesticksHistory.update(
-      candles,
-      ExchangeCode.OKX,
-      baseCurrency,
-      quoteCurrency,
-    );
-
-    return {
-      result,
-      candles,
-    };
-  }
-
-  @Get('/fetch/:baseCurrency/:quoteCurrency')
-  async fetchExchangeCandlesticks(
+  async fetchExchangeCandlesticksHistory(
     @Param('baseCurrency') baseCurrency: string,
     @Param('quoteCurrency') quoteCurrency: string,
   ) {
-    const exchangeService =
-      await this.exchangeFactory.createFromExchangeAccountId(
+    const candlesticksService =
+      await this.candlesticksServiceFactory.fromExchangeAccountId(
         'okx_real_testing',
       );
 
-    const candlesticksService = new CandlesticksService(
-      this.firestore,
-      exchangeService,
-      this.logger,
-    );
-
-    candlesticksService.downloadHistory(baseCurrency, quoteCurrency);
+    await candlesticksService.downloadHistory(baseCurrency, quoteCurrency);
 
     return {
       polling: true,
