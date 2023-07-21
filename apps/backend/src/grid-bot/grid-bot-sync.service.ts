@@ -36,7 +36,7 @@ export class GridBotSyncService {
       );
 
       const gridBotService = await this.gridBotServiceFactory.fromBotId(bot.id);
-      
+
       // @todo compare last smart trade updated time with last bot sync time
       // smartTrade.updatedTime > bot.updatedTime then runBotTemplate
       await gridBotService.runBotTemplate(bot);
