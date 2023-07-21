@@ -3,8 +3,7 @@
  *
  * Стоит завести больше ботов с разными сценариями.
  */
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';

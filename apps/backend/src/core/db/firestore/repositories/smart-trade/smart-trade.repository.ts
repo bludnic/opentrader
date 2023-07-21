@@ -1,10 +1,15 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ValidationError } from 'class-validator';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { firestore } from 'firebase-admin';
 import { SMART_TRADE_COLLECTION } from 'src/core/db/firestore/utils/collections';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
-import { SmartBuyOrder, SmartSellOrder } from 'src/core/db/types/entities/smart-trade/orders/types';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import {
+  SmartBuyOrder,
+  SmartSellOrder,
+} from 'src/core/db/types/entities/smart-trade/orders/types';
 import { SmartTradeEntity } from 'src/core/db/types/entities/smart-trade/smart-trade.entity';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { uniqId } from 'src/core/db/utils/uniqId';
@@ -30,7 +35,9 @@ export class SmartTradeRepository {
 
     const data = documentData.data();
     if (!data) {
-      throw new NotFoundException(`Smart Trade with ID: ${smartTradeId} was not found`);
+      throw new NotFoundException(
+        `Smart Trade with ID: ${smartTradeId} was not found`,
+      );
     }
 
     return new SmartTradeEntity(data);
@@ -65,7 +72,9 @@ export class SmartTradeRepository {
     return smartTrades;
   }
 
-  async findAllByExchangeAccountId(exchangeAccountId: string): Promise<SmartTradeEntity[]> {
+  async findAllByExchangeAccountId(
+    exchangeAccountId: string,
+  ): Promise<SmartTradeEntity[]> {
     const allSmartTrades = await this.firebase.db
       .collection(SMART_TRADE_COLLECTION)
       .withConverter(converter)
@@ -95,10 +104,19 @@ export class SmartTradeRepository {
 
   async create(
     dto: CreateSmartTradeDto,
-    userId: string
+    userId: string,
   ): Promise<SmartTradeEntity> {
     const docId = uniqId();
-    const { comment, quantity, buy, sell, baseCurrency, quoteCurrency, exchangeAccountId, botId } = dto;
+    const {
+      comment,
+      quantity,
+      buy,
+      sell,
+      baseCurrency,
+      quoteCurrency,
+      exchangeAccountId,
+      botId,
+    } = dto;
     const createdAt = new Date().getTime();
 
     const document = this.firebase.db
@@ -120,7 +138,7 @@ export class SmartTradeRepository {
         side: OrderSideEnum.Buy,
         fee: 0,
         createdAt,
-        updatedAt: createdAt
+        updatedAt: createdAt,
       },
       sellOrder: {
         clientOrderId: sell.clientOrderId || '',
@@ -131,13 +149,13 @@ export class SmartTradeRepository {
         side: OrderSideEnum.Sell,
         fee: 0,
         createdAt,
-        updatedAt: createdAt
+        updatedAt: createdAt,
       },
       createdAt,
       updatedAt: createdAt,
       botId: botId || null,
       exchangeAccountId,
-      userId
+      userId,
     };
 
     await document.set(entity);
@@ -152,7 +170,7 @@ export class SmartTradeRepository {
 
     await document.update(smartTrade);
 
-    return this.findOne(smartTrade.id)
+    return this.findOne(smartTrade.id);
   }
 
   async updateBuyOrder(
@@ -169,16 +187,16 @@ export class SmartTradeRepository {
       buyOrder: {
         ...smartTrade.buyOrder,
         ...dto,
-        updatedAt
-      }
-    }
+        updatedAt,
+      },
+    };
 
     return this.update(newSmartTrade);
   }
 
   async updateSellOrder(
     smartTradeId: string,
-    dto: Partial<SmartSellOrder>
+    dto: Partial<SmartSellOrder>,
   ): Promise<SmartTradeEntity> {
     const updatedAt = new Date().getTime();
 
@@ -186,9 +204,9 @@ export class SmartTradeRepository {
 
     if (!smartTrade.sellOrder) {
       throw new ConflictException(
-        `[SmartTradeRepository] Can not update the status of the order  
-        because this SmartTrade has no sell order (SmartTrade ID: ${smartTradeId})`
-      )
+        `[SmartTradeRepository] Can not update the status of the order
+        because this SmartTrade has no sell order (SmartTrade ID: ${smartTradeId})`,
+      );
     }
 
     const newSmartTrade: ISmartTrade = {
@@ -197,34 +215,34 @@ export class SmartTradeRepository {
       sellOrder: {
         ...smartTrade.sellOrder,
         ...dto,
-        updatedAt
-      }
-    }
+        updatedAt,
+      },
+    };
 
     return this.update(newSmartTrade);
   }
 
-  async testSet() { // @todo remove
-    const documentId = uniqId()
+  async testSet() {
+    // @todo remove
+    const documentId = uniqId();
     const document = this.firebase.db
       .collection('testing_remove')
       .doc(documentId);
 
-    console.log('document.id1', document.id)
-    console.log('document.id2', document.id)
+    console.log('document.id1', document.id);
+    console.log('document.id2', document.id);
 
     await document.set({
       documentId,
-      hello: 'world'
-    })
+      hello: 'world',
+    });
 
-    return document
+    return document;
   }
 
-  async testGet(id: string) { // @todo remove
-    const document = this.firebase.db
-      .collection('testing_remove')
-      .doc(id)
+  async testGet(id: string) {
+    // @todo remove
+    const document = this.firebase.db.collection('testing_remove').doc(id);
 
     const documentData = await document.get();
 

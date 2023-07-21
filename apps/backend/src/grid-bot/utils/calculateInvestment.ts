@@ -1,5 +1,5 @@
 import big from 'big.js';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderStatusEnum } from '@bifrost/types';
 import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
 
 export type CalculateInvestmentResult = {
@@ -11,13 +11,14 @@ export type CalculateInvestmentResult = {
  * Calculate Investment in Base and Quote currencies
  * required to place Buy/Sell limit orders on the exchange.
  *
- * @param deals
+ * @param gridLevels
  */
-export function calculateInvestment(gridLevels: IGridBotLevel[]): CalculateInvestmentResult {
-  let baseCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
-    const isSellWaiting =
-      gridLevel.buy.status === OrderStatusEnum.Filled
-      gridLevel.sell.status === OrderStatusEnum.Idle
+export function calculateInvestment(
+  gridLevels: IGridBotLevel[],
+): CalculateInvestmentResult {
+  const baseCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
+    const isSellWaiting = gridLevel.buy.status === OrderStatusEnum.Filled;
+    gridLevel.sell.status === OrderStatusEnum.Idle;
 
     if (isSellWaiting) {
       return big(amount).plus(gridLevel.sell.quantity).toNumber();
@@ -26,13 +27,15 @@ export function calculateInvestment(gridLevels: IGridBotLevel[]): CalculateInves
     return amount;
   }, 0);
 
-  let quoteCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
-    const isBuyWaiting = 
+  const quoteCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
+    const isBuyWaiting =
       gridLevel.buy.status === OrderStatusEnum.Idle &&
-      gridLevel.sell.status === OrderStatusEnum.Idle
+      gridLevel.sell.status === OrderStatusEnum.Idle;
 
     if (isBuyWaiting) {
-      const quoteAmountPerGrid = big(gridLevel.buy.quantity).times(gridLevel.buy.price);
+      const quoteAmountPerGrid = big(gridLevel.buy.quantity).times(
+        gridLevel.buy.price,
+      );
 
       return big(amount).plus(quoteAmountPerGrid).toNumber();
     }

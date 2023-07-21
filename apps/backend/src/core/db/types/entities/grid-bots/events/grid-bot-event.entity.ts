@@ -1,4 +1,4 @@
-import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { GridBotEventCodeEnum } from '@bifrost/types';
 import { IGridBotEvent } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.interface';
 
 export class GridBotEventEntity implements IGridBotEvent {

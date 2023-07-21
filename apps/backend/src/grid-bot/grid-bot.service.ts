@@ -4,10 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import big from 'big.js';
-import { delay } from 'src/common/helpers/delay';
 import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
-import { GridBotEventCodeEnum } from 'src/core/db/types/common/enums/grid-bot-event-code.enum';
+import { GridBotEventCodeEnum } from '@bifrost/types';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
 import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
 import { v4 as uuidv4 } from 'uuid';

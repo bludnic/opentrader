@@ -1,8 +1,8 @@
-import { OrderSideEnum } from "src/core/db/types/common/enums/order-side.enum";
+import { OrderSideEnum } from '@bifrost/types';
 
 export interface UseOrderParams {
-    side: OrderSideEnum;
-    quantity: number;
-    symbol: string;
-    price: number;
+  side: OrderSideEnum;
+  quantity: number;
+  symbol: string;
+  price: number;
 }

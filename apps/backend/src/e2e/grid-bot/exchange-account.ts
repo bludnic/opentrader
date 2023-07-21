@@ -1,4 +1,4 @@
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 import { user } from 'src/e2e/grid-bot/user';
 

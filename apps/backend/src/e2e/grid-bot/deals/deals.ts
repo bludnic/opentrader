@@ -1,5 +1,4 @@
-import { DealStatusEnum } from 'src/core/db/types/common/enums/deal-status.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { DealStatusEnum, OrderStatusEnum } from '@bifrost/types';
 import { GridBotE2EDeal } from 'src/e2e/grid-bot/deals/types';
 
 function deal(

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { DataSource, EntityNotFoundError, Repository } from 'typeorm';
 import { CandlesticksHistoryEntity } from 'src/core/db/postgres/entities/candlesticks-history/candlesticks-history.entity';
 

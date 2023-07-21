@@ -1,13 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Equals, IsDefined, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
-import { BaseSmartOrder, SmartBuyOrder, SmartBuyOrderFilled, SmartBuyOrderIdle, SmartBuyOrderPlaced } from '../types';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import {
+  BaseSmartOrder,
+  SmartBuyOrder,
+  SmartBuyOrderFilled,
+  SmartBuyOrderIdle,
+  SmartBuyOrderPlaced,
+} from '../types';
 import { SmartBuyOrderFilledEntity } from './buy-order-filled.entity';
 import { SmartBuyOrderIdleEntity } from './buy-order-idle.entity';
 import { SmartBuyOrderPlacedEntity } from './buy-order-placed.entity';
 
-export class SmartBuyOrderEntity<T = SmartBuyOrder> implements BaseSmartOrder<OrderSideEnum.Buy, OrderStatusEnum> {
+export class SmartBuyOrderEntity<T = SmartBuyOrder>
+  implements BaseSmartOrder<OrderSideEnum.Buy, OrderStatusEnum>
+{
   exchangeOrderId: string;
 
   clientOrderId: string;
@@ -31,7 +37,7 @@ export class SmartBuyOrderEntity<T = SmartBuyOrder> implements BaseSmartOrder<Or
   constructor(smartBuyOrder: SmartBuyOrderEntity) {
     Object.assign(this, smartBuyOrder);
   }
-  
+
   static from(order: SmartBuyOrder) {
     switch (order.status) {
       case OrderStatusEnum.Idle:

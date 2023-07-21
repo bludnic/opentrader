@@ -1,6 +1,5 @@
 import { CreateSmartTradeDto } from 'src/core/db/firestore/repositories/smart-trade/dto/create-smart-trade/create-smart-trade.dto';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { uniqId } from 'src/core/db/utils/uniqId';
 import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';

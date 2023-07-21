@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { FactoryProvider, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service';
@@ -15,7 +15,9 @@ export const TradeBotServiceFactorySymbol = Symbol('TradeBotServiceFactory');
 export type TradeBotServiceFactory = {
   create: (exchange: IExchangeContext) => TradeBotService;
   fromExchangeAccount: (account: IExchangeAccount) => TradeBotService;
-  fromExchangeAccountId: (exchangeAccountId: string) => Promise<TradeBotService>;
+  fromExchangeAccountId: (
+    exchangeAccountId: string,
+  ) => Promise<TradeBotService>;
   fromBotId: (botId: string) => Promise<TradeBotService>;
 };
 
@@ -25,7 +27,7 @@ export const tradeBotServiceFactory: FactoryProvider = {
     httpService: HttpService,
     configService: ConfigService,
     firestoreService: FirestoreService,
-    logger: Logger
+    logger: Logger,
   ): TradeBotServiceFactory => {
     return {
       create: (ctx) => {

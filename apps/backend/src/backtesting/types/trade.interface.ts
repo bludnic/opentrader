@@ -1,9 +1,9 @@
-import { OrderSideEnum } from "src/core/db/types/common/enums/order-side.enum";
+import { OrderSideEnum } from '@bifrost/types';
 
 export interface ITrade {
-    smartTradeId: string;
-    side: OrderSideEnum,
-    price: number;
-    quantity: number;
-    time: number;
+  smartTradeId: string;
+  side: OrderSideEnum;
+  price: number;
+  quantity: number;
+  time: number;
 }

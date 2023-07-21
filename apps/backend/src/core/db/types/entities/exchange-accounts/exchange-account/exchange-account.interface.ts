@@ -1,4 +1,4 @@
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { IExchangeCredentials } from 'src/core/db/types/entities/exchange-accounts/exchange-credentials/exchange-credentials.interface';
 
 export interface IExchangeAccount {

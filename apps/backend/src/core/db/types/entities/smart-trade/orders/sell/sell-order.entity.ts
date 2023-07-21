@@ -1,13 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Equals, IsDefined, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
-import { BaseSmartOrder, SmartSellOrder, SmartSellOrderFilled, SmartSellOrderIdle, SmartSellOrderPlaced } from '../types';
+import { Equals, IsDefined, IsEnum, IsNumber, IsString } from 'class-validator';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import {
+  BaseSmartOrder,
+  SmartSellOrder,
+  SmartSellOrderFilled,
+  SmartSellOrderIdle,
+  SmartSellOrderPlaced,
+} from '../types';
 import { SmartSellOrderFilledEntity } from './sell-order-filled.entity';
 import { SmartSellOrderIdleEntity } from './sell-order-idle.entity';
 import { SmartSellOrderPlacedEntity } from './sell-order-placed.entity';
 
-export class SmartSellOrderEntity<T = SmartSellOrder> implements BaseSmartOrder<OrderSideEnum.Sell, OrderStatusEnum> {
+export class SmartSellOrderEntity<T = SmartSellOrder>
+  implements BaseSmartOrder<OrderSideEnum.Sell, OrderStatusEnum>
+{
   @IsString()
   exchangeOrderId: string;
 
@@ -44,11 +51,11 @@ export class SmartSellOrderEntity<T = SmartSellOrder> implements BaseSmartOrder<
 
   static from(order: SmartSellOrder) {
     switch (order.status) {
-    case OrderStatusEnum.Idle:
+      case OrderStatusEnum.Idle:
         return new SmartSellOrderIdleEntity(order);
-    case OrderStatusEnum.Placed:
+      case OrderStatusEnum.Placed:
         return new SmartSellOrderPlacedEntity(order);
-    case OrderStatusEnum.Filled:
+      case OrderStatusEnum.Filled:
         return new SmartSellOrderFilledEntity(order);
     }
   }

@@ -1,5 +1,4 @@
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { ITrade } from '../types/trade.interface';
 

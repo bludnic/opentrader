@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { ExchangeCredentialsDto } from 'src/core/db/firestore/repositories/exchange-account/dto/exchange-credentials.dto';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { IExchangeAccount } from 'src/core/db/types/entities/exchange-accounts/exchange-account/exchange-account.interface';
 import { IExchangeCredentials } from 'src/core/db/types/entities/exchange-accounts/exchange-credentials/exchange-credentials.interface';
 

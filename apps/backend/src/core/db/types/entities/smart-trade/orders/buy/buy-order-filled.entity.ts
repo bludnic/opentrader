@@ -1,6 +1,5 @@
-import { OrderSideEnum } from "src/core/db/types/common/enums/order-side.enum";
-import { OrderStatusEnum } from "src/core/db/types/common/enums/order-status.enum";
-import { SmartBuyOrderFilled } from "../types";
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import { SmartBuyOrderFilled } from '../types';
 
 export class SmartBuyOrderFilledEntity implements SmartBuyOrderFilled {
   exchangeOrderId: string;

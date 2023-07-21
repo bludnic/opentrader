@@ -10,7 +10,7 @@ import { DataSource } from 'typeorm';
 import { FactoryProvider, Logger } from '@nestjs/common';
 import { CandlesticksService } from 'src/candlesticks/candlesticks.service';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 
 export const CandlesticksServiceFactorySymbol = Symbol(
   'CandlesticksServiceFactory',

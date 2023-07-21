@@ -4,7 +4,7 @@ import { BotManagerService } from '../core/bot-manager/bot-manager.service';
 import { TestingDb } from './testing-db';
 import { TestingExchangeService } from './testing-exchange.service';
 import { TestBotControl } from './test-bot-control';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderStatusEnum } from '@bifrost/types';
 import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 

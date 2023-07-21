@@ -1,7 +1,7 @@
 import { useSmartTrade } from 'src/core/bot-manager/effects';
 import { replaceSmartTrade } from 'src/core/bot-manager/effects/replaceSmartTrade';
 import { useExchange } from 'src/core/bot-manager/effects/useExchange';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';

@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { FactoryProvider, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
 import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service';
 import { getExchangeContextByAccount } from 'src/core/exchanges/utils/contexts';

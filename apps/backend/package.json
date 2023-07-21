@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@bifrost/tools": "*",
+    "@bifrost/types": "*",
     "@nestjs/axios": "^0.0.4",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",

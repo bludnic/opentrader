@@ -1,4 +1,4 @@
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 
 /**
  * Return example: OKX_UNI/USDT

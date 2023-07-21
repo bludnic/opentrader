@@ -1,9 +1,17 @@
-import { OmitType } from "@nestjs/swagger";
-import { IsDefined, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
-import { OrderStatusEnum } from "src/core/db/types/common/enums/order-status.enum";
-import { SmartSellOrderEntity } from "src/core/db/types/entities/smart-trade/orders/sell/sell-order.entity";
+import { OmitType } from '@nestjs/swagger';
+import {
+  IsDefined,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { OrderStatusEnum } from '@bifrost/types';
+import { SmartSellOrderEntity } from 'src/core/db/types/entities/smart-trade/orders/sell/sell-order.entity';
 
-export class CreateSmartTradeSellOrderDto extends OmitType(SmartSellOrderEntity, [
+export class CreateSmartTradeSellOrderDto extends OmitType(
+  SmartSellOrderEntity,
+  [
     'exchangeOrderId',
     'clientOrderId',
     'side',
@@ -11,17 +19,18 @@ export class CreateSmartTradeSellOrderDto extends OmitType(SmartSellOrderEntity,
     'status',
     'fee',
     'createdAt',
-    'updatedAt'
-  ] as const) {
-    @IsString()
-    @IsOptional()
-    clientOrderId?: string;
+    'updatedAt',
+  ] as const,
+) {
+  @IsString()
+  @IsOptional()
+  clientOrderId?: string;
 
-    @IsEnum(OrderStatusEnum)
-    @IsOptional()
-    status?: OrderStatusEnum;
+  @IsEnum(OrderStatusEnum)
+  @IsOptional()
+  status?: OrderStatusEnum;
 
-    @IsNumber()
-    @IsDefined()
-    price: number;
-  }
+  @IsNumber()
+  @IsDefined()
+  price: number;
+}

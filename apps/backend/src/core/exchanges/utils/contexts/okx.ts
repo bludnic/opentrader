@@ -1,4 +1,4 @@
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { IExchangeContext } from 'src/core/exchanges/types/exchange-context.interface';
 import { getExchangeConfig } from 'src/core/exchanges/utils/configs';
 

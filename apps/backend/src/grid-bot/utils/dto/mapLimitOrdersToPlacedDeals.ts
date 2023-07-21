@@ -1,6 +1,4 @@
-
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { PlacedDealDto } from 'src/grid-bot/types/service/place/placed-deal.dto';
 

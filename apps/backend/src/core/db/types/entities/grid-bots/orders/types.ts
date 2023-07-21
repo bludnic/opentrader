@@ -1,5 +1,4 @@
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 
 export type BaseOrder<
   Side extends OrderSideEnum,

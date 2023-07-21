@@ -1,6 +1,5 @@
 import { Order } from 'src/core/db/types/entities/grid-bots/orders/types';
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { BuyOrderFilledEntity } from './buy/buy-order-filled.entity';
 import { BuyOrderIdleEntity } from './buy/buy-order-idle.entity';
 import { BuyOrderPlacedEntity } from './buy/buy-order-placed.entity';

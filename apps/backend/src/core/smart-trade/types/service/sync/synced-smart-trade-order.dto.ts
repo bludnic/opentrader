@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from 'src/core/db/types/common/enums/order-status.enum';
+import { OrderStatusEnum } from '@bifrost/types';
 
 export class SyncedSmartTradeOrderDto {
   status: OrderStatusEnum;

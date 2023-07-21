@@ -1,6 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 import { OkxApiException } from './okx-api.exception';
 
 @Catch(OkxApiException)

@@ -1,5 +1,5 @@
 import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
-import { ExchangeCode } from 'src/core/db/types/common/enums/exchange-code.enum';
+import { ExchangeCode } from '@bifrost/types';
 
 export interface ICandlesticksHistory {
   exchangeCode: ExchangeCode;

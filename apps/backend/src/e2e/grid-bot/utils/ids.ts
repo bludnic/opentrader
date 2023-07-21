@@ -1,4 +1,4 @@
-import { OrderSideEnum } from 'src/core/db/types/common/enums/order-side.enum';
+import { OrderSideEnum } from '@bifrost/types';
 import { gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
 import { generateDealId } from 'src/grid-bot/utils/deals/generateDealId';
 import { generateUniqClientOrderId } from 'src/grid-bot/utils/orders/generateUniqClientOrderId';
