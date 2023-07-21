@@ -1,6 +1,6 @@
 import big from 'big.js';
 import { OrderStatusEnum } from '@bifrost/types';
-import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
+import { IGridBotLevel } from '@bifrost/types';
 
 export type CalculateInvestmentResult = {
   baseCurrencyAmount: number;

@@ -1,36 +1,30 @@
-import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
+import { IGridBotLevel } from "@bifrost/types";
 import {
-  DOT_BUSD_BOT_WITH_NO_DEALS_MOCK,
-  DOT_BUSD_CURRENT_ASSET_PRICE_MOCK,
-  DOT_BUSD_GRID_INITIAL_GRID_LEVELS,
-} from 'src/grid-bot/mocks/dotbusd-bot';
-import { calcGridLines } from '@bifrost/tools';
-import { computeGridFromCurrentAssetPrice } from './computeGridFromCurrentAssetPrice';
-import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
+  CURRENT_ASSET_PRICE,
+  GRID_LINES,
+  GRID_LEVELS,
+} from "src/mocks/grid-bot";
+import { calcGridLines } from "./calcGridLines";
+import { computeGridFromCurrentAssetPrice } from "./computeGridFromCurrentAssetPrice";
 
-const bot: IGridBot = DOT_BUSD_BOT_WITH_NO_DEALS_MOCK;
-const currentAssetPrice = DOT_BUSD_CURRENT_ASSET_PRICE_MOCK;
-
-jest.mock('src/grid-bot/utils/orders/generateUniqClientOrderId');
-
-describe('computeGridFromCurrentAssetPrice', () => {
-  it('should calculate initial grid levels', () => {
+describe("computeGridFromCurrentAssetPrice", () => {
+  it("should calculate initial grid levels", () => {
     const gridLevels = computeGridFromCurrentAssetPrice(
-      bot.gridLines,
-      currentAssetPrice,
+      GRID_LINES,
+      CURRENT_ASSET_PRICE
     );
-    const expectedGridLevels: IGridBotLevel[] = DOT_BUSD_GRID_INITIAL_GRID_LEVELS;
+    const expectedGridLevels: IGridBotLevel[] = GRID_LEVELS;
 
     expect(gridLevels).toStrictEqual(expectedGridLevels);
   });
 
-  it('check that the sell order price is calculated using big.js', () => {
+  it("check that the sell order price is calculated using big.js", () => {
     const currentAssetPrice = 1.13;
     const gridLines = calcGridLines(1.14, 1.11, 4, 5);
 
     const gridLevels = computeGridFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice,
+      currentAssetPrice
     );
 
     expect(gridLevels).toMatchObject([
@@ -40,13 +34,13 @@ describe('computeGridFromCurrentAssetPrice', () => {
     ]);
   });
 
-  it('weird ETH/USDT', () => {
+  it("weird ETH/USDT", () => {
     const currentAssetPrice = 2610;
     const gridLines = calcGridLines(2800, 2500, 16, 0.1);
 
     const gridLevels = computeGridFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice,
+      currentAssetPrice
     );
 
     expect(gridLevels).toHaveLength(15);
@@ -70,13 +64,13 @@ describe('computeGridFromCurrentAssetPrice', () => {
     ]);
   });
 
-  it('weird NEAR/USDT', () => {
+  it("weird NEAR/USDT", () => {
     const currentAssetPrice = 9.8;
     const gridLines = calcGridLines(12, 7.5, 10, 10);
 
     const gridLevels = computeGridFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice,
+      currentAssetPrice
     );
 
     expect(gridLevels).toHaveLength(9);

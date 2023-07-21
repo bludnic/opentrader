@@ -5,7 +5,7 @@ import { OrderStatusEnum, IGetMarketPriceResponse } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { GridBotControl } from './grid-bot-control';
-import { computeGridFromCurrentAssetPrice } from './utils/grid/computeGridFromCurrentAssetPrice';
+import { computeGridFromCurrentAssetPrice } from '@bifrost/tools';
 
 export function* useGridBot(bot: GridBotControl) {
   const exchange: IExchangeService = yield useExchange();

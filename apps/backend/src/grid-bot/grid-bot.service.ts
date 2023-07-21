@@ -16,11 +16,11 @@ import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-
 
 import { MissingCurrencyOnExchangeException } from 'src/grid-bot/exceptions/missing-currency-on-exchange.exception';
 import { NotEnoughFundsException } from 'src/grid-bot/exceptions/not-enough-funds.exception';
-import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
+import { calculateInvestment } from '@bifrost/tools';
 import { SmartTradePublicService } from 'src/core/smart-trade/smart-trade-public.service';
 import { SmartTradePrivateService } from 'src/core/smart-trade/smart-trade-private.service';
-import { computeGridFromCurrentAssetPrice } from './utils/grid/computeGridFromCurrentAssetPrice';
-import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
+import { computeGridFromCurrentAssetPrice } from '@bifrost/tools';
+import { IGridBotLevel } from '@bifrost/types';
 import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
 import { GridBotControl } from './grid-bot-control';
 import { useGridBot } from './use-grid-bot';

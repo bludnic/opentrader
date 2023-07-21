@@ -1,6 +1,6 @@
 import big from 'big.js';
 import { calcGridStepSize } from './calcGridStepSize';
-import { IGridLine } from './types/grid-line.interface';
+import { IGridLine } from '@bifrost/types';
 
 // Note: Use this function only for tests purposes
 // to avoid boilerplate

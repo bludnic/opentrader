@@ -1,6 +1,5 @@
 import big from 'big.js';
-import { IGridLine } from './types/grid-line.interface';
-
+import { IGridLine } from '@bifrost/types';
 
 export function isWaitingGridLine(
   gridLine: IGridLine,

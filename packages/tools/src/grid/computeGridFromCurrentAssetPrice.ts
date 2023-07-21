@@ -1,10 +1,6 @@
-import {
-  IGridLine,
-  isWaitingGridLine,
-  nextGridLinePrice,
-} from '@bifrost/tools';
-import { OrderStatusEnum } from '@bifrost/types';
-import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
+import { OrderStatusEnum, IGridBotLevel, IGridLine } from "@bifrost/types";
+import { isWaitingGridLine } from "./isWaitingGridLine";
+import { nextGridLinePrice } from "./nextGridLinePrice";
 
 /**
  * Computes initial grid levels based on current asset price.
@@ -15,7 +11,7 @@ import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
  */
 export function computeGridFromCurrentAssetPrice(
   gridLines: IGridLine[],
-  currentAssetPrice: number,
+  currentAssetPrice: number
 ): IGridBotLevel[] {
   return gridLines.flatMap<IGridBotLevel>((gridLine, i) => {
     if (i === gridLines.length - 1) {

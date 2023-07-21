@@ -1,4 +1,4 @@
-import { IGridLine } from "./types/grid-line.interface";
+import { IGridLine } from "@bifrost/types";
 
 export function nextGridLinePrice(
   gridLines: IGridLine[],
