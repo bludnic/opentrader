@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { TwitterSignalsService } from 'src/marketplace/twitter-signals/twitter-signals.service';
 import { CreateTwitterSignalEventRequestBodyDto } from './dto/signal-events/create-signal-event/create-twitter-signal-event-request-body.dto';
@@ -9,6 +10,7 @@ import { UpdateTwitterSignalEventRequestBodyDto } from './dto/signal-events/upda
 import { UpdateTwitterSignalEventResponseBodyDto } from './dto/signal-events/update-signal-event/update-twitter-signal-event-response-body.dto';
 
 @Controller('marketplace/twitter/signal/events')
+@ApiTags('Marketplace: Twitter Signals')
 export class TwitterSignalEventsController {
   constructor(
     private firestoreService: FirestoreService,
