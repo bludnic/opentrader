@@ -5,6 +5,7 @@ import {
   PrimaryColumn,
   CreateDateColumn,
   JoinColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { StringToNumberTransformer } from '../../../transformers/string-to-number.transformer';
@@ -14,6 +15,9 @@ import { ICandlestick } from '../../../../../exchanges/types/exchange/market-dat
 
 @Entity({ name: 'candlestick' })
 export class CandlestickEntity implements ICandlestick {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @PrimaryColumn({
     type: 'bigint',
     transformer: new StringToNumberTransformer(),
