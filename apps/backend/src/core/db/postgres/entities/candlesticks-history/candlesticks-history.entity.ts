@@ -1,7 +1,6 @@
 import { ICandlesticksHistory } from './candlesticks-history.interface';
 import { CandlestickEntity } from './candlestick/candlestick.entity';
-import { ExchangeCode } from '@bifrost/types';
-import { ICandlestick } from '../../../../exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
+import { ExchangeCode, ICandlestick } from '@bifrost/types';
 import {
   Column,
   Entity,

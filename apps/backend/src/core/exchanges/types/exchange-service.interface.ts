@@ -1,17 +1,19 @@
-import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
-import { IGetTradingFeeRatesRequest } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-request.interface';
-import { IGetTradingFeeRatesResponse } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-response.interface';
-import { IGetCandlesticksRequest } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/get-candlesticks-request.interface';
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
-import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
-import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';
-import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
-import { ICancelLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-response.interface';
-import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
-import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
-import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
-import { ITradingPairSymbolRequest } from './exchange/helpers/trading-pair-symbol/trading-pair-symbol-request.interface';
+import {
+  IAccountAsset,
+  IGetTradingFeeRatesRequest,
+  IGetTradingFeeRatesResponse,
+  IGetCandlesticksRequest,
+  ICandlestick,
+  IGetMarketPriceRequest,
+  IGetMarketPriceResponse,
+  ICancelLimitOrderRequest,
+  ICancelLimitOrderResponse,
+  IGetLimitOrderRequest,
+  IGetLimitOrderResponse,
+  IPlaceLimitOrderRequest,
+  IPlaceLimitOrderResponse,
+  ITradingPairSymbolRequest,
+} from '@bifrost/types';
 
 export interface IExchangeService {
   accountAssets(): Promise<IAccountAsset[]>;

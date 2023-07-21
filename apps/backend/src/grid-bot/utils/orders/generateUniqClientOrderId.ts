@@ -1,4 +1,4 @@
-import { OrderSide } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
+import { OrderSide } from '@bifrost/types';
 import { generateUniqId } from 'src/grid-bot/utils/generateUniqId';
 
 // We need these arguments to generate predictable IDs in the unit and e2e tests

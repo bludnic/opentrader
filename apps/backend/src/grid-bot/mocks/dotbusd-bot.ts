@@ -3,10 +3,9 @@
  *
  * Стоит завести больше ботов с разными сценариями.
  */
-import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import { OrderSideEnum, OrderStatusEnum, IPlaceLimitOrderRequest } from '@bifrost/types';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { user } from 'src/e2e/grid-bot/user';
 import { IGridBotLevel } from '../types/grid-bot-level.interface';

@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
 import big from 'big.js';
 import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
@@ -14,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
-import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
+import { IAccountAsset } from '@bifrost/types';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 
@@ -24,7 +20,7 @@ import { calculateInvestment } from 'src/grid-bot/utils/calculateInvestment';
 import { SmartTradePublicService } from 'src/core/smart-trade/smart-trade-public.service';
 import { SmartTradePrivateService } from 'src/core/smart-trade/smart-trade-private.service';
 import { computeGridFromCurrentAssetPrice } from './utils/grid/computeGridFromCurrentAssetPrice';
-import { IGridBotLevel } from "src/grid-bot/types/grid-bot-level.interface";
+import { IGridBotLevel } from 'src/grid-bot/types/grid-bot-level.interface';
 import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
 import { GridBotControl } from './grid-bot-control';
 import { useGridBot } from './use-grid-bot';
@@ -150,13 +146,10 @@ export class GridBotService {
       this.exchange,
       bot,
       this.firestore,
-      this.logger
+      this.logger,
     );
 
-    const botManager = new BotManagerService(
-      botControl,
-      this.exchange,
-    );
+    const botManager = new BotManagerService(botControl, this.exchange);
 
     await botManager.process(useGridBot);
   }

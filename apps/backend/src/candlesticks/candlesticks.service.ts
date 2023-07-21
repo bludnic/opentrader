@@ -7,7 +7,7 @@ import { CandlesticksHistoryRepository } from 'src/core/db/postgres/repositories
 import { CandlesticksRepository } from 'src/core/db/postgres/repositories/candlesticks.repository';
 import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
+import { ICandlestick } from '@bifrost/types';
 import { DataSource } from 'typeorm';
 import { daysAgoToTimestamp } from './utils/daysAgoToTimestamp';
 

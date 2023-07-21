@@ -1,5 +1,4 @@
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
-import { ExchangeCode } from '@bifrost/types';
+import { ExchangeCode, ICandlestick } from '@bifrost/types';
 
 export interface ICandlesticksHistory {
   exchangeCode: ExchangeCode;

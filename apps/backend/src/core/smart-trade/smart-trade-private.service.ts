@@ -5,7 +5,7 @@ import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
 import { SyncedSmartTradeDto } from './types/service/sync/synced-smart-trade.dto';
 import { IExchangeService } from '../exchanges/types/exchange-service.interface';
-import { IPlaceLimitOrderResponse } from '../exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import { IPlaceLimitOrderResponse } from '@bifrost/types';
 import { delay } from 'src/common/helpers/delay';
 
 @Injectable()

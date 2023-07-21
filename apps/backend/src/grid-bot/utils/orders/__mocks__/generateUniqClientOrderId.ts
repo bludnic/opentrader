@@ -1,4 +1,4 @@
-import { OrderSide } from 'src/core/exchanges/types/exchange/trade/common/types/order-side.type';
+import { OrderSide } from '@bifrost/types';
 
 // DO NOT IMPORT!
 // This is a mock function for tests.

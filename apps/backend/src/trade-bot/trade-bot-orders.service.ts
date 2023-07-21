@@ -1,15 +1,13 @@
-import { Injectable, Logger, Scope } from "@nestjs/common";
-import { FirestoreService } from "src/core/db/firestore/firestore.service";
-import { TradeBotDto } from "src/core/db/firestore/repositories/trade-bot/dto/trade-bot.dto";
-import { IGridBot } from "src/core/db/types/entities/grid-bots/grid-bot.interface";
-import { OrderStatusEnum } from "src/core/db/types/entities/trade-bot/orders/enums/order-status.enum";
-import { IOrder } from "src/core/db/types/entities/trade-bot/orders/order.interface";
-import { OrderStatus } from "src/core/db/types/entities/trade-bot/orders/types/order-status.type";
-import { ITradeBot } from "src/core/db/types/entities/trade-bot/trade-bot.interface";
-import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface";
-import { IPlaceLimitOrderRequest } from "src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface";
-import { calcOkxSymbol } from "./utils/calcOkxSymbol";
-import { fromExchangeOrderToTradeOrder } from "./utils/fromExchangeOrderToTradeOrder";
+import { Logger } from '@nestjs/common';
+import { IPlaceLimitOrderRequest } from '@bifrost/types';
+import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { OrderStatusEnum } from 'src/core/db/types/entities/trade-bot/orders/enums/order-status.enum';
+import { IOrder } from 'src/core/db/types/entities/trade-bot/orders/order.interface';
+import { OrderStatus } from 'src/core/db/types/entities/trade-bot/orders/types/order-status.type';
+import { ITradeBot } from 'src/core/db/types/entities/trade-bot/trade-bot.interface';
+import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
+import { calcOkxSymbol } from './utils/calcOkxSymbol';
+import { fromExchangeOrderToTradeOrder } from './utils/fromExchangeOrderToTradeOrder';
 
 export class TradeBotOrdersService {
   constructor(
@@ -31,7 +29,11 @@ export class TradeBotOrdersService {
     const limitOrder = await this.exchange.placeLimitOrder(orderData);
     const order: IOrder = fromExchangeOrderToTradeOrder(orderData, limitOrder);
 
-    return await this.firestore.tradeBot.createOrder(orderId, order, this.bot.id);
+    return await this.firestore.tradeBot.createOrder(
+      orderId,
+      order,
+      this.bot.id,
+    );
   }
 
   async cancel(orderId: string) {
@@ -41,28 +43,35 @@ export class TradeBotOrdersService {
 
     const order = await this.exchange.cancelLimitOrder({
       clientOrderId: orderId,
-      symbol
+      symbol,
     });
 
-    await this.firestore.tradeBot.updateOrder(order.clientOrderId, {
-      status: OrderStatusEnum.Cancelled
-    }, this.bot.id);
+    await this.firestore.tradeBot.updateOrder(
+      order.clientOrderId,
+      {
+        status: OrderStatusEnum.Cancelled,
+      },
+      this.bot.id,
+    );
   }
 
-  async updateOrderStatus (orderId: string, orderStatus: OrderStatus) {
+  async updateOrderStatus(orderId: string, orderStatus: OrderStatus) {
     const order = await this.firestore.tradeBot.getOrder(orderId, this.bot.id);
 
-    return this.firestore.tradeBot.updateOrder(orderId, {
-      status: orderStatus
-    }, this.bot.id);
+    return this.firestore.tradeBot.updateOrder(
+      orderId,
+      {
+        status: orderStatus,
+      },
+      this.bot.id,
+    );
   }
 
   async maskAsFilled(orderId: string) {
-    return this.updateOrderStatus(orderId, OrderStatusEnum.Filled)
+    return this.updateOrderStatus(orderId, OrderStatusEnum.Filled);
   }
 
   async markAsCompleted(orderId: string) {
-    return this.updateOrderStatus(orderId, OrderStatusEnum.Completed)
-
+    return this.updateOrderStatus(orderId, OrderStatusEnum.Completed);
   }
 }

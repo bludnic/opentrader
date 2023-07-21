@@ -18,7 +18,7 @@ import {
   ExchangeFactory,
   ExchangeFactorySymbol,
 } from 'src/core/exchanges/exchange.factory';
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
+import { ICandlestick } from '@bifrost/types';
 import { useGridBot } from 'src/grid-bot/use-grid-bot';
 import { DataSource } from 'typeorm';
 import { BacktestingService } from './backtesting.service';

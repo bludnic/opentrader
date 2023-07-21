@@ -12,19 +12,21 @@ import { IOKXGetLimitOrderInputParams } from 'src/core/exchanges/okx/types/clien
 import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-response.interface';
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
-import { IAccountAsset } from 'src/core/exchanges/types/exchange/account/account-asset/account-asset.interface';
-import { IGetTradingFeeRatesRequest } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-request.interface';
-import { IGetTradingFeeRatesResponse } from 'src/core/exchanges/types/exchange/account/trade-fee/get-trading-fee-rates-response.interface';
-import { IGetCandlesticksRequest } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/get-candlesticks-request.interface';
-import { ICandlestick } from 'src/core/exchanges/types/exchange/market-data/get-candlesticks/types/candlestick.interface';
-import { IGetMarketPriceRequest } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-request.interface';
-import { IGetMarketPriceResponse } from 'src/core/exchanges/types/exchange/public-data/get-market-price/get-market-price-response.interface';
-import { ICancelLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-request.interface';
-import { ICancelLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/cancel-limit-order/cancel-limit-order-response.interface';
-import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
-import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
-import { IPlaceLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-response.interface';
+import {
+  IAccountAsset,
+  IGetTradingFeeRatesRequest,
+  IGetTradingFeeRatesResponse,
+  IGetCandlesticksRequest,
+  ICandlestick,
+  IGetMarketPriceRequest,
+  IGetMarketPriceResponse,
+  ICancelLimitOrderRequest,
+  ICancelLimitOrderResponse,
+  IGetLimitOrderRequest,
+  IGetLimitOrderResponse,
+  IPlaceLimitOrderRequest,
+  IPlaceLimitOrderResponse,
+} from '@bifrost/types';
 
 export const OKXFacade = {
   accountAsset(data: IOKXGetAccountBalanceDetails): IAccountAsset {
@@ -66,7 +68,7 @@ export const OKXFacade = {
   cancelLimitOrderInputParams(
     data: ICancelLimitOrderRequest,
   ): IOKXCancelLimitOrderInputParams {
-    if('exchangeOrderId' in data) {
+    if ('exchangeOrderId' in data) {
       return {
         instId: data.symbol,
         ordId: data.exchangeOrderId,
@@ -95,7 +97,7 @@ export const OKXFacade = {
       return {
         instId: data.symbol,
         ordId: data.exchangeOrderId,
-      }
+      };
     }
 
     return {
@@ -144,7 +146,7 @@ export const OKXFacade = {
       bar: data.bar,
       limit: data.limit ? String(data.limit) : undefined,
       before: data.before ? String(data.before) : undefined,
-      after: data.after ? String(data.after) : undefined
+      after: data.after ? String(data.after) : undefined,
     };
   },
   getCandlesticksOutput(data: IOKXGetCandlesticksResponse): ICandlestick[] {

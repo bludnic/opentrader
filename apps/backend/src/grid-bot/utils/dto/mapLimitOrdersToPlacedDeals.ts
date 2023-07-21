@@ -1,5 +1,4 @@
-import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
-import { IPlaceLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/place-limit-order/place-limit-order-request.interface';
+import { OrderSideEnum, OrderStatusEnum, IPlaceLimitOrderRequest } from '@bifrost/types';
 import { PlacedDealDto } from 'src/grid-bot/types/service/place/placed-deal.dto';
 
 /**

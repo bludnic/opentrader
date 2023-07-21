@@ -5,11 +5,13 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
-import { IGetLimitOrderRequest } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-request.interface';
-import { IGetLimitOrderResponse } from 'src/core/exchanges/types/exchange/trade/get-limit-order/get-limit-order-response.interface';
+import { IGetLimitOrderRequest, IGetLimitOrderResponse } from '@bifrost/types';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
-import { gridBotInitialInvestment, gridBotSettings } from 'src/e2e/grid-bot/bot-settings';
+import {
+  gridBotInitialInvestment,
+  gridBotSettings,
+} from 'src/e2e/grid-bot/bot-settings';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { gridBotE2EHistoryData } from 'src/e2e/grid-bot/history-data';
 import { GridBotE2EHistoryData } from 'src/e2e/grid-bot/types';
@@ -48,13 +50,13 @@ jest.mock('src/common/helpers/delay');
 describe('AppController', () => {
   let app: INestApplication;
   let e2eDataGen = e2eDataGenerator();
-  let e2eData: { current: GridBotE2EHistoryData } = {
+  const e2eData: { current: GridBotE2EHistoryData } = {
     current: e2eDataGen.next().value,
   };
 
   let firestoreService: FirestoreService;
 
-  let exchangeService: Partial<IExchangeService> = {
+  const exchangeService: Partial<IExchangeService> = {
     getMarketPrice: async ({ symbol }) => {
       return {
         symbol,
