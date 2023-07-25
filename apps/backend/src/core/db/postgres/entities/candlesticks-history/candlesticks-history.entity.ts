@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { ICandlesticksHistory } from './candlesticks-history.interface';
 import { CandlestickEntity } from './candlestick/candlestick.entity';
 import { ExchangeCode, ICandlestick } from '@bifrost/types';
@@ -23,6 +24,10 @@ export class CandlesticksHistoryEntity implements ICandlesticksHistory {
   @Column()
   exchangeCode: ExchangeCode;
 
+  @ApiProperty({
+    type: () => CandlestickEntity,
+    isArray: true,
+  })
   @OneToMany(() => CandlestickEntity, (candlestick) => candlestick.symbol, {
     cascade: true,
   })
