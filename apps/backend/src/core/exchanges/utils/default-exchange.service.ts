@@ -21,5 +21,6 @@ export class DefaultExchangeService implements IExchangeService {
   getMarketPrice = this.throwDependencyError;
   getCandlesticks = this.throwDependencyError;
   getTradingFeeRates = this.throwDependencyError;
+  getSymbols = this.throwDependencyError;
   tradingPairSymbol = this.throwDependencyError;
 }

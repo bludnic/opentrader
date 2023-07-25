@@ -13,6 +13,8 @@ import {
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
   ITradingPairSymbolRequest,
+  ISymbolInfo,
+  IGetSymbolInfoRequest,
 } from '@bifrost/types';
 
 export interface IExchangeService {
@@ -31,5 +33,6 @@ export interface IExchangeService {
   getTradingFeeRates(
     params: IGetTradingFeeRatesRequest,
   ): Promise<IGetTradingFeeRatesResponse>;
+  getSymbols(params: IGetSymbolInfoRequest): Promise<ISymbolInfo[]>;
   tradingPairSymbol(params: ITradingPairSymbolRequest): string;
 }

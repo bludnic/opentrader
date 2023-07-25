@@ -14,6 +14,8 @@ import {
   IGetLimitOrderResponse,
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
+  IGetSymbolInfoRequest,
+  ISymbolInfo,
 } from '@bifrost/types';
 import { ETH_USDT } from './history/ETH_USDT_90_DAYS_REAL_ACCOUNT';
 
@@ -77,6 +79,10 @@ export class TestingExchangeService implements IExchangeService {
       makerFee: 0,
       takerFee: 0,
     };
+  }
+
+  async getSymbols(params: IGetSymbolInfoRequest): Promise<ISymbolInfo[]> {
+    return [];
   }
 
   tradingPairSymbol(params: ITradingPairSymbolRequest) {

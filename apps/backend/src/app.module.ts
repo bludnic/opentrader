@@ -34,6 +34,7 @@ import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
 import { BacktestingModule } from './backtesting/backtesting.module';
 import { CandlesticksModule } from './candlesticks/candlesticks.module';
+import { SymbolsModule } from './symbols/symbols.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { CandlesticksModule } from './candlesticks/candlesticks.module';
     TradeBotModule,
     BacktestingModule,
     CandlesticksModule,
+    SymbolsModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],

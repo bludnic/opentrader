@@ -69,6 +69,14 @@ export class OkxExchangeService implements IExchangeService {
     return response;
   }
 
+  async getSymbols(params) {
+    const inputParams = OKXFacade.getInstrumentsInputParams(params);
+    const { data } = await this.okxClient.getInstruments(inputParams);
+    const response = OKXFacade.getInstrumentsOutput(data.data);
+
+    return response;
+  }
+
   /**
    * OKx uses the `BTC-USDT` format for annotating trading pairs
    */

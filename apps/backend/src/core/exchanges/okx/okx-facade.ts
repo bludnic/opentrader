@@ -1,3 +1,22 @@
+import { composeSymbolId, decomposeSymbolId } from '@bifrost/tools';
+import {
+  ExchangeCode,
+  IAccountAsset,
+  ICancelLimitOrderRequest,
+  ICancelLimitOrderResponse,
+  ICandlestick,
+  IGetCandlesticksRequest,
+  IGetLimitOrderRequest,
+  IGetLimitOrderResponse,
+  IGetMarketPriceRequest,
+  IGetMarketPriceResponse,
+  IGetSymbolInfoRequest,
+  IGetTradingFeeRatesRequest,
+  IGetTradingFeeRatesResponse,
+  IPlaceLimitOrderRequest,
+  IPlaceLimitOrderResponse,
+  ISymbolInfo,
+} from '@bifrost/types';
 import { IOKXGetAccountBalanceResponse } from 'src/core/exchanges/okx/types/client/account/balance/get-account-balance-response.interface';
 import { IOKXGetAccountBalanceDetails } from 'src/core/exchanges/okx/types/client/account/balance/types/get-account-balance-details.interface';
 import { IOKXGetTradingFeeRatesInputParams } from 'src/core/exchanges/okx/types/client/account/trading-fee/get-trading-fee-rates-input-params.interface';
@@ -8,25 +27,12 @@ import { IOKXGetMarketPriceInputParams } from 'src/core/exchanges/okx/types/clie
 import { IOKXGetMarketPriceResponse } from 'src/core/exchanges/okx/types/client/public-data/get-market-price/get-market-price-response.interface';
 import { IOKXCancelLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-input-params.interface';
 import { IOKXCancelLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-response.interface';
+import { IOKXGetInstrumentsInputParams } from 'src/core/exchanges/okx/types/client/trade/get-instruments/get-instruments-input-params.interface';
+import { IOKXGetInstrumentsResponse } from 'src/core/exchanges/okx/types/client/trade/get-instruments/get-instruments-response.interface';
 import { IOKXGetLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-input-params.interface';
 import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-response.interface';
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
-import {
-  IAccountAsset,
-  IGetTradingFeeRatesRequest,
-  IGetTradingFeeRatesResponse,
-  IGetCandlesticksRequest,
-  ICandlestick,
-  IGetMarketPriceRequest,
-  IGetMarketPriceResponse,
-  ICancelLimitOrderRequest,
-  ICancelLimitOrderResponse,
-  IGetLimitOrderRequest,
-  IGetLimitOrderResponse,
-  IPlaceLimitOrderRequest,
-  IPlaceLimitOrderResponse,
-} from '@bifrost/types';
 
 export const OKXFacade = {
   accountAsset(data: IOKXGetAccountBalanceDetails): IAccountAsset {
@@ -158,6 +164,51 @@ export const OKXFacade = {
       high: Number(candlestick[2]),
       low: Number(candlestick[3]),
       close: Number(candlestick[4]),
+    }));
+  },
+
+  getInstrumentsInputParams(
+    data: IGetSymbolInfoRequest,
+  ): IOKXGetInstrumentsInputParams {
+    if (data.symbolId) {
+      const { baseCurrency, quoteCurrency } = decomposeSymbolId(data.symbolId);
+
+      return {
+        instType: 'SPOT',
+        instId: `${baseCurrency}-${quoteCurrency}`,
+      };
+    }
+
+    return {
+      instType: 'SPOT',
+    };
+  },
+  getInstrumentsOutput(data: IOKXGetInstrumentsResponse): ISymbolInfo[] {
+    const instruments = data;
+
+    return instruments.map((instrument) => ({
+      symbolId: composeSymbolId(
+        ExchangeCode.OKX,
+        instrument.baseCcy,
+        instrument.quoteCcy,
+      ),
+      exchangeCode: ExchangeCode.OKX,
+
+      exchangeSymbolId: instrument.instId,
+      baseCurrency: instrument.baseCcy,
+      quoteCurrency: instrument.quoteCcy,
+      filters: {
+        price: {
+          tickSize: instrument.tickSz,
+          minPrice: null, // OKx doesn't provide this info
+          maxPrice: null, // OKx doesn't provide this info
+        },
+        lot: {
+          stepSize: instrument.lotSz,
+          minQuantity: instrument.minSz,
+          maxQuantity: instrument.maxLmtSz,
+        },
+      },
     }));
   },
 

@@ -14,6 +14,8 @@ import { IOKXGetMarketPriceResponse } from 'src/core/exchanges/okx/types/client/
 import { IOKXCancelLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-input-params.interface';
 import { IOKXCancelLimitOrderRequestBody } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-request-body.interface';
 import { IOKXCancelLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/cancel-limit-order/cancel-limit-order-response.interface';
+import { IOKXGetInstrumentsInputParams } from 'src/core/exchanges/okx/types/client/trade/get-instruments/get-instruments-input-params.interface';
+import { IOKXGetInstrumentsResponse } from 'src/core/exchanges/okx/types/client/trade/get-instruments/get-instruments-response.interface';
 import { IOKXGetLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-input-params.interface';
 import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-response.interface';
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
@@ -117,7 +119,7 @@ export class OKXClientService {
     const requestBody: IOKXCancelLimitOrderRequestBody = {
       instId: params.instId,
       clOrdId: clientOrderId,
-      ordId: exchangeOrderId
+      ordId: exchangeOrderId,
     };
 
     const fullRequestUrl = `${apiUrl}${REQUEST_PATH}`;
@@ -235,7 +237,7 @@ export class OKXClientService {
         },
       })
       .toPromise()
-      .then(throwExceptionIfErrorResponse(fullRequestUrl))
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
   }
 
   getTradingFeeRates(
@@ -257,6 +259,38 @@ export class OKXClientService {
 
     return this.httpService
       .request<OKXResponse<IOKXGetTradeFeeRatesResponse>>({
+        method: METHOD,
+        url: fullRequestUrl,
+        headers: {
+          ...okexAuthHeaders(this.ctx, METHOD, requestPathWithParams),
+        },
+      })
+      .toPromise()
+      .then(throwExceptionIfErrorResponse(fullRequestUrl));
+  }
+
+  getInstruments(
+    params: IOKXGetInstrumentsInputParams,
+  ): AxiosPromise<OKXResponse<IOKXGetInstrumentsResponse>> {
+    const { apiUrl } = this.ctx.exchangeConfig;
+
+    const METHOD = 'GET';
+    const REQUEST_PATH = '/api/v5/public/instruments';
+
+    const requestUrlParams = new URLSearchParams();
+    requestUrlParams.set('instType', params.instType);
+    if (params.instId) requestUrlParams.set('instId', params.instId);
+    if (params.uly) requestUrlParams.set('uly', params.uly);
+    if (params.instFamily)
+      requestUrlParams.set('instFamily', params.instFamily);
+
+    const requestPathWithParams = `${REQUEST_PATH}${
+      requestUrlParams.toString() ? `?${requestUrlParams}` : ''
+    }`;
+    const fullRequestUrl = `${apiUrl}${requestPathWithParams}`;
+
+    return this.httpService
+      .request<OKXResponse<IOKXGetInstrumentsResponse>>({
         method: METHOD,
         url: fullRequestUrl,
         headers: {
