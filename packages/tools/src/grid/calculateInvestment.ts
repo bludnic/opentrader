@@ -1,6 +1,6 @@
-import big from 'big.js';
-import { OrderStatusEnum } from '@bifrost/types';
-import { IGridBotLevel } from '@bifrost/types';
+import big from "big.js";
+import { OrderStatusEnum } from "@bifrost/types";
+import { IGridBotLevel } from "@bifrost/types";
 
 export type CalculateInvestmentResult = {
   baseCurrencyAmount: number;
@@ -14,11 +14,12 @@ export type CalculateInvestmentResult = {
  * @param gridLevels
  */
 export function calculateInvestment(
-  gridLevels: IGridBotLevel[],
+  gridLevels: IGridBotLevel[]
 ): CalculateInvestmentResult {
   const baseCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
-    const isSellWaiting = gridLevel.buy.status === OrderStatusEnum.Filled;
-    gridLevel.sell.status === OrderStatusEnum.Idle;
+    const isSellWaiting =
+      gridLevel.buy.status === OrderStatusEnum.Filled &&
+      gridLevel.sell.status === OrderStatusEnum.Idle;
 
     if (isSellWaiting) {
       return big(amount).plus(gridLevel.sell.quantity).toNumber();
@@ -34,7 +35,7 @@ export function calculateInvestment(
 
     if (isBuyWaiting) {
       const quoteAmountPerGrid = big(gridLevel.buy.quantity).times(
-        gridLevel.buy.price,
+        gridLevel.buy.price
       );
 
       return big(amount).plus(quoteAmountPerGrid).toNumber();
