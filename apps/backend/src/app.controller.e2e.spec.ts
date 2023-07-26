@@ -57,9 +57,9 @@ describe('AppController', () => {
   let firestoreService: FirestoreService;
 
   const exchangeService: Partial<IExchangeService> = {
-    getMarketPrice: async ({ symbol }) => {
+    getMarketPrice: async ({ symbolId }) => {
       return {
-        symbol,
+        symbol: symbolId,
         price: e2eData.current.price,
         timestamp: 0,
       };

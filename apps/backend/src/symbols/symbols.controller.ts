@@ -1,3 +1,4 @@
+import { decomposeSymbolId } from '@bifrost/tools';
 import {
   Controller,
   Get,
@@ -11,6 +12,7 @@ import {
   ExchangeFactory,
   ExchangeFactorySymbol,
 } from 'src/core/exchanges/exchange.factory';
+import { GetCurrentAssetPriceResponseDto } from 'src/symbols/dto/get-current-asset-price/get-current-asset-price-response.dto';
 import { GetSymbolInfoResponseDto } from './dto/get-symbol-info/get-symbol-info-response.dto';
 import { GetSymbolsResponseBodyDto } from './dto/get-symbols/get-symbols-response-body.dto';
 import { IsValidSymbolIdPipe } from './utils/pipes/is-valid-symbol-id.pipe';
@@ -58,6 +60,30 @@ export class SymbolsController {
 
     return {
       symbol: symbols[0],
+    };
+  }
+
+  @Get('/current-asset-price')
+  async getCurrentAssetPrice(
+    @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
+  ): Promise<GetCurrentAssetPriceResponseDto> {
+    const exchangeService =
+      await this.exchangeFactory.createFromExchangeAccountId(
+        'okx_real_testing',
+      );
+
+    const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
+
+    const { price, timestamp } = await exchangeService.getMarketPrice({
+      symbol: exchangeService.tradingPairSymbol({
+        baseCurrency,
+        quoteCurrency,
+      }),
+    });
+
+    return {
+      price,
+      timestamp,
     };
   }
 }
