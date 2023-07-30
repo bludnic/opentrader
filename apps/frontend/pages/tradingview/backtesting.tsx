@@ -1,9 +1,8 @@
 import { NextPage } from "next";
-import { Typography } from "@mui/material";
+import { Button, Typography } from '@mui/material';
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { bifrostApi, ICandlestick, Trade } from "src/lib/bifrost/apiClient";
-import backtestingResponse from 'src/lib/bifrost/backtesting-response.json'
 
 const BacktestingChart = dynamic(
   () => import("src/components/tradingview/BacktestingChart"),
@@ -18,7 +17,7 @@ const BacktestingNextPage: NextPage = () => {
   const [totalProfit, setTotalProfit] = useState<number>(0);
   const [finishedSmartTradesCount, setFinishedSmartTradesCount] = useState<number>(0);
 
-  useEffect(() => {
+  const run = () => {
     bifrostApi.backtesting().then((res) => {
       const { candles, trades, totalProfit, finishedSmartTradesCount } = res.data;
 
@@ -28,13 +27,13 @@ const BacktestingNextPage: NextPage = () => {
       const sortedTrades = trades.sort(
         (left, right) => left.time - right.time
       )
-      
+
       setHistory(candlesSorted);
       setTrades(sortedTrades);
       setTotalProfit(totalProfit);
       setFinishedSmartTradesCount(finishedSmartTradesCount);
     });
-  }, []);
+  }
 
   return (
     <div>
@@ -46,6 +45,7 @@ const BacktestingNextPage: NextPage = () => {
 
       <div>TotalProfit: {totalProfit}</div>
       <div>Finished SmartTrades Count: {finishedSmartTradesCount}</div>
+      <Button onClick={run}>Run</Button>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { decomposeSymbolId } from '@bifrost/tools';
 import { Logger } from '@nestjs/common';
 import { delay } from 'src/common/helpers/delay';
 import { MAX_CANDLESTICKS_HISTORY_DAYS } from 'src/core/db/firestore/utils/candlesticks/constants';
@@ -5,9 +6,9 @@ import { CandlestickEntity } from 'src/core/db/postgres/entities/candlesticks-hi
 import { CandlesticksHistoryEntity } from 'src/core/db/postgres/entities/candlesticks-history/candlesticks-history.entity';
 import { CandlesticksHistoryRepository } from 'src/core/db/postgres/repositories/candlesticks-history.repository';
 import { CandlesticksRepository } from 'src/core/db/postgres/repositories/candlesticks.repository';
-import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
+import { composeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/composeEntityId';
 import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
-import { ICandlestick } from '@bifrost/types';
+import { BarSize, ICandlestick } from '@bifrost/types';
 import { DataSource } from 'typeorm';
 import { daysAgoToTimestamp } from './utils/daysAgoToTimestamp';
 
@@ -20,21 +21,16 @@ export class CandlesticksService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async downloadHistory(
-    baseCurrency: string,
-    quoteCurrency: string,
-  ): Promise<void> {
-    const symbol = symbolId(baseCurrency, quoteCurrency);
-    const history = await this.candlesticksHistory.findOrCreate(
-      baseCurrency,
-      quoteCurrency,
-    );
+  async downloadHistory(symbolId: string, barSize: BarSize): Promise<void> {
+    const entityId = composeEntityId(symbolId, barSize);
+
+    const history = await this.candlesticksHistory.findOrCreate(entityId);
 
     const newestCandleTimestamp = await this.candlestick.findNewestTimestamp(
-      symbol,
+      entityId,
     );
     const earliestCandleTimestamp =
-      await this.candlestick.findEarliestTimestamp(symbol);
+      await this.candlestick.findEarliestTimestamp(entityId);
 
     const timestampInThePast = daysAgoToTimestamp(
       MAX_CANDLESTICKS_HISTORY_DAYS,
@@ -47,28 +43,29 @@ export class CandlesticksService {
       timestampInThePast >= earliestCandleTimestamp;
 
     if (noHistoryData || historyAlreadyDownloaded) {
-      await this.downloadNewCandlesticks(baseCurrency, quoteCurrency);
+      await this.downloadNewCandlesticks(symbolId, barSize);
     } else {
-      await this.downloadOldCandlesticks(baseCurrency, quoteCurrency);
+      await this.downloadOldCandlesticks(symbolId, barSize);
     }
   }
 
   public async downloadNewCandlesticks(
-    baseCurrency: string,
-    quoteCurrency: string,
+    symbolId: string,
+    barSize: BarSize,
   ): Promise<ICandlestick[]> {
     // Already have the history data. Fetch newest candles.
     this.logger.debug(`
         [CandlesticksService] Downloading new candlesticks`);
 
-    const symbol = symbolId(baseCurrency, quoteCurrency);
+    const historyId = composeEntityId(symbolId, barSize);
+    const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
 
     const newestCandleTimestamp = await this.candlestick.findNewestTimestamp(
-      symbol,
+      historyId,
     );
 
     const candlesticks = await this.exchange.getCandlesticks({
-      bar: '1m',
+      bar: barSize,
       symbol: this.exchange.tradingPairSymbol({
         baseCurrency,
         quoteCurrency,
@@ -83,7 +80,7 @@ export class CandlesticksService {
         candlesticks.map((candlestick) => {
           return Object.assign(new CandlestickEntity(), {
             ...candlestick,
-            symbol,
+            historyId,
           });
         }),
       );
@@ -101,18 +98,16 @@ export class CandlesticksService {
     return candlesticks;
   }
 
-  private async downloadOldCandlesticks(
-    baseCurrency: string,
-    quoteCurrency: string,
-  ) {
+  private async downloadOldCandlesticks(symbolId: string, barSize: BarSize) {
     // Fetching history data back in time
     this.logger.debug(`
         [CandlesticksService] Downloading history candlesticks for ${MAX_CANDLESTICKS_HISTORY_DAYS} days`);
 
-    const symbol = symbolId(baseCurrency, quoteCurrency);
+    const historyId = composeEntityId(symbolId, barSize);
+    const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
 
     let earliestCandleTimestamp = await this.candlestick.findEarliestTimestamp(
-      symbol,
+      historyId,
     );
 
     const timestampInThePast = daysAgoToTimestamp(
@@ -128,16 +123,16 @@ export class CandlesticksService {
 
       const history = await this.candlesticksHistory.findOneOrFail({
         where: {
-          symbol,
+          id: historyId,
         },
       });
 
       earliestCandleTimestamp = await this.candlestick.findEarliestTimestamp(
-        symbol,
+        historyId,
       );
 
       const candlesticks = await this.exchange.getCandlesticks({
-        bar: '1m',
+        bar: barSize,
         symbol: this.exchange.tradingPairSymbol({
           baseCurrency,
           quoteCurrency,
@@ -165,7 +160,7 @@ export class CandlesticksService {
           candlesticks.map((candlestick) => {
             return Object.assign(new CandlestickEntity(), {
               ...candlestick,
-              symbol: history.symbol,
+              historyId: history.id,
             });
           }),
         );

@@ -1,7 +1,8 @@
-import { ExchangeCode, ICandlestick } from '@bifrost/types';
+import { BarSize, ExchangeCode, ICandlestick } from '@bifrost/types';
 
 export interface ICandlesticksHistory {
   exchangeCode: ExchangeCode;
+  barSize: BarSize;
   baseCurrency: string;
   quoteCurrency: string;
   candlesticks: ICandlestick[];

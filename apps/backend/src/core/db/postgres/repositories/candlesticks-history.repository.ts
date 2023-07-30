@@ -1,6 +1,6 @@
+import { decomposeSymbolId } from '@bifrost/tools';
 import { Injectable } from '@nestjs/common';
-import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
-import { ExchangeCode } from '@bifrost/types';
+import { decomposeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/decomposeEntityId';
 import { DataSource, EntityNotFoundError, Repository } from 'typeorm';
 import { CandlesticksHistoryEntity } from 'src/core/db/postgres/entities/candlesticks-history/candlesticks-history.entity';
 
@@ -10,18 +10,17 @@ export class CandlesticksHistoryRepository extends Repository<CandlesticksHistor
     super(CandlesticksHistoryEntity, dataSource.createEntityManager());
   }
 
-  async findOrCreate(
-    baseCurrency: string,
-    quoteCurrency: string,
-  ): Promise<CandlesticksHistoryEntity> {
-    const symbol = symbolId(baseCurrency, quoteCurrency);
-
+  async findOrCreate(id: string): Promise<CandlesticksHistoryEntity> {
     let history: CandlesticksHistoryEntity;
+
+    const { symbolId, barSize } = decomposeEntityId(id);
+    const { baseCurrency, quoteCurrency, exchangeCode } =
+      decomposeSymbolId(symbolId);
 
     const findOne = () => {
       return this.findOneOrFail({
         where: {
-          symbol,
+          id,
         },
       });
     };
@@ -33,8 +32,9 @@ export class CandlesticksHistoryRepository extends Repository<CandlesticksHistor
 
       if (isNotFoundError) {
         const entity = this.create({
-          symbol,
-          exchangeCode: ExchangeCode.OKX,
+          id,
+          exchangeCode,
+          barSize,
           historyDataDownloadingCompleted: false,
           baseCurrency,
           quoteCurrency,

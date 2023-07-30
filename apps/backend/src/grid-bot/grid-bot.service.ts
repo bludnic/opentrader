@@ -3,8 +3,12 @@ import big from 'big.js';
 import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
 import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid-bot.dto';
 import { GridBotEventCodeEnum } from '@bifrost/types';
+import { SmartTradeDto } from 'src/core/db/firestore/repositories/smart-trade/dto/smart-trade.dto';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
+import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
+import { SmartTradeWithProfitDto } from 'src/grid-bot/dto/get-completed-smart-trades/types/smart-trade-with-profit.dto';
 import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
+import { populateSmartTradeWithProfit } from 'src/grid-bot/utils/completed-smart-trades/populateSmartTradeWithProfit';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -283,5 +287,50 @@ export class GridBotService {
     const sortedEvents = events.sort((a, b) => a.createdAt - b.createdAt);
 
     return sortedEvents;
+  }
+
+  async getCompletedSmartTrades(
+    botId: string,
+  ): Promise<SmartTradeWithProfitDto[]> {
+    const bot = await this.firestore.gridBot.findOne(botId);
+    const smartTrades = await this.firestore.smartTrade.findCompletedByBotId(
+      botId,
+    );
+
+    // Retrieving maker trading fee
+    const fee = await this.getMakerTradingFee(
+      bot.baseCurrency,
+      bot.quoteCurrency,
+    );
+
+    const smartTradesWithProfit = smartTrades.map((smartTrade) =>
+      populateSmartTradeWithProfit(smartTrade, fee),
+    );
+
+    const sortedSmartTrades = smartTradesWithProfit.sort(
+      (a, b) => b.createdAt - a.createdAt, // newest first
+    );
+
+    return sortedSmartTrades;
+  }
+
+  async getActiveSmartTrades(botId: string): Promise<SmartTradeDto[]> {
+    const bot = await this.firestore.gridBot.findOne(botId);
+
+    const activeSmartTrades: SmartTradeDto[] = [];
+
+    for (const smartTradeRef of bot.smartTrades) {
+      const smartTrade = await this.firestore.smartTrade.findOne(
+        smartTradeRef.smartTradeId,
+      );
+
+      activeSmartTrades.push(smartTrade);
+    }
+
+    const sortedSmartTrades = activeSmartTrades.sort(
+      (a, b) => b.buyOrder.price - a.buyOrder.price, // newest first
+    );
+
+    return sortedSmartTrades;
   }
 }

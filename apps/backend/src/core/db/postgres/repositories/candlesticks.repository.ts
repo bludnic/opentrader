@@ -8,14 +8,14 @@ export class CandlesticksRepository extends Repository<CandlestickEntity> {
     super(CandlestickEntity, dataSource.createEntityManager());
   }
 
-  async findNewestTimestamp(symbol: string): Promise<number | null> {
+  async findNewestTimestamp(historyId: string): Promise<number | null> {
     const aliasName = 'timestamp';
 
     const { timestamp } = await this.dataSource
       .getRepository(CandlestickEntity)
       .createQueryBuilder('candlestick')
-      .where('candlestick.symbol = :symbol', {
-        symbol,
+      .where('candlestick.historyId = :historyId', {
+        historyId,
       })
       .select('MAX(candlestick.timestamp)', aliasName)
       .getRawOne<{ [aliasName]: string | null }>();
@@ -23,14 +23,14 @@ export class CandlesticksRepository extends Repository<CandlestickEntity> {
     return isNaN(+timestamp) ? null : Number(timestamp);
   }
 
-  async findEarliestTimestamp(symbol: string): Promise<number> {
+  async findEarliestTimestamp(historyId: string): Promise<number> {
     const aliasName = 'timestamp';
 
     const { timestamp } = await this.dataSource
       .getRepository(CandlestickEntity)
       .createQueryBuilder('candlestick')
-      .where('candlestick.symbol = :symbol', {
-        symbol,
+      .where('candlestick.historyId = :historyId', {
+        historyId,
       })
       .select('MIN(candlestick.timestamp)', aliasName)
       .getRawOne<{ [aliasName]: string | null }>();
@@ -39,7 +39,7 @@ export class CandlesticksRepository extends Repository<CandlestickEntity> {
   }
 
   findAndSort(
-    symbol: string,
+    historyId: string,
     fromTimestamp: number,
     toTimestamp: number,
     order: 'ASC' | 'DESC' = 'ASC',
@@ -47,8 +47,8 @@ export class CandlesticksRepository extends Repository<CandlestickEntity> {
     return this.dataSource
       .getRepository(CandlestickEntity)
       .createQueryBuilder('candlestick')
-      .where('candlestick.symbol = :symbol', {
-        symbol,
+      .where('candlestick.historyId = :historyId', {
+        historyId,
       })
       .andWhere('candlestick.timestamp <= :toTimestamp', {
         toTimestamp,

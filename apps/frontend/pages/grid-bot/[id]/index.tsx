@@ -1,8 +1,15 @@
 import { NextPage } from "next";
-import { BotPage } from "src/sections/grid-bot/pages/bot";
+import dynamic from 'next/dynamic';
+
+const GridBotPage = dynamic(
+  () => import("src/sections/grid-bot/bot"),
+  {
+    ssr: false,
+  }
+);
 
 const GridBotNextPage: NextPage = () => {
-  return <BotPage />;
+  return <GridBotPage />;
 };
 
 export default GridBotNextPage;

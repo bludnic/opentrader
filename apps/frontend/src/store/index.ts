@@ -2,22 +2,55 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware, { Task } from "redux-saga";
 import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
-import { threeCommasAccountsApi } from 'src/sections/3commas-accounts/common/store/api';
-import { exchangeAccountsApi } from 'src/sections/exchange-accounts/common/store/api';
-import { gridBotsApi } from "src/sections/grid-bot/common/store/api/botsApi";
+import { threeCommasAccountsApi } from "src/sections/3commas-accounts/common/store/api";
+import { gridBotCompletedSmartTradesApi } from 'src/sections/grid-bot/common/store/api/completedDealsApi';
 import {
-  gridBotCompletedDealsApi
-} from 'src/sections/grid-bot/common/store/api/completedDealsApi';
+  createGridBotSlice,
+  CreateGridBotState,
+} from "src/sections/grid-bot/create-bot/store/create-bot";
+import { gridBotInitPageSlice } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
+import { CreateGridBotPageInitState } from "src/sections/grid-bot/create-bot/store/init-page/state";
+import { candlesticksSlice, CandlesticksState } from "src/store/candlesticks";
+import {
+  currentAssetPriceSlice,
+  CurrentAssetPriceState,
+} from "src/store/current-asset-price";
+import { exchangeAccountsApi } from "src/store/exchange-accounts/api";
+import { gridBotsApi } from "src/sections/grid-bot/common/store/api/botsApi";
+import { candlesticksHistoryApi } from "src/sections/grid-bot/common/store/api/candlesticksHistoryApi";
+import {
+  gridBotFormSlice,
+  GridBotFormState,
+} from "src/sections/grid-bot/create-bot/store/bot-form";
+import {
+  exchangeAccountsSlice,
+  ExchangeAccountsState,
+} from "src/store/exchange-accounts";
+import { symbolsSlice, SymbolsState } from "src/store/symbols";
 
 import rootSaga from "./rootSaga";
 import { todoReducer, TodoState } from "src/store/todo";
 
 export type RootState = {
   todo: TodoState;
+  gridBotForm: GridBotFormState;
+  gridBotInitPage: CreateGridBotPageInitState;
+  createGridBot: CreateGridBotState;
+  exchangeAccounts: ExchangeAccountsState;
+  symbols: SymbolsState;
+  currentAssetPrice: CurrentAssetPriceState;
+  candlesticks: CandlesticksState;
   [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
-  [gridBotCompletedDealsApi.reducerPath]: ReturnType<typeof gridBotCompletedDealsApi.reducer>;
-  [exchangeAccountsApi.reducerPath]: ReturnType<typeof exchangeAccountsApi.reducer>;
-  [threeCommasAccountsApi.reducerPath]: ReturnType<typeof threeCommasAccountsApi.reducer>;
+  [gridBotCompletedSmartTradesApi.reducerPath]: ReturnType<typeof gridBotCompletedSmartTradesApi.reducer>;
+  [exchangeAccountsApi.reducerPath]: ReturnType<
+    typeof exchangeAccountsApi.reducer
+  >;
+  [threeCommasAccountsApi.reducerPath]: ReturnType<
+    typeof threeCommasAccountsApi.reducer
+  >;
+  [candlesticksHistoryApi.reducerPath]: ReturnType<
+    typeof candlesticksHistoryApi.reducer
+  >;
 };
 
 export interface SagaStore extends Store<RootState> {
@@ -32,13 +65,27 @@ const makeStore = (context: Context) => {
   const store = configureStore({
     reducer: {
       todo: todoReducer,
+      gridBotForm: gridBotFormSlice.reducer,
+      gridBotInitPage: gridBotInitPageSlice.reducer,
+      createGridBot: createGridBotSlice.reducer,
+      exchangeAccounts: exchangeAccountsSlice.reducer,
+      symbols: symbolsSlice.reducer,
+      currentAssetPrice: currentAssetPriceSlice.reducer,
+      candlesticks: candlesticksSlice.reducer,
       gridBotsApi: gridBotsApi.reducer,
-      gridBotCompletedDealsApi: gridBotCompletedDealsApi.reducer,
+      gridBotCompletedSmartTradesApi: gridBotCompletedSmartTradesApi.reducer,
       exchangeAccountsApi: exchangeAccountsApi.reducer,
       threeCommasAccountsApi: threeCommasAccountsApi.reducer,
+      candlesticksHistoryApi: candlesticksHistoryApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().prepend(sagaMiddleware),
+      getDefaultMiddleware()
+        .prepend(sagaMiddleware)
+        .concat(gridBotsApi.middleware)
+        .concat(gridBotCompletedSmartTradesApi.middleware)
+        .concat(exchangeAccountsApi.middleware)
+        .concat(threeCommasAccountsApi.middleware)
+        .concat(candlesticksHistoryApi.middleware),
     devTools: true,
   });
 

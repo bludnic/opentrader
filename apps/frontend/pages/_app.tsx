@@ -1,4 +1,4 @@
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider } from "notistack";
 import React, { useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";

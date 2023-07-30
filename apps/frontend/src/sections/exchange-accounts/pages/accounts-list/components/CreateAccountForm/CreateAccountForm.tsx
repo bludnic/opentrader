@@ -16,7 +16,7 @@ import { SecretKeyField } from "./fields/SecretKeyField";
 import { SerializedError } from "@reduxjs/toolkit";
 import { fromFormValuesToDto } from "./utils/create/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
-import { useCreateExchangeAccountMutation } from "src/sections/exchange-accounts/common/store/api";
+import { useCreateExchangeAccountMutation } from "src/store/exchange-accounts/api";
 
 const componentName = "CreateAccountForm";
 const classes = {

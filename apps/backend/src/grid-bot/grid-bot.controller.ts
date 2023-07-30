@@ -19,8 +19,10 @@ import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
+import { GetActiveSmartTradesResponseDto } from 'src/grid-bot/dto/get-active-smart-trades/get-active-smart-trades-response.dto';
 import { GetBotResponseBodyDto } from 'src/grid-bot/dto/get-bot/get-bot-response-body.dto';
 import { GetBotsListResponseDto } from 'src/grid-bot/dto/get-bots-list/get-bots-list-response.dto';
+import { GetCompletedSmartTradesResponseDto } from 'src/grid-bot/dto/get-completed-smart-trades/get-completed-smart-trades-response.dto';
 import { StartBotResponseBodyDto } from 'src/grid-bot/dto/start-bot/start-bot-response-body.dto';
 import { StopBotResponseBodyDto } from 'src/grid-bot/dto/stop-bot/stop-bot-response-body.dto';
 import {
@@ -127,6 +129,32 @@ export class GridBotController {
 
     return {
       events,
+    };
+  }
+
+  @Get('/:id/completed-smart-trades')
+  async getCompletedSmartTrades(
+    @Param('id') botId: string,
+  ): Promise<GetCompletedSmartTradesResponseDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
+    const completedSmartTrades = await gridBotService.getCompletedSmartTrades(
+      botId,
+    );
+
+    return {
+      completedSmartTrades,
+    };
+  }
+
+  @Get('/:id/active-smart-trades')
+  async getActiveSmartTrades(
+    @Param('id') botId: string,
+  ): Promise<GetActiveSmartTradesResponseDto> {
+    const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
+    const activeSmartTrades = await gridBotService.getActiveSmartTrades(botId);
+
+    return {
+      activeSmartTrades,
     };
   }
 }

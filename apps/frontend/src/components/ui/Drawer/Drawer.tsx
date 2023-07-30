@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
-import PendingIcon from '@mui/icons-material/Pending';
+import PendingIcon from "@mui/icons-material/Pending";
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
 import List from "@mui/material/List";
@@ -30,10 +30,11 @@ export interface DrawerProps {
   children: ReactNode;
   back?: Back;
   title?: string;
+  action?: ReactNode;
 }
 
 export const Drawer: FC<DrawerProps> = (props) => {
-  const { children, back, title } = props;
+  const { children, back, title, action } = props;
 
   const router = useRouter();
 
@@ -114,7 +115,7 @@ export const Drawer: FC<DrawerProps> = (props) => {
             <MenuIcon />
           </IconButton>
 
-          {back || title ? (
+          {back || title || action ? (
             <Box display="flex" alignItems="center">
               {back ? (
                 <Link href={back.href} as={back.asHref} passHref>
@@ -132,6 +133,10 @@ export const Drawer: FC<DrawerProps> = (props) => {
                 >
                   {title}
                 </Typography>
+              ) : null}
+
+              {action ? (
+                <Box sx={{ ml: back || title ? 2 : 0 }}>{action}</Box>
               ) : null}
             </Box>
           ) : null}

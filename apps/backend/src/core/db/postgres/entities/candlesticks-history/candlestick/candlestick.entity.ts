@@ -53,9 +53,9 @@ export class CandlestickEntity implements ICandlestick {
     },
   )
   @JoinColumn({
-    name: 'symbol',
-    referencedColumnName: 'symbol',
+    name: 'historyId',
+    referencedColumnName: 'id',
   })
   @CreateDateColumn()
-  symbol: ICandlesticksHistory;
+  historyId: ICandlesticksHistory;
 }

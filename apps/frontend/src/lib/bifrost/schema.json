@@ -127,32 +127,6 @@
         "tags": ["Grid Bot"]
       }
     },
-    "/bapi/grid-bot/sync": {
-      "patch": {
-        "operationId": "syncMarketOrders",
-        "parameters": [
-          {
-            "name": "botId",
-            "required": true,
-            "in": "query",
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SyncBotResponseBodyDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Grid Bot"]
-      }
-    },
     "/bapi/grid-bot/current-asset-price/{baseCurrency}/{quoteCurrency}": {
       "get": {
         "operationId": "currentAssetPrice",
@@ -174,9 +148,24 @@
         "tags": ["Grid Bot"]
       }
     },
-    "/bapi/grid-bot/{id}/completed-deals": {
+    "/bapi/grid-bot/{id}/events": {
       "get": {
-        "operationId": "getCompletedDeals",
+        "operationId": "getEvents",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Grid Bot"]
+      }
+    },
+    "/bapi/grid-bot/{id}/completed-smart-trades": {
+      "get": {
+        "operationId": "getCompletedSmartTrades",
         "parameters": [
           {
             "name": "id",
@@ -191,7 +180,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCompletedDealsResponseBodyDto"
+                  "$ref": "#/components/schemas/GetCompletedSmartTradesResponseDto"
                 }
               }
             }
@@ -200,9 +189,9 @@
         "tags": ["Grid Bot"]
       }
     },
-    "/bapi/grid-bot/{id}/events": {
+    "/bapi/grid-bot/{id}/active-smart-trades": {
       "get": {
-        "operationId": "getEvents",
+        "operationId": "getActiveSmartTrades",
         "parameters": [
           {
             "name": "id",
@@ -211,7 +200,18 @@
             "schema": { "type": "string" }
           }
         ],
-        "responses": { "200": { "description": "" } },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActiveSmartTradesResponseDto"
+                }
+              }
+            }
+          }
+        },
         "tags": ["Grid Bot"]
       }
     },
@@ -354,7 +354,8 @@
               "application/json": { "schema": { "type": "object" } }
             }
           }
-        }
+        },
+        "tags": ["Marketplace"]
       }
     },
     "/bapi/marketplace/twitter/signals": {
@@ -524,7 +525,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Marketplace: Twitter Signals"]
       },
       "post": {
         "operationId": "createSignalEvent",
@@ -550,7 +552,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Marketplace: Twitter Signals"]
       }
     },
     "/bapi/marketplace/twitter/signal/events/active": {
@@ -568,7 +571,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Marketplace: Twitter Signals"]
       }
     },
     "/bapi/marketplace/twitter/signal/events/{id}": {
@@ -593,7 +597,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Marketplace: Twitter Signals"]
       },
       "put": {
         "operationId": "updateSignalEvent",
@@ -626,7 +631,8 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Marketplace: Twitter Signals"]
       }
     },
     "/bapi/experiments/3c-tweet-trading/signal-events": {
@@ -673,7 +679,7 @@
         "tags": ["Experiments / Tweet Trading"]
       }
     },
-    "/bapi/experiments/3c-tweet-trading/smart-trades-history": {
+    "/bapi/experiments/3c-tweet-trading/smart-trades-history/{accountId}": {
       "get": {
         "operationId": "smartTradesHistory",
         "parameters": [],
@@ -795,10 +801,17 @@
         "tags": ["Experiments / Tweet Trading"]
       }
     },
-    "/bapi/experiments/3c-tweet-trading/run-matching": {
+    "/bapi/experiments/3c-tweet-trading/run-matching/{botId}": {
       "get": {
         "operationId": "runMatching",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "botId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
         "responses": { "200": { "description": "" } },
         "tags": ["Experiments / Tweet Trading"]
       }
@@ -896,6 +909,370 @@
         },
         "tags": ["3Commas Accounts"]
       }
+    },
+    "/bapi/smart-trading": {
+      "get": {
+        "operationId": "getSmartTrades",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSmartTradesListResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Smart Trading"]
+      }
+    },
+    "/bapi/smart-trading/info/{id}": {
+      "get": {
+        "operationId": "getSmartTrade",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSmartTradeResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Smart Trading"]
+      }
+    },
+    "/bapi/smart-trading/create": {
+      "post": {
+        "operationId": "createSmartTrade",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmartTradeRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSmartTradeResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Smart Trading"]
+      }
+    },
+    "/bapi/smart-trading/sync": {
+      "patch": {
+        "operationId": "syncSmartTrades",
+        "parameters": [
+          {
+            "name": "exchangeAccountId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncSmartTradesResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Smart Trading"]
+      }
+    },
+    "/bapi/trade-bot": {
+      "get": {
+        "operationId": "getBots",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTradeBotsListResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Trade Bot"]
+      }
+    },
+    "/bapi/trade-bot/info/{id}": {
+      "get": {
+        "operationId": "getBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTradeBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Trade Bot"]
+      }
+    },
+    "/bapi/trade-bot/create": {
+      "post": {
+        "operationId": "createBot",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTradeBotRequestBodyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTradeBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Trade Bot"]
+      }
+    },
+    "/bapi/trade-bot/start/{id}": {
+      "put": {
+        "operationId": "startBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartTradeBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Trade Bot"]
+      }
+    },
+    "/bapi/trade-bot/stop/{id}": {
+      "put": {
+        "operationId": "stopBot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StopTradeBotResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Trade Bot"]
+      }
+    },
+    "/bapi/backtesting/grid-bot/test": {
+      "post": {
+        "operationId": "test",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RunGridBotBackTestDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Backtesting"]
+      }
+    },
+    "/bapi/candlesticks/history": {
+      "get": {
+        "operationId": "getCandlesticksHistory",
+        "parameters": [
+          {
+            "name": "symbolId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "barSize",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCandlesticksHistoryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Candlesticks History"]
+      },
+      "put": {
+        "operationId": "fetchExchangeCandlesticksHistory",
+        "parameters": [
+          {
+            "name": "symbolId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "barSize",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Candlesticks History"]
+      }
+    },
+    "/bapi/symbols": {
+      "get": {
+        "operationId": "getSymbols",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSymbolsResponseBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Symbols"]
+      }
+    },
+    "/bapi/symbols/info": {
+      "get": {
+        "operationId": "getSymbolInfo",
+        "parameters": [
+          {
+            "name": "symbolId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSymbolInfoResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Symbols"]
+      }
+    },
+    "/bapi/symbols/current-asset-price": {
+      "get": {
+        "operationId": "getCurrentAssetPrice",
+        "parameters": [
+          {
+            "name": "symbolId",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentAssetPriceResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Symbols"]
+      }
     }
   },
   "info": {
@@ -908,171 +1285,13 @@
   "servers": [],
   "components": {
     "schemas": {
-      "BuyOrderIdleEntity": {
+      "GridBotSmartTradeRefEntity": {
         "type": "object",
         "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
+          "key": { "type": "string" },
+          "smartTradeId": { "type": "string" }
         },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "SellOrderIdleEntity": {
-        "type": "object",
-        "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
-        },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "DealIdleEntity": {
-        "type": "object",
-        "properties": {
-          "buyOrder": { "$ref": "#/components/schemas/BuyOrderIdleEntity" },
-          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Idle",
-              "BuyPlaced",
-              "BuyFilled",
-              "SellPlaced",
-              "SellFilled"
-            ]
-          },
-          "id": { "type": "string" },
-          "quantity": { "type": "number" }
-        },
-        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
-      },
-      "BuyOrderPlacedEntity": {
-        "type": "object",
-        "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
-        },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "DealBuyPlacedEntity": {
-        "type": "object",
-        "properties": {
-          "buyOrder": { "$ref": "#/components/schemas/BuyOrderPlacedEntity" },
-          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Idle",
-              "BuyPlaced",
-              "BuyFilled",
-              "SellPlaced",
-              "SellFilled"
-            ]
-          },
-          "id": { "type": "string" },
-          "quantity": { "type": "number" }
-        },
-        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
-      },
-      "BuyOrderFilledEntity": {
-        "type": "object",
-        "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
-        },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "DealBuyFilledEntity": {
-        "type": "object",
-        "properties": {
-          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
-          "sellOrder": { "$ref": "#/components/schemas/SellOrderIdleEntity" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Idle",
-              "BuyPlaced",
-              "BuyFilled",
-              "SellPlaced",
-              "SellFilled"
-            ]
-          },
-          "id": { "type": "string" },
-          "quantity": { "type": "number" }
-        },
-        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
-      },
-      "SellOrderPlacedEntity": {
-        "type": "object",
-        "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
-        },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "DealSellPlacedEntity": {
-        "type": "object",
-        "properties": {
-          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
-          "sellOrder": { "$ref": "#/components/schemas/SellOrderPlacedEntity" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Idle",
-              "BuyPlaced",
-              "BuyFilled",
-              "SellPlaced",
-              "SellFilled"
-            ]
-          },
-          "id": { "type": "string" },
-          "quantity": { "type": "number" }
-        },
-        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
-      },
-      "SellOrderFilledEntity": {
-        "type": "object",
-        "properties": {
-          "clientOrderId": { "type": "string" },
-          "price": { "type": "number" },
-          "fee": { "type": "number" },
-          "side": { "type": "number", "enum": [] },
-          "status": { "type": "number", "enum": [] }
-        },
-        "required": ["clientOrderId", "price", "fee", "side", "status"]
-      },
-      "DealSellFilledEntity": {
-        "type": "object",
-        "properties": {
-          "buyOrder": { "$ref": "#/components/schemas/BuyOrderFilledEntity" },
-          "sellOrder": { "$ref": "#/components/schemas/SellOrderFilledEntity" },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Idle",
-              "BuyPlaced",
-              "BuyFilled",
-              "SellPlaced",
-              "SellFilled"
-            ]
-          },
-          "id": { "type": "string" },
-          "quantity": { "type": "number" }
-        },
-        "required": ["buyOrder", "sellOrder", "status", "id", "quantity"]
+        "required": ["key", "smartTradeId"]
       },
       "GridLineDto": {
         "type": "object",
@@ -1114,15 +1333,11 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/GridLineDto" }
           },
-          "deals": {
+          "smartTrades": {
             "type": "array",
             "items": {
               "oneOf": [
-                { "$ref": "#/components/schemas/DealIdleEntity" },
-                { "$ref": "#/components/schemas/DealBuyPlacedEntity" },
-                { "$ref": "#/components/schemas/DealBuyFilledEntity" },
-                { "$ref": "#/components/schemas/DealSellPlacedEntity" },
-                { "$ref": "#/components/schemas/DealSellFilledEntity" }
+                { "$ref": "#/components/schemas/GridBotSmartTradeRefEntity" }
               ]
             }
           },
@@ -1140,7 +1355,7 @@
         },
         "required": [
           "gridLines",
-          "deals",
+          "smartTrades",
           "initialInvestment",
           "id",
           "name",
@@ -1210,92 +1425,198 @@
         },
         "required": ["botId", "message"]
       },
-      "SyncedOrderDto": {
+      "SmartBuyOrderIdleEntity": {
         "type": "object",
         "properties": {
-          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
           "price": { "type": "number" },
-          "current": { "type": "boolean" }
-        },
-        "required": ["status", "price", "current"]
-      },
-      "SyncedDealDto": {
-        "type": "object",
-        "properties": {
-          "dealId": { "type": "string" },
-          "buyOrder": { "$ref": "#/components/schemas/SyncedOrderDto" },
-          "sellOrder": { "$ref": "#/components/schemas/SyncedOrderDto" }
-        },
-        "required": ["dealId"]
-      },
-      "PlacedOrderDto": {
-        "type": "object",
-        "properties": {
-          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
-          "price": { "type": "number" }
-        },
-        "required": ["status", "price"]
-      },
-      "PlacedDealDto": {
-        "type": "object",
-        "properties": {
-          "buyOrder": {
-            "nullable": true,
-            "allOf": [{ "$ref": "#/components/schemas/PlacedOrderDto" }]
-          },
-          "sellOrder": {
-            "nullable": true,
-            "allOf": [{ "$ref": "#/components/schemas/PlacedOrderDto" }]
-          }
-        },
-        "required": ["buyOrder", "sellOrder"]
-      },
-      "SyncBotResponseBodyDto": {
-        "type": "object",
-        "properties": {
-          "message": { "type": "string" },
-          "currentAssetPrice": { "type": "number" },
-          "filledOrders": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/SyncedDealDto" }
-          },
-          "placedOrders": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/PlacedDealDto" }
-          }
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
         },
         "required": [
-          "message",
-          "currentAssetPrice",
-          "filledOrders",
-          "placedOrders"
+          "exchangeOrderId",
+          "clientOrderId",
+          "price",
+          "fee",
+          "side",
+          "status",
+          "quantity",
+          "createdAt",
+          "updatedAt"
         ]
       },
-      "CompletedDealBuyOrderEntity": {
-        "type": "object",
-        "properties": { "price": { "type": "number" } },
-        "required": ["price"]
-      },
-      "CompletedDealSellOrderEntity": {
-        "type": "object",
-        "properties": { "price": { "type": "number" } },
-        "required": ["price"]
-      },
-      "CompletedDealWithProfitDto": {
+      "SmartBuyOrderPlacedEntity": {
         "type": "object",
         "properties": {
-          "buyOrder": {
-            "$ref": "#/components/schemas/CompletedDealBuyOrderEntity"
-          },
-          "sellOrder": {
-            "$ref": "#/components/schemas/CompletedDealSellOrderEntity"
-          },
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "exchangeOrderId",
+          "clientOrderId",
+          "price",
+          "fee",
+          "side",
+          "status",
+          "quantity",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartBuyOrderFilledEntity": {
+        "type": "object",
+        "properties": {
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "exchangeOrderId",
+          "clientOrderId",
+          "price",
+          "fee",
+          "side",
+          "status",
+          "quantity",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartSellOrderPlacedEntity": {
+        "type": "object",
+        "properties": {
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "exchangeOrderId",
+          "clientOrderId",
+          "price",
+          "fee",
+          "side",
+          "status",
+          "quantity",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartSellOrderFilledEntity": {
+        "type": "object",
+        "properties": {
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "side": { "type": "number", "enum": [] },
+          "status": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "exchangeOrderId",
+          "clientOrderId",
+          "price",
+          "fee",
+          "side",
+          "status",
+          "quantity",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartBuyOrderEntity": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["idle", "placed", "filled"], "type": "string" },
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "side": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "status",
+          "exchangeOrderId",
+          "clientOrderId",
+          "side",
+          "quantity",
+          "price",
+          "fee",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartSellOrderEntity": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["idle", "placed", "filled"], "type": "string" },
+          "exchangeOrderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "side": { "type": "number", "enum": [] },
+          "quantity": { "type": "number" },
+          "price": { "type": "number" },
+          "fee": { "type": "number" },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "status",
+          "exchangeOrderId",
+          "clientOrderId",
+          "side",
+          "quantity",
+          "price",
+          "fee",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SmartTradeWithProfitDto": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/SmartBuyOrderEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SmartSellOrderEntity" },
           "grossProfit": { "type": "number" },
           "netProfit": { "type": "number" },
           "id": { "type": "string" },
+          "comment": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
           "quantity": { "type": "number" },
+          "botId": { "type": "string", "nullable": true },
           "createdAt": { "type": "number" },
-          "botId": { "type": "string" }
+          "updatedAt": { "type": "number" },
+          "userId": { "type": "string" },
+          "exchangeAccountId": { "type": "string" }
         },
         "required": [
           "buyOrder",
@@ -1303,22 +1624,65 @@
           "grossProfit",
           "netProfit",
           "id",
+          "baseCurrency",
+          "quoteCurrency",
           "quantity",
+          "botId",
           "createdAt",
-          "botId"
+          "updatedAt",
+          "userId",
+          "exchangeAccountId"
         ]
       },
-      "GetCompletedDealsResponseBodyDto": {
+      "GetCompletedSmartTradesResponseDto": {
         "type": "object",
         "properties": {
-          "completedDeals": {
+          "completedSmartTrades": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompletedDealWithProfitDto"
-            }
+            "items": { "$ref": "#/components/schemas/SmartTradeWithProfitDto" }
           }
         },
-        "required": ["completedDeals"]
+        "required": ["completedSmartTrades"]
+      },
+      "SmartTradeDto": {
+        "type": "object",
+        "properties": {
+          "buyOrder": { "$ref": "#/components/schemas/SmartBuyOrderEntity" },
+          "sellOrder": { "$ref": "#/components/schemas/SmartSellOrderEntity" },
+          "id": { "type": "string" },
+          "comment": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "quantity": { "type": "number" },
+          "botId": { "type": "string", "nullable": true },
+          "createdAt": { "type": "number" },
+          "updatedAt": { "type": "number" },
+          "userId": { "type": "string" },
+          "exchangeAccountId": { "type": "string" }
+        },
+        "required": [
+          "buyOrder",
+          "sellOrder",
+          "id",
+          "baseCurrency",
+          "quoteCurrency",
+          "quantity",
+          "botId",
+          "createdAt",
+          "updatedAt",
+          "userId",
+          "exchangeAccountId"
+        ]
+      },
+      "GetActiveSmartTradesResponseDto": {
+        "type": "object",
+        "properties": {
+          "activeSmartTrades": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SmartTradeDto" }
+          }
+        },
+        "required": ["activeSmartTrades"]
       },
       "ExchangeCode": { "type": "string", "enum": ["okx"] },
       "ExchangeCredentialsDto": {
@@ -1668,6 +2032,8 @@
             "type": "array",
             "items": { "type": "string" }
           },
+          "exchangeAccountId": { "type": "string" },
+          "threeCommasAccountId": { "type": "string" },
           "createdAt": { "type": "string" }
         },
         "required": [
@@ -1677,6 +2043,8 @@
           "enabled",
           "watchSignalsIds",
           "usedSignalEventsIds",
+          "exchangeAccountId",
+          "threeCommasAccountId",
           "createdAt"
         ]
       },
@@ -1693,7 +2061,9 @@
           "usedSignalEventsIds": {
             "type": "array",
             "items": { "type": "string" }
-          }
+          },
+          "exchangeAccountId": { "type": "string" },
+          "threeCommasAccountId": { "type": "string" }
         },
         "required": [
           "smartTradeSettings",
@@ -1701,7 +2071,9 @@
           "name",
           "enabled",
           "watchSignalsIds",
-          "usedSignalEventsIds"
+          "usedSignalEventsIds",
+          "exchangeAccountId",
+          "threeCommasAccountId"
         ]
       },
       "UpdateTweetTradingBotDto": {
@@ -1716,14 +2088,18 @@
           "usedSignalEventsIds": {
             "type": "array",
             "items": { "type": "string" }
-          }
+          },
+          "exchangeAccountId": { "type": "string" },
+          "threeCommasAccountId": { "type": "string" }
         },
         "required": [
           "smartTradeSettings",
           "name",
           "enabled",
           "watchSignalsIds",
-          "usedSignalEventsIds"
+          "usedSignalEventsIds",
+          "exchangeAccountId",
+          "threeCommasAccountId"
         ]
       },
       "ThreeCommasAccountCredentialsDto": {
@@ -1802,6 +2178,331 @@
           "account": { "$ref": "#/components/schemas/ThreeCommasAccountDto" }
         },
         "required": ["account"]
+      },
+      "GetSmartTradesListResponseDto": {
+        "type": "object",
+        "properties": {
+          "smartTrades": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SmartTradeDto" }
+          }
+        },
+        "required": ["smartTrades"]
+      },
+      "GetSmartTradeResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "smartTrade": { "$ref": "#/components/schemas/SmartTradeDto" }
+        },
+        "required": ["smartTrade"]
+      },
+      "CreateSmartTradeBuyOrderDto": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "price": { "type": "number" }
+        },
+        "required": ["price"]
+      },
+      "CreateSmartTradeSellOrderDto": {
+        "type": "object",
+        "properties": {
+          "clientOrderId": { "type": "string" },
+          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "price": { "type": "number" }
+        },
+        "required": ["price"]
+      },
+      "CreateSmartTradeRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "buy": { "$ref": "#/components/schemas/CreateSmartTradeBuyOrderDto" },
+          "sell": {
+            "$ref": "#/components/schemas/CreateSmartTradeSellOrderDto"
+          },
+          "comment": { "type": "string" },
+          "quantity": { "type": "number" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "exchangeAccountId": { "type": "string" },
+          "botId": { "type": "string", "nullable": true }
+        },
+        "required": [
+          "buy",
+          "sell",
+          "quantity",
+          "baseCurrency",
+          "quoteCurrency",
+          "exchangeAccountId",
+          "botId"
+        ]
+      },
+      "CreateSmartTradeResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "smartTrade": { "$ref": "#/components/schemas/SmartTradeDto" }
+        },
+        "required": ["smartTrade"]
+      },
+      "SyncedSmartTradeOrderDto": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["idle", "placed", "filled"] },
+          "price": { "type": "number" }
+        },
+        "required": ["status", "price"]
+      },
+      "SyncedSmartTradeDto": {
+        "type": "object",
+        "properties": {
+          "smartTradeId": { "type": "string" },
+          "buyOrder": {
+            "$ref": "#/components/schemas/SyncedSmartTradeOrderDto"
+          },
+          "sellOrder": {
+            "$ref": "#/components/schemas/SyncedSmartTradeOrderDto"
+          }
+        },
+        "required": ["smartTradeId"]
+      },
+      "SyncSmartTradesResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "syncedSmartTrades": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SyncedSmartTradeDto" }
+          }
+        },
+        "required": ["message", "syncedSmartTrades"]
+      },
+      "OrderEntity": {
+        "type": "object",
+        "properties": {
+          "side": { "type": "string", "enum": ["buy", "sell"] },
+          "status": {
+            "type": "string",
+            "enum": ["Idle", "Placed", "Filled", "Cancelled", "Completed"]
+          },
+          "orderId": { "type": "string" },
+          "clientOrderId": { "type": "string" },
+          "price": { "type": "number" },
+          "quantity": { "type": "number" },
+          "fee": { "type": "number" }
+        },
+        "required": ["side", "status", "orderId", "price", "quantity", "fee"]
+      },
+      "TradeBotDto": {
+        "type": "object",
+        "properties": {
+          "orders": { "$ref": "#/components/schemas/OrderEntity" },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "createdAt": { "type": "number" },
+          "userId": { "type": "string" },
+          "exchangeAccountId": { "type": "string" }
+        },
+        "required": [
+          "orders",
+          "id",
+          "name",
+          "baseCurrency",
+          "quoteCurrency",
+          "enabled",
+          "createdAt",
+          "userId",
+          "exchangeAccountId"
+        ]
+      },
+      "GetTradeBotsListResponseDto": {
+        "type": "object",
+        "properties": {
+          "bots": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TradeBotDto" }
+          }
+        },
+        "required": ["bots"]
+      },
+      "GetTradeBotResponseBodyDto": {
+        "type": "object",
+        "properties": { "bot": { "$ref": "#/components/schemas/TradeBotDto" } },
+        "required": ["bot"]
+      },
+      "CreateTradeBotRequestBodyDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "exchangeAccountId": { "type": "string" }
+        },
+        "required": [
+          "id",
+          "name",
+          "baseCurrency",
+          "quoteCurrency",
+          "exchangeAccountId"
+        ]
+      },
+      "CreateTradeBotResponseBodyDto": {
+        "type": "object",
+        "properties": { "bot": { "$ref": "#/components/schemas/TradeBotDto" } },
+        "required": ["bot"]
+      },
+      "StartTradeBotResponseBodyDto": {
+        "type": "object",
+        "properties": { "bot": { "$ref": "#/components/schemas/TradeBotDto" } },
+        "required": ["bot"]
+      },
+      "StopTradeBotResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "botId": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["botId", "message"]
+      },
+      "RunGridBotBackTestDto": {
+        "type": "object",
+        "properties": {
+          "botId": { "type": "string" },
+          "startDate": { "type": "string" },
+          "endDate": { "type": "string" }
+        },
+        "required": ["botId", "startDate", "endDate"]
+      },
+      "CandlestickEntity": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "timestamp": { "type": "number" },
+          "open": { "type": "number" },
+          "high": { "type": "number" },
+          "low": { "type": "number" },
+          "close": { "type": "number" },
+          "historyId": { "type": "object" }
+        },
+        "required": [
+          "id",
+          "timestamp",
+          "open",
+          "high",
+          "low",
+          "close",
+          "historyId"
+        ]
+      },
+      "CandlesticksHistoryDto": {
+        "type": "object",
+        "properties": {
+          "candlesticks": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CandlestickEntity" }
+          },
+          "id": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["okx"] },
+          "barSize": {
+            "type": "string",
+            "enum": ["1m", "5m", "15m", "1h", "4h", "1d", "1w", "1M", "3M"]
+          },
+          "historyDataDownloadingCompleted": { "type": "boolean" },
+          "updatedAt": { "type": "number" }
+        },
+        "required": [
+          "candlesticks",
+          "id",
+          "baseCurrency",
+          "quoteCurrency",
+          "exchangeCode",
+          "barSize",
+          "historyDataDownloadingCompleted",
+          "updatedAt"
+        ]
+      },
+      "GetCandlesticksHistoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "history": { "$ref": "#/components/schemas/CandlesticksHistoryDto" }
+        },
+        "required": ["history"]
+      },
+      "SymbolPriceFilterDto": {
+        "type": "object",
+        "properties": {
+          "maxPrice": { "type": "string", "nullable": true },
+          "minPrice": { "type": "string", "nullable": true },
+          "tickSize": { "type": "string" }
+        },
+        "required": ["maxPrice", "minPrice", "tickSize"]
+      },
+      "SymbolLotFilterDto": {
+        "type": "object",
+        "properties": {
+          "maxQuantity": { "type": "string" },
+          "minQuantity": { "type": "string" },
+          "stepSize": { "type": "string" }
+        },
+        "required": ["maxQuantity", "minQuantity", "stepSize"]
+      },
+      "SymbolFilterDto": {
+        "type": "object",
+        "properties": {
+          "price": { "$ref": "#/components/schemas/SymbolPriceFilterDto" },
+          "lot": { "$ref": "#/components/schemas/SymbolLotFilterDto" }
+        },
+        "required": ["price", "lot"]
+      },
+      "SymbolInfoDto": {
+        "type": "object",
+        "properties": {
+          "symbolId": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["okx"] },
+          "exchangeSymbolId": { "type": "string" },
+          "baseCurrency": { "type": "string" },
+          "quoteCurrency": { "type": "string" },
+          "filters": { "$ref": "#/components/schemas/SymbolFilterDto" }
+        },
+        "required": [
+          "symbolId",
+          "exchangeCode",
+          "exchangeSymbolId",
+          "baseCurrency",
+          "quoteCurrency",
+          "filters"
+        ]
+      },
+      "GetSymbolsResponseBodyDto": {
+        "type": "object",
+        "properties": {
+          "symbols": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SymbolInfoDto" }
+          }
+        },
+        "required": ["symbols"]
+      },
+      "GetSymbolInfoResponseDto": {
+        "type": "object",
+        "properties": {
+          "symbol": { "$ref": "#/components/schemas/SymbolInfoDto" }
+        },
+        "required": ["symbol"]
+      },
+      "GetCurrentAssetPriceResponseDto": {
+        "type": "object",
+        "properties": {
+          "price": { "type": "number" },
+          "timestamp": { "type": "number" }
+        },
+        "required": ["price", "timestamp"]
       }
     }
   }

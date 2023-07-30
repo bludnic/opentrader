@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { BotsListPage } from "src/sections/grid-bot/pages/bots-list";
+import { BotsListPage } from "src/sections/grid-bot/bots-list";
 
 const GridBotsListNextPage: NextPage = () => {
   return <BotsListPage />;

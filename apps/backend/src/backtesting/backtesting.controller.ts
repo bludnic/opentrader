@@ -1,3 +1,5 @@
+import { composeSymbolId } from '@bifrost/tools';
+import { BarSize, ExchangeCode, ICandlestick } from '@bifrost/types';
 import {
   Body,
   Controller,
@@ -12,19 +14,18 @@ import { RunGridBotBackTestDto } from 'src/backtesting/dto/grid-bot/run-grid-bot
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { CandlesticksRepository } from 'src/core/db/postgres/repositories/candlesticks.repository';
-import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
+import { composeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/composeEntityId';
+import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import {
   ExchangeFactory,
   ExchangeFactorySymbol,
 } from 'src/core/exchanges/exchange.factory';
-import { ICandlestick } from '@bifrost/types';
 import { useGridBot } from 'src/grid-bot/use-grid-bot';
 import { DataSource } from 'typeorm';
 import { BacktestingService } from './backtesting.service';
 import { ITrade } from './types/trade.interface';
 import { convertSmartTradesToTrades } from './utils/convertSmartTradesToTrades';
-import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 
 @Controller({
   path: 'backtesting',
@@ -54,20 +55,25 @@ export class BacktestingController {
   }> {
     const bot = await this.firestoreService.gridBot.findOne(body.botId);
 
-    const symbol = symbolId(bot.baseCurrency, bot.quoteCurrency);
+    const symbolId = composeSymbolId(
+      ExchangeCode.OKX,
+      bot.baseCurrency,
+      bot.quoteCurrency,
+    );
+    const entityId = composeEntityId(symbolId, BarSize.ONE_MINUTE);
 
     const fromTimestamp = parseISO(body.startDate).getTime();
     const toTimestamp = parseISO(body.endDate).getTime();
 
     const candlesticks = await this.candlesticksRepo.findAndSort(
-      symbol,
+      entityId,
       fromTimestamp,
       toTimestamp,
     );
 
     if (candlesticks.length === 0) {
       throw new NotFoundException(
-        `Not found candlesticks history data for ${symbol} symbol`,
+        `Not found candlesticks history data for ${entityId} symbol`,
       );
     }
 

@@ -72,6 +72,21 @@ export class SmartTradeRepository {
     return smartTrades;
   }
 
+  async findCompletedByBotId(botId: string): Promise<SmartTradeEntity[]> {
+    const allSmartTrades = await this.firebase.db
+      .collection(SMART_TRADE_COLLECTION)
+      .withConverter(converter)
+      .where('botId', '==', botId)
+      .where('sellOrder.status', '==', OrderStatusEnum.Filled)
+      .get();
+
+    const smartTrades = allSmartTrades.docs.map(
+      (doc) => new SmartTradeEntity(doc.data()),
+    );
+
+    return smartTrades;
+  }
+
   async findAllByExchangeAccountId(
     exchangeAccountId: string,
   ): Promise<SmartTradeEntity[]> {
@@ -220,32 +235,5 @@ export class SmartTradeRepository {
     };
 
     return this.update(newSmartTrade);
-  }
-
-  async testSet() {
-    // @todo remove
-    const documentId = uniqId();
-    const document = this.firebase.db
-      .collection('testing_remove')
-      .doc(documentId);
-
-    console.log('document.id1', document.id);
-    console.log('document.id2', document.id);
-
-    await document.set({
-      documentId,
-      hello: 'world',
-    });
-
-    return document;
-  }
-
-  async testGet(id: string) {
-    // @todo remove
-    const document = this.firebase.db.collection('testing_remove').doc(id);
-
-    const documentData = await document.get();
-
-    return documentData.data();
   }
 }

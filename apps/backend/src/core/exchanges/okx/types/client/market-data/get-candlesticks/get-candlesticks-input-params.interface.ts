@@ -1,3 +1,5 @@
+import { OKXBarSize } from 'src/core/exchanges/okx/types/client/market-data/common/bar-size.type';
+
 export interface IOKXGetCandlesticksInputParams {
   /**
    * 	Instrument ID, e.g. "ADA-USDT"
@@ -6,7 +8,7 @@ export interface IOKXGetCandlesticksInputParams {
   /**
    * Bar size, the default is 1m
    */
-  bar?: '1m' | '3m' | '5m' | '15m' | '30m' | '1H' | '2H' | '4H' | '1D';
+  bar?: OKXBarSize;
   /**
    * Pagination of data to return records earlier than the requested `ts`
    */

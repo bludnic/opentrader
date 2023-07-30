@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsValidEntityId } from './validation/IsValidEntityId';
 import { ICandlesticksHistory } from './candlesticks-history.interface';
 import { CandlestickEntity } from './candlestick/candlestick.entity';
-import { ExchangeCode, ICandlestick } from '@bifrost/types';
+import { BarSize, ExchangeCode, ICandlestick } from '@bifrost/types';
 import {
   Column,
   Entity,
@@ -13,7 +14,8 @@ import {
 @Entity({ name: 'candlesticks_history' })
 export class CandlesticksHistoryEntity implements ICandlesticksHistory {
   @PrimaryColumn()
-  symbol: string; // e.g. ETH/USDT
+  @IsValidEntityId()
+  id: string; // e.g. OKX:ETH/USDT#15m
 
   @Column()
   baseCurrency: string;
@@ -24,11 +26,14 @@ export class CandlesticksHistoryEntity implements ICandlesticksHistory {
   @Column()
   exchangeCode: ExchangeCode;
 
+  @Column()
+  barSize: BarSize;
+
   @ApiProperty({
     type: () => CandlestickEntity,
     isArray: true,
   })
-  @OneToMany(() => CandlestickEntity, (candlestick) => candlestick.symbol, {
+  @OneToMany(() => CandlestickEntity, (candlestick) => candlestick.historyId, {
     cascade: true,
   })
   candlesticks: ICandlestick[];

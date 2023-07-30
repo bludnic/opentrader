@@ -33,6 +33,7 @@ import { IOKXGetLimitOrderInputParams } from 'src/core/exchanges/okx/types/clien
 import { IOKXGetLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/get-limit-order/get-limit-order-response.interface';
 import { IOKXPlaceLimitOrderInputParams } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-input-params.interface';
 import { IOKXPlaceLimitOrderResponse } from 'src/core/exchanges/okx/types/client/trade/place-limit-order/place-limit-order-response.interface';
+import { barSizeInputAdapter } from 'src/core/exchanges/okx/utils/barSizeAdapter';
 
 export const OKXFacade = {
   accountAsset(data: IOKXGetAccountBalanceDetails): IAccountAsset {
@@ -149,7 +150,7 @@ export const OKXFacade = {
   ): IOKXGetCandlesticksInputParams {
     return {
       instId: `${data.symbol}-SWAP`,
-      bar: data.bar,
+      bar: barSizeInputAdapter(data.bar),
       limit: data.limit ? String(data.limit) : undefined,
       before: data.before ? String(data.before) : undefined,
       after: data.after ? String(data.after) : undefined,

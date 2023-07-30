@@ -1,16 +1,17 @@
+import { BarSize } from '@bifrost/types';
 import {
   Controller,
   Get,
   Inject,
   Logger,
   NotFoundException,
-  Param,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetCandlesticksHistoryResponseDto } from 'src/candlesticks/dto/get-candlesticks-history/get-candlesticks-history-response.dto';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { symbolId } from 'src/core/db/postgres/utils/candlesticks-history/symbolId';
+import { composeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/composeEntityId';
 import {
   ExchangeFactory,
   ExchangeFactorySymbol,
@@ -19,6 +20,8 @@ import {
   CandlesticksServiceFactory,
   CandlesticksServiceFactorySymbol,
 } from 'src/candlesticks/candlesticks-service.factory';
+import { IsValidBarSizePipe } from 'src/symbols/utils/pipes/is-valid-bar-size-pipe';
+import { IsValidSymbolIdPipe } from 'src/symbols/utils/pipes/is-valid-symbol-id.pipe';
 
 @Controller({
   path: 'candlesticks',
@@ -34,12 +37,12 @@ export class CandlesticksController {
     private readonly candlesticksServiceFactory: CandlesticksServiceFactory,
   ) {}
 
-  @Get('/history/:baseCurrency/:quoteCurrency')
+  @Get('/history')
   async getCandlesticksHistory(
-    @Param('baseCurrency') baseCurrency: string,
-    @Param('quoteCurrency') quoteCurrency: string,
+    @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
+    @Query('barSize', IsValidBarSizePipe) barSize: BarSize,
   ): Promise<GetCandlesticksHistoryResponseDto> {
-    const symbol = symbolId(baseCurrency, quoteCurrency);
+    const entityId = composeEntityId(symbolId, barSize);
 
     const candlesticksService =
       await this.candlesticksServiceFactory.fromExchangeAccountId(
@@ -48,14 +51,14 @@ export class CandlesticksController {
 
     const history = await candlesticksService.candlesticksHistory.findOne({
       where: {
-        symbol,
+        id: entityId,
       },
       relations: ['candlesticks'],
     });
 
     if (!history) {
       throw new NotFoundException(
-        `[CandlesticksController] Not found history data for ${symbol} symbol`,
+        `[CandlesticksController] Not found history data for ${entityId} symbol`,
       );
     }
 
@@ -64,17 +67,17 @@ export class CandlesticksController {
     };
   }
 
-  @Put('/history/:baseCurrency/:quoteCurrency')
+  @Put('/history')
   async fetchExchangeCandlesticksHistory(
-    @Param('baseCurrency') baseCurrency: string,
-    @Param('quoteCurrency') quoteCurrency: string,
+    @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
+    @Query('barSize', IsValidBarSizePipe) barSize: BarSize,
   ) {
     const candlesticksService =
       await this.candlesticksServiceFactory.fromExchangeAccountId(
         'okx_real_testing',
       );
 
-    await candlesticksService.downloadHistory(baseCurrency, quoteCurrency);
+    await candlesticksService.downloadHistory(symbolId, barSize);
 
     return {
       polling: true,

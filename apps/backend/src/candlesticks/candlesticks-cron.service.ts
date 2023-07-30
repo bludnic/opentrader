@@ -5,6 +5,7 @@ import {
   CandlesticksServiceFactorySymbol,
 } from 'src/candlesticks/candlesticks-service.factory';
 import { CandlesticksHistoryRepository } from 'src/core/db/postgres/repositories/candlesticks-history.repository';
+import { decomposeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/decomposeEntityId';
 
 @Injectable()
 export class CandlesticksCronService {
@@ -16,7 +17,7 @@ export class CandlesticksCronService {
     private readonly logger: Logger,
   ) {}
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async downloadNewCandlesticks() {
     const candlesticksService =
       await this.candlesticksServiceFactory.fromExchangeAccountId(
@@ -31,16 +32,17 @@ export class CandlesticksCronService {
 
     for (const history of historyList) {
       this.logger.debug(
-        `[CandlesticksCronService] Request new candlesticks for ${history.symbol}`,
+        `[CandlesticksCronService] Request new candlesticks for ${history.id}`,
       );
 
+      const { symbolId, barSize } = decomposeEntityId(history.id);
       const candlesticks = await candlesticksService.downloadNewCandlesticks(
-        history.baseCurrency,
-        history.quoteCurrency,
+        symbolId,
+        barSize,
       );
 
       this.logger.debug(
-        `[CandlesticksCronService] Fetched ${candlesticks.length} candlesticks for ${history.symbol}`,
+        `[CandlesticksCronService] Fetched ${candlesticks.length} candlesticks for ${history.id}`,
       );
     }
 

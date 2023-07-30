@@ -1,9 +1,19 @@
-import axios, { AxiosPromise } from "axios";
-import backtestingResponse from './backtesting-response.json';
+import { BarSize } from "@bifrost/types";
+import axios, { Axios, AxiosPromise } from "axios";
+import {
+  CreateBotRequestBodyDto,
+  GetActiveSmartTradesResponseDto,
+  GetCompletedSmartTradesResponseDto,
+  GetCurrentAssetPriceResponseDto,
+  GetExchangeAccountsResponseBodyDto,
+  GetSymbolsResponseBodyDto,
+} from "src/lib/bifrost/client";
+import { authInterceptor } from "src/utils/axios/authInterceptor";
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BIFROST_API_BASEURL,
 });
+client.interceptors.request.use(authInterceptor);
 
 export interface ICandlestick {
   open: number;
@@ -18,7 +28,7 @@ export interface ICandlestick {
 
 export interface Trade {
   smartTradeId: string;
-  side: 'buy' | 'sell',
+  side: "buy" | "sell";
   price: number;
   quantity: number;
   time: number;
@@ -31,18 +41,55 @@ export const bifrostApi = {
   okxMarketTrades() {
     return client.get("/okex/market/trades");
   },
-  candlesHistory(): AxiosPromise<{ candles: ICandlestick[] }>  {
-    return client.get("/backtesting/candlesticks-UNI-USDT")
+  candlesHistory(
+    symbolId: string,
+    barSize: BarSize
+  ): AxiosPromise<{ candles: ICandlestick[] }> {
+    return client.get(`/candlesticks/history`, {
+      params: {
+        symbolId,
+        barSize,
+      },
+    });
+  },
+  getExchangeAccounts(): AxiosPromise<GetExchangeAccountsResponseBodyDto> {
+    return client.get(`/exchange-accounts/accounts`);
+  },
+  getSymbols(): AxiosPromise<GetSymbolsResponseBodyDto> {
+    return client.get("/symbols");
+  },
+  getCurrentAssetPrice(
+    symbolId: string
+  ): AxiosPromise<GetCurrentAssetPriceResponseDto> {
+    return client.get("/symbols/current-asset-price", {
+      params: {
+        symbolId,
+      },
+    });
   },
   backtesting(): AxiosPromise<{
-    candles: ICandlestick[],
-    trades: Trade[],
-    finishedSmartTradesCount: number,
-    totalProfit: number
-  }>  {
-    return client.get("/backtesting/candlesticks-UNI-USDT").then(res => {
-      res.data = backtestingResponse
-      return res;
-    })
+    candles: ICandlestick[];
+    trades: Trade[];
+    finishedSmartTradesCount: number;
+    totalProfit: number;
+  }> {
+    return client.post("/backtesting/grid-bot/test", {
+      botId: "ETH_USDT_BACKTESTING",
+      startDate: 0,
+      endDate: 0,
+    });
+  },
+  createGridBot(body: CreateBotRequestBodyDto) {
+    return client.post("/grid-bot/create", body);
+  },
+  getCompletedSmartTrades(
+    gridBotId: string
+  ): AxiosPromise<GetCompletedSmartTradesResponseDto> {
+    return client.get(`/grid-bot/${gridBotId}/completed-smart-trades`);
+  },
+  getActiveSmartTrades(
+    gridBotId: string
+  ): AxiosPromise<GetActiveSmartTradesResponseDto> {
+    return client.get(`/grid-bot/${gridBotId}/active-smart-trades`);
   },
 };

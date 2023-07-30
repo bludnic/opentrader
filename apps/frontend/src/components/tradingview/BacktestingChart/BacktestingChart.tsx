@@ -77,8 +77,8 @@ export const BacktestingChart: FC<BacktestingChartProps> = (props) => {
     }
 
     const chart = createChart(chartRef.current, {
-      width: 900,
-      height: 500,
+      width: 1800,
+      height: 700,
     });
     const lineSeries = chart.addCandlestickSeries();
     lineSeries.setData(lineSeriesData);
