@@ -1,8 +1,12 @@
-import React, { FC, useState } from "react";
-import { TextField } from "@mui/material";
-import { updateGridLineQuantity } from 'src/sections/grid-bot/create-bot/store/bot-form';
-import { selectGridLine } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import React, { FC, useEffect, useState } from 'react';
+import { QuantityInput } from "src/components/ui/QuantityInput";
+import { updateGridLineQuantity } from "src/sections/grid-bot/create-bot/store/bot-form";
+import {
+  selectCurrencyPair,
+  selectGridLine,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 type GridLineQuantityFieldProps = {
   gridLineIndex: number;
@@ -10,42 +14,52 @@ type GridLineQuantityFieldProps = {
   className?: string;
 };
 
-export const GridLineQuantityField: FC<GridLineQuantityFieldProps> = (props) => {
+export const GridLineQuantityField: FC<GridLineQuantityFieldProps> = (
+  props
+) => {
   const { className, gridLineIndex, disabled } = props;
 
   const dispatch = useAppDispatch();
 
-  const { quantity: reduxValue } = useAppSelector(selectGridLine(gridLineIndex));
-  const [value, setValue] = useState(reduxValue);
+  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbol = useAppSelector(selectSymbolById(currencyPair));
+
+  const { quantity: reduxValue } = useAppSelector(
+    selectGridLine(gridLineIndex)
+  );
+  const [value, setValue] = useState(`${reduxValue}`);
+  useEffect(() => {
+    setValue(`${reduxValue}`);
+  }, [reduxValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.valueAsNumber);
+    setValue(e.target.value);
   };
 
   const handleBlur = () => {
-    if (!Number.isNaN(value)) {
+    if (!isNaN(Number(value))) {
       dispatch(
         updateGridLineQuantity({
           gridLineIndex,
-          quantity: value,
+          quantity: Number(value),
         })
       );
     } else {
-      setValue(reduxValue);
+      setValue(`${reduxValue}`);
     }
   };
 
   return (
-    <TextField
+    <QuantityInput
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
       className={className}
       label="Quantity"
-      type="number"
       fullWidth
       disabled={disabled}
       size="small"
+      filter={symbol.filters}
     />
   );
 };

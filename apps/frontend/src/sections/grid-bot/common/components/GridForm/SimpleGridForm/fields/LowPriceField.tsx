@@ -1,8 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
-import { TextField } from "@mui/material";
+import { PriceInput } from "src/components/ui/PriceInput";
 import { changeLowPrice } from "src/sections/grid-bot/create-bot/store/bot-form";
-import { selectLowPrice } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import {
+  selectCurrencyPair,
+  selectLowPrice,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 type LowPriceFieldProps = {
   className?: string;
@@ -13,34 +17,37 @@ export const LowPriceField: FC<LowPriceFieldProps> = (props) => {
 
   const dispatch = useAppDispatch();
 
+  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbol = useAppSelector(selectSymbolById(currencyPair));
+
   const reduxValue = useAppSelector(selectLowPrice);
-  const [value, setValue] = useState(reduxValue);
+  const [value, setValue] = useState(`${reduxValue}`);
 
   useEffect(() => {
-    setValue(reduxValue);
+    setValue(`${reduxValue}`);
   }, [reduxValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.valueAsNumber);
+    setValue(e.target.value);
   };
 
   const handleBlur = () => {
-    if (Number.isInteger(value)) {
-      dispatch(changeLowPrice(value));
+    if (value.length > 0) {
+      dispatch(changeLowPrice(Number(value)));
     } else {
-      setValue(reduxValue);
+      setValue(`${reduxValue}`);
     }
   };
 
   return (
-    <TextField
+    <PriceInput
       className={className}
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
       label="Low price"
-      type="number"
       fullWidth
+      filter={symbol.filters}
     />
   );
 };

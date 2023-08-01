@@ -1,12 +1,9 @@
 import {
-  calcGridLines,
+  calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
   findLowestCandlestickBy,
 } from "@bifrost/tools";
-import { BarSize } from "@bifrost/types";
-import { SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";
-import { SymbolInfoDto } from "src/lib/bifrost/client";
 import {
   setCurrencyPair,
   setExchangeAccountId,
@@ -21,7 +18,7 @@ import { selectBarSize } from "src/sections/grid-bot/create-bot/store/bot-form/s
 import { markPageAsReady } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { query } from "src/utils/saga/query";
-import { typedSelect } from 'src/utils/saga/select';
+import { typedSelect } from "src/utils/saga/select";
 
 export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch exchange accounts
@@ -62,11 +59,12 @@ export function* initPageWorker(): Iterator<any, any, any> {
   yield put(setLowPrice(lowestCandlestick.close));
   yield put(setHighPrice(highestCandlestick.close));
 
-  const gridLines = calcGridLines(
+  const gridLines = calcGridLinesWithPriceFilter(
     highestCandlestick.close,
     lowestCandlestick.close,
     DEFAULT_GRID_LINES_NUMBER,
-    Number(minQuantityPerGrid)
+    Number(minQuantityPerGrid),
+    firstSymbol.filters
   );
   yield put(setGridLines(gridLines));
 

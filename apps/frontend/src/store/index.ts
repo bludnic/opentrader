@@ -27,7 +27,6 @@ import {
   exchangeAccountsSlice,
   ExchangeAccountsState,
 } from "src/store/exchange-accounts";
-import { symbolsSlice, SymbolsState } from "src/store/symbols";
 
 import rootSaga from "./rootSaga";
 import { todoReducer, TodoState } from "src/store/todo";
@@ -38,7 +37,6 @@ export type RootState = {
   gridBotInitPage: CreateGridBotPageInitState;
   createGridBot: CreateGridBotState;
   exchangeAccounts: ExchangeAccountsState;
-  symbols: SymbolsState;
   currentAssetPrice: CurrentAssetPriceState;
   candlesticks: CandlesticksState;
   [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
@@ -73,7 +71,6 @@ const makeStore = (context: Context) => {
       gridBotInitPage: gridBotInitPageSlice.reducer,
       createGridBot: createGridBotSlice.reducer,
       exchangeAccounts: exchangeAccountsSlice.reducer,
-      symbols: symbolsSlice.reducer,
       currentAssetPrice: currentAssetPriceSlice.reducer,
       candlesticks: candlesticksSlice.reducer,
       gridBotsApi: gridBotsApi.reducer,

@@ -1,8 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
-import { TextField } from "@mui/material";
 import { changeQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form";
-import { selectQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import {
+  selectCurrencyPair,
+  selectQuantityPerGrid,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { QuantityInput } from "src/components/ui/QuantityInput";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 type QuantityPerGridFieldProps = {
   className?: string;
@@ -12,6 +16,9 @@ export const QuantityPerGridField: FC<QuantityPerGridFieldProps> = (props) => {
   const { className } = props;
 
   const dispatch = useAppDispatch();
+
+  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbol = useAppSelector(selectSymbolById(currencyPair));
 
   const reduxValue = useAppSelector(selectQuantityPerGrid);
   const [value, setValue] = useState(reduxValue);
@@ -33,14 +40,15 @@ export const QuantityPerGridField: FC<QuantityPerGridFieldProps> = (props) => {
   };
 
   return (
-    <TextField
+    <QuantityInput
       className={className}
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
       label="Quantity per grid"
-      required={true}
+      required
       fullWidth
+      filter={symbol.filters}
     />
   );
 };

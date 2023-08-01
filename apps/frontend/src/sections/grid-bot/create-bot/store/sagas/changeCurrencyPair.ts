@@ -1,30 +1,16 @@
 import {
-  calcGridLines,
+  calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
   findLowestCandlestickBy,
 } from "@bifrost/tools";
-import { BarSize } from "@bifrost/types";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
 import { SagaIterator } from "redux-saga";
-import { bifrostApi } from "src/lib/bifrost/apiClient";
 import {
-  GetCandlesticksHistoryResponseDto,
-  SymbolInfoDto,
-} from "src/lib/bifrost/client";
-import {
-  changeHighPrice,
-  changeLowPrice,
-  changeQuantityPerGrid,
   setGridLines,
   setHighPrice,
   setLowPrice,
   setQuantityPerGrid,
 } from "src/sections/grid-bot/create-bot/store/bot-form";
-import {
-  DEFAULT_GRID_LINES_NUMBER,
-  DEFAULT_QUANTITY_PER_GRID,
-} from "src/sections/grid-bot/create-bot/store/bot-form/constants";
+import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/store/bot-form/constants";
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
 import {
   selectBarSize,
@@ -32,18 +18,13 @@ import {
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { put } from "redux-saga/effects";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { query } from "src/utils/saga/query";
 import { typedSelect } from "src/utils/saga/select";
 
 export function* changeCurrencyPairWorker(): SagaIterator {
   const currencyPair = yield* typedSelect(selectCurrencyPair);
-  const {
-    data: { symbols },
-  } = yield* query(rtkApi.endpoints.getSymbols);
-
-  const symbol = symbols.find(
-    (symbol) => symbol.symbolId === currencyPair
-  ) as SymbolInfoDto;
+  const symbol = yield* typedSelect(selectSymbolById(currencyPair));
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
     symbol.filters.lot.minQuantity
@@ -70,11 +51,12 @@ export function* changeCurrencyPairWorker(): SagaIterator {
   yield put(setLowPrice(lowestCandlestick.close));
   yield put(setHighPrice(highestCandlestick.close));
 
-  const gridLines = calcGridLines(
+  const gridLines = calcGridLinesWithPriceFilter(
     highestCandlestick.close,
     lowestCandlestick.close,
     DEFAULT_GRID_LINES_NUMBER,
-    Number(minQuantityPerGrid)
+    Number(minQuantityPerGrid),
+    symbol.filters
   );
   yield put(setGridLines(gridLines));
 }

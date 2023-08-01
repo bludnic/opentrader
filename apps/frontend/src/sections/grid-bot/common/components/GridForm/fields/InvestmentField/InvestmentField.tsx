@@ -1,5 +1,4 @@
 import { decomposeSymbolId } from "@bifrost/tools";
-import { BarSize } from "@bifrost/types";
 import {
   FormControl,
   FormHelperText,
@@ -14,11 +13,8 @@ import {
   selectBarSize,
   selectCurrencyPair,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { selectCandlesticksState } from "src/store/candlesticks/selectors";
-import { selectCurrentAssetPriceState } from "src/store/current-asset-price/selectors";
 import { useAppSelector } from "src/store/hooks";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
-import { FetchStatus } from "src/utils/redux/types";
 import { InvestmentFieldHelperText } from "./InvestmentFieldHelperText";
 
 const componentName = "InvestmentField";

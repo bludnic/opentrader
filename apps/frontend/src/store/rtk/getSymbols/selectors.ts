@@ -1,17 +1,27 @@
 import { Selector } from "@reduxjs/toolkit";
+import { rtkApi, SymbolInfoDto } from "src/lib/bifrost/rtkApi";
 import { RootState } from "src/store/index";
-import { SymbolInfoDto } from "src/lib/bifrost/client";
 
 export const selectSymbols: Selector<RootState, SymbolInfoDto[]> = (
   rootState
-) => rootState.symbols.symbols;
+) => {
+  const { data } = rtkApi.endpoints.getSymbols.select()(rootState);
+
+  if (data) {
+    return data.symbols;
+  }
+
+  return [];
+};
 
 export const selectSymbolById =
   (symbolId: string): Selector<RootState, SymbolInfoDto> =>
   (rootState) => {
-    const symbol = rootState.symbols.symbols.find(
+    const symbols = selectSymbols(rootState);
+
+    const symbol = symbols.find(
       (symbol) => symbol.symbolId === symbolId
-    ) as SymbolInfoDto;
+    ) as SymbolInfoDto; // @todo approach when is undefined
 
     return symbol;
   };

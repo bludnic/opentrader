@@ -1,11 +1,11 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import React, { FC } from "react";
-import { NumericInput } from 'src/components/ui/NumericInput';
-import { SymbolFilterDto } from 'src/lib/bifrost/client';
-import { validatePriceByFilter } from "./helpers/validatePriceByFilter";
+import { NumericInput } from "src/components/ui/NumericInput";
+import { SymbolFilterDto } from "src/lib/bifrost/client";
 import { mapPriceFilterToNumericFormatProps } from "./helpers/mapPriceFilterToNumericFormatProps";
+import { validatePriceByFilter } from "./helpers/validatePriceByFilter";
 
-type OrderPriceInputProps = Omit<
+type PriceInput = Omit<
   TextFieldProps,
   "value" | "onChange" | "InputProps" | "error" | "helperText"
 > & {
@@ -14,7 +14,7 @@ type OrderPriceInputProps = Omit<
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const OrderPriceInput: FC<OrderPriceInputProps> = (props) => {
+export const PriceInput: FC<PriceInput> = (props) => {
   const { value, onChange, filter, ...TextFieldProps } = props;
 
   const formatProps = mapPriceFilterToNumericFormatProps(filter);

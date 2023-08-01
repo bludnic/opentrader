@@ -1,5 +1,4 @@
-import { calcGridLines } from "@bifrost/tools";
-import { BarSize } from "@bifrost/types";
+import { calcGridLinesWithPriceFilter } from "@bifrost/tools";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
@@ -19,6 +18,7 @@ import { initPage } from "src/sections/grid-bot/create-bot/store/init-page/reduc
 import { isPageReadySelector } from "src/sections/grid-bot/create-bot/store/init-page/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 const componentName = "CreateBotPage";
 const classes = {
@@ -40,6 +40,7 @@ const CreateBotPage: FC = () => {
   const quantityPerGrid = useAppSelector(selectQuantityPerGrid);
   const currencyPair = useAppSelector(selectCurrencyPair);
   const barSize = useAppSelector(selectBarSize);
+  const symbol = useAppSelector(selectSymbolById(currencyPair));
 
   const candlesticks = useAppSelector(
     rtkApi.endpoints.getCandlesticksHistory.select({
@@ -54,12 +55,15 @@ const CreateBotPage: FC = () => {
     dispatch(initPage());
   }, []);
 
-  const gridLines = calcGridLines(
-    highPrice,
-    lowPrice,
-    gridLinesNumber,
-    Number(quantityPerGrid)
-  );
+  const gridLines = symbol
+    ? calcGridLinesWithPriceFilter(
+        highPrice,
+        lowPrice,
+        gridLinesNumber,
+        Number(quantityPerGrid),
+        symbol.filters
+      )
+    : [];
 
   if (isPageReady) {
     return (

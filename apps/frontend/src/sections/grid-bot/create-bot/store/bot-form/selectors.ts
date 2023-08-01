@@ -1,13 +1,17 @@
 import {
   calculateInvestment,
   computeGridFromCurrentAssetPrice,
+  filterPrice,
+  filterQuantity,
 } from "@bifrost/tools";
 import { BarSize, IGridLine } from "@bifrost/types";
 import { Selector } from "@reduxjs/toolkit";
+import { QueryStatus } from "@reduxjs/toolkit/query";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/state";
 import { RootState } from "src/store";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { GridBotFormType } from "./types";
 
 export const selectBotFormState: Selector<RootState, GridBotFormState> = (
@@ -41,21 +45,25 @@ export const selectQuantityPerGrid: Selector<RootState, string> = (rootState) =>
 export const computeInvestmentAmount: Selector<
   RootState,
   {
-    baseCurrencyAmount: number;
-    quoteCurrencyAmount: number;
-    totalInQuoteCurrency: number;
+    baseCurrencyAmount: string;
+    quoteCurrencyAmount: string;
+    totalInQuoteCurrency: string;
   }
 > = (rootState) => {
   const currencyPair = selectCurrencyPair(rootState);
   const currentAssetPriceState =
     rtkApi.endpoints.getCurrentAssetPrice.select(currencyPair)(rootState);
+  const symbol = selectSymbolById(currencyPair)(rootState);
 
-  if (currentAssetPriceState.status !== "fulfilled") {
+  const statsIsReady =
+    !!symbol && currentAssetPriceState.status === QueryStatus.fulfilled;
+
+  if (!statsIsReady) {
     // @todo review this approach
     return {
-      baseCurrencyAmount: 0,
-      quoteCurrencyAmount: 0,
-      totalInQuoteCurrency: 0,
+      baseCurrencyAmount: "0",
+      quoteCurrencyAmount: "0",
+      totalInQuoteCurrency: "0",
     };
   }
 
@@ -78,9 +86,9 @@ export const computeInvestmentAmount: Selector<
     quoteCurrencyAmount + baseCurrencyAmount * currentAssetPrice; // I assume that the user bought base currency for placing sell orders at a market price
 
   return {
-    baseCurrencyAmount,
-    quoteCurrencyAmount,
-    totalInQuoteCurrency,
+    baseCurrencyAmount: filterQuantity(baseCurrencyAmount, symbol.filters),
+    quoteCurrencyAmount: filterPrice(quoteCurrencyAmount, symbol.filters),
+    totalInQuoteCurrency: filterPrice(totalInQuoteCurrency, symbol.filters),
   };
 };
 

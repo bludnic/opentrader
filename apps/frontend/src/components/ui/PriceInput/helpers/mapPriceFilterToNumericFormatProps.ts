@@ -1,6 +1,6 @@
 import { NumericFormatProps } from "react-number-format";
 import { SymbolFilterDto } from 'src/lib/bifrost/client';
-import { getExponentAbs } from "src/utils/currency/numbers/getExponentAbs";
+import { getExponentAbs } from "@bifrost/tools";
 
 export function mapPriceFilterToNumericFormatProps(
   filter: SymbolFilterDto

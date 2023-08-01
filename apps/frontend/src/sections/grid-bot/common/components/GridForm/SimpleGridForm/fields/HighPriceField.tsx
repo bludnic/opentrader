@@ -1,8 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
-import { TextField } from "@mui/material";
-import { changeHighPrice } from 'src/sections/grid-bot/create-bot/store/bot-form';
-import { selectHighPrice } from 'src/sections/grid-bot/create-bot/store/bot-form/selectors';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import React, { FC, useEffect, useState } from "react";
+import { PriceInput } from "src/components/ui/PriceInput";
+import { changeHighPrice } from "src/sections/grid-bot/create-bot/store/bot-form";
+import {
+  selectCurrencyPair,
+  selectHighPrice,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 type HighPriceFieldProps = {
   className?: string;
@@ -13,34 +17,37 @@ export const HighPriceField: FC<HighPriceFieldProps> = (props) => {
 
   const dispatch = useAppDispatch();
 
+  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbol = useAppSelector(selectSymbolById(currencyPair));
+
   const reduxValue = useAppSelector(selectHighPrice);
-  const [value, setValue] = useState(reduxValue);
+  const [value, setValue] = useState(`${reduxValue}`);
 
   useEffect(() => {
-    setValue(reduxValue);
+    setValue(`${reduxValue}`);
   }, [reduxValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.valueAsNumber);
+    setValue(e.target.value);
   };
 
   const handleBlur = () => {
-    if (Number.isInteger(value)) {
-      dispatch(changeHighPrice(value));
+    if (value.length > 0) {
+      dispatch(changeHighPrice(Number(value)));
     } else {
-      setValue(reduxValue)
+      setValue(`${reduxValue}`);
     }
-  }
+  };
 
   return (
-    <TextField
+    <PriceInput
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
       className={className}
       label="High price"
-      type="number"
       fullWidth
+      filter={symbol.filters}
     />
   );
 };
