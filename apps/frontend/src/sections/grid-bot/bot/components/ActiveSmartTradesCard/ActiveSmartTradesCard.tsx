@@ -1,9 +1,13 @@
 import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
 import { SxProps } from "@mui/system";
+import { QueryStatus } from "@reduxjs/toolkit/query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, SmartTradeDto } from "src/lib/bifrost/client";
+import {
+  GridBotDto,
+  useGetActiveSmartTradesQuery,
+} from "src/lib/bifrost/rtkApi";
 import { GridsTable } from "./components/GridsTable";
 
 const componentName = "ActiveSmartTradesCard";
@@ -19,23 +23,30 @@ type ActiveSmartTradesCardProps = {
   className?: string;
   sx?: SxProps<Theme>;
   bot: GridBotDto;
-  activeSmartTrades: SmartTradeDto[];
 };
 
 export const ActiveSmartTradesCard: FC<ActiveSmartTradesCardProps> = (
   props
 ) => {
-  const { className, bot, activeSmartTrades, sx } = props;
+  const { className, bot, sx } = props;
+  const query = useGetActiveSmartTradesQuery(bot.id);
 
-  return (
-    <CardRoot className={clsx(classes.root, className)} sx={sx}>
-      <CardContent>
-        <Typography variant="h6">Active STs</Typography>
-      </CardContent>
+  if (query.status === QueryStatus.fulfilled && query.data) {
+    return (
+      <CardRoot className={clsx(classes.root, className)} sx={sx}>
+        <CardContent>
+          <Typography variant="h6">Active STs</Typography>
+        </CardContent>
 
-      <Divider />
+        <Divider />
 
-      <GridsTable bot={bot} activeSmartTrades={activeSmartTrades} />
-    </CardRoot>
-  );
+        <GridsTable
+          bot={bot}
+          activeSmartTrades={query.data.activeSmartTrades}
+        />
+      </CardRoot>
+    );
+  }
+
+  return null;
 };

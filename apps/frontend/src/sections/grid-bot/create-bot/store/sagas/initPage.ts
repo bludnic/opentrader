@@ -3,7 +3,10 @@ import {
   findHighestCandlestickBy,
   findLowestCandlestickBy,
 } from "@bifrost/tools";
+import { BarSize } from "@bifrost/types";
+import { SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";
+import { SymbolInfoDto } from "src/lib/bifrost/client";
 import {
   setCurrencyPair,
   setExchangeAccountId,
@@ -14,21 +17,25 @@ import {
 } from "src/sections/grid-bot/create-bot/store/bot-form";
 import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/store/bot-form/constants";
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
+import { selectBarSize } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { markPageAsReady } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
-import { fetchCandlesticksSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchCandlesticksSaga";
-import { fetchCurrentAssetPriceSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchCurrentAssetPriceSaga";
-import { fetchSymbolsSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchSymbolsSaga";
-import { fetchExchangeAccountsSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchExchangeAccountsSaga";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { query } from "src/utils/saga/query";
+import { typedSelect } from 'src/utils/saga/select';
 
-export function* initPageWorker() {
+export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch exchange accounts
-  const { exchangeAccounts } = yield* fetchExchangeAccountsSaga();
+  const {
+    data: { exchangeAccounts },
+  } = yield* query(rtkApi.endpoints.getAccounts);
 
   const firstExchangeAccount = exchangeAccounts[0];
   yield put(setExchangeAccountId(firstExchangeAccount.id));
 
   // Fetch symbols
-  const { symbols } = yield* fetchSymbolsSaga();
+  const {
+    data: { symbols },
+  } = yield* query(rtkApi.endpoints.getSymbols);
 
   const firstSymbol = symbols[0];
   yield put(setCurrencyPair(firstSymbol.symbolId));
@@ -39,7 +46,15 @@ export function* initPageWorker() {
   yield put(setQuantityPerGrid(minQuantityPerGrid));
 
   // Fetch candlesticks
-  const { candlesticks } = yield* fetchCandlesticksSaga(firstSymbol);
+  const barSize = yield* typedSelect(selectBarSize);
+  const {
+    data: {
+      history: { candlesticks },
+    },
+  } = yield* query(rtkApi.endpoints.getCandlesticksHistory, {
+    symbolId: firstSymbol.symbolId,
+    barSize,
+  });
 
   const highestCandlestick = findHighestCandlestickBy("close", candlesticks);
   const lowestCandlestick = findLowestCandlestickBy("close", candlesticks);
@@ -56,7 +71,10 @@ export function* initPageWorker() {
   yield put(setGridLines(gridLines));
 
   // Fetch current asset price
-  const currentAssetPriceData = yield* fetchCurrentAssetPriceSaga(firstSymbol);
+  const currentAssetPriceData = yield* query(
+    rtkApi.endpoints.getCurrentAssetPrice,
+    firstSymbol.symbolId
+  );
 
   yield put(markPageAsReady());
 }

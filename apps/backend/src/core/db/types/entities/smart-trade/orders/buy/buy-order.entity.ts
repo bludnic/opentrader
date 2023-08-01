@@ -18,6 +18,9 @@ export class SmartBuyOrderEntity<T = SmartBuyOrder>
 
   clientOrderId: string;
 
+  @ApiProperty({
+    enum: OrderSideEnum,
+  })
   side: OrderSideEnum.Buy;
 
   quantity: number;

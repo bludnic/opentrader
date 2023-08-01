@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ThreeCommasAccountsService } from './3commas-accounts.service';
 import { Create3CommasAccountRequestBodyDto } from './dto/create-account/create-3commas-account-request-body.dto';
 import { Create3CommasAccountResponseBodyDto } from './dto/create-account/create-3commas-account-response-body.dto';
@@ -18,6 +18,9 @@ export class ThreeCommasAccountsController {
   constructor(private readonly accountsService: ThreeCommasAccountsService) {}
 
   @Get('/accounts')
+  @ApiOperation({
+    operationId: 'get3CommasAccounts',
+  })
   async getAccounts(
     @FirebaseUser() user: IUser,
   ): Promise<Get3CommasAccountsResponseBodyDto> {
@@ -29,8 +32,11 @@ export class ThreeCommasAccountsController {
   }
 
   @Get('/account/:id')
+  @ApiOperation({
+    operationId: 'get3CommasAccount',
+  })
   async getAccount(
-    @Param('id') accountId,
+    @Param('id') accountId: string,
   ): Promise<Get3CommasAccountResponseBodyDto> {
     const account = await this.accountsService.getAccount(accountId);
 
@@ -40,8 +46,11 @@ export class ThreeCommasAccountsController {
   }
 
   @Put('/account/:id')
+  @ApiOperation({
+    operationId: 'update3CommasAccount',
+  })
   async updateAccount(
-    @Param('id') accountId,
+    @Param('id') accountId: string,
     @Body() body: Update3CommasAccountRequestBodyDto,
   ): Promise<Update3CommasAccountResponseBodyDto> {
     const account = await this.accountsService.updateAccount(body, accountId);
@@ -52,6 +61,9 @@ export class ThreeCommasAccountsController {
   }
 
   @Post('/account')
+  @ApiOperation({
+    operationId: 'create3CommasAccount',
+  })
   async createAccount(
     @FirebaseUser() user: IUser,
     @Body() body: Create3CommasAccountRequestBodyDto,

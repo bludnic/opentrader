@@ -3,6 +3,7 @@ import {
   findHighestCandlestickBy,
   findLowestCandlestickBy,
 } from "@bifrost/tools";
+import { BarSize } from "@bifrost/types";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { SagaIterator } from "redux-saga";
@@ -25,23 +26,43 @@ import {
   DEFAULT_QUANTITY_PER_GRID,
 } from "src/sections/grid-bot/create-bot/store/bot-form/constants";
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
-import { selectCurrencyPair } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { put, select } from "redux-saga/effects";
-import { fetchCandlesticksSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchCandlesticksSaga";
-import { fetchCurrentAssetPriceSaga } from "src/sections/grid-bot/create-bot/store/sagas/fetch/fetchCurrentAssetPriceSaga";
-import { selectSymbolById } from "src/store/symbols/selectors";
+import {
+  selectBarSize,
+  selectCurrencyPair,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { put } from "redux-saga/effects";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { query } from "src/utils/saga/query";
+import { typedSelect } from "src/utils/saga/select";
 
 export function* changeCurrencyPairWorker(): SagaIterator {
-  const currencyPair: string = yield select(selectCurrencyPair);
-  const symbol: SymbolInfoDto = yield select(selectSymbolById(currencyPair));
+  const currencyPair = yield* typedSelect(selectCurrencyPair);
+  const {
+    data: { symbols },
+  } = yield* query(rtkApi.endpoints.getSymbols);
+
+  const symbol = symbols.find(
+    (symbol) => symbol.symbolId === currencyPair
+  ) as SymbolInfoDto;
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
     symbol.filters.lot.minQuantity
   );
   yield put(setQuantityPerGrid(minQuantityPerGrid));
 
-  yield* fetchCurrentAssetPriceSaga(symbol);
-  const { candlesticks } = yield* fetchCandlesticksSaga(symbol);
+  const barSize = yield* typedSelect(selectBarSize);
+  const currentAssetPrice = yield* query(
+    rtkApi.endpoints.getCurrentAssetPrice,
+    symbol.symbolId
+  );
+  const {
+    data: {
+      history: { candlesticks },
+    },
+  } = yield* query(rtkApi.endpoints.getCandlesticksHistory, {
+    symbolId: symbol.symbolId,
+    barSize,
+  });
 
   const highestCandlestick = findHighestCandlestickBy("close", candlesticks);
   const lowestCandlestick = findLowestCandlestickBy("close", candlesticks);

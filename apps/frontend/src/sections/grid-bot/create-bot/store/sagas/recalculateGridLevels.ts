@@ -7,13 +7,14 @@ import {
   selectLowPrice,
   selectQuantityPerGrid,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { put, select } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
+import { typedSelect } from "src/utils/saga/select";
 
 export function* recalculateGridLevels(): SagaIterator {
-  const highPrice: number = yield select(selectHighPrice);
-  const lowPrice: number = yield select(selectLowPrice);
-  const gridLinesNumber: number = yield select(selectGridLinesNumber);
-  const quantityPerGrid: string = yield select(selectQuantityPerGrid);
+  const highPrice = yield* typedSelect(selectHighPrice);
+  const lowPrice = yield* typedSelect(selectLowPrice);
+  const gridLinesNumber = yield* typedSelect(selectGridLinesNumber);
+  const quantityPerGrid = yield* typedSelect(selectQuantityPerGrid);
 
   const gridLines = calcGridLines(
     highPrice,

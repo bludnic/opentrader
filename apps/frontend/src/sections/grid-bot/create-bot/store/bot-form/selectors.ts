@@ -2,12 +2,12 @@ import {
   calculateInvestment,
   computeGridFromCurrentAssetPrice,
 } from "@bifrost/tools";
-import { IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@bifrost/types";
 import { Selector } from "@reduxjs/toolkit";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/state";
 import { RootState } from "src/store";
-import { selectCurrentAssetPrice } from "src/store/current-asset-price/selectors";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { GridBotFormType } from "./types";
 
 export const selectBotFormState: Selector<RootState, GridBotFormState> = (
@@ -46,7 +46,23 @@ export const computeInvestmentAmount: Selector<
     totalInQuoteCurrency: number;
   }
 > = (rootState) => {
-  const currentAssetPrice = selectCurrentAssetPrice(rootState);
+  const currencyPair = selectCurrencyPair(rootState);
+  const currentAssetPriceState =
+    rtkApi.endpoints.getCurrentAssetPrice.select(currencyPair)(rootState);
+
+  if (currentAssetPriceState.status !== "fulfilled") {
+    // @todo review this approach
+    return {
+      baseCurrencyAmount: 0,
+      quoteCurrencyAmount: 0,
+      totalInQuoteCurrency: 0,
+    };
+  }
+
+  const {
+    data: { price: currentAssetPrice },
+  } = currentAssetPriceState;
+
   const gridLines = selectGridLines(rootState);
 
   const gridLevels = computeGridFromCurrentAssetPrice(
@@ -76,4 +92,8 @@ export const selectGridLine = (
 ): Selector<RootState, IGridLine> => {
   return (rootState: RootState) =>
     rootState.gridBotForm.gridLines[gridLineIndex];
+};
+
+export const selectBarSize: Selector<RootState, BarSize> = (rootState) => {
+  return rootState.gridBotForm.barSize;
 };

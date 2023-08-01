@@ -2,7 +2,7 @@ import { TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { SmartTradeWithProfitDto, GridBotDto } from "src/lib/bifrost/client";
+import { GridBotDto, SmartTradeWithProfitDto } from "src/lib/bifrost/rtkApi";
 
 const componentName = "CompletedSmartTradeItem";
 const classes = {

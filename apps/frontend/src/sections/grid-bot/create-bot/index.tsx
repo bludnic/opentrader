@@ -1,4 +1,5 @@
 import { calcGridLines } from "@bifrost/tools";
+import { BarSize } from "@bifrost/types";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
@@ -7,6 +8,8 @@ import { MainLayout } from "src/layouts/main";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
 import { CreateGridBotForm } from "src/sections/grid-bot/common/components/GridForm";
 import {
+  selectBarSize,
+  selectCurrencyPair,
   selectGridLinesNumber,
   selectHighPrice,
   selectLowPrice,
@@ -15,7 +18,7 @@ import {
 import { initPage } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { isPageReadySelector } from "src/sections/grid-bot/create-bot/store/init-page/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { FetchStatus } from "src/utils/redux/types";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
 
 const componentName = "CreateBotPage";
 const classes = {
@@ -30,14 +33,20 @@ const Root = styled(MainLayout)(({ theme }) => ({
 
 const CreateBotPage: FC = () => {
   const isPageReady = useAppSelector(isPageReadySelector);
-  const { candlesticks, status: candlesticksStatus } = useAppSelector(
-    (rootState) => rootState.candlesticks
-  );
 
   const highPrice = useAppSelector(selectHighPrice);
   const lowPrice = useAppSelector(selectLowPrice);
   const gridLinesNumber = useAppSelector(selectGridLinesNumber);
   const quantityPerGrid = useAppSelector(selectQuantityPerGrid);
+  const currencyPair = useAppSelector(selectCurrencyPair);
+  const barSize = useAppSelector(selectBarSize);
+
+  const candlesticks = useAppSelector(
+    rtkApi.endpoints.getCandlesticksHistory.select({
+      symbolId: currencyPair,
+      barSize,
+    })
+  );
 
   const dispatch = useAppDispatch();
 
@@ -73,10 +82,13 @@ const CreateBotPage: FC = () => {
           <Grid container item xs={12} md={8}>
             <Card style={{ width: "100%" }}>
               <CardContent>
-                {candlesticksStatus === FetchStatus.Loading ? (
-                  "Loading candlesticks..."
+                {candlesticks.status === "fulfilled" ? (
+                  <GridBotChart
+                    candlesticks={candlesticks.data.history.candlesticks}
+                    gridLines={gridLines}
+                  />
                 ) : (
-                  <GridBotChart candlesticks={candlesticks} gridLines={gridLines} />
+                  "Loading candlesticks..."
                 )}
               </CardContent>
             </Card>

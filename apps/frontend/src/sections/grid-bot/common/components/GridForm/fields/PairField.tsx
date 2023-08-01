@@ -7,9 +7,10 @@ import {
 } from "@mui/material";
 import { Select } from "@mui/material";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
-import { changeCurrencyPair } from 'src/sections/grid-bot/create-bot/store/bot-form';
+import { changeCurrencyPair } from "src/sections/grid-bot/create-bot/store/bot-form";
 import { selectCurrencyPair } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { selectSymbols } from "src/store/symbols/selectors";
 
 type PairFieldProps = {
@@ -23,7 +24,7 @@ export const PairField: FC<PairFieldProps> = (props) => {
   const labelId = "pair-symbol";
 
   const dispatch = useAppDispatch();
-  const symbols = useAppSelector(selectSymbols);
+  const { data } = useAppSelector(rtkApi.endpoints.getSymbols.select());
 
   const value = useAppSelector(selectCurrencyPair);
   const handleChange = (e: SelectChangeEvent<ExchangeAccountDto["id"]>) => {
@@ -42,7 +43,7 @@ export const PairField: FC<PairFieldProps> = (props) => {
         onChange={handleChange}
         maxRows={10}
       >
-        {symbols.map((symbol) => (
+        {data?.symbols.map((symbol) => (
           <MenuItem key={symbol.symbolId} value={symbol.symbolId}>
             {symbol.symbolId}
           </MenuItem>

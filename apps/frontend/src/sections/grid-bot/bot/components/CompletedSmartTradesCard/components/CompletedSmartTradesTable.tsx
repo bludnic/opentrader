@@ -9,7 +9,7 @@ import {
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, SmartTradeWithProfitDto } from 'src/lib/bifrost/client';
+import { GridBotDto, SmartTradeWithProfitDto } from 'src/lib/bifrost/rtkApi';
 import { CompletedSmartTradeItem } from "./CompletedSmartTradeItem";
 import { CompletedSmartTradesTableHead } from "./CompletedSmartTradesTableHead";
 

@@ -1,7 +1,6 @@
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, SmartTradeDto } from "src/lib/bifrost/client";
 import {
   Table,
   TableBody,
@@ -10,6 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { GridBotDto, SmartTradeDto } from 'src/lib/bifrost/rtkApi';
 import { GridsTableHead } from "./GridsTableHead";
 import { GridsTableItem } from "./GridsTableItem";
 

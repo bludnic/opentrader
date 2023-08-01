@@ -21,6 +21,9 @@ export class SmartSellOrderEntity<T = SmartSellOrder>
   @IsString()
   clientOrderId: string;
 
+  @ApiProperty({
+    enum: OrderSideEnum,
+  })
   @Equals(OrderSideEnum.Sell)
   side: OrderSideEnum.Sell;
 

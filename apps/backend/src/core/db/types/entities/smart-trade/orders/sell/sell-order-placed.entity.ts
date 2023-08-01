@@ -1,4 +1,5 @@
 import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import { ApiProperty } from '@nestjs/swagger';
 import { SmartSellOrderPlaced } from '../types';
 
 export class SmartSellOrderPlacedEntity implements SmartSellOrderPlaced {
@@ -6,7 +7,13 @@ export class SmartSellOrderPlacedEntity implements SmartSellOrderPlaced {
   clientOrderId: string;
   price: number;
   fee: number;
+  @ApiProperty({
+    enum: OrderSideEnum,
+  })
   side: OrderSideEnum.Sell;
+  @ApiProperty({
+    enum: OrderStatusEnum,
+  })
   status: OrderStatusEnum.Placed;
   quantity: number;
   createdAt: number;

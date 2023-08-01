@@ -1,4 +1,4 @@
-import { IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@bifrost/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
 import {
@@ -10,6 +10,7 @@ import {
   changeHighPriceAction,
   changeLowPriceAction,
   changeQuantityPerGridAction,
+  changeBarSizeAction,
   removeGridLineAction,
   setCurrencyPairAction,
   setExchangeAccountIdAction,
@@ -74,6 +75,9 @@ export const gridBotFormSlice = createSlice({
     [setQuantityPerGridAction.type]: (state, action: PayloadAction<string>) => {
       state.quantityPerGrid = action.payload;
     },
+    [changeBarSizeAction.type]: (state, action: PayloadAction<BarSize>) => {
+      state.barSize = action.payload;
+    },
     [setGridLinesAction.type]: (state, action: PayloadAction<IGridLine[]>) => {
       state.gridLines = action.payload;
     },
@@ -122,6 +126,7 @@ export const {
   changeGridLinesNumber,
   setQuantityPerGrid,
   changeQuantityPerGrid,
+  changeBarSize,
   setGridLines,
   updateGridLines,
   addGridLine,

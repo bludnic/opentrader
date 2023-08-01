@@ -1,4 +1,3 @@
-import { calcGridLines } from "@bifrost/tools";
 import { IGridLine } from '@bifrost/types';
 import { useRef, useEffect, FC } from "react";
 
@@ -14,15 +13,7 @@ import {
 } from "lightweight-charts";
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
-import { ICandlestick, Trade } from "src/lib/bifrost/apiClient";
-import { GridLineDto } from 'src/lib/bifrost/client';
-import {
-  selectGridLinesNumber,
-  selectHighPrice,
-  selectLowPrice,
-  selectQuantityPerGrid,
-} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { useAppSelector } from "src/store/hooks";
+import { ICandlestick } from "src/lib/bifrost/apiClient";
 import { useElementSize } from "usehooks-ts";
 
 const componentName = "BacktestingChart";
@@ -47,11 +38,6 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
   const chartApi = useRef<IChartApi | null>(null);
   const lineSeriesApi = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const theme = useTheme();
-
-  const highPrice = useAppSelector(selectHighPrice);
-  const lowPrice = useAppSelector(selectLowPrice);
-  const gridLinesNumber = useAppSelector(selectGridLinesNumber);
-  const quantityPerGrid = useAppSelector(selectQuantityPerGrid);
 
   const sortedCandlesticks = [...candlesticks].sort(
     (left, right) => left.timestamp - right.timestamp
@@ -90,7 +76,6 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
 
     // Feed chart with data
     lineSeriesApi.current = chartApi.current.addCandlestickSeries();
-    lineSeriesApi.current.setData(lineSeriesData);
 
     chartApi.current.timeScale().fitContent();
 
@@ -129,6 +114,8 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
 
       return lineSeries.createPriceLine(priceLine);
     });
+
+    lineSeries.setData(lineSeriesData);
 
     return () => {
       priceLines.forEach((priceLine) => {

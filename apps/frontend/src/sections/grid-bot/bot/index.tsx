@@ -1,26 +1,17 @@
-import { calcGridLines, composeSymbolId } from "@bifrost/tools";
-import { ExchangeCode } from "@bifrost/types";
+import { composeSymbolId } from "@bifrost/tools";
+import { BarSize, ExchangeCode } from "@bifrost/types";
 import { CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
-import { bifrostApi } from "src/lib/bifrost/apiClient";
-import { SmartTradeDto } from "src/lib/bifrost/client";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
-import { useLazyGetBotQuery } from "src/sections/grid-bot/common/store/api/botsApi";
-import { useLazyGetCompletedSmartTradesQuery } from "src/sections/grid-bot/common/store/api/completedDealsApi";
 import {
-  selectGridLinesNumber,
-  selectHighPrice,
-  selectLowPrice,
-  selectQuantityPerGrid,
-} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { fetchCandlesticks, requestCandlesticks } from "src/store/candlesticks";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { FetchStatus } from "src/utils/redux/types";
+  useGetBotQuery,
+  useLazyGetCandlesticksHistoryQuery,
+} from "src/lib/bifrost/rtkApi";
 import { CompletedSmartTradesCard } from "./components/CompletedSmartTradesCard";
 import { ActiveSmartTradesCard } from "./components/ActiveSmartTradesCard";
 
@@ -41,37 +32,11 @@ const BotPage: FC<BotPageProps> = (props) => {
   const { className } = props;
 
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
-  const [fetchBot, botQuery] = useLazyGetBotQuery();
-  useEffect(() => {
-    if (!router.query.id) return;
+  const botQuery = useGetBotQuery(String(router.query.id));
 
-    fetchBot(String(router.query.id));
-  }, [router.query.id]);
-
-  const [fetchCompletedSmartTrades, smartTradesQuery] =
-    useLazyGetCompletedSmartTradesQuery();
-  useEffect(() => {
-    if (!router.query.id) return;
-
-    fetchCompletedSmartTrades(String(router.query.id));
-  }, [router.query.id]);
-
-  const [activeSmartTrades, setActiveSmartTrades] = useState<SmartTradeDto[]>(
-    []
-  );
-  useEffect(() => {
-    if (!router.query.id) return;
-
-    bifrostApi.getActiveSmartTrades(String(router.query.id)).then((res) => {
-      setActiveSmartTrades(res.data.activeSmartTrades);
-    });
-  }, [router.query.id]);
-
-  const { candlesticks, status: candlesticksStatus } = useAppSelector(
-    (rootState) => rootState.candlesticks
-  );
+  const [fetchCandlesticks, candlesticks] =
+    useLazyGetCandlesticksHistoryQuery();
   useEffect(() => {
     if (!botQuery.data) return;
 
@@ -82,11 +47,10 @@ const BotPage: FC<BotPageProps> = (props) => {
       quoteCurrency
     ); // @todo extract exchangeCode from GridBotDto
 
-    dispatch(
-      requestCandlesticks({
-        symbolId,
-      })
-    );
+    fetchCandlesticks({
+      symbolId,
+      barSize: BarSize.FOUR_HOURS,
+    });
   }, [botQuery.data]);
 
   if (botQuery.isLoading) {
@@ -155,31 +119,20 @@ const BotPage: FC<BotPageProps> = (props) => {
         <Grid item xl={4} xs={12}>
           <BotCard bot={botQuery.data.bot} />
 
-          <ActiveSmartTradesCard
-            bot={botQuery.data.bot}
-            activeSmartTrades={activeSmartTrades}
-            sx={{ mt: 2 }}
-          />
+          <ActiveSmartTradesCard bot={botQuery.data.bot} sx={{ mt: 2 }} />
 
-          {smartTradesQuery.data ? (
-            <CompletedSmartTradesCard
-              bot={botQuery.data.bot}
-              smartTrades={smartTradesQuery.data.completedSmartTrades}
-              sx={{ mt: 2 }}
-            />
-          ) : null}
+          <CompletedSmartTradesCard bot={botQuery.data.bot} sx={{ mt: 2 }} />
         </Grid>
 
         <Grid container item xl={8} xs={12}>
           <Grid item xs={12}>
-            {candlesticksStatus === FetchStatus.Loading ||
-            candlesticksStatus === FetchStatus.Idle ? (
-              "Loading candlesticks..."
-            ) : (
+            {candlesticks.status === "fulfilled" && candlesticks.data ? (
               <GridBotChart
-                candlesticks={candlesticks}
+                candlesticks={candlesticks.data.history.candlesticks}
                 gridLines={botQuery.data.bot.gridLines}
               />
+            ) : (
+              "Loading candlesticks..."
             )}
           </Grid>
         </Grid>

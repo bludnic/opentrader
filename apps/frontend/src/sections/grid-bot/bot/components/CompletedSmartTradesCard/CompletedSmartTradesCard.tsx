@@ -1,9 +1,13 @@
 import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
 import { SxProps } from "@mui/system";
+import { QueryStatus } from "@reduxjs/toolkit/query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, SmartTradeWithProfitDto } from "src/lib/bifrost/client";
+import {
+  GridBotDto,
+  useGetCompletedSmartTradesQuery,
+} from "src/lib/bifrost/rtkApi";
 import { CompletedSmartTradesTable } from "./components/CompletedSmartTradesTable";
 
 const componentName = "CompletedSmartTradesCard";
@@ -19,23 +23,30 @@ type CompletedSmartTradesCardProps = {
   className?: string;
   sx?: SxProps<Theme>;
   bot: GridBotDto;
-  smartTrades: SmartTradeWithProfitDto[];
 };
 
 export const CompletedSmartTradesCard: FC<CompletedSmartTradesCardProps> = (
   props
 ) => {
-  const { className, bot, smartTrades, sx } = props;
+  const { className, bot, sx } = props;
+  const query = useGetCompletedSmartTradesQuery(bot.id);
 
-  return (
-    <StyledCard className={clsx(classes.root, className)} sx={sx}>
-      <CardContent>
-        <Typography variant="h6">Completed STs</Typography>
-      </CardContent>
+  if (query.status === QueryStatus.fulfilled && query.data) {
+    return (
+      <StyledCard className={clsx(classes.root, className)} sx={sx}>
+        <CardContent>
+          <Typography variant="h6">Completed STs</Typography>
+        </CardContent>
 
-      <Divider />
+        <Divider />
 
-      <CompletedSmartTradesTable bot={bot} smartTrades={smartTrades} />
-    </StyledCard>
-  );
+        <CompletedSmartTradesTable
+          bot={bot}
+          smartTrades={query.data.completedSmartTrades}
+        />
+      </StyledCard>
+    );
+  }
+
+  return null;
 };

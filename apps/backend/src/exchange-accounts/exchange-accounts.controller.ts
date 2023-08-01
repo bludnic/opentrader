@@ -32,7 +32,7 @@ export class ExchangeAccountsController {
 
   @Get('/account/:id')
   async getAccount(
-    @Param('id') accountId,
+    @Param('id') accountId: string,
   ): Promise<GetExchangeAccountResponseBodyDto> {
     const exchangeAccount = await this.accountsService.getExchangeAccount(
       accountId,
@@ -45,7 +45,7 @@ export class ExchangeAccountsController {
 
   @Put('/account/:id')
   async updateAccount(
-    @Param('id') accountId,
+    @Param('id') accountId: string,
     @Body() body: UpdateExchangeAccountRequestBodyDto,
   ): Promise<UpdateExchangeAccountResponseBodyDto> {
     const exchangeAccount = await this.accountsService.updateExchangeAccount(

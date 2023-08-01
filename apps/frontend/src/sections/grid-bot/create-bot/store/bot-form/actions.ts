@@ -1,4 +1,4 @@
-import { IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@bifrost/types";
 import { createAction } from "@reduxjs/toolkit";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
 import { GridBotFormType } from "./types";
@@ -61,13 +61,18 @@ const SET_QUANTITY_PER_GRID = "setQuantityPerGrid";
 export const setQuantityPerGridAction = createAction<
   string,
   typeof SET_QUANTITY_PER_GRID
-  >(SET_QUANTITY_PER_GRID);
+>(SET_QUANTITY_PER_GRID);
 
 const CHANGE_QUANTITY_PER_GRID = "changeQuantityPerGrid";
 export const changeQuantityPerGridAction = createAction<
   string,
   typeof CHANGE_QUANTITY_PER_GRID
 >(CHANGE_QUANTITY_PER_GRID);
+
+const changeBarSize = "changeBarSize";
+export const changeBarSizeAction = createAction<BarSize, typeof changeBarSize>(
+  changeBarSize
+);
 
 const SET_GRID_LINES = "setGridLines";
 export const setGridLinesAction = createAction<

@@ -1,13 +1,10 @@
+import { OrderStatusEnum } from "@bifrost/types";
 import { TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/system/colorManipulator";
 import clsx from "clsx";
 import React, { FC } from "react";
-import {
-  SmartBuyOrderEntityStatusEnum,
-  SmartSellOrderEntityStatusEnum,
-  SmartTradeDto,
-} from "src/lib/bifrost/client";
+import { SmartTradeDto } from "src/lib/bifrost/rtkApi";
 
 const componentName = "GridsTableItem";
 const classes = {
@@ -36,25 +33,10 @@ export const GridsTableItem: FC<GridsTableItemProps> = (props) => {
   const { className, smartTrade, gridNumber } = props;
 
   const orderSide: "Buy" | "Sell" =
-    smartTrade.sellOrder.status === SmartSellOrderEntityStatusEnum.Placed ||
-    smartTrade.sellOrder.status === SmartSellOrderEntityStatusEnum.Filled
+    smartTrade.sellOrder.status === OrderStatusEnum.Placed ||
+    smartTrade.sellOrder.status === OrderStatusEnum.Filled
       ? "Sell"
       : "Buy";
-
-  // const orderStatus =
-  //   smartTrade.sellOrder.status === SmartSellOrderEntityStatusEnum.Filled
-  //     ? "SellFilled"
-  //     : smartTrade.buyOrder.status === SmartBuyOrderEntityStatusEnum.Filled
-  //     ? "BuyFilled"
-  //     : smartTrade.sellOrder.status === SmartSellOrderEntityStatusEnum.Filled
-  //     ? "SellFilled"
-  //     : smartTrade.buyOrder.status === SmartBuyOrderEntityStatusEnum.Idle
-  //     ? "BuyIdle"
-  //     : smartTrade.buyOrder.status === SmartBuyOrderEntityStatusEnum.Placed
-  //     ? "BuyPlaced"
-  //     : smartTrade.buyOrder.status === SmartBuyOrderEntityStatusEnum.Filled
-  //     ? "BuyFilled"
-  //     : "Something went wrong";
 
   return (
     <StyledTableRow

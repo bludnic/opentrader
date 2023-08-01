@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { ThreeCommasAccountDto } from 'src/core/db/firestore/repositories/3commas-account/dto/3commas-account.dto';
 import { CreateTweetTradingBotDto } from 'src/core/db/firestore/repositories/tweet-trading-bots/dto/create-bot/create-tweet-trading-bot.dto';
@@ -36,6 +36,9 @@ export class TweetTradingController {
   ) {}
 
   @Get('signal-events')
+  @ApiOperation({
+    operationId: 'tweetSignalEvents',
+  })
   async signalEvents() {
     const signalEvents = await this.twitterSignalsService.signalEvents();
 
@@ -43,6 +46,9 @@ export class TweetTradingController {
   }
 
   @Get('active-signal-events')
+  @ApiOperation({
+    operationId: 'tweetActiveSignalEvents',
+  })
   async activeSignalEvents() {
     const activeSignalEvents =
       await this.twitterSignalsService.activeSignalEvents();
@@ -51,9 +57,7 @@ export class TweetTradingController {
   }
 
   @Get('smart-trades-history/:accountId')
-  async smartTradesHistory(
-    @Param('accountId') accountId: ThreeCommasAccountDto['id'],
-  ) {
+  async smartTradesHistory(@Param('accountId') accountId: string) {
     const threeCommasApiService =
       await this.threeCommasApiServiceFactory.createFromAccountId(accountId);
 
@@ -71,6 +75,9 @@ export class TweetTradingController {
   }
 
   @Get('/bot/:id')
+  @ApiOperation({
+    operationId: 'tweetGetBot',
+  })
   async getBot(@Param('id') botId: string): Promise<TweetTradingBotDto> {
     const bot = await this.firestoreService.tweetTradingBots.findOne(botId);
 
@@ -78,6 +85,9 @@ export class TweetTradingController {
   }
 
   @Post('/bot/create')
+  @ApiOperation({
+    operationId: 'tweetCreateBot',
+  })
   async createBot(
     @Body() dto: CreateTweetTradingBotDto,
   ): Promise<TweetTradingBotDto> {
@@ -87,6 +97,9 @@ export class TweetTradingController {
   }
 
   @Put('/bot/update/:id')
+  @ApiOperation({
+    operationId: 'tweetUpdateBot',
+  })
   async updateBot(
     @Param('id') botId: string,
     @Body() dto: UpdateTweetTradingBotDto,

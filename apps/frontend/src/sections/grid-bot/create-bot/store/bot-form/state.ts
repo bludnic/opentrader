@@ -1,4 +1,4 @@
-import { IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@bifrost/types";
 import {
   DEFAULT_GRID_LINES_NUMBER,
   DEFAULT_QUANTITY_PER_GRID,
@@ -20,6 +20,8 @@ export interface GridBotFormState {
 
   // Advanced options
   gridLines: IGridLine[];
+
+  barSize: BarSize;
 }
 
 export const initialState: GridBotFormState = {
@@ -35,4 +37,6 @@ export const initialState: GridBotFormState = {
   quantityPerGrid: `${DEFAULT_QUANTITY_PER_GRID}`,
 
   gridLines: [],
+
+  barSize: BarSize.FOUR_HOURS,
 };

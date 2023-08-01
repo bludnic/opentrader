@@ -1,4 +1,5 @@
 import { decomposeSymbolId } from "@bifrost/tools";
+import { BarSize } from "@bifrost/types";
 import {
   FormControl,
   FormHelperText,
@@ -10,11 +11,13 @@ import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import {
   computeInvestmentAmount,
+  selectBarSize,
   selectCurrencyPair,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { selectCandlesticksState } from "src/store/candlesticks/selectors";
 import { selectCurrentAssetPriceState } from "src/store/current-asset-price/selectors";
 import { useAppSelector } from "src/store/hooks";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { FetchStatus } from "src/utils/redux/types";
 import { InvestmentFieldHelperText } from "./InvestmentFieldHelperText";
 
@@ -40,21 +43,26 @@ type InvestmentFieldProps = {
 export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
   const { className } = props;
 
+  const barSize = useAppSelector(selectBarSize);
+
   const currencyPair = useAppSelector(selectCurrencyPair);
   const { baseCurrency, quoteCurrency } = decomposeSymbolId(currencyPair);
 
   const { totalInQuoteCurrency } = useAppSelector(computeInvestmentAmount);
 
   const { status: candlesticksStatus } = useAppSelector(
-    selectCandlesticksState
+    rtkApi.endpoints.getCandlesticksHistory.select({
+      symbolId: currencyPair,
+      barSize,
+    })
   );
   const { status: currentAssetPriceStatus } = useAppSelector(
-    selectCurrentAssetPriceState
+    rtkApi.endpoints.getCurrentAssetPrice.select(currencyPair)
   );
 
   const loading =
-    candlesticksStatus === FetchStatus.Loading ||
-    currentAssetPriceStatus === FetchStatus.Loading;
+    candlesticksStatus !== "fulfilled" ||
+    currentAssetPriceStatus !== "fulfilled";
 
   const inputId = "investment-field";
   const label = "Investment";

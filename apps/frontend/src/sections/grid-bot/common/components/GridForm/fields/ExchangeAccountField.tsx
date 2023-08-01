@@ -12,6 +12,7 @@ import { setExchangeAccountId } from "src/sections/grid-bot/create-bot/store/bot
 import { selectExchangeAccountId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { selectExchangeAccounts } from "src/store/exchange-accounts/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
 
 export type ExchangeFieldProps = Partial<
   Omit<MuiTextFieldProps, "type" | "onChange">
@@ -26,7 +27,7 @@ export const ExchangeAccountField: FC<ExchangeFieldProps> = (props) => {
   const labelId = "exchange-id";
 
   const dispatch = useAppDispatch();
-  const exchangeAccounts = useAppSelector(selectExchangeAccounts);
+  const { data } = useAppSelector(rtkApi.endpoints.getAccounts.select());
 
   const value = useAppSelector(selectExchangeAccountId);
   const handleChange = (e: SelectChangeEvent<ExchangeAccountDto["id"]>) => {
@@ -43,7 +44,7 @@ export const ExchangeAccountField: FC<ExchangeFieldProps> = (props) => {
         value={value}
         onChange={handleChange}
       >
-        {exchangeAccounts.map((account) => (
+        {data?.exchangeAccounts.map((account) => (
           <MenuItem value={account.id} key={account.id}>
             {account.name}
           </MenuItem>
