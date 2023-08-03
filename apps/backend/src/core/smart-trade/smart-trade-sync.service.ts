@@ -15,7 +15,7 @@ export class SmartTradeSyncService {
     private readonly logger: Logger,
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_2_HOURS)
   async sync() {
     const startSyncTime = new Date().toISOString();
 
