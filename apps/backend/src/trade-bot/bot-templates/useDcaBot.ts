@@ -2,22 +2,22 @@ type ISmartTrade = any;
 let useDCADeal: any;
 let useQFLSignal: any;
 
-const numberOfActiveDeals = 3
+const numberOfActiveDeals = 3;
 
 export function* useDCABot() {
-    for (let i = 0; i < numberOfActiveDeals; i++) {
-        const isActive = useQFLSignal()
+  for (let i = 0; i < numberOfActiveDeals; i++) {
+    const isActive = useQFLSignal();
 
-        const deal = yield useDCADeal(`${i}`, {
-            buyPrice: 10,
-            sellPrice: 20,
-            safetyOrders: 3
-        })
+    const deal = yield useDCADeal(`${i}`, {
+      buyPrice: 10,
+      sellPrice: 20,
+      safetyOrders: 3,
+    });
 
-        console.log('Deal #' + i, deal)
+    console.log('Deal #' + i, deal);
 
-        if (deal.status === 'finished') {
-            yield deal.replace()
-        }
+    if (deal.status === 'finished') {
+      yield deal.replace();
     }
+  }
 }

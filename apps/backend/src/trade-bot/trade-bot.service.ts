@@ -1,18 +1,18 @@
-import { ConflictException, Logger, NotFoundException } from "@nestjs/common";
-import { FirestoreService } from "src/core/db/firestore/firestore.service";
-import { CreateTradeBotDto } from "src/core/db/firestore/repositories/trade-bot/dto/create-trade-bot.dto";
-import { TradeBotDto } from "src/core/db/firestore/repositories/trade-bot/dto/trade-bot.dto";
-import { OrderStatusEnum } from "src/core/db/types/entities/trade-bot/orders/enums/order-status.enum";
-import { IOrder } from "src/core/db/types/entities/trade-bot/orders/order.interface";
-import { ITradeBot } from "src/core/db/types/entities/trade-bot/trade-bot.interface";
-import { IUser } from "src/core/db/types/entities/users/user/user.interface";
-import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface";
-import { simpleGrid } from "./bot-templates/simple-grid";
-import { CreateTradeBotRequestBodyDto } from "./dto/create-bot/create-trade-bot-request-body.dto";
-import { TradeBotOrdersService } from "./trade-bot-orders.service";
-import { IBotTemplate } from "./types/BotTemplate";
-import { calcOkxSymbol } from "./utils/calcOkxSymbol";
-import { checkOrderFilled } from "./utils/orders/checkOrderFilled";
+import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
+import { FirestoreService } from 'src/core/db/firestore/firestore.service';
+import { CreateTradeBotDto } from 'src/core/db/firestore/repositories/trade-bot/dto/create-trade-bot.dto';
+import { TradeBotDto } from 'src/core/db/firestore/repositories/trade-bot/dto/trade-bot.dto';
+import { OrderStatusEnum } from 'src/core/db/types/entities/trade-bot/orders/enums/order-status.enum';
+import { IOrder } from 'src/core/db/types/entities/trade-bot/orders/order.interface';
+import { ITradeBot } from 'src/core/db/types/entities/trade-bot/trade-bot.interface';
+import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
+import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
+import { simpleGrid } from './bot-templates/simple-grid';
+import { CreateTradeBotRequestBodyDto } from './dto/create-bot/create-trade-bot-request-body.dto';
+import { TradeBotOrdersService } from './trade-bot-orders.service';
+import { IBotTemplate } from './types/BotTemplate';
+import { calcOkxSymbol } from './utils/calcOkxSymbol';
+import { checkOrderFilled } from './utils/orders/checkOrderFilled';
 
 export class TradeBotService {
   private botTemplate: IBotTemplate;
@@ -78,8 +78,13 @@ export class TradeBotService {
     const onStartHook = this.botTemplate.onStart({
       logger: this.logger,
       bot: updatedBot,
-      ordersService: new TradeBotOrdersService(bot, this.exchange, this.firestore, this.logger)
-    })
+      ordersService: new TradeBotOrdersService(
+        bot,
+        this.exchange,
+        this.firestore,
+        this.logger,
+      ),
+    });
     if (onStartHook instanceof Promise) {
       await onStartHook;
     }
@@ -105,8 +110,13 @@ export class TradeBotService {
     const onStopHook = this.botTemplate.onStop({
       logger: this.logger,
       bot: updatedBot,
-      ordersService: new TradeBotOrdersService(bot, this.exchange, this.firestore, this.logger)
-    })
+      ordersService: new TradeBotOrdersService(
+        bot,
+        this.exchange,
+        this.firestore,
+        this.logger,
+      ),
+    });
     if (onStopHook instanceof Promise) {
       await onStopHook;
     }
@@ -125,50 +135,63 @@ export class TradeBotService {
 
     for (const order of orders) {
       const updated = await this.syncOrderStatus(order, bot);
-      
+
       if (updated) {
-        syncedOrdersIds.push(order.clientOrderId)
+        syncedOrdersIds.push(order.clientOrderId);
       }
     }
 
-    this.logger.debug(`[TradeBotService] Number of synced orders: ${syncedOrdersIds.length}`, syncedOrdersIds)
+    this.logger.debug(
+      `[TradeBotService] Number of synced orders: ${syncedOrdersIds.length}`,
+      syncedOrdersIds,
+    );
 
     return syncedOrdersIds;
   }
-
 
   /**
    * Returns the order ID if the status was changed.
    * If nothing changed the promise will return void.
    * @param order
-   * @param bot 
+   * @param bot
    */
-  private async syncOrderStatus(order: IOrder, bot: ITradeBot): Promise<{ updated: boolean }> {
+  private async syncOrderStatus(
+    order: IOrder,
+    bot: ITradeBot,
+  ): Promise<{ updated: boolean }> {
     this.logger.debug(
       `[TradeBotService] syncOrder with ID: ${order.clientOrderId}`,
     );
 
     const exchangeOrder = await this.exchange.getLimitOrder({
       symbol: calcOkxSymbol(bot.baseCurrency, bot.quoteCurrency),
-      clientOrderId: order.clientOrderId
-    })
+      clientOrderId: order.clientOrderId,
+    });
 
     if (checkOrderFilled(exchangeOrder)) {
-      await this.firestore.tradeBot.updateOrder(order.clientOrderId, {
-        status: OrderStatusEnum.Filled
-      }, bot.id)
+      await this.firestore.tradeBot.updateOrder(
+        order.clientOrderId,
+        {
+          status: OrderStatusEnum.Filled,
+        },
+        bot.id,
+      );
 
-      this.logger.debug(`[TradeBotService] Order "${order.clientOrderId}" was updated to status Filled`)
+      this.logger.debug(
+        `[TradeBotService] Order "${order.clientOrderId}" was updated to status Filled`,
+      );
 
       return {
-        updated: true
-      }
+        updated: true,
+      };
     } else {
-      this.logger.debug(`[TradingBotService] Order "${order.clientOrderId}" status didn't change. Nothing to update.`)
+      this.logger.debug(
+        `[TradingBotService] Order "${order.clientOrderId}" status didn't change. Nothing to update.`,
+      );
 
       return {
-        updated: false
-      }
+        updated: false,
+      };
     }
   }
 }

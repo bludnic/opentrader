@@ -8,7 +8,9 @@ import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service'
 import { getExchangeContextByAccount } from 'src/core/exchanges/utils/contexts';
 import { TradeBotOrdersService } from './trade-bot-orders.service';
 
-export const TradeBotOrderServiceFactorySymbol = Symbol('TradeBotOrdersServiceFactory');
+export const TradeBotOrderServiceFactorySymbol = Symbol(
+  'TradeBotOrdersServiceFactory',
+);
 
 export type TradeBotOrdersServiceFactory = {
   fromBotId: (botId: string) => Promise<TradeBotOrdersService>;
@@ -20,7 +22,7 @@ export const tradeBotOrdersServiceFactory: FactoryProvider = {
     httpService: HttpService,
     configService: ConfigService,
     firestoreService: FirestoreService,
-    logger: Logger
+    logger: Logger,
   ): TradeBotOrdersServiceFactory => {
     return {
       fromBotId: async (botId: string) => {

@@ -10,16 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
-import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
-import { IBotControl } from 'src/core/bot-manager/types/bot-control.interface';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
-import {
-  ExchangeFactory,
-  exchangeFactory,
-  ExchangeFactorySymbol,
-} from 'src/core/exchanges/exchange.factory';
 import { CreateTradeBotRequestBodyDto } from './dto/create-bot/create-trade-bot-request-body.dto';
 import { CreateTradeBotResponseBodyDto } from './dto/create-bot/create-trade-bot-response-body.dto';
 import { GetTradeBotResponseBodyDto } from './dto/get-bot/get-trade-bot-response-body.dto';
