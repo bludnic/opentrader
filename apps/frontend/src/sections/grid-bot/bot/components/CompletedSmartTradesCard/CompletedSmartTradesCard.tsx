@@ -4,10 +4,7 @@ import { SxProps } from "@mui/system";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import {
-  GridBotDto,
-  useGetCompletedSmartTradesQuery,
-} from "src/lib/bifrost/rtkApi";
+import { GridBotDto, useGetGridBotCompletedSmartTradesQuery } from 'src/lib/bifrost/rtkApi';
 import { CompletedSmartTradesTable } from "./components/CompletedSmartTradesTable";
 
 const componentName = "CompletedSmartTradesCard";
@@ -29,7 +26,7 @@ export const CompletedSmartTradesCard: FC<CompletedSmartTradesCardProps> = (
   props
 ) => {
   const { className, bot, sx } = props;
-  const query = useGetCompletedSmartTradesQuery(bot.id);
+  const query = useGetGridBotCompletedSmartTradesQuery(bot.id);
 
   if (query.status === QueryStatus.fulfilled && query.data) {
     return (

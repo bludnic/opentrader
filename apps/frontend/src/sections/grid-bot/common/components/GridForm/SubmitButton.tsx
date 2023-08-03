@@ -1,14 +1,15 @@
-import { Button, CircularProgress } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
-import { useSnackbar } from 'notistack';
-import React, { FC, useEffect } from 'react';
-import { mapFormToDto } from 'src/sections/grid-bot/common/components/GridForm/helpers/mapFormToDto';
-import { selectBotFormState } from 'src/sections/grid-bot/create-bot/store/bot-form/selectors';
-import { createGridBot } from 'src/sections/grid-bot/create-bot/store/create-bot';
-import { selectCreateGridBotState } from 'src/sections/grid-bot/create-bot/store/create-bot/selectors';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { FetchStatus } from 'src/utils/redux/types';
+import { Button, CircularProgress } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import clsx from "clsx";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import React, { FC, useEffect } from "react";
+import { mapFormToDto } from "src/sections/grid-bot/common/components/GridForm/helpers/mapFormToDto";
+import { selectBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { createGridBot } from "src/sections/grid-bot/create-bot/store/create-bot";
+import { selectCreateGridBotState } from "src/sections/grid-bot/create-bot/store/create-bot/selectors";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { FetchStatus } from "src/utils/redux/types";
 
 const componentName = "SubmitButton";
 const classes = {
@@ -26,6 +27,7 @@ type SubmitButtonProps = {
 export const SubmitButton: FC<SubmitButtonProps> = (props) => {
   const { className } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const botFormState = useAppSelector(selectBotFormState);
   const { bot, status, err } = useAppSelector(selectCreateGridBotState);
@@ -45,15 +47,17 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
       enqueueSnackbar("Bot created successfully", {
         variant: "success",
       });
+
+      router.push({
+        pathname: "/grid-bot",
+      });
     } else if (status === FetchStatus.Error) {
       enqueueSnackbar(JSON.stringify(err), {
         variant: "error",
       });
       console.log(err);
     }
-  }, [
-    status
-  ])
+  }, [status]);
 
   return (
     <Root

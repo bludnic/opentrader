@@ -6,8 +6,9 @@ import React, { FC } from "react";
 import clsx from "clsx";
 import {
   GridBotDto,
-  useGetActiveSmartTradesQuery,
+  useGetGridBotActiveSmartTradesQuery,
 } from "src/lib/bifrost/rtkApi";
+
 import { GridsTable } from "./components/GridsTable";
 
 const componentName = "ActiveSmartTradesCard";
@@ -29,7 +30,7 @@ export const ActiveSmartTradesCard: FC<ActiveSmartTradesCardProps> = (
   props
 ) => {
   const { className, bot, sx } = props;
-  const query = useGetActiveSmartTradesQuery(bot.id);
+  const query = useGetGridBotActiveSmartTradesQuery(bot.id);
 
   if (query.status === QueryStatus.fulfilled && query.data) {
     return (

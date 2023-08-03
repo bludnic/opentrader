@@ -16,8 +16,6 @@ import {
   currentAssetPriceSlice,
   CurrentAssetPriceState,
 } from "src/store/current-asset-price";
-import { exchangeAccountsApi } from "src/store/exchange-accounts/api";
-import { gridBotsApi } from "src/sections/grid-bot/common/store/api/botsApi";
 import { candlesticksHistoryApi } from "src/sections/grid-bot/common/store/api/candlesticksHistoryApi";
 import {
   gridBotFormSlice,
@@ -39,12 +37,8 @@ export type RootState = {
   exchangeAccounts: ExchangeAccountsState;
   currentAssetPrice: CurrentAssetPriceState;
   candlesticks: CandlesticksState;
-  [gridBotsApi.reducerPath]: ReturnType<typeof gridBotsApi.reducer>;
   [gridBotCompletedSmartTradesApi.reducerPath]: ReturnType<
     typeof gridBotCompletedSmartTradesApi.reducer
-  >;
-  [exchangeAccountsApi.reducerPath]: ReturnType<
-    typeof exchangeAccountsApi.reducer
   >;
   [threeCommasAccountsApi.reducerPath]: ReturnType<
     typeof threeCommasAccountsApi.reducer
@@ -73,9 +67,7 @@ const makeStore = (context: Context) => {
       exchangeAccounts: exchangeAccountsSlice.reducer,
       currentAssetPrice: currentAssetPriceSlice.reducer,
       candlesticks: candlesticksSlice.reducer,
-      gridBotsApi: gridBotsApi.reducer,
       gridBotCompletedSmartTradesApi: gridBotCompletedSmartTradesApi.reducer,
-      exchangeAccountsApi: exchangeAccountsApi.reducer,
       threeCommasAccountsApi: threeCommasAccountsApi.reducer,
       candlesticksHistoryApi: candlesticksHistoryApi.reducer,
       rtkApi: rtkApi.reducer,
@@ -83,9 +75,7 @@ const makeStore = (context: Context) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .prepend(sagaMiddleware)
-        .concat(gridBotsApi.middleware)
         .concat(gridBotCompletedSmartTradesApi.middleware)
-        .concat(exchangeAccountsApi.middleware)
         .concat(threeCommasAccountsApi.middleware)
         .concat(candlesticksHistoryApi.middleware)
         .concat(rtkApi.middleware),

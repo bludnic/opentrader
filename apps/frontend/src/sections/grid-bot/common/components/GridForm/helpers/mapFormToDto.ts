@@ -9,8 +9,8 @@ export function mapFormToDto(state: GridBotFormState): CreateBotRequestBodyDto {
 
   return {
     gridLines,
-    id: `DOT_USDT_BOT_DEMO`, // @todo remove from DTO
-    name: `[DOT/USDT] Test Bot`, // @todo remove from DTO
+    id: `BTC_USDT__DEMO`, // @todo remove from DTO
+    name: `[BTC/USDT] Test Bot #2`, // @todo remove from DTO
     baseCurrency,
     quoteCurrency,
     exchangeAccountId,

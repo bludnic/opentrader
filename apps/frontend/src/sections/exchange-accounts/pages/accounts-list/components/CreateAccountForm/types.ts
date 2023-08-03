@@ -1,7 +1,7 @@
 import {
   CreateExchangeAccountRequestBodyDto,
   UpdateExchangeAccountRequestBodyDto,
-} from "src/lib/bifrost/client";
+} from "src/lib/bifrost/rtkApi";
 
 export type CreateExchangeAccountFormValues = Pick<
   CreateExchangeAccountRequestBodyDto,

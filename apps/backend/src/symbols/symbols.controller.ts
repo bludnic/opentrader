@@ -1,3 +1,4 @@
+import { SymbolEndpoint } from '@bifrost/swagger';
 import { decomposeSymbolId } from '@bifrost/tools';
 import {
   Controller,
@@ -7,7 +8,7 @@ import {
   NotFoundException,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ExchangeFactory,
   ExchangeFactorySymbol,
@@ -20,7 +21,7 @@ import { IsValidSymbolIdPipe } from './utils/pipes/is-valid-symbol-id.pipe';
 @Controller({
   path: 'symbols',
 })
-@ApiTags('Symbols')
+@ApiTags(SymbolEndpoint.tagName())
 export class SymbolsController {
   constructor(
     @Inject(ExchangeFactorySymbol)
@@ -28,6 +29,7 @@ export class SymbolsController {
   ) {}
 
   @Get('/')
+  @ApiOperation(SymbolEndpoint.operation('getSymbols'))
   async getSymbols(): Promise<GetSymbolsResponseBodyDto> {
     const exchangeService =
       await this.exchangeFactory.createFromExchangeAccountId(
@@ -42,7 +44,8 @@ export class SymbolsController {
   }
 
   @Get('/info')
-  async getSymbolInfo(
+  @ApiOperation(SymbolEndpoint.operation('getSymbol'))
+  async getSymbol(
     @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
   ): Promise<GetSymbolInfoResponseDto> {
     const exchangeService =
@@ -64,6 +67,7 @@ export class SymbolsController {
   }
 
   @Get('/current-asset-price')
+  @ApiOperation(SymbolEndpoint.operation('getSymbolCurrentPrice'))
   async getCurrentAssetPrice(
     @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
   ): Promise<GetCurrentAssetPriceResponseDto> {

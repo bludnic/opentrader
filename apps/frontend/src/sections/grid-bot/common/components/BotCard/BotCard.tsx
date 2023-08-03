@@ -14,6 +14,7 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import { GridBotDto } from "src/lib/bifrost/rtkApi";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
 import { calcInitialInvestmentInQuote } from "src/utils/grid-bot/calcInitialInvestmentInQuote";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
@@ -21,7 +22,6 @@ import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePr
 import { BotStatusChip } from "./BotStatusChip";
 import { Bull } from "src/components/ui/Bull";
 import { FC } from "react";
-import { GridBotDto } from "src/lib/bifrost/client";
 import { SxProps } from "@mui/system";
 import { Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -87,7 +87,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
             </Typography>
           </Link>
 
-          <BotStatusChip enabled={bot.enabled} sx={{ ml: 2 }} />
+          <BotStatusChip bot={bot} sx={{ ml: 2 }} />
         </Box>
 
         <Typography color="text.secondary">

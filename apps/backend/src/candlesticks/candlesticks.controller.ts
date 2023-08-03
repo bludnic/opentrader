@@ -1,3 +1,4 @@
+import { CandlesticksHistoryEndpoint } from '@bifrost/swagger';
 import { BarSize } from '@bifrost/types';
 import {
   Controller,
@@ -8,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetCandlesticksHistoryResponseDto } from 'src/candlesticks/dto/get-candlesticks-history/get-candlesticks-history-response.dto';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { composeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/composeEntityId';
@@ -26,7 +27,7 @@ import { IsValidSymbolIdPipe } from 'src/symbols/utils/pipes/is-valid-symbol-id.
 @Controller({
   path: 'candlesticks',
 })
-@ApiTags('Candlesticks History')
+@ApiTags(CandlesticksHistoryEndpoint.tagName())
 export class CandlesticksController {
   constructor(
     private readonly firestore: FirestoreService,
@@ -38,6 +39,7 @@ export class CandlesticksController {
   ) {}
 
   @Get('/history')
+  @ApiOperation(CandlesticksHistoryEndpoint.operation('getCandlesticksHistory'))
   async getCandlesticksHistory(
     @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
     @Query('barSize', IsValidBarSizePipe) barSize: BarSize,
@@ -68,7 +70,10 @@ export class CandlesticksController {
   }
 
   @Put('/history')
-  async fetchExchangeCandlesticksHistory(
+  @ApiOperation(
+    CandlesticksHistoryEndpoint.operation('downloadCandlesticksHistory'),
+  )
+  async downloadCandlesticksHistory(
     @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
     @Query('barSize', IsValidBarSizePipe) barSize: BarSize,
   ) {

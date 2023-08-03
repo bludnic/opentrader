@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { ExchangeCode } from "src/lib/bifrost/client";
+import { useCreateExchangeAccountMutation } from "src/lib/bifrost/rtkApi";
 import { AccountIdField } from "./fields/AccountIdField";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
@@ -16,7 +17,6 @@ import { SecretKeyField } from "./fields/SecretKeyField";
 import { SerializedError } from "@reduxjs/toolkit";
 import { fromFormValuesToDto } from "./utils/create/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
-import { useCreateExchangeAccountMutation } from "src/store/exchange-accounts/api";
 
 const componentName = "CreateAccountForm";
 const classes = {

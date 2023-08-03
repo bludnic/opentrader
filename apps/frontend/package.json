@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@bifrost/tools": "*",
+    "@bifrost/swagger": "*",
     "@bifrost/types": "*",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.7.1",

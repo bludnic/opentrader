@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import { styled } from "@mui/material/styles";
 import React, { FC, useState } from "react";
 import clsx from "clsx";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { ExchangeAccountDto } from 'src/lib/bifrost/rtkApi';
 import { AccountsListTableRow } from "./AccountsListTableRow";
 import { AccountsListTableToolbar } from "./AccountsListTableToolbar";
 import { AccountsListTableHead } from "./AccountsListTableHead";

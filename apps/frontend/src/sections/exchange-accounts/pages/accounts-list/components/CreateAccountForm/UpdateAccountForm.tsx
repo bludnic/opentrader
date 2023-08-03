@@ -1,6 +1,9 @@
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import {
+  ExchangeAccountDto,
+  useUpdateExchangeAccountMutation,
+} from "src/lib/bifrost/rtkApi";
 import { AccountIdField } from "./fields/AccountIdField";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
@@ -16,7 +19,6 @@ import { SecretKeyField } from "./fields/SecretKeyField";
 import { SerializedError } from "@reduxjs/toolkit";
 import { fromFormValuesToDto } from "./utils/update/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
-import { useUpdateExchangeAccountMutation } from "src/store/exchange-accounts/api";
 
 const componentName = "UpdateAccountForm";
 const classes = {
@@ -75,8 +77,8 @@ export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
     const dto = fromFormValuesToDto(values);
 
     const data = await updateAccount({
-      accountId: account.id,
-      body: dto,
+      id: account.id,
+      updateExchangeAccountRequestBodyDto: dto,
     });
     form.reset();
 

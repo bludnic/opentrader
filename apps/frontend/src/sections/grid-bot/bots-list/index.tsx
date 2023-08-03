@@ -1,14 +1,13 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import React, { FC } from "react";
 import { MainLayout } from "src/layouts/main";
+import { useGetGridBotsQuery } from "src/lib/bifrost/rtkApi";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
-import { useGetBotsQuery } from "src/sections/grid-bot/common/store/api/botsApi";
 
 const componentName = "GridBotsListPage";
 const classes = {
@@ -22,7 +21,7 @@ const Root = styled(MainLayout)(({ theme }) => ({
 }));
 
 export const BotsListPage: FC = () => {
-  const { data, error, isLoading } = useGetBotsQuery();
+  const { data, error, isLoading } = useGetGridBotsQuery();
 
   if (isLoading) {
     return (
@@ -69,9 +68,7 @@ export const BotsListPage: FC = () => {
         title: "Grid Bots",
         action: (
           <Link href="/grid-bot/create" as="/grid-bot/create" passHref>
-            <Button component="a">
-              Create
-            </Button>
+            <Button component="a">Create</Button>
           </Link>
         ),
       }}

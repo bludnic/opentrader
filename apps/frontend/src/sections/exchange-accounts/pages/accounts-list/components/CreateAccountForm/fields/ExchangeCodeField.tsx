@@ -1,3 +1,4 @@
+import { ExchangeCode } from '@bifrost/types';
 import { SxProps } from "@mui/system";
 import { Select, ShowErrorFunc } from "mui-rff";
 import {
@@ -8,7 +9,6 @@ import {
 
 import React, { FC } from "react";
 import { FieldProps } from "react-final-form";
-import { ExchangeCode } from 'src/lib/bifrost/client';
 import { CreateExchangeAccountFormValues } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/types";
 
 export type ExchangeCodeFieldProps = Partial<
@@ -34,7 +34,7 @@ export const ExchangeCodeField: FC<ExchangeCodeFieldProps> = (props) => {
       sx={sx}
       className={className}
     >
-      <MenuItem value={ExchangeCode.Okx}>
+      <MenuItem value={ExchangeCode.OKX}>
         OKx
       </MenuItem>
     </Select>

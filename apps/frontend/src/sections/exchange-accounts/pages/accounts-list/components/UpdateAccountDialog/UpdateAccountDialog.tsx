@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { ExchangeAccountDto } from 'src/lib/bifrost/rtkApi';
 import { UpdateAccountForm } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/UpdateAccountForm";
 
 const componentName = "UpdateAccountDialog";

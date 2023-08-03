@@ -9,7 +9,7 @@ import { MainLayout } from "src/layouts/main";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
 import {
-  useGetBotQuery,
+  useGetGridBotQuery,
   useLazyGetCandlesticksHistoryQuery,
 } from "src/lib/bifrost/rtkApi";
 import { CompletedSmartTradesCard } from "./components/CompletedSmartTradesCard";
@@ -33,7 +33,7 @@ const BotPage: FC<BotPageProps> = (props) => {
 
   const router = useRouter();
 
-  const botQuery = useGetBotQuery(String(router.query.id));
+  const botQuery = useGetGridBotQuery(String(router.query.id));
 
   const [fetchCandlesticks, candlesticks] =
     useLazyGetCandlesticksHistoryQuery();

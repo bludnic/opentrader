@@ -1,18 +1,15 @@
+import { GridBotEndpoint } from '@bifrost/swagger';
 import {
   Body,
   Controller,
   Get,
   Inject,
-  Patch,
   Post,
   Put,
-  Query,
   Scope,
-  Req,
-  InternalServerErrorException,
   Param,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
@@ -34,7 +31,7 @@ import {
   path: 'grid-bot',
   scope: Scope.REQUEST, // @todo do I really need this?
 })
-@ApiTags('Grid Bot')
+@ApiTags(GridBotEndpoint.tagName())
 export class GridBotController {
   constructor(
     @Inject(GridBotServiceFactorySymbol)
@@ -43,6 +40,7 @@ export class GridBotController {
   ) {}
 
   @Get()
+  @ApiOperation(GridBotEndpoint.operation('getGridBots'))
   async getBots(@FirebaseUser() user: IUser): Promise<GetBotsListResponseDto> {
     const bots = await this.firestore.gridBot.findAllByUserId(user.uid);
 
@@ -52,6 +50,7 @@ export class GridBotController {
   }
 
   @Get('/info/:id')
+  @ApiOperation(GridBotEndpoint.operation('getGridBot'))
   async getBot(@Param('id') botId: string): Promise<GetBotResponseBodyDto> {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
@@ -63,6 +62,7 @@ export class GridBotController {
   }
 
   @Post('/create')
+  @ApiOperation(GridBotEndpoint.operation('createGridBot'))
   async createBot(
     @Body() body: CreateBotRequestBodyDto,
     @FirebaseUser() user: IUser,
@@ -80,6 +80,7 @@ export class GridBotController {
   }
 
   @Put('/start/:id')
+  @ApiOperation(GridBotEndpoint.operation('startGridBot'))
   async startBot(@Param('id') botId: string): Promise<StartBotResponseBodyDto> {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
@@ -92,6 +93,7 @@ export class GridBotController {
   }
 
   @Put('/stop/:id')
+  @ApiOperation(GridBotEndpoint.operation('stopGridBot'))
   async stopBot(@Param('id') botId: string): Promise<StopBotResponseBodyDto> {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
@@ -122,6 +124,7 @@ export class GridBotController {
   }
 
   @Get('/:id/events')
+  @ApiOperation(GridBotEndpoint.operation('getGridBotEvents'))
   async getEvents(@Param('id') botId: string) {
     const gridBotService = await this.gridBotServiceFactory.fromBotId(botId);
 
@@ -133,6 +136,7 @@ export class GridBotController {
   }
 
   @Get('/:id/completed-smart-trades')
+  @ApiOperation(GridBotEndpoint.operation('getGridBotCompletedSmartTrades'))
   async getCompletedSmartTrades(
     @Param('id') botId: string,
   ): Promise<GetCompletedSmartTradesResponseDto> {
@@ -147,6 +151,7 @@ export class GridBotController {
   }
 
   @Get('/:id/active-smart-trades')
+  @ApiOperation(GridBotEndpoint.operation('getGridBotActiveSmartTrades'))
   async getActiveSmartTrades(
     @Param('id') botId: string,
   ): Promise<GetActiveSmartTradesResponseDto> {

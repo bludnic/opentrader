@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@bifrost/tools": "*",
+    "@bifrost/swagger": "*",
     "@bifrost/types": "*",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.0.0",

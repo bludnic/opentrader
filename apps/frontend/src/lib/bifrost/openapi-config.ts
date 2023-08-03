@@ -4,7 +4,7 @@ import { RTK_API_NAME } from "./constants";
 const config: ConfigFile = {
   schemaFile: "http://localhost:4000/bapi/swagger-json",
   apiFile: "./emptyApi.ts",
-  apiImport: "emptySplitApi",
+  apiImport: "emptyApi",
   outputFile: `./${RTK_API_NAME}.ts`,
   exportName: RTK_API_NAME,
   hooks: {
@@ -13,6 +13,7 @@ const config: ConfigFile = {
     mutations: true,
   },
   flattenArg: true,
+  tag: true,
 };
 
 export default config;

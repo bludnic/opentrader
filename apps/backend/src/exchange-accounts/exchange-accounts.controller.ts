@@ -1,5 +1,6 @@
+import { ExchangeAccountEndpoint } from '@bifrost/swagger/dist/endpoints/exchange-account';
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { CreateExchangeAccountRequestBodyDto } from 'src/exchange-accounts/dto/create-exchange-account/create-exchange-account-request-body.dto';
@@ -13,11 +14,12 @@ import { ExchangeAccountsService } from 'src/exchange-accounts/exchange-accounts
 @Controller({
   path: 'exchange-accounts',
 })
-@ApiTags('Exchange Accounts')
+@ApiTags(ExchangeAccountEndpoint.tagName())
 export class ExchangeAccountsController {
   constructor(private readonly accountsService: ExchangeAccountsService) {}
 
   @Get('/accounts')
+  @ApiOperation(ExchangeAccountEndpoint.operation('getExchangeAccounts'))
   async getAccounts(
     @FirebaseUser() user: IUser,
   ): Promise<GetExchangeAccountsResponseBodyDto> {
@@ -31,6 +33,7 @@ export class ExchangeAccountsController {
   }
 
   @Get('/account/:id')
+  @ApiOperation(ExchangeAccountEndpoint.operation('getExchangeAccount'))
   async getAccount(
     @Param('id') accountId: string,
   ): Promise<GetExchangeAccountResponseBodyDto> {
@@ -44,6 +47,7 @@ export class ExchangeAccountsController {
   }
 
   @Put('/account/:id')
+  @ApiOperation(ExchangeAccountEndpoint.operation('updateExchangeAccount'))
   async updateAccount(
     @Param('id') accountId: string,
     @Body() body: UpdateExchangeAccountRequestBodyDto,
@@ -59,6 +63,7 @@ export class ExchangeAccountsController {
   }
 
   @Post('/account')
+  @ApiOperation(ExchangeAccountEndpoint.operation('createExchangeAccount'))
   async createAccount(
     @FirebaseUser() user: IUser,
     @Body() body: CreateExchangeAccountRequestBodyDto,

@@ -1,4 +1,4 @@
-import { CreateExchangeAccountRequestBodyDto } from "src/lib/bifrost/client";
+import { CreateExchangeAccountRequestBodyDto } from "src/lib/bifrost/rtkApi";
 import { CreateExchangeAccountFormValues } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/types";
 
 export function fromFormValuesToDto(
