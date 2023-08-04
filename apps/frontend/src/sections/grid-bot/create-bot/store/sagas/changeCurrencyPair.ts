@@ -33,7 +33,7 @@ export function* changeCurrencyPairWorker(): SagaIterator {
 
   const barSize = yield* typedSelect(selectBarSize);
   const currentAssetPrice = yield* query(
-    rtkApi.endpoints.getCurrentAssetPrice,
+    rtkApi.endpoints.getSymbolCurrentPrice,
     symbol.symbolId
   );
   const {

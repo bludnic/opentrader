@@ -52,7 +52,7 @@ export const computeInvestmentAmount: Selector<
 > = (rootState) => {
   const currencyPair = selectCurrencyPair(rootState);
   const currentAssetPriceState =
-    rtkApi.endpoints.getCurrentAssetPrice.select(currencyPair)(rootState);
+    rtkApi.endpoints.getSymbolCurrentPrice.select(currencyPair)(rootState);
   const symbol = selectSymbolById(currencyPair)(rootState);
 
   const statsIsReady =

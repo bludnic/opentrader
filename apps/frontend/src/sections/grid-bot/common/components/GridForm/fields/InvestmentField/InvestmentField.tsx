@@ -53,7 +53,7 @@ export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
     })
   );
   const { status: currentAssetPriceStatus } = useAppSelector(
-    rtkApi.endpoints.getCurrentAssetPrice.select(currencyPair)
+    rtkApi.endpoints.getSymbolCurrentPrice.select(currencyPair)
   );
 
   const loading =

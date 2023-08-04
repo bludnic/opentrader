@@ -24,7 +24,7 @@ export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch exchange accounts
   const {
     data: { exchangeAccounts },
-  } = yield* query(rtkApi.endpoints.getAccounts);
+  } = yield* query(rtkApi.endpoints.getExchangeAccounts);
 
   const firstExchangeAccount = exchangeAccounts[0];
   yield put(setExchangeAccountId(firstExchangeAccount.id));
@@ -70,7 +70,7 @@ export function* initPageWorker(): Iterator<any, any, any> {
 
   // Fetch current asset price
   const currentAssetPriceData = yield* query(
-    rtkApi.endpoints.getCurrentAssetPrice,
+    rtkApi.endpoints.getSymbolCurrentPrice,
     firstSymbol.symbolId
   );
 

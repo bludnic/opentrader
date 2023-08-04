@@ -27,7 +27,7 @@ export const ExchangeAccountField: FC<ExchangeFieldProps> = (props) => {
   const labelId = "exchange-id";
 
   const dispatch = useAppDispatch();
-  const { data } = useAppSelector(rtkApi.endpoints.getAccounts.select());
+  const { data } = useAppSelector(rtkApi.endpoints.getExchangeAccounts.select());
 
   const value = useAppSelector(selectExchangeAccountId);
   const handleChange = (e: SelectChangeEvent<ExchangeAccountDto["id"]>) => {
