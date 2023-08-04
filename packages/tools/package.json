@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "bootstrap": "npm run build"
   },
   "author": "",
   "license": "ISC",

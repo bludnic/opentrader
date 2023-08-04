@@ -24,20 +24,20 @@ $ docker -v
 1. Create environment file `.env.development.local`
 
 ```bash
-$ cd packages/backend
+$ cd apps/backend
 $ cp .env.sample .env.development.local
 ```
 
 2. Replace `MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN` value
 
-3. Copy the `firebase-credentials.json` into the `packages/backend` directory
+3. Copy the `firebase-credentials.json` into the `apps/backend` directory
 
 ### Frontend configuration
 
 1. Copy `.env` configuration
 
 ```bash
-$ cd packages/frontend
+$ cd apps/frontend
 $ cp .env.sample .env
 ```
 
@@ -52,8 +52,8 @@ localStorage.setItem('auth_token', 'YOUR_TOKEN_HERE')
 ### Postgres service
 
 ```bash
-$ docker-compose up -d postgres-db # start service
-$ docker-compose -p bifrost stop postgres-db # stop service
+$ docker compose up -d postgres-db # start service
+$ docker compose -p bifrost stop postgres-db # stop service
 ```
 
 ### Frontend & Backend
