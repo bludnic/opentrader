@@ -5,16 +5,48 @@ import {
   createChart,
   BarData,
   UTCTimestamp,
-  ColorType,
   PriceLineOptions,
   LineStyle,
   IChartApi,
   ISeriesApi,
+  SeriesMarker,
+  Time,
 } from "lightweight-charts";
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
 import { ICandlestick } from "src/lib/bifrost/apiClient";
 import { useElementSize } from "usehooks-ts";
+import { TradeDto } from 'src/lib/bifrost/rtkApi';
+
+function buy(price: number, time: Time, smartTradeId: string): SeriesMarker<Time> {
+  return {
+    time,
+    position: "belowBar",
+    color: "#2196F3",
+    shape: "arrowUp",
+    text: "Buy @ " + price + `(${smartTradeId})`,
+  };
+}
+
+function sell(price: number, time: Time, smartTradeId: string): SeriesMarker<Time> {
+  return {
+    time,
+    position: "aboveBar",
+    color: "#e91e63",
+    shape: "arrowDown",
+    text: "Sell @ " + price + `(${smartTradeId})`,
+  };
+}
+
+function tradeToMarker(trade: TradeDto): SeriesMarker<Time> {
+  const time = (new Date(trade.time).getTime() / 1000) as UTCTimestamp
+
+  if (trade.side === 'buy') {
+    return buy(trade.price, time, trade.smartTradeId)
+  }
+
+  return sell(trade.price, time, trade.smartTradeId)
+}
 
 const componentName = "BacktestingChart";
 const classes = {
@@ -29,11 +61,12 @@ const Root = styled("div")(({ theme }) => ({
 type GridBotChartProps = {
   candlesticks: ICandlestick[];
   gridLines: IGridLine[];
+  trades?: TradeDto[];
   className?: string;
 };
 
 export const GridBotChart: FC<GridBotChartProps> = (props) => {
-  const { className, candlesticks, gridLines } = props;
+  const { className, candlesticks, gridLines, trades = [] } = props;
   const chartRef = useRef<HTMLDivElement | null>(null);
   const chartApi = useRef<IChartApi | null>(null);
   const lineSeriesApi = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -93,6 +126,7 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
 
     const lineSeries = lineSeriesApi.current;
 
+    // Setting price lines
     const priceLines = gridLines.map((gridLine, i) => {
       const gridLineNumber = i + 1;
       const isUpperLimitPrice = gridLineNumber === gridLines.length;
@@ -116,13 +150,17 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
     });
 
     lineSeries.setData(lineSeriesData);
+    
+    // Setting trades
+    const tradeMarkers: SeriesMarker<Time>[] = trades.map(tradeToMarker);
+    lineSeries.setMarkers(tradeMarkers);
 
     return () => {
       priceLines.forEach((priceLine) => {
         lineSeriesApi.current?.removePriceLine(priceLine);
       });
     };
-  }, [gridLines]);
+  }, [gridLines, trades]);
 
   const [containerRef, { width, height }] = useElementSize();
 

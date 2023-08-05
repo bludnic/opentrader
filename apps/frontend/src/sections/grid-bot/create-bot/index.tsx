@@ -9,6 +9,7 @@ import { CreateGridBotForm } from "src/sections/grid-bot/common/components/GridF
 import {
   selectBarSize,
   selectCurrencyPair,
+  selectGridLines,
   selectGridLinesNumber,
   selectHighPrice,
   selectLowPrice,
@@ -17,8 +18,9 @@ import {
 import { initPage } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { isPageReadySelector } from "src/sections/grid-bot/create-bot/store/init-page/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { rtkApi, useRunGridBotBacktestMutation } from "src/lib/bifrost/rtkApi";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
+import { BacktestingCard } from "../common/components/BacktestingCard/BacktestingCard";
 
 const componentName = "CreateBotPage";
 const classes = {
@@ -55,14 +57,27 @@ const CreateBotPage: FC = () => {
     dispatch(initPage());
   }, []);
 
+  const [runBacktest, backtestQuery] = useRunGridBotBacktestMutation();
+  const handleRunBacktest = () => {
+    runBacktest({
+      bot: {
+        baseCurrency: symbol.baseCurrency,
+        quoteCurrency: symbol.quoteCurrency,
+        gridLines,
+      },
+      startDate: '2023-03-01',
+      endDate: '2023-03-12'
+    })
+  }
+
   const gridLines = symbol
     ? calcGridLinesWithPriceFilter(
-        highPrice,
-        lowPrice,
-        gridLinesNumber,
-        Number(quantityPerGrid),
-        symbol.filters
-      )
+      highPrice,
+      lowPrice,
+      gridLinesNumber,
+      Number(quantityPerGrid),
+      symbol.filters
+    )
     : [];
 
   if (isPageReady) {
@@ -83,13 +98,14 @@ const CreateBotPage: FC = () => {
         }}
       >
         <Grid container spacing={4}>
-          <Grid container item xs={12} md={8}>
+          <Grid container item xs={12} md={12} xl={8}>
             <Card style={{ width: "100%" }}>
               <CardContent>
                 {candlesticks.status === "fulfilled" ? (
                   <GridBotChart
                     candlesticks={candlesticks.data.history.candlesticks}
                     gridLines={gridLines}
+                    trades={backtestQuery.data?.trades}
                   />
                 ) : (
                   "Loading candlesticks..."
@@ -98,7 +114,7 @@ const CreateBotPage: FC = () => {
             </Card>
           </Grid>
 
-          <Grid container item xs={12} md={4}>
+          <Grid container item xs={12} md={12} xl={4}>
             <Box>
               <Card>
                 <CardContent>
@@ -106,6 +122,14 @@ const CreateBotPage: FC = () => {
                 </CardContent>
               </Card>
             </Box>
+          </Grid>
+
+          <Grid container item xs={12}>
+            <BacktestingCard
+              onRun={handleRunBacktest}
+              isLoading={backtestQuery.isLoading}
+              data={backtestQuery.data}
+            />
           </Grid>
         </Grid>
       </Root>
