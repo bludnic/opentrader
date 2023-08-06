@@ -1,6 +1,6 @@
 import { IsDateString, IsDefined, IsNotEmpty } from 'class-validator';
 
-export class RunGridBotBackTestDto {
+export class RunGridBotBacktestByBotIdDto {
   @IsDefined()
   @IsNotEmpty()
   botId: string;

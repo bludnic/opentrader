@@ -1,6 +1,6 @@
 import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
-import { ITrade } from '../types/trade.interface';
+import { ITrade } from '../dto/types/trade/trade.interface';
 
 export function convertSmartTradesToTrades(
   smartTrades: ISmartTrade[],
@@ -31,5 +31,5 @@ export function convertSmartTradesToTrades(
     }
   }
 
-  return trades;
+  return trades.sort((left, right) => left.time - right.time);
 }
