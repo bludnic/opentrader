@@ -34,6 +34,8 @@ export class BacktestingService {
     const { manager, db } = this.createManager(bot);
 
     for (const [index, candle] of candles.entries()) {
+      db.setCurrentCandlestick(candle);
+
       console.log(
         `Process candle #${index} with time #${candle.timestamp} of ${candles.length} with close price:`,
         candle.close,
@@ -45,7 +47,7 @@ export class BacktestingService {
       });
 
       db.smartTrades.forEach((smartTrade) => {
-        db.processSmartTrade(smartTrade.id, candle);
+        db.processSmartTrade(smartTrade.id);
       });
     }
 

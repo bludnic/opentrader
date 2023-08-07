@@ -5,7 +5,12 @@ import { uniqId } from 'src/core/db/utils/uniqId';
 import { USER_ID } from './mocks';
 
 export class TestingDb {
+  private currentCandlestick: ICandlestick;
   public smartTrades: ISmartTrade[] = [];
+
+  setCurrentCandlestick(candle: ICandlestick) {
+    this.currentCandlestick = candle;
+  }
 
   getSmartTrade(smartTradeId: string): ISmartTrade | null {
     return (
@@ -26,7 +31,7 @@ export class TestingDb {
       exchangeAccountId,
       botId,
     } = dto;
-    const createdAt = new Date().getTime();
+    const createdAt = this.currentCandlestick.timestamp;
 
     const smartTrade: ISmartTrade = {
       id: docId,
@@ -92,15 +97,15 @@ export class TestingDb {
   }
 
   // Update ST status to Filled based on current asset price
-  processSmartTrade(smartTradeId: string, candle: ICandlestick) {
+  processSmartTrade(smartTradeId: string) {
     const smartTrade = this.smartTrades.find(
       (smartTrade) => smartTrade.id === smartTradeId,
     );
 
-    const updatedAt = candle.timestamp;
+    const updatedAt = this.currentCandlestick.timestamp;
 
     if (smartTrade.buyOrder.status === OrderStatusEnum.Placed) {
-      if (candle.close <= smartTrade.buyOrder.price) {
+      if (this.currentCandlestick.close <= smartTrade.buyOrder.price) {
         smartTrade.buyOrder = {
           ...smartTrade.buyOrder,
           status: OrderStatusEnum.Filled,
@@ -116,7 +121,7 @@ export class TestingDb {
       smartTrade.sellOrder &&
       smartTrade.sellOrder.status === OrderStatusEnum.Placed
     ) {
-      if (candle.close >= smartTrade.sellOrder.price) {
+      if (this.currentCandlestick.close >= smartTrade.sellOrder.price) {
         smartTrade.sellOrder = {
           ...smartTrade.sellOrder,
           status: OrderStatusEnum.Filled,
