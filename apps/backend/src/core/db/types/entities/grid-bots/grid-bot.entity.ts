@@ -13,6 +13,7 @@ import { InitialInvestmentDto } from 'src/core/db/firestore/repositories/grid-bo
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { InitialInvestment } from 'src/core/db/types/entities/grid-bots/investment/initial-investment.interface';
+import { AreGridLinesSortedInAscOrder } from 'src/core/db/utils/validation/grid-bot/are-grid-lines-sorted-in-asc-order.decorator';
 import { GridBotSmartTradeRefEntity } from './smart-trades/smart-trade-ref.entity';
 import { IGridBotSmartTradeRef } from './smart-trades/smart-trade-ref.interface';
 
@@ -41,6 +42,7 @@ export class GridBotEntity implements IGridBot {
     isArray: true,
   })
   @IsDefined()
+  @AreGridLinesSortedInAscOrder()
   @ValidateNested()
   @Type(() => GridLineDto)
   gridLines: IGridLine[];
