@@ -13,12 +13,11 @@ import { InitialInvestmentDto } from 'src/core/db/firestore/repositories/grid-bo
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IGridLine } from 'src/core/db/types/entities/grid-bots/grid-lines/grid-line.interface';
 import { InitialInvestment } from 'src/core/db/types/entities/grid-bots/investment/initial-investment.interface';
+import { AreGridLinesSortedInAscOrder } from 'src/core/db/utils/validation/grid-bot/are-grid-lines-sorted-in-asc-order.decorator';
 import { GridBotSmartTradeRefEntity } from './smart-trades/smart-trade-ref.entity';
 import { IGridBotSmartTradeRef } from './smart-trades/smart-trade-ref.interface';
 
-@ApiExtraModels(
-  GridBotSmartTradeRefEntity
-)
+@ApiExtraModels(GridBotSmartTradeRefEntity)
 export class GridBotEntity implements IGridBot {
   @IsNotEmpty()
   @IsString()
@@ -41,6 +40,7 @@ export class GridBotEntity implements IGridBot {
     isArray: true,
   })
   @IsDefined()
+  @AreGridLinesSortedInAscOrder()
   @ValidateNested()
   @Type(() => GridLineDto)
   gridLines: IGridLine[];
@@ -56,9 +56,7 @@ export class GridBotEntity implements IGridBot {
   @ApiProperty({
     type: 'array',
     items: {
-      oneOf: [
-        { $ref: getSchemaPath(GridBotSmartTradeRefEntity) },
-      ],
+      oneOf: [{ $ref: getSchemaPath(GridBotSmartTradeRefEntity) }],
     },
   })
   smartTrades: IGridBotSmartTradeRef[];
