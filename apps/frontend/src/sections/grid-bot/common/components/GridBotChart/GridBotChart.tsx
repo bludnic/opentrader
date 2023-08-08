@@ -1,4 +1,4 @@
-import { IGridLine } from '@bifrost/types';
+import { IGridLine } from "@bifrost/types";
 import { useRef, useEffect, FC } from "react";
 
 import {
@@ -16,9 +16,14 @@ import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
 import { ICandlestick } from "src/lib/bifrost/apiClient";
 import { useElementSize } from "usehooks-ts";
-import { TradeDto } from 'src/lib/bifrost/rtkApi';
+import { BacktestingTradeDto } from "src/lib/bifrost/rtkApi";
+import { chartMaxHeight, chartMaxWidth } from "./constants";
 
-function buy(price: number, time: Time, smartTradeId: string): SeriesMarker<Time> {
+function buy(
+  price: number,
+  time: Time,
+  smartTradeId: string
+): SeriesMarker<Time> {
   return {
     time,
     position: "belowBar",
@@ -28,7 +33,11 @@ function buy(price: number, time: Time, smartTradeId: string): SeriesMarker<Time
   };
 }
 
-function sell(price: number, time: Time, smartTradeId: string): SeriesMarker<Time> {
+function sell(
+  price: number,
+  time: Time,
+  smartTradeId: string
+): SeriesMarker<Time> {
   return {
     time,
     position: "aboveBar",
@@ -38,14 +47,14 @@ function sell(price: number, time: Time, smartTradeId: string): SeriesMarker<Tim
   };
 }
 
-function tradeToMarker(trade: TradeDto): SeriesMarker<Time> {
-  const time = (new Date(trade.time).getTime() / 1000) as UTCTimestamp
+function tradeToMarker(trade: BacktestingTradeDto): SeriesMarker<Time> {
+  const time = (new Date(trade.time).getTime() / 1000) as UTCTimestamp;
 
-  if (trade.side === 'buy') {
-    return buy(trade.price, time, trade.smartTradeId)
+  if (trade.side === "buy") {
+    return buy(trade.price, time, trade.smartTrade.id);
   }
 
-  return sell(trade.price, time, trade.smartTradeId)
+  return sell(trade.price, time, trade.smartTrade.id);
 }
 
 const componentName = "BacktestingChart";
@@ -55,13 +64,16 @@ const classes = {
 
 const Root = styled("div")(({ theme }) => ({
   /* Styles applied to the root element. */
-  [`& .${classes.root}`]: {},
+  [`&.${classes.root}`]: {
+    width: "auto",
+    maxWidth: "100%",
+  },
 }));
 
 type GridBotChartProps = {
   candlesticks: ICandlestick[];
   gridLines: IGridLine[];
-  trades?: TradeDto[];
+  trades?: BacktestingTradeDto[];
   className?: string;
 };
 
@@ -95,8 +107,8 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
     }
 
     chartApi.current = createChart(chartRef.current, {
-      width: 1500,
-      height: 600,
+      width: chartMaxWidth,
+      height: chartMaxHeight,
       layout: {
         background: { color: "#222" },
         textColor: "#DDD",
@@ -150,7 +162,7 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
     });
 
     lineSeries.setData(lineSeriesData);
-    
+
     // Setting trades
     const tradeMarkers: SeriesMarker<Time>[] = trades.map(tradeToMarker);
     lineSeries.setMarkers(tradeMarkers);
@@ -166,8 +178,8 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
 
   useEffect(() => {
     chartApi.current?.applyOptions({
-      width,
-      height,
+      width: width < chartMaxWidth ? width : chartMaxWidth,
+      height: height < chartMaxHeight ? height : chartMaxHeight,
     });
   }, [width, height]);
 

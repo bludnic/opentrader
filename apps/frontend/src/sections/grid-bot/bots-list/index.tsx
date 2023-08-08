@@ -64,7 +64,7 @@ export const BotsListPage: FC = () => {
           ml: 0, // align to left
         },
       }}
-      DrawerProps={{
+      NavigationProps={{
         title: "Grid Bots",
         action: (
           <Link href="/grid-bot/create" as="/grid-bot/create" passHref>
@@ -74,7 +74,7 @@ export const BotsListPage: FC = () => {
       }}
     >
       <Grid container spacing={4}>
-        <Grid item xl={6} xs={12}>
+        <Grid item xl={6} md={6} xs={12}>
           {data?.bots.map((bot, i) => (
             <BotCard
               key={bot.id}

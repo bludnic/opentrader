@@ -28,12 +28,17 @@ import {
 
 import rootSaga from "./rootSaga";
 import { todoReducer, TodoState } from "src/store/todo";
+import {
+  backtestingFormSlice,
+  BacktestingFormState,
+} from "src/sections/grid-bot/create-bot/store/backtesting-form";
 
 export type RootState = {
   todo: TodoState;
   gridBotForm: GridBotFormState;
   gridBotInitPage: CreateGridBotPageInitState;
   createGridBot: CreateGridBotState;
+  backtestingForm: BacktestingFormState;
   exchangeAccounts: ExchangeAccountsState;
   currentAssetPrice: CurrentAssetPriceState;
   candlesticks: CandlesticksState;
@@ -71,6 +76,7 @@ const makeStore = (context: Context) => {
       threeCommasAccountsApi: threeCommasAccountsApi.reducer,
       candlesticksHistoryApi: candlesticksHistoryApi.reducer,
       rtkApi: rtkApi.reducer,
+      backtestingForm: backtestingFormSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()

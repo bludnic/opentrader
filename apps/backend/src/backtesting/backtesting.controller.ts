@@ -28,7 +28,7 @@ import { DataSource } from 'typeorm';
 import { BacktestingService } from './backtesting.service';
 import { RunGridBotBacktestRequestBodyDto } from './dto/grid-bot/run-backtest/run-grid-bot-backtest-request-body.dto';
 import { RunGridBotBacktestResponseBodyDto } from './dto/grid-bot/run-backtest/run-grid-bot-backtest-response-body.dto';
-import { ITrade } from './dto/types/trade/trade.interface';
+import { IBacktestingTrade } from './dto/types/trade/trade.interface';
 import { convertSmartTradesToTrades } from './utils/convertSmartTradesToTrades';
 
 @Controller({
@@ -52,7 +52,7 @@ export class BacktestingController {
     @Body() body: RunGridBotBacktestByBotIdDto,
   ): Promise<{
     candles: ICandlestick[];
-    trades: ITrade[];
+    trades: IBacktestingTrade[];
     finishedSmartTradesCount: number;
     totalProfit: number;
     smartTrades: ISmartTrade[];
@@ -107,7 +107,9 @@ export class BacktestingController {
 
     const bot: IGridBot = {
       ...botDto,
-      gridLines: [...botDto.gridLines].sort((left, right) => left.price - right.price), // @todo validation
+      gridLines: [...botDto.gridLines].sort(
+        (left, right) => left.price - right.price,
+      ), // @todo validation
       id: 'doesnt_matter', // @todo make a helper function
       name: 'Doesnt matter',
       initialInvestment: {
@@ -116,15 +118,15 @@ export class BacktestingController {
           quantity: 0,
         },
         quoteCurrency: {
-          quantity: 0
-        }
+          quantity: 0,
+        },
       },
       enabled: true,
       createdAt: Date.now(),
-      exchangeAccountId: "1",
-      userId: "0",
-      smartTrades: []
-    }
+      exchangeAccountId: '1',
+      userId: '0',
+      smartTrades: [],
+    };
 
     const symbolId = composeSymbolId(
       ExchangeCode.OKX,
@@ -154,7 +156,6 @@ export class BacktestingController {
       await backtesting.run(bot, useGridBot, candlesticks);
 
     const trades = convertSmartTradesToTrades(smartTrades);
-
 
     return {
       trades,

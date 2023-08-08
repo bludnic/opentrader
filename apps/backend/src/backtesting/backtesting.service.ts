@@ -18,6 +18,7 @@ export class BacktestingService {
     return {
       manager,
       db,
+      testingExchange,
     };
   }
 
@@ -31,13 +32,16 @@ export class BacktestingService {
     finishedSmartTradesCount: number;
     totalProfit: number;
   }> {
-    const { manager, db } = this.createManager(bot);
+    const { manager, db, testingExchange } = this.createManager(bot);
 
     for (const [index, candle] of candles.entries()) {
       db.setCurrentCandlestick(candle);
+      testingExchange.setCurrentAssetPrice(candle.close);
+
+      const candleDateString = new Date(candle.timestamp).toUTCString();
 
       console.log(
-        `Process candle #${index} with time #${candle.timestamp} of ${candles.length} with close price:`,
+        `Candle ${candleDateString} (#${index} of ${candles.length})`,
         candle.close,
       );
       await manager.process(botControl);

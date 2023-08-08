@@ -1,18 +1,18 @@
 import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
-import { ITrade } from '../dto/types/trade/trade.interface';
+import { IBacktestingTrade } from '../dto/types/trade/trade.interface';
 
 export function convertSmartTradesToTrades(
   smartTrades: ISmartTrade[],
-): ITrade[] {
-  const trades: ITrade[] = [];
+): IBacktestingTrade[] {
+  const trades: IBacktestingTrade[] = [];
 
   for (const smartTrade of smartTrades) {
     const { buyOrder, sellOrder, quantity } = smartTrade;
 
     if (buyOrder.status === OrderStatusEnum.Filled) {
       trades.push({
-        smartTradeId: smartTrade.id,
+        smartTrade,
         price: buyOrder.price,
         quantity,
         side: OrderSideEnum.Buy,
@@ -22,7 +22,7 @@ export function convertSmartTradesToTrades(
 
     if (sellOrder && sellOrder.status === OrderStatusEnum.Filled) {
       trades.push({
-        smartTradeId: smartTrade.id,
+        smartTrade,
         price: sellOrder.price,
         quantity,
         side: OrderSideEnum.Sell,

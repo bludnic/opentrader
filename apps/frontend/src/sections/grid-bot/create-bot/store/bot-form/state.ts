@@ -38,5 +38,5 @@ export const initialState: GridBotFormState = {
 
   gridLines: [],
 
-  barSize: BarSize.ONE_MINUTE,
+  barSize: BarSize.ONE_HOUR,
 };

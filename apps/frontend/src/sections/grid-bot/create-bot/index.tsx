@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { rtkApi, useRunGridBotBacktestMutation } from "src/lib/bifrost/rtkApi";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { BacktestingCard } from "../common/components/BacktestingCard/BacktestingCard";
+import { useBacktesting } from "./hooks/useBacktesting";
 
 const componentName = "CreateBotPage";
 const classes = {
@@ -57,28 +58,17 @@ const CreateBotPage: FC = () => {
     dispatch(initPage());
   }, []);
 
-  const [runBacktest, backtestQuery] = useRunGridBotBacktestMutation();
-  const handleRunBacktest = () => {
-    runBacktest({
-      bot: {
-        baseCurrency: symbol.baseCurrency,
-        quoteCurrency: symbol.quoteCurrency,
-        gridLines,
-      },
-      startDate: '2023-03-01',
-      endDate: '2023-03-12'
-    })
-  }
-
   const gridLines = symbol
     ? calcGridLinesWithPriceFilter(
-      highPrice,
-      lowPrice,
-      gridLinesNumber,
-      Number(quantityPerGrid),
-      symbol.filters
-    )
+        highPrice,
+        lowPrice,
+        gridLinesNumber,
+        Number(quantityPerGrid),
+        symbol.filters
+      )
     : [];
+
+  const { runBacktest, backtestQuery } = useBacktesting(gridLines);
 
   if (isPageReady) {
     return (
@@ -90,7 +80,7 @@ const CreateBotPage: FC = () => {
             ml: 0, // align to left
           },
         }}
-        DrawerProps={{
+        NavigationProps={{
           back: {
             href: "/grid-bot",
           },
@@ -126,7 +116,7 @@ const CreateBotPage: FC = () => {
 
           <Grid container item xs={12}>
             <BacktestingCard
-              onRun={handleRunBacktest}
+              onRun={runBacktest}
               isLoading={backtestQuery.isLoading}
               data={backtestQuery.data}
             />

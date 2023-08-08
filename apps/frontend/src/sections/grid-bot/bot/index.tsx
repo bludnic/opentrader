@@ -63,7 +63,7 @@ const BotPage: FC<BotPageProps> = (props) => {
             ml: 0, // align to left
           },
         }}
-        DrawerProps={{
+        NavigationProps={{
           back: {
             href: "/grid-bot",
           },
@@ -85,7 +85,7 @@ const BotPage: FC<BotPageProps> = (props) => {
             ml: 0, // align to left
           },
         }}
-        DrawerProps={{
+        NavigationProps={{
           back: {
             href: "/grid-bot",
           },
@@ -108,7 +108,7 @@ const BotPage: FC<BotPageProps> = (props) => {
           ml: 0, // align to left
         },
       }}
-      DrawerProps={{
+      NavigationProps={{
         back: {
           href: "/grid-bot",
         },
@@ -116,7 +116,7 @@ const BotPage: FC<BotPageProps> = (props) => {
       }}
     >
       <Grid container spacing={4}>
-        <Grid item xl={4} xs={12}>
+        <Grid item xl={4} md={6} xs={12}>
           <BotCard bot={botQuery.data.bot} />
 
           <ActiveSmartTradesCard bot={botQuery.data.bot} sx={{ mt: 2 }} />

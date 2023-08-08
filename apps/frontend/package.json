@@ -24,6 +24,7 @@
     "@mui/icons-material": "^5.3.0",
     "@mui/material": "^5.3.0",
     "@mui/styles": "^5.3.0",
+    "@mui/x-date-pickers": "^6.0.1",
     "@openapitools/openapi-generator-cli": "^2.4.25",
     "@reduxjs/toolkit": "^1.7.1",
     "axios": "^0.25.0",

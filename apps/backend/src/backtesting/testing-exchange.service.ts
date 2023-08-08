@@ -17,9 +17,14 @@ import {
   IGetSymbolInfoRequest,
   ISymbolInfo,
 } from '@bifrost/types';
-import { ETH_USDT } from './history/ETH_USDT_90_DAYS_REAL_ACCOUNT';
 
 export class TestingExchangeService implements IExchangeService {
+  // Testing-specific properties
+  private assetPrice: number;
+  public setCurrentAssetPrice(price: number) {
+    this.assetPrice = price;
+  }
+
   async accountAssets(): Promise<IAccountAsset[]> {
     return [];
   }
@@ -59,9 +64,11 @@ export class TestingExchangeService implements IExchangeService {
   async getMarketPrice(
     params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse> {
+    const { symbol } = params;
+
     return {
-      symbol: 'UNI-USDT',
-      price: ETH_USDT[ETH_USDT.length - 1].close,
+      symbol,
+      price: this.assetPrice,
       timestamp: 0,
     };
   }

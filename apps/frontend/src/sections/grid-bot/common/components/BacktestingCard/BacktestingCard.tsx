@@ -5,13 +5,21 @@ import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { FC } from "react";
 import { SxProps } from "@mui/system";
-import { Button, Theme } from "@mui/material";
+import { Box, Button, CircularProgress, Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { BacktestingTable } from "./components/BacktestingTable";
 import { useAppSelector } from "src/store/hooks";
-import { selectCurrencyPair, selectGridLines } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import {
+  selectCurrencyPair,
+  selectGridLines,
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
-import { RunGridBotBacktestResponseBodyDto, useRunGridBotBacktestMutation } from "src/lib/bifrost/rtkApi";
+import { RunGridBotBacktestResponseBodyDto } from "src/lib/bifrost/rtkApi";
+import { TradesTable } from "./components/TradesTable/TradesTable";
+import { BacktestingForm } from "../BacktestingForm/BacktestingForm";
+import {
+  selectEndDate,
+  selectStartDate,
+} from "src/sections/grid-bot/create-bot/store/backtesting-form";
 
 const componentName = "BacktestingCard";
 const classes = {
@@ -21,7 +29,7 @@ const classes = {
 const Root = styled(Card)(({ theme }) => ({
   /* Styles applied to the root element. */
   [`&.${classes.root}`]: {
-    width: '100%'
+    width: "100%",
   },
 }));
 
@@ -38,30 +46,51 @@ export const BacktestingCard: FC<BacktestingCardProps> = (props) => {
 
   const currencyPair = useAppSelector(selectCurrencyPair);
   const symbol = useAppSelector(selectSymbolById(currencyPair));
-  const gridLines = useAppSelector(selectGridLines);
-  
+
+  const startDate = useAppSelector(selectStartDate);
+  const endDate = useAppSelector(selectEndDate);
+
+  const isDateRangeSelected = !!startDate && !!endDate;
+
   const handleRun = () => {
-    onRun()
-  }
+    onRun();
+  };
 
   return (
     <Root className={clsx(classes.root, className)} sx={sx}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Backtesting
-        </Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h5" component="div">
+            Backtesting
+          </Typography>
 
-        <Button onClick={handleRun}>Run backtest</Button>
+          <Button
+            onClick={handleRun}
+            variant="outlined"
+            disabled={isLoading || !isDateRangeSelected}
+            startIcon={isLoading ? <CircularProgress size={18} /> : null}
+          >
+            Run backtest
+          </Button>
+        </Box>
       </CardContent>
 
       <Divider />
 
       <CardContent>
-        {isLoading ? <div>Loading...</div> : data ? <BacktestingTable
-          smartTrades={data.smartTrades}
-          baseCurrency={symbol.baseCurrency}
-          quoteCurrency={symbol.quoteCurrency}
-        /> : null}
+        <BacktestingForm />
+      </CardContent>
+
+      <CardContent>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : data ? (
+          <TradesTable
+            trades={data.trades}
+            baseCurrency={symbol.baseCurrency}
+            quoteCurrency={symbol.quoteCurrency}
+          />
+        ) : null}
       </CardContent>
     </Root>
   );

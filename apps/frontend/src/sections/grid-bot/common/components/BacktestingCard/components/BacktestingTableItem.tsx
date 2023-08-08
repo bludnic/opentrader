@@ -33,9 +33,7 @@ export const BacktestingTableItem: FC<BacktestingTableItemProps> = (props) => {
   const { className, smartTrade } = props;
 
   return (
-    <StyledTableRow
-      className={clsx(classes.root, className)}
-    >
+    <StyledTableRow className={clsx(classes.root, className)}>
       <TableCell component="th" scope="row">
         {smartTrade.id}
       </TableCell>
@@ -56,9 +54,11 @@ export const BacktestingTableItem: FC<BacktestingTableItemProps> = (props) => {
         {smartTrade.sellOrder.price}
       </TableCell>
 
-
       <TableCell component="th" align="right">
-        {new Big(smartTrade.sellOrder.price).minus(smartTrade.buyOrder.price).toFixed(2).toString()}
+        {new Big(smartTrade.sellOrder.price)
+          .minus(smartTrade.buyOrder.price)
+          .toFixed(2)
+          .toString()}
       </TableCell>
     </StyledTableRow>
   );
