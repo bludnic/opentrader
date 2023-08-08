@@ -4,14 +4,28 @@ services:
   backend:
     build:
       target: development
-      context: ./packages/backend
+      context: ./apps/backend
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
   frontend:
     build:
       target: development
-      context: ./packages/frontend
+      context: ./apps/frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres-db:
+
