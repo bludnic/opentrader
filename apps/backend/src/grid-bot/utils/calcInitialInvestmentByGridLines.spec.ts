@@ -28,12 +28,7 @@ describe('calcInitialInvestmentByGridLines', () => {
     };
 
     expect(
-      calcInitialInvestmentByGridLines(
-        gridLines,
-        bot.baseCurrency,
-        bot.quoteCurrency,
-        currentAssetPrice,
-      ),
+      calcInitialInvestmentByGridLines(gridLines, currentAssetPrice),
     ).toEqual(expected);
   });
 });
