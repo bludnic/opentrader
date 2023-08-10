@@ -1,4 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
+import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThreeCommasAccountsController } from 'src/3commas-accounts/3commas-accounts.controller';
@@ -11,6 +12,7 @@ import {
   winstonNestLikeTransport,
 } from 'src/common/helpers/logging/logging-transports';
 import { FirebaseUserMiddleware } from 'src/common/middlewares/firebase-user.middleware';
+import { bullMQConfig } from 'src/config/bullmq.config';
 import { getTypeOrmConfig } from 'src/config/utils/getTypeOrmConfig';
 import { postgresConfig } from 'src/config/postgres.config';
 import { envValidationSchema } from 'src/config/utils/envValidationSchema';
@@ -25,6 +27,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
+import { QueueModule } from 'src/queue/queue.module';
 import { ThreeCommasApiModule } from 'src/shared/3commas-api/3commas-api.module';
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
@@ -40,7 +43,7 @@ import { SymbolsModule } from './symbols/symbols.module';
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.development.local'],
-      load: [postgresConfig],
+      load: [postgresConfig, bullMQConfig],
       validationSchema: envValidationSchema,
       isGlobal: true,
     }),
@@ -67,6 +70,10 @@ import { SymbolsModule } from './symbols/symbols.module';
           ? undefined
           : './firebase-credentials.json',
     }),
+    BullModule.forRoot({
+      connection: bullMQConfig(),
+    }),
+    QueueModule,
     ScheduleModule.forRoot(),
     CoreModule,
     GridBotModule,

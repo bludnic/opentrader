@@ -56,6 +56,13 @@ $ docker compose up -d postgres-db # start service
 $ docker compose -p bifrost stop postgres-db # stop service
 ```
 
+# Redis service (used by BullMQ)
+
+```bash
+$ docker compose up -d redis # start service
+$ docker compose -p bifrost stop redis # stop service
+```
+
 ### Frontend & Backend
 
 ```bash
@@ -65,3 +72,4 @@ $ turbo run dev # runs both frontend and backend dev servers
 
 - Frontend: http://localhost:3000
 - Backend: http://localhost:4000
+- Bull Board: http://localhost:4000/bapi/admin/queues

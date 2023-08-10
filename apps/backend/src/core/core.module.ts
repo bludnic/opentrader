@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { BullMQModule } from 'src/core/bullmq/bullmq.module';
 import { DatabaseModule } from 'src/core/db/db.module';
 import { ExchangesModule } from 'src/core/exchanges/exchanges.module';
 import { TwitterApiModule } from 'src/core/twitter-api/twitter-api.module';
@@ -12,6 +13,7 @@ import { SmartTradeModule } from './smart-trade/smart-trade.module';
     TwitterApiModule,
     SmartTradeModule,
     BotManagerModule,
+    BullMQModule,
   ],
   exports: [
     DatabaseModule,
@@ -19,6 +21,7 @@ import { SmartTradeModule } from './smart-trade/smart-trade.module';
     TwitterApiModule,
     SmartTradeModule,
     BotManagerModule,
+    BullMQModule,
   ],
   providers: [],
 })

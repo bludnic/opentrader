@@ -9,4 +9,7 @@ export const envValidationSchema = joi.object({
   POSTGRES_USER: joi.string().required(),
   POSTGRES_PASSWORD: joi.string().required(),
   POSTGRES_DATABASE: joi.string().required(),
+
+  BULLMQ_REDIS_HOST: joi.string().required(),
+  BULLMQ_REDIS_PORT: joi.number().required(),
 });

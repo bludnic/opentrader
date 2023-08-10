@@ -26,6 +26,16 @@ services:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  redis:
+    image: redis:alpine
+    command: redis-server
+    volumes:
+      - redis-data:/data
+      - redis-conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
 volumes:
   postgres-db:
+  redis-data:
+  redis-conf:
 
