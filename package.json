@@ -4,5 +4,9 @@
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "packageManager": "pnpm@7.29.3"
 }

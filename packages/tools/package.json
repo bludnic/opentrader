@@ -20,7 +20,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@bifrost/types": "*",
+    "@bifrost/types": "workspace:*",
     "big.js": "^6.2.1"
   }
 }

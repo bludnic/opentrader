@@ -6,11 +6,11 @@
 # NodeJS v16 required
 $ node -v
 
-# Install Turborepo globally (v1.8 required)
-$ npm install turbo --global
+# Check `pnpm` version (v7.29.3 required)
+$ pnpm -v
 
-# Check npm version (v9 required)
-$ npm -v
+# Install Turborepo globally (v1.8 required)
+$ pnpm install turbo --global
 
 # Check Java is installed
 $ java -version
