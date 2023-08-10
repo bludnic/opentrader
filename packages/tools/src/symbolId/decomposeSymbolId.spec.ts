@@ -8,12 +8,12 @@ describe("decomposeSymbolId", () => {
   it("decompose valid symbol", () => {
     const expectedResult: DecomposeSymbolIdResult = {
       exchangeCode: ExchangeCode.OKX,
-      currencyPairSymbol: "BTC-USDT",
+      currencyPairSymbol: "BTC/USDT",
       baseCurrency: "BTC",
       quoteCurrency: "USDT",
     };
 
-    expect(decomposeSymbolId("OKX:BTC-USDT")).toEqual(expectedResult);
+    expect(decomposeSymbolId("OKX:BTC/USDT")).toEqual(expectedResult);
   });
 
   it("should throw an error when symbol is not valid", () => {

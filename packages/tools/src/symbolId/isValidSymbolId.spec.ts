@@ -2,7 +2,7 @@ import { isValidSymbolId } from './isValidSymbolId';
 
 describe('isValidSymbolId', () => {
   it('test existing exchange with a valid currency pair', () => {
-    expect(isValidSymbolId('OKX:BTC-USDT')).toBe(true);
+    expect(isValidSymbolId('OKX:BTC/USDT')).toBe(true);
   });
 
   it('test existing exchange with a non-valid currency pair', () => {
@@ -10,6 +10,6 @@ describe('isValidSymbolId', () => {
   });
 
   it('test non-existing exchange with a valid currency pair', () => {
-    expect(isValidSymbolId('UNK:BTC-USDT')).toBe(false);
+    expect(isValidSymbolId('UNK:BTC/USDT')).toBe(false);
   });
 });
