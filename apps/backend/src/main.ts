@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { GLOBAL_PREFIX } from 'src/common/constants';
 import { OkxApiExceptionFilter } from 'src/core/exchanges/okx/utils/errors/okx-api-exception.filter';
 import { TwitterApiExceptionFilter } from 'src/core/twitter-api/utils/client/errors/twitter-api-exception.filter';
 import { AppModule } from './app.module';
@@ -11,21 +12,21 @@ async function bootstrap() {
   const logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
 
   app.useLogger(logger);
-  app.setGlobalPrefix('bapi');
+  app.setGlobalPrefix(GLOBAL_PREFIX);
   app.enableCors();
 
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Bifrost Swagger UI')
     .setDescription(
-      'Bifrost API Schema <a href="/bapi/swagger-json" target="_blank">schema.json</a>',
+      `Bifrost API Schema <a href="/${GLOBAL_PREFIX}/swagger-json" target="_blank">schema.json</a>`,
     )
     .setVersion('dev')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
   });
-  SwaggerModule.setup('bapi/swagger', app, document);
+  SwaggerModule.setup(`${GLOBAL_PREFIX}/swagger`, app, document);
 
   app.enableShutdownHooks();
   app.useGlobalPipes(
