@@ -1,2 +1,2 @@
-export const chartMaxWidth = 878;
-export const chartMaxHeight = 374;
+export const chartMaxWidth = 929;
+export const chartMaxHeight = 400;
