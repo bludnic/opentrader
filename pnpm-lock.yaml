@@ -165,6 +165,7 @@ importers:
       date-fns: ^2.29.3
       eslint: 8.6.0
       eslint-config-next: 12.0.7
+      final-form: ^4.20.9
       jest: ^29.4.3
       jest-environment-jsdom: ^29.4.3
       lightweight-charts: ^3.7.0
@@ -202,15 +203,16 @@ importers:
       big.js: 6.2.1
       clsx: 1.2.1
       date-fns: 2.29.3
+      final-form: 4.20.9
       lightweight-charts: 3.8.0
       lodash: 4.17.21
-      mui-rff: 5.3.2_cowdbeugjllm34rmqyw4qhxppi
+      mui-rff: 5.3.2_tp4vytqqouzcqv6ig3tv3bggyy
       next: 12.0.7_sfoxds7t5ydpegc3knd667wn6m
       next-redux-wrapper: 7.0.5_pvw7sn2mlv3n7qigqx52afw37y
       notistack: 2.0.8_olkm7t4g3espwbyucbrv5yrl2u
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-final-form: 6.5.9_react@17.0.2
+      react-final-form: 6.5.9_h3bvvsznexzmzjbqgey6n4axxu
       react-number-format: 5.1.4_sfoxds7t5ydpegc3knd667wn6m
       react-redux: 8.0.5_r46rxf5bwhv2e2l4gk4l577ryq
       react-window: 1.8.8_sfoxds7t5ydpegc3knd667wn6m
@@ -5662,6 +5664,12 @@ packages:
     dependencies:
       to-regex-range: 5.0.1
 
+  /final-form/4.20.9:
+    resolution: {integrity: sha512-shA1X/7v8RmukWMNRHx0l7+Bm41hOivY78IvOiBrPVHjyWFIyqqIEMCz7yTVRc9Ea+EU4WkZ5r4MH6whSo5taw==}
+    dependencies:
+      '@babel/runtime': 7.21.0
+    dev: false
+
   /finalhandler/1.1.2:
     resolution: {integrity: sha512-aAWcW57uxVNrQZqFXjITpW3sIUQmHGG3qSb9mUah9MgMC4NeWhNOlNjXEYq3HjRAvL6arUviZGGJsBg6z0zsWA==}
     engines: {node: '>= 0.8'}
@@ -8110,7 +8118,7 @@ packages:
       msgpackr-extract: 3.0.2
     dev: false
 
-  /mui-rff/5.3.2_cowdbeugjllm34rmqyw4qhxppi:
+  /mui-rff/5.3.2_tp4vytqqouzcqv6ig3tv3bggyy:
     resolution: {integrity: sha512-cTWZ2HiMviK9+BPa3AzJHWM8V3RpnHgoEIdEbYpYjAD5QhSqMnL2yaZZ6P9/Q+61wQccH7ZzjE/qVnSwEMhWNA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -8128,8 +8136,9 @@ packages:
       '@mui/material': 5.11.13_e4aey3i6qtzljhyyjrnhcttrwe
       '@mui/styles': 5.11.13_wchdyfjsjs7jbjx7r7guc3etfq
       '@mui/x-date-pickers': 6.0.2_p3qiegdeogxufcuekiuazpbqm4
+      final-form: 4.20.9
       react: 17.0.2
-      react-final-form: 6.5.9_react@17.0.2
+      react-final-form: 6.5.9_h3bvvsznexzmzjbqgey6n4axxu
     optionalDependencies:
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0_date-fns@2.29.3
@@ -9119,13 +9128,14 @@ packages:
       react: 17.0.2
       scheduler: 0.20.2
 
-  /react-final-form/6.5.9_react@17.0.2:
+  /react-final-form/6.5.9_h3bvvsznexzmzjbqgey6n4axxu:
     resolution: {integrity: sha512-x3XYvozolECp3nIjly+4QqxdjSSWfcnpGEL5K8OBT6xmGrq5kBqbA6+/tOqoom9NwqIPPbxPNsOViFlbKgowbA==}
     peerDependencies:
       final-form: ^4.20.4
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.21.0
+      final-form: 4.20.9
       react: 17.0.2
     dev: false
 
