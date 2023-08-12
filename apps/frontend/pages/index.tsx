@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from 'react';
 
 const componentName = "Index";
 const classes = {
@@ -19,6 +21,12 @@ const Root = styled("div")(({ theme }) => ({
 }));
 
 const Home: NextPage = (props) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/grid-bot');
+  }, []);
+
   return (
     <Root className={classes.root}>
       <Box
