@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "bootstrap": "npm run build"
+    "bootstrap": "pnpm run build"
   },
   "author": "",
   "license": "ISC",

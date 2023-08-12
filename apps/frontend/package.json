@@ -10,7 +10,7 @@
     "openapi:coingecko:generate": "node src/lib/coingecko/bin/openapi-generate.js",
     "openapi:bifrost:generate": "node src/lib/bifrost/bin/openapi-generate.js",
     "openapi:bifrost:rtk:generate": " npx @rtk-query/codegen-openapi src/lib/bifrost/openapi-config.ts",
-    "bootstrap": "npm install && npm run openapi:coingecko:generate && npm run openapi:bifrost:generate && npm run openapi:bifrost:rtk:generate",
+    "bootstrap": "pnpm install && pnpm run openapi:coingecko:generate && pnpm run openapi:bifrost:generate && pnpm run openapi:bifrost:rtk:generate",
     "test:unit": "jest"
   },
   "dependencies": {
