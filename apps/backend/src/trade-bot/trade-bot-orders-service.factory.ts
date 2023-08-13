@@ -1,11 +1,8 @@
+import { exchanges } from '@bifrost/exchanges';
 import { HttpService } from '@nestjs/axios';
 import { FactoryProvider, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
-import { ExchangeCode } from '@bifrost/types';
-import { OKXClientService } from 'src/core/exchanges/okx/okx-client.service';
-import { OkxExchangeService } from 'src/core/exchanges/okx/okx-exchange.service';
-import { getExchangeContextByAccount } from 'src/core/exchanges/utils/contexts';
 import { TradeBotOrdersService } from './trade-bot-orders.service';
 
 export const TradeBotOrderServiceFactorySymbol = Symbol(
@@ -31,25 +28,16 @@ export const tradeBotOrdersServiceFactory: FactoryProvider = {
           bot.exchangeAccountId,
         );
 
-        const ctx = getExchangeContextByAccount(exchangeAccount);
+        const exchangeService = exchanges[exchangeAccount.credentials.code](
+          exchangeAccount.credentials,
+        );
 
-        switch (exchangeAccount.credentials.code) {
-          case ExchangeCode.OKX: {
-            const clientService = new OKXClientService(
-              httpService,
-              configService,
-              ctx,
-            );
-            const exchangeService = new OkxExchangeService(clientService);
-
-            return new TradeBotOrdersService(
-              bot,
-              exchangeService,
-              firestoreService,
-              logger,
-            );
-          }
-        }
+        return new TradeBotOrdersService(
+          bot,
+          exchangeService,
+          firestoreService,
+          logger,
+        );
       },
     };
   },

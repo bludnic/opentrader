@@ -26,6 +26,10 @@ export interface IGetLimitOrderResponse {
    */
   status: OrderStatus;
   /**
+   * Order fee.
+   */
+  fee: number;
+  /**
    * Creation time, Unix timestamp format in milliseconds, e.g. `1597026383085`
    */
   createdAt: number;

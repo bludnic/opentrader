@@ -1,7 +1,5 @@
 import {
   IAccountAsset,
-  IGetTradingFeeRatesRequest,
-  IGetTradingFeeRatesResponse,
   IGetCandlesticksRequest,
   ICandlestick,
   IGetMarketPriceRequest,
@@ -15,24 +13,27 @@ import {
   ITradingPairSymbolRequest,
   ISymbolInfo,
   IGetSymbolInfoRequest,
-} from '@bifrost/types';
+} from "@bifrost/types";
+import { Dictionary, Market, okex5 } from "ccxt";
 
-export interface IExchangeService {
+export interface IExchange {
+  ccxt: okex5;
+
+  loadMarkets(): Promise<Dictionary<Market>>; // forward to `ccxt.loadMarkets`
+
   accountAssets(): Promise<IAccountAsset[]>;
   getLimitOrder(body: IGetLimitOrderRequest): Promise<IGetLimitOrderResponse>;
   placeLimitOrder(
-    body: IPlaceLimitOrderRequest,
+    body: IPlaceLimitOrderRequest
   ): Promise<IPlaceLimitOrderResponse>;
   cancelLimitOrder(
-    body: ICancelLimitOrderRequest,
+    body: ICancelLimitOrderRequest
   ): Promise<ICancelLimitOrderResponse>;
   getMarketPrice(
-    params: IGetMarketPriceRequest,
+    params: IGetMarketPriceRequest
   ): Promise<IGetMarketPriceResponse>;
   getCandlesticks(params: IGetCandlesticksRequest): Promise<ICandlestick[]>;
-  getTradingFeeRates(
-    params: IGetTradingFeeRatesRequest,
-  ): Promise<IGetTradingFeeRatesResponse>;
-  getSymbols(params: IGetSymbolInfoRequest): Promise<ISymbolInfo[]>;
+  getSymbols(): Promise<ISymbolInfo[]>;
+  getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo>;
   tradingPairSymbol(params: ITradingPairSymbolRequest): string;
 }

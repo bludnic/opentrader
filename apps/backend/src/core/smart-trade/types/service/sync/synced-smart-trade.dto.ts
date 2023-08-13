@@ -1,4 +1,4 @@
-import { SyncedSmartTradeOrderDto } from "./synced-smart-trade-order.dto";
+import { SyncedSmartTradeOrderDto } from './synced-smart-trade-order.dto';
 
 export class SyncedSmartTradeDto {
   smartTradeId: string;

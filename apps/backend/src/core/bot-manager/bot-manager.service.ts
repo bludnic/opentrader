@@ -1,4 +1,4 @@
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
+import { IExchange } from '@bifrost/exchanges';
 import { ISmartTrade } from '../db/types/entities/smart-trade/smart-trade.interface';
 import { BotTemplate } from './bot-template/types/bot-template.type';
 import { isUseExchangeEffect } from './effects/utils/isUseExchangeEffect';
@@ -7,7 +7,7 @@ import { isUseSmartTradeEffect } from './effects/utils/isUseSmartTradeEffect';
 import { IBotControl } from './types/bot-control.interface';
 
 export class BotManagerService {
-  constructor(private bot: IBotControl, private exchange: IExchangeService) {}
+  constructor(private bot: IBotControl, private exchange: IExchange) {}
 
   async process(botTemplate: BotTemplate): Promise<void> {
     const generator = botTemplate(this.bot);

@@ -1,29 +1,29 @@
-import { SmartBuyOrder, SmartSellOrder } from "./orders/types";
+import { SmartBuyOrder, SmartSellOrder } from './orders/types';
 
 export interface ISmartTrade {
-    /**
-     * Uniq generated ID
-     */
-    id: string;
+  /**
+   * Uniq generated ID
+   */
+  id: string;
 
-    comment?: string;
+  comment?: string;
 
-    baseCurrency: string; // e.g 1INCH
-    quoteCurrency: string; // e.g USDT
+  baseCurrency: string; // e.g 1INCH
+  quoteCurrency: string; // e.g USDT
 
-    buyOrder: SmartBuyOrder;
-    // Note: Sell order is optional for a SmartTrade
-    sellOrder: SmartSellOrder | null;
+  buyOrder: SmartBuyOrder;
+  // Note: Sell order is optional for a SmartTrade
+  sellOrder: SmartSellOrder | null;
 
-    quantity: number;
+  quantity: number;
 
-    // SmartTrade can be attached to a specific TradeBot
-    // Set to `null` if it's an independent SmartTrade
-    botId: string | null;
+  // SmartTrade can be attached to a specific TradeBot
+  // Set to `null` if it's an independent SmartTrade
+  botId: string | null;
 
-    createdAt: number;
-    updatedAt: number;
+  createdAt: number;
+  updatedAt: number;
 
-    userId: string;
-    exchangeAccountId: string;
+  userId: string;
+  exchangeAccountId: string;
 }

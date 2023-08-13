@@ -1,4 +1,4 @@
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
+import { IExchange } from '@bifrost/exchanges';
 import {
   IAccountAsset,
   IGetTradingFeeRatesRequest,
@@ -16,13 +16,20 @@ import {
   IPlaceLimitOrderResponse,
   IGetSymbolInfoRequest,
   ISymbolInfo,
+  ExchangeCode,
 } from '@bifrost/types';
 
-export class TestingExchangeService implements IExchangeService {
+export class TestingExchangeService implements IExchange {
+  ccxt = {} as any;
+
   // Testing-specific properties
   private assetPrice: number;
   public setCurrentAssetPrice(price: number) {
     this.assetPrice = price;
+  }
+
+  async loadMarkets() {
+    return {};
   }
 
   async accountAssets(): Promise<IAccountAsset[]> {
@@ -39,6 +46,7 @@ export class TestingExchangeService implements IExchangeService {
       quantity: 1,
       side: 'buy',
       status: 'filled',
+      fee: 0,
       createdAt: 0,
     };
   }
@@ -57,7 +65,6 @@ export class TestingExchangeService implements IExchangeService {
   ): Promise<ICancelLimitOrderResponse> {
     return {
       orderId: '',
-      clientOrderId: '',
     };
   }
 
@@ -88,7 +95,29 @@ export class TestingExchangeService implements IExchangeService {
     };
   }
 
-  async getSymbols(params: IGetSymbolInfoRequest): Promise<ISymbolInfo[]> {
+  async getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo> {
+    return {
+      symbolId: 'ADA/USDT',
+      exchangeCode: ExchangeCode.OKX,
+      exchangeSymbolId: 'ADA-USDT',
+      baseCurrency: 'ADA',
+      quoteCurrency: 'USDT',
+      filters: {
+        price: {
+          minPrice: '0.0001',
+          tickSize: '0.0001',
+          maxPrice: '100000',
+        },
+        lot: {
+          minQuantity: '1',
+          stepSize: '1',
+          maxQuantity: '10000',
+        },
+      },
+    };
+  }
+
+  async getSymbols(): Promise<ISymbolInfo[]> {
     return [];
   }
 

@@ -1,3 +1,4 @@
+import { IExchange } from "@bifrost/exchanges";
 import { Logger } from '@nestjs/common';
 import { IPlaceLimitOrderRequest } from '@bifrost/types';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -5,14 +6,13 @@ import { OrderStatusEnum } from 'src/core/db/types/entities/trade-bot/orders/enu
 import { IOrder } from 'src/core/db/types/entities/trade-bot/orders/order.interface';
 import { OrderStatus } from 'src/core/db/types/entities/trade-bot/orders/types/order-status.type';
 import { ITradeBot } from 'src/core/db/types/entities/trade-bot/trade-bot.interface';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { calcOkxSymbol } from './utils/calcOkxSymbol';
 import { fromExchangeOrderToTradeOrder } from './utils/fromExchangeOrderToTradeOrder';
 
 export class TradeBotOrdersService {
   constructor(
     private bot: ITradeBot,
-    private exchange: IExchangeService,
+    private exchange: IExchange,
     private firestore: FirestoreService,
     private readonly logger: Logger,
   ) {}
@@ -37,17 +37,13 @@ export class TradeBotOrdersService {
   }
 
   async cancel(orderId: string) {
-    // @todo the symbol strucuture may vary across exchanges
-    // need a helper function for every exchange
-    const symbol = calcOkxSymbol(this.bot.baseCurrency, this.bot.quoteCurrency);
-
     const order = await this.exchange.cancelLimitOrder({
-      clientOrderId: orderId,
-      symbol,
+      orderId,
+      symbol: `${this.bot.baseCurrency}/${this.bot.quoteCurrency}`,
     });
 
     await this.firestore.tradeBot.updateOrder(
-      order.clientOrderId,
+      order.orderId,
       {
         status: OrderStatusEnum.Cancelled,
       },

@@ -1,5 +1,5 @@
-import { IExchangeService } from "src/core/exchanges/types/exchange-service.interface";
-import { BaseEffect } from "./base-effect";
-import { USE_EXCHANGE } from "./effect-types";
+import { IExchange } from '@bifrost/exchanges';
+import { BaseEffect } from './base-effect';
+import { USE_EXCHANGE } from './effect-types';
 
-export type UseExchangeEffect = BaseEffect<typeof USE_EXCHANGE, IExchangeService>;
+export type UseExchangeEffect = BaseEffect<typeof USE_EXCHANGE, IExchange>;

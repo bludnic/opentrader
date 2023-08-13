@@ -1,6 +1,6 @@
 export interface IGetMarketPriceRequest {
   /**
-   * e.g. ADA-USDT
+   * e.g. ADA/USDT
    */
   symbol: string;
 }

@@ -6,12 +6,12 @@ function mapOrderStatusEnumToOrderStatusString(
   status: OrderStatusEnum,
 ): OrderStatus {
   if (status === OrderStatusEnum.Placed) {
-    return 'live';
+    return 'open';
   } else if (status === OrderStatusEnum.Filled) {
     return 'filled';
   }
 
-  return 'live'; // 'canceled' | 'partially_filled'
+  return 'open'; // 'canceled' | 'partially_filled'
 }
 
 export function mapE2ELimitOrderToLimitOrder(
@@ -24,6 +24,7 @@ export function mapE2ELimitOrderToLimitOrder(
     quantity: order.quantity,
     price: order.price,
     status: mapOrderStatusEnumToOrderStatusString(order.status),
+    fee: 0,
     createdAt: 0,
   };
 }

@@ -1,3 +1,4 @@
+import { IExchange } from '@bifrost/exchanges';
 import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { CreateTradeBotDto } from 'src/core/db/firestore/repositories/trade-bot/dto/create-trade-bot.dto';
@@ -6,7 +7,6 @@ import { OrderStatusEnum } from 'src/core/db/types/entities/trade-bot/orders/enu
 import { IOrder } from 'src/core/db/types/entities/trade-bot/orders/order.interface';
 import { ITradeBot } from 'src/core/db/types/entities/trade-bot/trade-bot.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { simpleGrid } from './bot-templates/simple-grid';
 import { CreateTradeBotRequestBodyDto } from './dto/create-bot/create-trade-bot-request-body.dto';
 import { TradeBotOrdersService } from './trade-bot-orders.service';
@@ -18,7 +18,7 @@ export class TradeBotService {
   private botTemplate: IBotTemplate;
 
   constructor(
-    private exchange: IExchangeService,
+    private exchange: IExchange,
     private firestore: FirestoreService,
     private readonly logger: Logger,
   ) {
@@ -159,13 +159,11 @@ export class TradeBotService {
     order: IOrder,
     bot: ITradeBot,
   ): Promise<{ updated: boolean }> {
-    this.logger.debug(
-      `[TradeBotService] syncOrder with ID: ${order.clientOrderId}`,
-    );
+    this.logger.debug(`[TradeBotService] syncOrder with ID: ${order.orderId}`);
 
     const exchangeOrder = await this.exchange.getLimitOrder({
       symbol: calcOkxSymbol(bot.baseCurrency, bot.quoteCurrency),
-      clientOrderId: order.clientOrderId,
+      orderId: order.orderId,
     });
 
     if (checkOrderFilled(exchangeOrder)) {

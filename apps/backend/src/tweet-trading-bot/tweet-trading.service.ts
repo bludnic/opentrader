@@ -1,26 +1,21 @@
 import { SmartTradeParams } from '3commas-typescript/dist/types/types';
+import { IExchange } from '@bifrost/exchanges';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { TwitterSignalEventDto } from 'src/core/db/firestore/repositories/marketplace/twitter-signal-events/dto/twitter-signal-event.dto';
 import { TweetTradingBotDto } from 'src/core/db/firestore/repositories/tweet-trading-bots/types/tweet-trading-bot/tweet-trading-bot.dto';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
-import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
-import { ThreeCommasApiServiceFactorySymbol } from 'src/shared/3commas-api/3commas-api-service.factory';
 import { fromSmartTradeSettingsToSmartTrade } from './utils/fromSmartTradeSettingsToSmartTrade';
 import { matchSignalEventsForBotByWatchingIds } from './utils/matchSignalEventsForBotByWatchingIds';
 import { TwitterSignalsService } from 'src/marketplace/twitter-signals/twitter-signals.service';
 import { ThreeCommasApiService } from 'src/shared/3commas-api/3commas-api.service';
 
-@Injectable()
 export class TweetTradingService {
   constructor(
     private readonly twitterSignalsService: TwitterSignalsService,
-    @Inject(ThreeCommasApiServiceFactorySymbol)
     private readonly threeCommasApiService: ThreeCommasApiService,
     private readonly logger: Logger,
     private readonly firestore: FirestoreService,
-    @Inject(DefaultExchangeServiceFactorySymbol)
-    private readonly exchangeService: IExchangeService,
+    private readonly exchangeService: IExchange,
   ) {}
 
   // Match signal events for every enabled bot,

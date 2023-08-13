@@ -32,7 +32,10 @@ export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch symbols
   const {
     data: { symbols },
-  } = yield* query(rtkApi.endpoints.getSymbols);
+  } = yield* query(
+    rtkApi.endpoints.getSymbols,
+    firstExchangeAccount.exchangeCode
+  );
 
   const firstSymbol = symbols[0];
   yield put(setCurrencyPair(firstSymbol.symbolId));

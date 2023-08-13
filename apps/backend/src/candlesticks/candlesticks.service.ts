@@ -1,3 +1,4 @@
+import { IExchange } from '@bifrost/exchanges';
 import { decomposeSymbolId } from '@bifrost/tools';
 import { Logger } from '@nestjs/common';
 import { delay } from 'src/common/helpers/delay';
@@ -7,14 +8,13 @@ import { CandlesticksHistoryEntity } from 'src/core/db/postgres/entities/candles
 import { CandlesticksHistoryRepository } from 'src/core/db/postgres/repositories/candlesticks-history.repository';
 import { CandlesticksRepository } from 'src/core/db/postgres/repositories/candlesticks.repository';
 import { composeEntityId } from 'src/core/db/postgres/utils/candlesticks-history/composeEntityId';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { BarSize, ICandlestick } from '@bifrost/types';
 import { DataSource } from 'typeorm';
 import { daysAgoToTimestamp } from './utils/daysAgoToTimestamp';
 
 export class CandlesticksService {
   constructor(
-    private readonly exchange: IExchangeService,
+    private readonly exchange: IExchange,
     private readonly logger: Logger,
     public readonly candlesticksHistory: CandlesticksHistoryRepository,
     public readonly candlestick: CandlesticksRepository,
@@ -71,7 +71,7 @@ export class CandlesticksService {
         quoteCurrency,
       }),
       limit: 100,
-      before: newestCandleTimestamp,
+      since: newestCandleTimestamp,
     });
 
     if (candlesticks.length > 0) {
@@ -138,7 +138,8 @@ export class CandlesticksService {
           quoteCurrency,
         }),
         limit: 100,
-        after: earliestCandleTimestamp,
+        // after: earliestCandleTimestamp,
+        // @todo rewrite with using since
       });
 
       if (candlesticks.length === 0) {

@@ -11,11 +11,7 @@ export interface IGetCandlesticksRequest {
    */
   limit?: number;
   /**
-   * Pagination of data to return records newer than the requested `ts`
+   * Return results since specified timestamp.
    */
-  before?: number;
-  /**
-   * Pagination of data to return records earlier than the requested `ts`
-   */
-  after?: number;
+  since?: number;
 }

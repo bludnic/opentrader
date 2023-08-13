@@ -1,3 +1,4 @@
+import { IExchange } from '@bifrost/exchanges';
 import { HttpService } from '@nestjs/axios';
 import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -6,8 +7,6 @@ import { AppModule } from 'src/app.module';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { IGetLimitOrderRequest, IGetLimitOrderResponse } from '@bifrost/types';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
-import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
 import {
   gridBotInitialInvestment,
   gridBotSettings,
@@ -56,7 +55,7 @@ describe('AppController', () => {
 
   let firestoreService: FirestoreService;
 
-  const exchangeService: Partial<IExchangeService> = {
+  const exchangeService: Partial<IExchange> = {
     getMarketPrice: async ({ symbolId }) => {
       return {
         symbol: symbolId,
@@ -130,28 +129,28 @@ describe('AppController', () => {
           return {
             create: () => {
               return new GridBotService(
-                exchangeService as IExchangeService, // I know what I am doing
+                exchangeService as IExchange, // I know what I am doing
                 firestoreService,
                 logger,
               );
             },
             fromExchangeAccount: () => {
               return new GridBotService(
-                exchangeService as IExchangeService, // I know what I am doing
+                exchangeService as IExchange, // I know what I am doing
                 firestoreService,
                 logger,
               );
             },
             fromExchangeAccountId: async () => {
               return new GridBotService(
-                exchangeService as IExchangeService, // I know what I am doing
+                exchangeService as IExchange, // I know what I am doing
                 firestoreService,
                 logger,
               );
             },
             fromBotId: async () => {
               return new GridBotService(
-                exchangeService as IExchangeService, // I know what I am doing
+                exchangeService as IExchange, // I know what I am doing
                 firestoreService,
                 logger,
               );

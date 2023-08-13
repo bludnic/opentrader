@@ -4,5 +4,5 @@ export interface IGetSymbolInfoRequest {
    *
    * Tip: Use `composeSymbolId()` from `tools` package to compose this value
    */
-  symbolId?: string;
+  symbolId: string;
 }

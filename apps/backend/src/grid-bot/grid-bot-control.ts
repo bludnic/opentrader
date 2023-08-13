@@ -1,16 +1,16 @@
+import { IExchange } from '@bifrost/exchanges';
 import { Logger } from '@nestjs/common';
 import { UseSmartTradePayload } from 'src/core/bot-manager/effects/common/types/use-smart-trade-effect';
 import { IBotControl } from 'src/core/bot-manager/types/bot-control.interface';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { CreateSmartTradeDto } from 'src/core/db/firestore/repositories/smart-trade/dto/create-smart-trade/create-smart-trade.dto';
 import { GridBotEntity } from 'src/core/db/types/entities/grid-bots/grid-bot.entity';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { SmartTradePublicService } from 'src/core/smart-trade/smart-trade-public.service';
 
 export class GridBotControl implements IBotControl {
   constructor(
     private smartTradePublicService: SmartTradePublicService,
-    private exchangeService: IExchangeService,
+    private exchangeService: IExchange,
     public entity: GridBotEntity,
     private firestore: FirestoreService,
     private logger: Logger,

@@ -1,4 +1,6 @@
+import { exchanges } from '@bifrost/exchanges';
 import { GridBotEndpoint } from '@bifrost/swagger';
+import { decomposeSymbolId } from '@bifrost/tools';
 import {
   Body,
   Controller,
@@ -8,6 +10,7 @@ import {
   Put,
   Scope,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
@@ -26,6 +29,7 @@ import {
   GridBotServiceFactory,
   GridBotServiceFactorySymbol,
 } from 'src/grid-bot/grid-bot-service.factory';
+import { IsValidSymbolIdPipe } from 'src/symbols/utils/pipes/is-valid-symbol-id.pipe';
 
 @Controller({
   path: 'grid-bot',
@@ -105,21 +109,19 @@ export class GridBotController {
     };
   }
 
-  @Get('/current-asset-price/:baseCurrency/:quoteCurrency')
+  @Get('/current-asset-price')
   async currentAssetPrice(
-    @Param('baseCurrency') baseCurrency: string,
-    @Param('quoteCurrency') quoteCurrency: string,
+    @Query('symbolId', IsValidSymbolIdPipe) symbolId: string,
   ) {
-    const gridBotService =
-      this.gridBotServiceFactory.fromExchangeAccount(exchangeAccountMock);
+    const { exchangeCode, currencyPairSymbol } = decomposeSymbolId(symbolId);
+    const exchangeService = exchanges[exchangeCode]();
 
-    const currentAssetPrice = await gridBotService.getCurrentAssetPrice(
-      baseCurrency,
-      quoteCurrency,
-    );
+    const data = await exchangeService.getMarketPrice({
+      symbol: currencyPairSymbol,
+    });
 
     return {
-      currentAssetPrice,
+      currentAssetPrice: data.price,
     };
   }
 

@@ -1,1 +1,1 @@
-export type OrderStatus = 'canceled' | 'live' | 'partially_filled' | 'filled';
+export type OrderStatus = 'canceled' | 'open' | 'partially_filled' | 'filled';

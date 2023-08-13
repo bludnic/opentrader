@@ -1,18 +1,15 @@
+import { IExchange } from '@bifrost/exchanges';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { OrderStatusEnum } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
-import { DefaultExchangeServiceFactorySymbol } from 'src/core/exchanges/utils/default-exchange.factory';
 import { SyncedSmartTradeDto } from './types/service/sync/synced-smart-trade.dto';
-import { IExchangeService } from '../exchanges/types/exchange-service.interface';
 import { IPlaceLimitOrderResponse } from '@bifrost/types';
 import { delay } from 'src/common/helpers/delay';
 
-@Injectable()
 export class SmartTradePrivateService {
   constructor(
-    @Inject(DefaultExchangeServiceFactorySymbol)
-    private exchange: IExchangeService,
+    private exchange: IExchange,
     private firestore: FirestoreService,
     private readonly logger: Logger,
   ) {}
@@ -169,7 +166,7 @@ export class SmartTradePrivateService {
 
     if (buyOrder.status === OrderStatusEnum.Placed) {
       const order = await this.exchange.getLimitOrder({
-        exchangeOrderId: buyOrder.exchangeOrderId,
+        orderId: buyOrder.exchangeOrderId,
         symbol: tradingPairSymbol,
       });
 
@@ -184,6 +181,7 @@ export class SmartTradePrivateService {
           buyOrder: {
             status: OrderStatusEnum.Filled,
             price: order.price,
+            fee: order.fee,
           },
         };
 
@@ -193,7 +191,7 @@ export class SmartTradePrivateService {
       }
     } else if (sellOrder && sellOrder.status === OrderStatusEnum.Placed) {
       const order = await this.exchange.getLimitOrder({
-        exchangeOrderId: sellOrder.exchangeOrderId,
+        orderId: sellOrder.exchangeOrderId,
         symbol: tradingPairSymbol,
       });
 
@@ -208,6 +206,7 @@ export class SmartTradePrivateService {
           sellOrder: {
             status: OrderStatusEnum.Filled,
             price: order.price,
+            fee: order.fee,
           },
         };
 

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "3commas-typescript": "^1.3.5",
+    "@bifrost/exchanges": "workspace:*",
     "@bifrost/swagger": "workspace:*",
     "@bifrost/tools": "workspace:*",
     "@bifrost/types": "workspace:*",

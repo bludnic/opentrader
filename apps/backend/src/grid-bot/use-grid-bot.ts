@@ -1,14 +1,14 @@
+import { IExchange } from "@bifrost/exchanges";
 import { useSmartTrade } from 'src/core/bot-manager/effects';
 import { replaceSmartTrade } from 'src/core/bot-manager/effects/replaceSmartTrade';
 import { useExchange } from 'src/core/bot-manager/effects/useExchange';
 import { OrderStatusEnum, IGetMarketPriceResponse } from '@bifrost/types';
 import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { GridBotControl } from './grid-bot-control';
 import { computeGridFromCurrentAssetPrice } from '@bifrost/tools';
 
 export function* useGridBot(bot: GridBotControl) {
-  const exchange: IExchangeService = yield useExchange();
+  const exchange: IExchange = yield useExchange();
   const { price }: IGetMarketPriceResponse = yield exchange.getMarketPrice({
     symbol: exchange.tradingPairSymbol({
       baseCurrency: bot.baseCurrency(),

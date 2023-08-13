@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "src/common/enums";
+import { OrderStatusEnum } from "src/smart-trade";
 
 export interface IGridBotLevel {
   buy: {

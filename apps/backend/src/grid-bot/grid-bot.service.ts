@@ -15,7 +15,6 @@ import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interface';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { IAccountAsset } from '@bifrost/types';
-import { IExchangeService } from 'src/core/exchanges/types/exchange-service.interface';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 
 import { MissingCurrencyOnExchangeException } from 'src/grid-bot/exceptions/missing-currency-on-exchange.exception';
@@ -25,13 +24,14 @@ import { SmartTradePublicService } from 'src/core/smart-trade/smart-trade-public
 import { SmartTradePrivateService } from 'src/core/smart-trade/smart-trade-private.service';
 import { computeGridFromCurrentAssetPrice } from '@bifrost/tools';
 import { IGridBotLevel } from '@bifrost/types';
+import { IExchange } from '@bifrost/exchanges';
 import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
 import { GridBotControl } from './grid-bot-control';
 import { useGridBot } from './use-grid-bot';
 
 export class GridBotService {
   constructor(
-    private exchange: IExchangeService,
+    private exchange: IExchange,
     private firestore: FirestoreService,
     private smartTradePublicService: SmartTradePublicService,
     private smartTradePrivateService: SmartTradePrivateService,
@@ -195,29 +195,10 @@ export class GridBotService {
     quoteCurrency: string,
   ): Promise<number> {
     const asset = await this.exchange.getMarketPrice({
-      symbol: `${baseCurrency}-${quoteCurrency}`,
+      symbol: `${baseCurrency}/${quoteCurrency}`,
     });
 
     return asset.price;
-  }
-
-  private async getMakerTradingFee(
-    baseCurrency: string,
-    quoteCurrency: string,
-  ): Promise<number> {
-    this.logger.log(`Get Trading Fee for ${baseCurrency}/${quoteCurrency}`);
-
-    const { makerFee } = await this.exchange.getTradingFeeRates({
-      baseCurrency,
-      quoteCurrency,
-    });
-
-    this.logger.debug(
-      `Trading Maker Fee for ${baseCurrency}/${quoteCurrency} is ${makerFee}`,
-      makerFee,
-    );
-
-    return makerFee;
   }
 
   public async checkEnoughFundsToStartBot(
@@ -298,10 +279,7 @@ export class GridBotService {
     );
 
     // Retrieving maker trading fee
-    const fee = await this.getMakerTradingFee(
-      bot.baseCurrency,
-      bot.quoteCurrency,
-    );
+    const fee = 0
 
     const smartTradesWithProfit = smartTrades.map((smartTrade) =>
       populateSmartTradeWithProfit(smartTrade, fee),
