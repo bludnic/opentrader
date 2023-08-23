@@ -9,6 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.enableCors();
 
   // Swagger configuration
   const config = new DocumentBuilder()
