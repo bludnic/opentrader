@@ -49,18 +49,29 @@ localStorage.setItem('auth_token', 'YOUR_TOKEN_HERE')
 
 ## Bootstrap
 
-### Postgres service
+### Backend
+
+#### Postgres service
 
 ```bash
 $ docker compose up -d postgres-db # start service
 $ docker compose -p bifrost stop postgres-db # stop service
 ```
 
-# Redis service (used by BullMQ)
+#### Redis service (used by BullMQ)
 
 ```bash
 $ docker compose up -d redis # start service
 $ docker compose -p bifrost stop redis # stop service
+```
+
+### Markets
+
+#### Postgres service
+
+```bash
+$ docker compose up -d markets-db # start service
+$ docker compose -p bifrost stop markets-db # stop service
 ```
 
 ### Frontend & Backend
