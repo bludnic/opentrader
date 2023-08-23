@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
+import { AppModule2 } from 'src/app.module';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { UserRepository } from 'src/core/db/firestore/repositories/user/user.repository';
 import { IGetLimitOrderRequest, IGetLimitOrderResponse } from '@bifrost/types';
@@ -114,7 +114,7 @@ describe('AppController', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule2],
     })
       .overrideProvider(DefaultExchangeServiceFactorySymbol)
       .useValue(exchangeService)

@@ -1,7 +1,9 @@
+import { ExchangeCode } from '@bifrost/types';
 import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsDefined,
+  IsEnum,
   IsNotEmpty,
   ValidateNested,
 } from 'class-validator';
@@ -13,6 +15,9 @@ export class RunGridBotBacktestRequestBodyDto {
   @ValidateNested()
   @Type(() => BacktestGridBotDto)
   bot: BacktestGridBotDto;
+
+  @IsEnum(ExchangeCode)
+  exchangeCode: ExchangeCode;
 
   /**
    * Run backtest starting from this date in ISO 8061 format. e.g. 2022-01-31

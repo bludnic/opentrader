@@ -1,11 +1,8 @@
-import { SmartTradeDto } from 'src/core/db/firestore/repositories/smart-trade/dto/smart-trade.dto';
-import { CandlestickEntity } from 'src/core/db/postgres/entities/candlesticks-history/candlestick/candlestick.entity';
-import { BacktestingTradeDto } from 'src/backtesting/dto/types/trade/trade.dto';
+import { ActiveOrder, ReportResult, Transaction } from '@bifrost/backtesting';
 
-export class RunGridBotBacktestResponseBodyDto {
-  candles: CandlestickEntity[];
-  trades: BacktestingTradeDto[];
-  smartTrades: SmartTradeDto[];
-  finishedSmartTradesCount: number;
+export class RunGridBotBacktestResponseBodyDto implements ReportResult {
+  // @todo dtos
+  transactions: Transaction[];
+  activeOrders: ActiveOrder[];
   totalProfit: number;
 }

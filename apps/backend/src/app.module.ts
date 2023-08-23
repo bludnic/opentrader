@@ -2,8 +2,6 @@ import { HttpModule } from '@nestjs/axios';
 import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ThreeCommasAccountsController } from 'src/3commas-accounts/3commas-accounts.controller';
-import { ThreeCommasAccountsModule } from 'src/3commas-accounts/3commas-accounts.module';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
 import { Environment } from 'src/common/enums/environment.enum';
@@ -13,6 +11,7 @@ import {
 } from 'src/common/helpers/logging/logging-transports';
 import { FirebaseUserMiddleware } from 'src/common/middlewares/firebase-user.middleware';
 import { bullMQConfig } from 'src/config/bullmq.config';
+import { marketsApiConfig } from 'src/config/markets-api.config';
 import { getTypeOrmConfig } from 'src/config/utils/getTypeOrmConfig';
 import { postgresConfig } from 'src/config/postgres.config';
 import { envValidationSchema } from 'src/config/utils/envValidationSchema';
@@ -28,7 +27,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 import { QueueModule } from 'src/queue/queue.module';
-import { ThreeCommasApiModule } from 'src/shared/3commas-api/3commas-api.module';
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { SmartTradingModule } from './smart-trading/smart-trading.module';
@@ -36,14 +34,13 @@ import { TradeBotModule } from './trade-bot/trade-bot.module';
 import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
 import { BacktestingModule } from './backtesting/backtesting.module';
-import { CandlesticksModule } from './candlesticks/candlesticks.module';
 import { SymbolsModule } from './symbols/symbols.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.development.local'],
-      load: [postgresConfig, bullMQConfig],
+      load: [postgresConfig, bullMQConfig, marketsApiConfig],
       validationSchema: envValidationSchema,
       isGlobal: true,
     }),
@@ -80,13 +77,10 @@ import { SymbolsModule } from './symbols/symbols.module';
     ExchangeAccountsModule,
     AppModule,
     MarketplaceModule,
-    ThreeCommasApiModule,
     TweetTradingModule,
-    ThreeCommasAccountsModule,
     SmartTradingModule,
     TradeBotModule,
     BacktestingModule,
-    CandlesticksModule,
     SymbolsModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
@@ -101,7 +95,6 @@ export class AppModule implements NestModule {
         GridBotController,
         TradeBotController,
         ExchangeAccountsController,
-        ThreeCommasAccountsController,
       );
   }
 }

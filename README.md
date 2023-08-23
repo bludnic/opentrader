@@ -72,4 +72,5 @@ $ turbo run dev # runs both frontend and backend dev servers
 
 - Frontend: http://localhost:3000
 - Backend: http://localhost:4000
+- Markets: http://localhost:5000
 - Bull Board: http://localhost:4000/bapi/admin/queues

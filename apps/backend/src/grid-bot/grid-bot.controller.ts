@@ -1,6 +1,7 @@
 import { exchanges } from '@bifrost/exchanges';
 import { GridBotEndpoint } from '@bifrost/swagger';
 import { decomposeSymbolId } from '@bifrost/tools';
+import { ExchangeCode } from '@bifrost/types';
 import {
   Body,
   Controller,
@@ -16,7 +17,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
-import { exchangeAccountMock } from 'src/e2e/grid-bot/exchange-account';
 import { CreateBotRequestBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-request-body.dto';
 import { CreateBotResponseBodyDto } from 'src/grid-bot/dto/create-bot/create-bot-response-body.dto';
 import { GetActiveSmartTradesResponseDto } from 'src/grid-bot/dto/get-active-smart-trades/get-active-smart-trades-response.dto';
@@ -163,5 +163,12 @@ export class GridBotController {
     return {
       activeSmartTrades,
     };
+  }
+
+  @Get('/candlesticks')
+  async candlesticks() {
+    const exchange = exchanges[ExchangeCode.OKX]();
+
+    return exchange.getCandlesticks({});
   }
 }

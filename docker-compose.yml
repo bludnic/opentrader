@@ -26,6 +26,17 @@ services:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  markets-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - markets-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
   redis:
     image: redis:alpine
     command: redis-server
@@ -36,6 +47,7 @@ services:
       - "6379:6379"
 volumes:
   postgres-db:
+  markets-db:
   redis-data:
   redis-conf:
 

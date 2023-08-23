@@ -1,3 +1,4 @@
+import { BotProcessor } from '@bifrost/bot-processor';
 import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
 import big from 'big.js';
 import { CreateGridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/create-grid-bot.dto';
@@ -5,8 +6,8 @@ import { GridBotDto } from 'src/core/db/firestore/repositories/grid-bot/dto/grid
 import { GridBotEventCodeEnum } from '@bifrost/types';
 import { SmartTradeDto } from 'src/core/db/firestore/repositories/smart-trade/dto/smart-trade.dto';
 import { GridBotEventEntity } from 'src/core/db/types/entities/grid-bots/events/grid-bot-event.entity';
-import { ISmartTrade } from 'src/core/db/types/entities/smart-trade/smart-trade.interface';
 import { SmartTradeWithProfitDto } from 'src/grid-bot/dto/get-completed-smart-trades/types/smart-trade-with-profit.dto';
+import { GridBotStoreAdapter } from 'src/grid-bot/processor/grid-bot-store-adapter';
 import { calcInitialInvestmentByGridLines } from 'src/grid-bot/utils/calcInitialInvestmentByGridLines';
 import { populateSmartTradeWithProfit } from 'src/grid-bot/utils/completed-smart-trades/populateSmartTradeWithProfit';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,8 +26,6 @@ import { SmartTradePrivateService } from 'src/core/smart-trade/smart-trade-priva
 import { computeGridFromCurrentAssetPrice } from '@bifrost/tools';
 import { IGridBotLevel } from '@bifrost/types';
 import { IExchange } from '@bifrost/exchanges';
-import { BotManagerService } from 'src/core/bot-manager/bot-manager.service';
-import { GridBotControl } from './grid-bot-control';
 import { useGridBot } from './use-grid-bot';
 
 export class GridBotService {
@@ -145,17 +144,15 @@ export class GridBotService {
   }
 
   async runBotTemplate(bot: GridBotDto) {
-    const botControl = new GridBotControl(
-      this.smartTradePublicService,
-      this.exchange,
+    const storeAdapter = new GridBotStoreAdapter(
       bot,
       this.firestore,
       this.logger,
+      (botId) => this.stopBot(botId),
     );
+    const botProcessor = BotProcessor.create(bot, storeAdapter, this.exchange);
 
-    const botManager = new BotManagerService(botControl, this.exchange);
-
-    await botManager.process(useGridBot);
+    await botProcessor.process(useGridBot);
   }
 
   async stopBot(botId: string) {
@@ -279,7 +276,7 @@ export class GridBotService {
     );
 
     // Retrieving maker trading fee
-    const fee = 0
+    const fee = 0;
 
     const smartTradesWithProfit = smartTrades.map((smartTrade) =>
       populateSmartTradeWithProfit(smartTrade, fee),

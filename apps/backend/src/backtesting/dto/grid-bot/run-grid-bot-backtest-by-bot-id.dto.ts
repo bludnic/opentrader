@@ -1,4 +1,5 @@
-import { IsDateString, IsDefined, IsNotEmpty } from 'class-validator';
+import { ExchangeCode } from '@bifrost/types';
+import { IsDateString, IsDefined, IsEnum, IsNotEmpty } from 'class-validator';
 
 export class RunGridBotBacktestByBotIdDto {
   @IsDefined()
@@ -18,4 +19,7 @@ export class RunGridBotBacktestByBotIdDto {
   @IsDefined()
   @IsDateString()
   endDate: string;
+
+  @IsEnum(ExchangeCode)
+  exchangeCode: ExchangeCode;
 }

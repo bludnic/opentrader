@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["dist"],
+  "exec": "pnpm run start",
+  "watch": ["./src"],
+  "ext": ".json, .ts, .js"
+}
