@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { BarSize } from '@bifrost/types';
 
 import { Market } from './market.entity';
-import { StringToNumberTransformer } from 'src/core/db/transformers';
+import { StringToNumberTransformer } from '../transformers';
 
 @Entity()
 export class Candlestick {
