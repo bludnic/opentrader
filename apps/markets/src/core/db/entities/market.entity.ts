@@ -21,11 +21,22 @@ export class Market {
   exchangeCode: Exchange['code']; // can't set ManyToOne columns as primary https://github.com/typeorm/typeorm/issues/3238
 
   /**
-   * Earliest candlestick timestamp.
-   * Must be set when candle history reached the end.
+   * Must be set to `true` when candles history of 1m timeframe reached the end.
    */
   @Column({ default: false })
-  historyReached: boolean;
+  oneMinute: boolean;
+
+  /**
+   * Must be set to `true` when candles history of 1h timeframe reached the end.
+   */
+  @Column({ default: false })
+  oneHour: boolean;
+
+  /**
+   * Must be set to `true` when candles history of 4h timeframe reached the end.
+   */
+  @Column({ default: false })
+  fourHours: boolean;
 
   @UpdateDateColumn({
     type: 'timestamptz',

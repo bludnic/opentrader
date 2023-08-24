@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { PriceInput } from "src/components/ui/PriceInput";
 import { changeLowPrice } from "src/sections/grid-bot/create-bot/store/bot-form";
 import {
-  selectCurrencyPair,
   selectLowPrice,
+  selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
@@ -17,8 +17,8 @@ export const LowPriceField: FC<LowPriceFieldProps> = (props) => {
 
   const dispatch = useAppDispatch();
 
-  const currencyPair = useAppSelector(selectCurrencyPair);
-  const symbol = useAppSelector(selectSymbolById(currencyPair));
+  const symbolId = useAppSelector(selectSymbolId);
+  const symbol = useAppSelector(selectSymbolById(symbolId));
 
   const reduxValue = useAppSelector(selectLowPrice);
   const [value, setValue] = useState(`${reduxValue}`);

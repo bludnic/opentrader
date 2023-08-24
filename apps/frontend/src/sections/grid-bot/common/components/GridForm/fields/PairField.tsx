@@ -6,9 +6,11 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { Select } from "@mui/material";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
-import { changeCurrencyPair } from "src/sections/grid-bot/create-bot/store/bot-form";
-import { selectCurrencyPair } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { changeSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form";
+import {
+  selectExchangeCode,
+  selectSymbolId
+} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectSymbols } from 'src/store/rtk/getSymbols/selectors';
 
@@ -23,11 +25,12 @@ export const PairField: FC<PairFieldProps> = (props) => {
   const labelId = "pair-symbol";
 
   const dispatch = useAppDispatch();
-  const symbols = useAppSelector(selectSymbols);
+  const exchangeCode = useAppSelector(selectExchangeCode);
+  const symbols = useAppSelector(selectSymbols(exchangeCode));
 
-  const value = useAppSelector(selectCurrencyPair);
-  const handleChange = (e: SelectChangeEvent<ExchangeAccountDto["id"]>) => {
-    dispatch(changeCurrencyPair(e.target.value));
+  const value = useAppSelector(selectSymbolId);
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    dispatch(changeSymbolId(e.target.value));
   };
 
   return (

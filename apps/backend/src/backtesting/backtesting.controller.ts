@@ -2,6 +2,7 @@ import { arithmeticGridBot } from '@bifrost/bot-templates';
 import { BacktestingEndpoint } from '@bifrost/swagger';
 import { Body, Controller, Post, Scope } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BacktestingResultDto } from 'src/backtesting/dto/backtesting-result/backtesting-report.dto';
 import { RunGridBotBacktestByBotIdDto } from 'src/backtesting/dto/grid-bot/run-grid-bot-backtest-by-bot-id.dto';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
 import { FirestoreService } from 'src/core/db/firestore/firestore.service';
@@ -9,7 +10,6 @@ import { IGridBot } from 'src/core/db/types/entities/grid-bots/grid-bot.interfac
 import { IUser } from 'src/core/db/types/entities/users/user/user.interface';
 import { BacktestingService } from './backtesting.service';
 import { RunGridBotBacktestRequestBodyDto } from './dto/grid-bot/run-backtest/run-grid-bot-backtest-request-body.dto';
-import { RunGridBotBacktestResponseBodyDto } from './dto/grid-bot/run-backtest/run-grid-bot-backtest-response-body.dto';
 
 @Controller({
   path: 'backtesting',
@@ -26,7 +26,7 @@ export class BacktestingController {
   async runByBotId(
     @FirebaseUser() user: IUser,
     @Body() body: RunGridBotBacktestByBotIdDto,
-  ): Promise<RunGridBotBacktestResponseBodyDto> {
+  ): Promise<BacktestingResultDto> {
     const { botId, startDate, endDate, exchangeCode } = body;
     const bot = await this.firestoreService.gridBot.findOne(botId);
 
@@ -46,7 +46,7 @@ export class BacktestingController {
   async runTest(
     @FirebaseUser() user: IUser,
     @Body() body: RunGridBotBacktestRequestBodyDto,
-  ): Promise<RunGridBotBacktestResponseBodyDto> {
+  ): Promise<BacktestingResultDto> {
     const { bot: botDto, startDate, endDate, exchangeCode } = body;
 
     const bot: IGridBot = {

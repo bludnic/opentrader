@@ -17,17 +17,23 @@ export const setExchangeAccountIdAction = createAction<
   typeof SET_EXCHANGE_ACCOUNT_ID
 >(SET_EXCHANGE_ACCOUNT_ID);
 
-const SET_CURRENCY_PAIR = "setCurrencyPair";
-export const setCurrencyPairAction = createAction<
-  string,
-  typeof SET_CURRENCY_PAIR
->(SET_CURRENCY_PAIR);
+const SET_EXCHANGE_CODE = "setExchangeCode";
+export const setExchangeCodeAction = createAction<
+  ExchangeAccountDto["exchangeCode"],
+  typeof SET_EXCHANGE_CODE
+  >(SET_EXCHANGE_CODE);
 
-const CHANGE_CURRENCY_PAIR = "changeCurrencyPair";
-export const changeCurrencyPairAction = createAction<
+const SET_SYMBOL_ID = "setSymbolId";
+export const setSymbolIdAction = createAction<
   string,
-  typeof CHANGE_CURRENCY_PAIR
->(CHANGE_CURRENCY_PAIR);
+  typeof SET_SYMBOL_ID
+  >(SET_SYMBOL_ID);
+
+const CHANGE_SYMBOL_ID = "changeSymbolId";
+export const changeSymbolIdAction = createAction<
+  string,
+  typeof CHANGE_SYMBOL_ID
+>(CHANGE_SYMBOL_ID);
 
 const SET_HIGH_PRICE = "setHighPrice";
 export const setHighPriceAction = createAction<number, typeof SET_HIGH_PRICE>(

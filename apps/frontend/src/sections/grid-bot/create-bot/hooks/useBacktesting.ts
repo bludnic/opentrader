@@ -3,11 +3,12 @@ import { useRunGridBotBacktestMutation } from "src/lib/bifrost/rtkApi";
 import { useAppSelector } from "src/store/hooks";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { selectEndDate, selectStartDate } from "../store/backtesting-form";
-import { selectCurrencyPair } from "../store/bot-form/selectors";
+import { selectExchangeCode, selectSymbolId } from "../store/bot-form/selectors";
 
 export function useBacktesting(gridLines: IGridLine[]) {
-  const currencyPair = useAppSelector(selectCurrencyPair);
-  const symbol = useAppSelector(selectSymbolById(currencyPair));
+  const exchangeCode = useAppSelector(selectExchangeCode);
+  const symbolId = useAppSelector(selectSymbolId);
+  const symbol = useAppSelector(selectSymbolById(symbolId));
 
   const startDate = useAppSelector(selectStartDate);
   const endDate = useAppSelector(selectEndDate);
@@ -27,6 +28,7 @@ export function useBacktesting(gridLines: IGridLine[]) {
         quoteCurrency: symbol.quoteCurrency,
         gridLines,
       },
+      exchangeCode,
       startDate,
       endDate,
     });

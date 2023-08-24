@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 import { TradesTableHead } from "./TradesTableHead";
 import { TradesTableItem } from "./TradesTableItem";
-import { SmartTradeDto, BacktestingTradeDto } from "src/lib/bifrost/rtkApi";
+import {
+  BuyTransactionDto,
+  SellTransactionDto
+} from "src/lib/bifrost/rtkApi";
 
 const componentName = "TradesTable";
 const classes = {
@@ -24,13 +27,13 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 type TradesTableProps = {
   className?: string;
-  trades: BacktestingTradeDto[];
+  transactions: Array<BuyTransactionDto | SellTransactionDto>;
   baseCurrency: string;
   quoteCurrency: string;
 };
 
 export const TradesTable: FC<TradesTableProps> = (props) => {
-  const { className, trades, baseCurrency, quoteCurrency } = props;
+  const { className, transactions, baseCurrency, quoteCurrency } = props;
 
   return (
     <StyledTableContainer className={clsx(classes.root, className)}>
@@ -40,10 +43,10 @@ export const TradesTable: FC<TradesTableProps> = (props) => {
           quoteCurrency={quoteCurrency}
         />
 
-        {trades.length > 0 ? (
+        {transactions.length > 0 ? (
           <TableBody>
-            {trades.map((trade, i) => (
-              <TradesTableItem trade={trade} key={i} />
+            {transactions.map((transaction, i) => (
+              <TradesTableItem transaction={transaction} key={i} />
             ))}
           </TableBody>
         ) : (

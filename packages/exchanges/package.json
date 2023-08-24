@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@bifrost/types": "workspace:*",
+    "@bifrost/tools": "workspace:*",
     "ccxt": "^4.0.55"
   }
 }

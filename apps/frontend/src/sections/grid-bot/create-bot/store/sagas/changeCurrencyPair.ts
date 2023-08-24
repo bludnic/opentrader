@@ -14,17 +14,20 @@ import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/stor
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
 import {
   selectBarSize,
-  selectCurrencyPair,
+  selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { put } from "redux-saga/effects";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { marketsApi } from "src/lib/markets/marketsApi";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
+import { startOfYearISO } from "src/utils/date/startOfYearISO";
+import { todayISO } from "src/utils/date/todayISO";
 import { query } from "src/utils/saga/query";
 import { typedSelect } from "src/utils/saga/select";
 
 export function* changeCurrencyPairWorker(): SagaIterator {
-  const currencyPair = yield* typedSelect(selectCurrencyPair);
-  const symbol = yield* typedSelect(selectSymbolById(currencyPair));
+  const symbolId = yield* typedSelect(selectSymbolId);
+  const symbol = yield* typedSelect(selectSymbolById(symbolId));
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
     symbol.filters.lot.minQuantity
@@ -34,15 +37,17 @@ export function* changeCurrencyPairWorker(): SagaIterator {
   const barSize = yield* typedSelect(selectBarSize);
   const currentAssetPrice = yield* query(
     rtkApi.endpoints.getSymbolCurrentPrice,
-    symbol.symbolId
+    symbolId
   );
   const {
     data: {
-      history: { candlesticks },
+      candlesticks
     },
-  } = yield* query(rtkApi.endpoints.getCandlesticksHistory, {
-    symbolId: symbol.symbolId,
-    barSize,
+  } = yield* query(marketsApi.endpoints.getCandlesticks, {
+    symbolId,
+    timeframe: barSize,
+    startDate: startOfYearISO(),
+    endDate: todayISO()
   });
 
   const highestCandlestick = findHighestCandlestickBy("close", candlesticks);

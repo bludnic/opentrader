@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import { PriceInput } from "src/components/ui/PriceInput";
 import { updateGridLinePrice } from "src/sections/grid-bot/create-bot/store/bot-form";
 import {
-  selectCurrencyPair,
   selectGridLine,
+  selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
@@ -24,8 +24,8 @@ export const GridLinePriceField: FC<GridLinePriceFieldProps> = (props) => {
     setValue(`${reduxValue}`);
   }, [reduxValue]);
 
-  const currencyPair = useAppSelector(selectCurrencyPair);
-  const symbol = useAppSelector(selectSymbolById(currencyPair));
+  const symbolId = useAppSelector(selectSymbolId);
+  const symbol = useAppSelector(selectSymbolById(symbolId));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware, { Task } from "redux-saga";
 import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
+import { marketsApi } from "src/lib/markets/marketsApi";
 import { threeCommasAccountsApi } from "src/sections/3commas-accounts/common/store/api";
 import { gridBotCompletedSmartTradesApi } from "src/sections/grid-bot/common/store/api/completedDealsApi";
 import {
@@ -52,6 +53,7 @@ export type RootState = {
     typeof candlesticksHistoryApi.reducer
   >;
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
+  [marketsApi.reducerPath]: ReturnType<typeof marketsApi.reducer>;
 };
 
 export interface SagaStore extends Store<RootState> {
@@ -76,6 +78,7 @@ const makeStore = (context: Context) => {
       threeCommasAccountsApi: threeCommasAccountsApi.reducer,
       candlesticksHistoryApi: candlesticksHistoryApi.reducer,
       rtkApi: rtkApi.reducer,
+      marketsApi: marketsApi.reducer,
       backtestingForm: backtestingFormSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -84,7 +87,8 @@ const makeStore = (context: Context) => {
         .concat(gridBotCompletedSmartTradesApi.middleware)
         .concat(threeCommasAccountsApi.middleware)
         .concat(candlesticksHistoryApi.middleware)
-        .concat(rtkApi.middleware),
+        .concat(rtkApi.middleware)
+        .concat(marketsApi.middleware),
     devTools: true,
   });
 

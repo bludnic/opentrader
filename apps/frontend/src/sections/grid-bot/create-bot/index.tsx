@@ -2,24 +2,26 @@ import { calcGridLinesWithPriceFilter } from "@bifrost/tools";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
+import { addDays } from "date-fns";
 import React, { FC, useEffect } from "react";
 import { MainLayout } from "src/layouts/main";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
 import { CreateGridBotForm } from "src/sections/grid-bot/common/components/GridForm";
 import {
   selectBarSize,
-  selectCurrencyPair,
-  selectGridLines,
   selectGridLinesNumber,
   selectHighPrice,
   selectLowPrice,
-  selectQuantityPerGrid,
+  selectQuantityPerGrid, selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { initPage } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { isPageReadySelector } from "src/sections/grid-bot/create-bot/store/init-page/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { rtkApi, useRunGridBotBacktestMutation } from "src/lib/bifrost/rtkApi";
+import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { marketsApi } from "src/lib/markets/marketsApi";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
+import { startOfYearISO } from "src/utils/date/startOfYearISO";
+import { todayISO } from "src/utils/date/todayISO";
 import { BacktestingCard } from "../common/components/BacktestingCard/BacktestingCard";
 import { useBacktesting } from "./hooks/useBacktesting";
 
@@ -41,14 +43,16 @@ const CreateBotPage: FC = () => {
   const lowPrice = useAppSelector(selectLowPrice);
   const gridLinesNumber = useAppSelector(selectGridLinesNumber);
   const quantityPerGrid = useAppSelector(selectQuantityPerGrid);
-  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbolId = useAppSelector(selectSymbolId);
   const barSize = useAppSelector(selectBarSize);
-  const symbol = useAppSelector(selectSymbolById(currencyPair));
+  const symbol = useAppSelector(selectSymbolById(symbolId));
 
   const candlesticks = useAppSelector(
-    rtkApi.endpoints.getCandlesticksHistory.select({
-      symbolId: currencyPair,
-      barSize,
+    marketsApi.endpoints.getCandlesticks.select({
+      symbolId,
+      timeframe: barSize,
+      startDate: startOfYearISO(),
+      endDate: todayISO(),
     })
   );
 
@@ -93,9 +97,9 @@ const CreateBotPage: FC = () => {
               <CardContent>
                 {candlesticks.status === "fulfilled" ? (
                   <GridBotChart
-                    candlesticks={candlesticks.data.history.candlesticks}
+                    candlesticks={candlesticks.data.candlesticks}
                     gridLines={gridLines}
-                    trades={backtestQuery.data?.trades}
+                    trades={[]}
                   />
                 ) : (
                   "Loading candlesticks..."

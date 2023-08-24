@@ -11,10 +11,13 @@ import React, { FC } from "react";
 import {
   computeInvestmentAmount,
   selectBarSize,
-  selectCurrencyPair,
+  selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { marketsApi } from "src/lib/markets/marketsApi";
+import { startOfYearISO } from "src/utils/date/startOfYearISO";
+import { todayISO } from "src/utils/date/todayISO";
 import { InvestmentFieldHelperText } from "./InvestmentFieldHelperText";
 
 const componentName = "InvestmentField";
@@ -41,19 +44,21 @@ export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
 
   const barSize = useAppSelector(selectBarSize);
 
-  const currencyPair = useAppSelector(selectCurrencyPair);
-  const { baseCurrency, quoteCurrency } = decomposeSymbolId(currencyPair);
+  const symbolId = useAppSelector(selectSymbolId)
+  const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
 
   const { totalInQuoteCurrency } = useAppSelector(computeInvestmentAmount);
 
   const { status: candlesticksStatus } = useAppSelector(
-    rtkApi.endpoints.getCandlesticksHistory.select({
-      symbolId: currencyPair,
-      barSize,
+    marketsApi.endpoints.getCandlesticks.select({
+      symbolId,
+      timeframe: barSize,
+      startDate: startOfYearISO(),
+      endDate: todayISO()
     })
   );
   const { status: currentAssetPriceStatus } = useAppSelector(
-    rtkApi.endpoints.getSymbolCurrentPrice.select(currencyPair)
+    rtkApi.endpoints.getSymbolCurrentPrice.select(symbolId)
   );
 
   const loading =

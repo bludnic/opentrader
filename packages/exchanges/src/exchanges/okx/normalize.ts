@@ -1,6 +1,7 @@
 import { ExchangeCode } from "@bifrost/types";
 import { Normalize } from "src/types/normalize.interface";
 import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
+import { composeSymbolIdFromPair } from "@bifrost/tools";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>
@@ -69,9 +70,10 @@ const getCandlesticks: Normalize["getCandlesticks"] = {
 };
 
 const getSymbol: Normalize["getSymbol"] = {
-  request: (params) => [params.symbolId],
+  request: (params) => [params.currencyPair],
   response: (market) => ({
-    symbolId: market.symbol,
+    symbolId: composeSymbolIdFromPair(ExchangeCode.OKX, market.symbol),
+    currencyPair: market.symbol,
     exchangeCode: ExchangeCode.OKX,
     exchangeSymbolId: market.id,
 

@@ -13,7 +13,7 @@ export type BuyTransaction = {
     fee: number; // fee in quote currency
     updateAt: number;
   };
-  profit: 0;
+  profit: number;
 };
 
 export type SellTransaction = {

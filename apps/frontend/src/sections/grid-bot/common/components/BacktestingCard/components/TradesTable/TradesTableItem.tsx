@@ -1,11 +1,9 @@
-import { OrderStatusEnum } from "@bifrost/types";
-import { TableCell, TableRow } from "@mui/material";
+import { alpha, TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/system/colorManipulator";
 import Big from "big.js";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { BacktestingTradeDto } from "src/lib/bifrost/rtkApi";
+import { BuyTransactionDto, SellTransactionDto } from "src/lib/bifrost/rtkApi";
 import { formatDateTime } from "src/utils/date/formatDateTime";
 
 const componentName = "TradesTableItem";
@@ -27,44 +25,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type TradesTableItemProps = {
   className?: string;
-  trade: BacktestingTradeDto;
+  transaction: BuyTransactionDto | SellTransactionDto;
 };
 
 export const TradesTableItem: FC<TradesTableItemProps> = (props) => {
-  const { className, trade } = props;
-  const { smartTrade } = trade;
+  const { className, transaction } = props;
 
-  const profit = new Big(smartTrade.sellOrder.price)
-    .minus(smartTrade.buyOrder.price)
-    .times(trade.quantity)
+  const profit = new Big(transaction.sell?.price || 0)
+    .minus(transaction.buy.price)
+    .times(transaction.quantity)
     .toFixed(2)
     .toString();
+
+  const date = transaction.side === "sell" && transaction.sell
+    ? formatDateTime(transaction.sell.updateAt)
+    : formatDateTime(transaction.buy.updateAt)
 
   return (
     <StyledTableRow
       className={clsx(classes.root, className, {
-        [classes.rowBuy]: trade.side === "buy",
-        [classes.rowSell]: trade.side === "sell",
+        [classes.rowBuy]: transaction.side === "buy",
+        [classes.rowSell]: transaction.side === "sell",
       })}
     >
       <TableCell component="th" scope="row">
-        {formatDateTime(trade.time)}
+        {date}
       </TableCell>
 
       <TableCell component="th" scope="row" align="right">
-        {trade.quantity}
+        {transaction.quantity}
       </TableCell>
 
       <TableCell component="th" scope="row" align="right">
-        {trade.price}
+        {transaction.buy.price}
+      </TableCell>
+
+      <TableCell component="th" scope="row" align="right">
+        {transaction.side === 'sell' && transaction.sell ? transaction.sell.price : 'N/A'}
       </TableCell>
 
       <TableCell component="th" align="right">
-        {trade.side === "sell" ? profit : null}
-      </TableCell>
-
-      <TableCell component="th" align="right">
-        {smartTrade.id}
+        {transaction.side === "sell" ? profit : null}
       </TableCell>
     </StyledTableRow>
   );

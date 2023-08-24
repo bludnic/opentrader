@@ -3,12 +3,13 @@ import { ISymbolFilter } from "./symbol-filter.interface";
 
 export interface ISymbolInfo {
   /**
-   * Internal symbol ID.
-   *
-   * - `BINA:BTC-USDT` for Binance SPOT
-   * - `OKX: ETH-USDT` for OKx Spot
+   * e.g. OKX:BTC/USDT
    */
   symbolId: string;
+  /**
+   * e.g. BTC/USDT
+   */
+  currencyPair: string;
   exchangeCode: ExchangeCode;
 
   /**

@@ -8,10 +8,10 @@ import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
-import {
-  useGetGridBotQuery,
-  useLazyGetCandlesticksHistoryQuery,
-} from "src/lib/bifrost/rtkApi";
+import { useGetGridBotQuery } from "src/lib/bifrost/rtkApi";
+import { useLazyGetCandlesticksQuery } from "src/lib/markets/marketsApi";
+import { startOfYearISO } from "src/utils/date/startOfYearISO";
+import { todayISO } from "src/utils/date/todayISO";
 import { CompletedSmartTradesCard } from "./components/CompletedSmartTradesCard";
 import { ActiveSmartTradesCard } from "./components/ActiveSmartTradesCard";
 
@@ -35,8 +35,7 @@ const BotPage: FC<BotPageProps> = (props) => {
 
   const botQuery = useGetGridBotQuery(String(router.query.id));
 
-  const [fetchCandlesticks, candlesticks] =
-    useLazyGetCandlesticksHistoryQuery();
+  const [fetchCandlesticks, candlesticks] = useLazyGetCandlesticksQuery();
   useEffect(() => {
     if (!botQuery.data) return;
 
@@ -49,7 +48,9 @@ const BotPage: FC<BotPageProps> = (props) => {
 
     fetchCandlesticks({
       symbolId,
-      barSize: BarSize.FOUR_HOURS,
+      timeframe: BarSize.FOUR_HOURS,
+      startDate: startOfYearISO(),
+      endDate: todayISO()
     });
   }, [botQuery.data]);
 
@@ -128,7 +129,7 @@ const BotPage: FC<BotPageProps> = (props) => {
           <Grid item xs={12}>
             {candlesticks.status === "fulfilled" && candlesticks.data ? (
               <GridBotChart
-                candlesticks={candlesticks.data.history.candlesticks}
+                candlesticks={candlesticks.data.candlesticks}
                 gridLines={botQuery.data.bot.gridLines}
               />
             ) : (

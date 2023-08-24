@@ -4,16 +4,12 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { FC } from "react";
-import { SxProps } from "@mui/system";
-import { Box, Button, CircularProgress, Theme } from "@mui/material";
+import { Box, Button, CircularProgress, SxProps, Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useAppSelector } from "src/store/hooks";
-import {
-  selectCurrencyPair,
-  selectGridLines,
-} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { selectSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
-import { RunGridBotBacktestResponseBodyDto } from "src/lib/bifrost/rtkApi";
+import { BacktestingResultDto, RunGridBotBacktestResponseBodyDto } from "src/lib/bifrost/rtkApi";
 import { TradesTable } from "./components/TradesTable/TradesTable";
 import { BacktestingForm } from "../BacktestingForm/BacktestingForm";
 import {
@@ -38,14 +34,14 @@ export interface BacktestingCardProps {
   sx?: SxProps<Theme>;
   isLoading?: boolean;
   onRun: () => void;
-  data?: RunGridBotBacktestResponseBodyDto;
+  data?: BacktestingResultDto;
 }
 
 export const BacktestingCard: FC<BacktestingCardProps> = (props) => {
   const { className, sx, isLoading, onRun, data } = props;
 
-  const currencyPair = useAppSelector(selectCurrencyPair);
-  const symbol = useAppSelector(selectSymbolById(currencyPair));
+  const symbolId = useAppSelector(selectSymbolId);
+  const symbol = useAppSelector(selectSymbolById(symbolId));
 
   const startDate = useAppSelector(selectStartDate);
   const endDate = useAppSelector(selectEndDate);
@@ -86,7 +82,7 @@ export const BacktestingCard: FC<BacktestingCardProps> = (props) => {
           <div>Loading...</div>
         ) : data ? (
           <TradesTable
-            trades={data.trades}
+            transactions={data.transactions}
             baseCurrency={symbol.baseCurrency}
             quoteCurrency={symbol.quoteCurrency}
           />

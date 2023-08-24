@@ -1,9 +1,9 @@
 import { BarSize, IGridLine } from "@bifrost/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { ExchangeCode } from "src/lib/bifrost/rtkApi";
 import {
   addGridLineAction,
-  changeCurrencyPairAction,
   changeFormTypeAction,
   ChangeFormTypePayload,
   changeGridLinesNumberAction,
@@ -12,7 +12,6 @@ import {
   changeQuantityPerGridAction,
   changeBarSizeAction,
   removeGridLineAction,
-  setCurrencyPairAction,
   setExchangeAccountIdAction,
   setGridLinesAction,
   setHighPriceAction,
@@ -23,6 +22,9 @@ import {
   updateGridLineQuantityAction,
   UpdateGridLineQuantityPayload,
   updateGridLinesAction,
+  setExchangeCodeAction,
+  setSymbolIdAction,
+  changeSymbolIdAction
 } from "./actions";
 import { initialState } from "./state";
 
@@ -42,11 +44,17 @@ export const gridBotFormSlice = createSlice({
     ) => {
       state.exchangeAccountId = action.payload;
     },
-    [setCurrencyPairAction.type]: (state, action: PayloadAction<string>) => {
-      state.currencyPair = action.payload;
+    [setExchangeCodeAction.type]: (
+      state,
+      action: PayloadAction<ExchangeCode>
+    ) => {
+      state.exchangeCode = action.payload;
     },
-    [changeCurrencyPairAction.type]: (state, action: PayloadAction<string>) => {
-      state.currencyPair = action.payload;
+    [setSymbolIdAction.type]: (state, action: PayloadAction<string>) => {
+      state.symbolId = action.payload;
+    },
+    [changeSymbolIdAction.type]: (state, action: PayloadAction<string>) => {
+      state.symbolId = action.payload;
     },
     [changeHighPriceAction.type]: (state, action: PayloadAction<number>) => {
       state.highPrice = action.payload;
@@ -117,8 +125,9 @@ export const gridBotFormSlice = createSlice({
 export const {
   changeFormType,
   setExchangeAccountId,
-  setCurrencyPair,
-  changeCurrencyPair,
+  setExchangeCode,
+  setSymbolId,
+  changeSymbolId,
   setHighPrice,
   changeHighPrice,
   setLowPrice,

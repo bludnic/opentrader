@@ -1,14 +1,15 @@
-import { exchanges, IExchange } from '@bifrost/exchanges';
-import { BarSize, ICandlestick } from '@bifrost/types';
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { exchanges, IExchange } from "@bifrost/exchanges";
+import { BarSize, ICandlestick } from "@bifrost/types";
+import { Injectable, Logger } from "@nestjs/common";
+import { Cron, CronExpression, SchedulerRegistry } from "@nestjs/schedule";
+import { CandlesticksService } from "src/api/candlesticks/candlesticks.service";
+import { MarketsService } from "src/api/markets/markets.service";
+import { calcSince } from "src/common/utils/candlesticks";
 
 import {
   FETCH_CANDLESTICKS_HISTORY_CRON_JOB_FAIL_TIMEOUT,
-  FETCH_CANDLESTICKS_HISTORY_CRON_JOB_NAME,
-} from './constants';
-import { MarketsService } from 'src/api/markets/markets.service';
-import { CandlesticksService } from 'src/api/candlesticks/candlesticks.service';
+  FETCH_CANDLESTICKS_HISTORY_CRON_JOB_NAME
+} from "./constants";
 
 @Injectable()
 export class CronService {
@@ -49,15 +50,27 @@ export class CronService {
 
     const market = markets[0];
     const { symbol, exchangeCode } = market;
-    this.logger.debug(`Pick first market: ${market.exchangeCode}`);
+    this.logger.debug(
+      `Pick first market: ${market.exchangeCode}:${market.symbol}`,
+    );
+    this.logger.debug(
+      `Timeframes: 4h: ${market.fourHours}, 1h: ${market.oneHour}, 1m: ${market.oneMinute}`,
+    );
 
     const exchange: IExchange = exchanges[exchangeCode]();
     this.logger.debug(`${market.exchangeCode}: exchange instance created`);
 
+    const timeframe = !market.fourHours
+      ? BarSize.FOUR_HOURS
+      : !market.oneHour
+      ? BarSize.ONE_HOUR
+      : BarSize.ONE_MINUTE;
+
+    this.logger.debug(`Using ${timeframe} timeframe`);
     const oldestCandle = await this.candlesticksService.findOldestCandlestick(
       symbol,
       exchangeCode,
-      BarSize.ONE_MINUTE, // hardcoded, need to handle also other timeframes
+      timeframe,
     );
 
     let oldestCandleTimestamp: number;
@@ -77,8 +90,7 @@ export class CronService {
     }
 
     const limit = 100;
-    const MINUTE_MS = 60 * 1000;
-    const since = oldestCandleTimestamp - MINUTE_MS * limit;
+    const since = calcSince(oldestCandleTimestamp, timeframe, limit);
     this.logger.debug(
       `Preparing to download candles since ${since}: (${new Date(
         since,
@@ -89,7 +101,7 @@ export class CronService {
     try {
       candlesticks = await exchange.getCandlesticks({
         symbol: market.symbol,
-        bar: BarSize.ONE_MINUTE, // hardcoded, see comment above
+        bar: timeframe,
         since,
         limit,
       });
@@ -112,7 +124,7 @@ export class CronService {
     if (candlesticks.length === 0) {
       this.logger.debug('History end reached');
 
-      await this.marketsService.update(symbol, exchangeCode, true);
+      await this.marketsService.update(symbol, exchangeCode, timeframe);
     } else {
       this.logger.debug('Saving candlesticks to db...');
 
@@ -120,7 +132,7 @@ export class CronService {
         candlesticks,
         symbol,
         exchangeCode,
-        BarSize.ONE_MINUTE,
+        timeframe,
       );
     }
 

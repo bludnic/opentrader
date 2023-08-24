@@ -1,16 +1,17 @@
 import {
   calculateInvestment,
-  computeGridFromCurrentAssetPrice,
+  computeGridFromCurrentAssetPrice, decomposeSymbolId,
   filterPrice,
-  filterQuantity,
+  filterQuantity
 } from "@bifrost/tools";
-import { BarSize, IGridLine } from "@bifrost/types";
+import { BarSize, ExchangeCode, IGridLine } from "@bifrost/types";
 import { Selector } from "@reduxjs/toolkit";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { ExchangeAccountDto } from "src/lib/bifrost/client";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/state";
 import { RootState } from "src/store";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { useAppSelector } from "src/store/hooks";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { GridBotFormType } from "./types";
 
@@ -27,8 +28,17 @@ export const selectExchangeAccountId: Selector<
   ExchangeAccountDto["id"]
 > = (rootState) => rootState.gridBotForm.exchangeAccountId;
 
-export const selectCurrencyPair: Selector<RootState, string> = (rootState) =>
-  rootState.gridBotForm.currencyPair;
+export const selectExchangeCode: Selector<RootState, ExchangeCode> = (rootState) =>
+  rootState.gridBotForm.exchangeCode as ExchangeCode;
+
+export const selectCurrencyPair: Selector<RootState, string> = (rootState) => {
+  const { currencyPairSymbol } = decomposeSymbolId(rootState.gridBotForm.symbolId);
+
+  return currencyPairSymbol;
+}
+
+export const selectSymbolId: Selector<RootState, string> = (rootState) =>
+  rootState.gridBotForm.symbolId;
 
 export const selectHighPrice: Selector<RootState, number> = (rootState) =>
   rootState.gridBotForm.highPrice;
@@ -50,10 +60,10 @@ export const computeInvestmentAmount: Selector<
     totalInQuoteCurrency: string;
   }
 > = (rootState) => {
-  const currencyPair = selectCurrencyPair(rootState);
+  const symbolId = selectSymbolId(rootState);
   const currentAssetPriceState =
-    rtkApi.endpoints.getSymbolCurrentPrice.select(currencyPair)(rootState);
-  const symbol = selectSymbolById(currencyPair)(rootState);
+    rtkApi.endpoints.getSymbolCurrentPrice.select(symbolId)(rootState);
+  const symbol = selectSymbolById(symbolId)(rootState);
 
   const statsIsReady =
     !!symbol && currentAssetPriceState.status === QueryStatus.fulfilled;

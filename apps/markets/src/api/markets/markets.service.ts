@@ -1,7 +1,7 @@
-import { ExchangeCode } from '@bifrost/types';
-import { Injectable } from '@nestjs/common';
+import { BarSize, ExchangeCode } from "@bifrost/types";
+import { Injectable } from "@nestjs/common";
 
-import { DbService } from 'src/core/db/db.service';
+import { DbService } from "src/core/db/db.service";
 
 @Injectable()
 export class MarketsService {
@@ -34,9 +34,7 @@ export class MarketsService {
    */
   async findWithNoHistory() {
     const markets = await this.db.marketRepository.find({
-      where: {
-        historyReached: false,
-      },
+      where: [{ oneMinute: false }, { oneHour: false }, { fourHours: false }],
     });
 
     return {
@@ -50,7 +48,9 @@ export class MarketsService {
   async findWithHistory() {
     const markets = await this.db.marketRepository.find({
       where: {
-        historyReached: true,
+        oneMinute: true,
+        oneHour: true,
+        fourHours: true,
       },
     });
 
@@ -75,12 +75,14 @@ export class MarketsService {
   async update(
     symbol: string,
     exchangeCode: ExchangeCode,
-    historyReached: boolean,
+    historyReached: BarSize,
   ) {
     const marketEntity = this.db.marketRepository.create({
       symbol,
       exchangeCode,
-      historyReached,
+      oneMinute: historyReached === BarSize.ONE_MINUTE ? true : undefined,
+      oneHour: historyReached === BarSize.ONE_HOUR ? true : undefined,
+      fourHours: historyReached === BarSize.FOUR_HOURS ? true : undefined,
     });
 
     const market = await this.db.marketRepository.save(marketEntity);

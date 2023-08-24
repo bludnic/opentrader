@@ -1,7 +1,7 @@
 import { SagaIterator } from "redux-saga";
 import { all, takeLatest } from "redux-saga/effects";
 import {
-  changeCurrencyPair,
+  changeSymbolId,
   changeGridLinesNumber,
   changeHighPrice,
   changeLowPrice,
@@ -17,7 +17,7 @@ import { initPageWorker } from "./initPage";
 export function* createGridBotSagas(): SagaIterator {
   yield all([
     takeLatest(initPage.type, initPageWorker),
-    takeLatest(changeCurrencyPair.type, changeCurrencyPairWorker),
+    takeLatest(changeSymbolId.type, changeCurrencyPairWorker),
     takeLatest(
       [
         changeLowPrice.type,

@@ -28,10 +28,7 @@ export class SymbolsController {
   async getSymbols(
     @Query('exchangeCode', IsValidExchangeCodePipe) exchangeCode: string,
   ): Promise<GetSymbolsResponseBodyDto> {
-    const exchangeService =
-      await this.exchangeFactory.createFromExchangeAccountId(
-        'okx_real_testing',
-      );
+    const exchangeService = exchanges[exchangeCode]();
 
     const symbols = await exchangeService.getSymbols();
 

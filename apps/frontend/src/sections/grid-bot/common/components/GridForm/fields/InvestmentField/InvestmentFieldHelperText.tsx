@@ -3,17 +3,17 @@ import { FormHelperText } from "@mui/material";
 import { FC } from "react";
 import {
   computeInvestmentAmount,
-  selectCurrencyPair,
+  selectSymbolId
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 
 export const InvestmentFieldHelperText: FC = () => {
-  const currencyPair = useAppSelector(selectCurrencyPair);
+  const symbolId = useAppSelector(selectSymbolId);
 
   const { baseCurrencyAmount, quoteCurrencyAmount, totalInQuoteCurrency } =
     useAppSelector(computeInvestmentAmount);
 
-  const { baseCurrency, quoteCurrency } = decomposeSymbolId(currencyPair);
+  const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
 
   return (
     <FormHelperText>

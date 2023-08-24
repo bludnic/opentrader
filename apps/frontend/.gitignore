@@ -45,3 +45,6 @@ src/lib/coingecko/client
 # bifrost swagger
 src/lib/bifrost/client
 src/lib/bifrost/rtkApi.ts
+
+# markets swagger
+src/lib/markets/marketsApi.ts

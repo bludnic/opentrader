@@ -1,22 +1,26 @@
 import {
   calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
-  findLowestCandlestickBy,
+  findLowestCandlestickBy
 } from "@bifrost/tools";
 import { put } from "redux-saga/effects";
 import {
-  setCurrencyPair,
   setExchangeAccountId,
+  setExchangeCode,
   setGridLines,
   setHighPrice,
   setLowPrice,
   setQuantityPerGrid,
+  setSymbolId,
 } from "src/sections/grid-bot/create-bot/store/bot-form";
 import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/store/bot-form/constants";
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
 import { selectBarSize } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { markPageAsReady } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { marketsApi } from "src/lib/markets/marketsApi";
+import { startOfYearISO } from "src/utils/date/startOfYearISO";
+import { todayISO } from "src/utils/date/todayISO";
 import { query } from "src/utils/saga/query";
 import { typedSelect } from "src/utils/saga/select";
 
@@ -28,6 +32,7 @@ export function* initPageWorker(): Iterator<any, any, any> {
 
   const firstExchangeAccount = exchangeAccounts[0];
   yield put(setExchangeAccountId(firstExchangeAccount.id));
+  yield put(setExchangeCode(firstExchangeAccount.exchangeCode));
 
   // Fetch symbols
   const {
@@ -38,7 +43,7 @@ export function* initPageWorker(): Iterator<any, any, any> {
   );
 
   const firstSymbol = symbols[0];
-  yield put(setCurrencyPair(firstSymbol.symbolId));
+  yield put(setSymbolId(firstSymbol.symbolId));
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
     firstSymbol.filters.lot.minQuantity
@@ -48,12 +53,12 @@ export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch candlesticks
   const barSize = yield* typedSelect(selectBarSize);
   const {
-    data: {
-      history: { candlesticks },
-    },
-  } = yield* query(rtkApi.endpoints.getCandlesticksHistory, {
+    data: { candlesticks },
+  } = yield* query(marketsApi.endpoints.getCandlesticks, {
     symbolId: firstSymbol.symbolId,
-    barSize,
+    timeframe: barSize,
+    startDate: startOfYearISO(),
+    endDate: todayISO(),
   });
 
   const highestCandlestick = findHighestCandlestickBy("close", candlesticks);

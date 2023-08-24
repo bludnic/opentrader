@@ -26,9 +26,9 @@ export const TradesTableHead: FC<TradesTableHeadProps> = (props) => {
       <TableRow>
         <TableCell>Time</TableCell>
         <TableCell align="right">Qty ({baseCurrency})</TableCell>
-        <TableCell align="right">Price ({quoteCurrency})</TableCell>
+        <TableCell align="right">Buy price ({quoteCurrency})</TableCell>
+        <TableCell align="right">Sell price ({quoteCurrency})</TableCell>
         <TableCell align="right">Profit ({quoteCurrency})</TableCell>
-        <TableCell align="right">ST (ID)</TableCell>
       </TableRow>
     </StyledTableHead>
   );
