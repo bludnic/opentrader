@@ -11,7 +11,7 @@ export class SmartTradeService {
   constructor(private key: string, private smartTrade: SmartTrade) {
     // Instead of assigning prop by prop
     // it is possible to use `Object.assign(this, smartTrade)`
-    // buy types are lost in this case
+    // but types are lost in this case
     this.id = smartTrade.id;
     this.buy = smartTrade.buy;
     this.sell = smartTrade.sell;
