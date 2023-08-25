@@ -98,7 +98,8 @@ export class MemoryExchange implements IExchange {
 
   async getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo> {
     return {
-      symbolId: "ADA/USDT",
+      symbolId: `${ExchangeCode.OKX}:ADA/USDT`,
+      currencyPair: "ADA/USDT",
       exchangeCode: ExchangeCode.OKX,
       exchangeSymbolId: "ADA-USDT",
       baseCurrency: "ADA",
