@@ -1,4 +1,4 @@
-import { ExchangeAccountEndpoint } from '@bifrost/swagger/dist/endpoints/exchange-account';
+import { ExchangeAccountEndpoint } from '@bifrost/swagger';
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FirebaseUser } from 'src/common/decorators/firebase-user.decorator';
