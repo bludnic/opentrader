@@ -3,9 +3,10 @@ import { OrderSideEnum } from "@bifrost/types";
 import { BuyTransaction } from "src/types";
 
 export function buyTransaction(smartTrade: SmartBuySell): BuyTransaction {
-  const { buy, sell, quantity } = smartTrade;
+  const { buy, sell, quantity, id } = smartTrade;
 
   return {
+    smartTradeId: id,
     side: OrderSideEnum.Buy,
     quantity,
     buy: {

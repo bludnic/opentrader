@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 import { useAppSelector } from "src/store/hooks";
 import { selectSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
-import { BacktestingResultDto, RunGridBotBacktestResponseBodyDto } from "src/lib/bifrost/rtkApi";
+import { BacktestingResultDto } from "src/lib/bifrost/rtkApi";
 import { TradesTable } from "./components/TradesTable/TradesTable";
 import { BacktestingForm } from "../BacktestingForm/BacktestingForm";
 import {

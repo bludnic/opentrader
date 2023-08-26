@@ -5,7 +5,7 @@ import { buyOrder } from "./report/buyOrder";
 import { buyTransaction } from "./report/buyTransaction";
 import { sellOrder } from "./report/sellOrder";
 import { sellTransaction } from "./report/sellTransaction";
-import { ActiveOrder, Transaction, ReportResult } from "./types";
+import { ActiveOrder, ReportResult, Transaction } from "./types";
 
 export class BacktestingReport {
   constructor(private smartTrades: SmartTrade[]) {}
@@ -21,9 +21,9 @@ export class BacktestingReport {
   getTransactions(): Transaction[] {
     const transactions: Transaction[] = [];
 
-    const smartTrades = this.getSmartTrades();
+    const finishedSmartTrades = this.getFinishedSmartTrades()
 
-    smartTrades.forEach((smartTrade) => {
+    finishedSmartTrades.forEach((smartTrade) => {
       transactions.push(buyTransaction(smartTrade));
       transactions.push(sellTransaction(smartTrade));
     });
@@ -60,6 +60,13 @@ export class BacktestingReport {
         smartTrade.buy.status === OrderStatusEnum.Placed ||
         smartTrade.sell.status === OrderStatusEnum.Placed
     );
+  }
+
+  private getFinishedSmartTrades() {
+    return this.getSmartTrades().filter(smartTrade => {
+      return smartTrade.buy.status === OrderStatusEnum.Filled &&
+        smartTrade.sell.status === OrderStatusEnum.Filled
+    })
   }
 
   private getSmartTrades() {

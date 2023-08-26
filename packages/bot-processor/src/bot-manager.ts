@@ -11,8 +11,6 @@ export class BotManager<T extends IBotConfiguration> {
   async process(botTemplate: BotTemplate<T>): Promise<void> {
     const generator = botTemplate(this.control);
 
-    console.log("[BotManager] Start processing " + this.control.bot.id);
-
     let item = generator.next();
 
     for (; !item.done; ) {
@@ -47,7 +45,5 @@ export class BotManager<T extends IBotConfiguration> {
         throw Error("Unsupported effect");
       }
     }
-
-    console.log("[BotManager] End processing " + this.control.bot.id);
   }
 }

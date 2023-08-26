@@ -5,6 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { TransactionOrderDto } from './types/transaction-order.dto';
 
 export class SellTransactionDto implements SellTransaction {
+  smartTradeId: string;
   @ApiProperty({
     enum: OrderSideEnum,
     enumName: 'OrderSideEnum',

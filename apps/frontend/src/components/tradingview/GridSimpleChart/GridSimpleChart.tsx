@@ -114,6 +114,7 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
         lineWidth: priceLineWidth,
         lineStyle: LineStyle.Solid,
         axisLabelVisible: true,
+        lineVisible: true,
         title: isUpperLimitPrice
           ? "Upper limit price"
           : isLowerLimitPrice

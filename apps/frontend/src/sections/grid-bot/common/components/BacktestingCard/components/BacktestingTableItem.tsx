@@ -1,11 +1,9 @@
-import { OrderStatusEnum } from "@bifrost/types";
-import { TableCell, TableRow } from "@mui/material";
+import { alpha, TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/system/colorManipulator";
 import Big from "big.js";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { SmartTradeDto, TradeDto } from "src/lib/bifrost/rtkApi";
+import { SmartTradeDto } from "src/lib/bifrost/rtkApi";
 
 const componentName = "BacktestingTableItem";
 const classes = {

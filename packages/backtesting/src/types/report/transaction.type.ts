@@ -1,6 +1,7 @@
 import { OrderSideEnum } from "@bifrost/types";
 
 export type BuyTransaction = {
+  smartTradeId: string;
   side: OrderSideEnum.Buy;
   quantity: number;
   buy: {
@@ -17,6 +18,7 @@ export type BuyTransaction = {
 };
 
 export type SellTransaction = {
+  smartTradeId: string;
   side: OrderSideEnum.Sell;
   quantity: number;
   buy: {

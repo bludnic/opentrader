@@ -67,6 +67,10 @@ export const TradesTableItem: FC<TradesTableItemProps> = (props) => {
       <TableCell component="th" align="right">
         {transaction.side === "sell" ? profit : null}
       </TableCell>
+
+      <TableCell component="th" align="right">
+        {transaction.smartTradeId}
+      </TableCell>
     </StyledTableRow>
   );
 };

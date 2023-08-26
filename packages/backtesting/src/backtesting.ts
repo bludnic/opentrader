@@ -5,6 +5,7 @@ import {
   BotTemplate,
 } from "@bifrost/bot-processor";
 import { ICandlestick } from "@bifrost/types";
+import { fulfilledTable, gridTable } from "./debugging";
 import { BacktestingReport } from "./backtesting-report";
 import { ReportResult } from "./types";
 
@@ -33,15 +34,24 @@ export class Backtesting<T extends IBotConfiguration> {
     for (const [index, candle] of candlesticks.entries()) {
       this.marketSimulator.nextCandle(candle);
 
-      const candleDateString = new Date(candle.timestamp).toUTCString();
-
+      const candleDateString = new Date(candle.timestamp).toISOString().slice(0, 10)
       console.log(
-        `Candle ${candleDateString} (#${index} of ${candlesticks.length})`,
-        candle.close
+        `Process candle ${candleDateString} (#${index+1} of ${candlesticks.length})`,
+        candle.close,
       );
+
+      const anyOrderFulfilled = this.marketSimulator.fulfillOrders()
+
+      if (anyOrderFulfilled) {
+        console.table(fulfilledTable(this.store.getSmartTrades()))
+      }
+
       await this.processor.process(template);
 
-      this.marketSimulator.processOrders();
+      const anyOrderPlaced = this.marketSimulator.placeOrders();
+      if (anyOrderPlaced) {
+        console.table(gridTable((this.store.getSmartTrades())))
+      }
     }
 
     const report = new BacktestingReport(

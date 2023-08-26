@@ -5,9 +5,10 @@ import { SellTransaction } from "../types";
 export function sellTransaction(
   smartTrade: SmartBuySell
 ): SellTransaction {
-  const { buy, sell, quantity } = smartTrade;
+  const { buy, sell, quantity, id } = smartTrade;
 
   return {
+    smartTradeId: id,
     side: OrderSideEnum.Sell,
     quantity,
     buy: {

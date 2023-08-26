@@ -19,12 +19,30 @@ export class MemoryStore implements IStore {
    */
   smartTradesMap: Record<string, string> = {}; // Record<smartTradeKey, smartTrade.id>
 
+  /**
+   * @internal
+   */
+  getSmartTrades() {
+    const smartTradesIds = Object.values(this.smartTradesMap)
+
+    const smartTrades = smartTradesIds.flatMap<SmartTrade>(smartTradeId => {
+      const smartTrade = this.marketSimulator.smartTrades.find(smartTrade => smartTrade.id === smartTradeId)
+
+      if (smartTrade) {
+        return [smartTrade]
+      }
+
+      return []
+    })
+
+    return smartTrades
+  }
+
   async stopBot() {
     return Promise.resolve();
   }
 
   async getSmartTrade(key: string, botId: string): Promise<SmartTrade | null> {
-    console.log(`getSmartTrade with key ${key}`);
     const smartTradeId = this.smartTradesMap[key];
 
     if (smartTradeId) {
@@ -33,9 +51,6 @@ export class MemoryStore implements IStore {
       );
 
       if (smartTrade) {
-        console.log(
-          `getSmartTrade #${key} found: buy ${smartTrade.buy?.price} / sell ${smartTrade.sell?.price}`
-        );
         return smartTrade;
       }
     }

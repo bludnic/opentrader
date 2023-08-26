@@ -1,4 +1,4 @@
-import { SmartTrade } from "@bifrost/bot-processor";
+import { SmartTrade, SmartTradeTypeEnum } from "@bifrost/bot-processor";
 import { ICandlestick, OrderStatusEnum } from "@bifrost/types";
 
 export class MarketSimulator {
@@ -21,33 +21,30 @@ export class MarketSimulator {
   }
 
   /**
-   * Process orders.
-   * Change status from:
-   * - `idle` -> `placed`
-   * - `placed` -> `filled` (based on current asset price)
+   * Changes the order status from: `idle` -> `placed`
+   * Return `true` if any order was placed
    */
-  processOrders() {
-    this.placeOrders();
-    this.fulfillOrders();
-  }
-
-  private placeOrders() {
-    this.smartTrades.forEach((smartTrade) => {
-      this.placeOrder(smartTrade.id);
-    });
-  }
-
-  private fulfillOrders() {
-    this.smartTrades.forEach((smartTrade) => {
-      this.fulfillOrder(smartTrade.id);
+  placeOrders() {
+    return this.smartTrades.some((smartTrade) => {
+      return this.placeOrder(smartTrade.id);
     });
   }
 
   /**
-   * Mark `idle` orders as `placed`
+   * Changed orders statuses from `placed` -> `filled`
+   * Return `true` if any order was fulfilled
+   */
+  fulfillOrders(): boolean {
+    return this.smartTrades.some((smartTrade) => {
+      return this.fulfillOrder(smartTrade.id);
+    });
+  }
+
+  /**
+   * Mark `idle` order as `placed`
    * @param smartTradeId
    */
-  private placeOrder(smartTradeId: string) {
+  private placeOrder(smartTradeId: string): boolean {
     const smartTrade = this.smartTrades.find(
       (smartTrade) => smartTrade.id === smartTradeId
     );
@@ -63,6 +60,8 @@ export class MarketSimulator {
         ...smartTrade.buy,
         status: OrderStatusEnum.Placed,
       };
+
+      return true
     } else if (
       smartTrade.sell &&
       smartTrade.sell.status === OrderStatusEnum.Idle &&
@@ -72,14 +71,20 @@ export class MarketSimulator {
         ...smartTrade.sell,
         status: OrderStatusEnum.Placed,
       };
+
+      return true
     }
+
+    return false
   }
 
   /**
-   * Update order statue to Filled based on current asset price
+   * Update order statue to Filled based on current asset price:
+   * - `placed` -> `filled`
    * @param smartTradeId
+   * @return Returns `true` if order was fulfilled
    */
-  private fulfillOrder(smartTradeId: string) {
+  private fulfillOrder(smartTradeId: string): boolean {
     const candlestick = this.currentCandle;
 
     const smartTrade = this.smartTrades.find(
@@ -103,6 +108,8 @@ export class MarketSimulator {
         console.log(
           `[TestingDb] ST# ${smartTrade.id} buy order filled, updated at ${updatedAt}`
         );
+        console.log(smartTrade)
+        return true
       }
     }
 
@@ -117,7 +124,25 @@ export class MarketSimulator {
         console.log(
           `[TestingDb] ST# ${smartTradeId} sell order filled, updated at ${updatedAt}`
         );
+        console.log(smartTrade)
+        return true
       }
     }
+
+    return false
+  }
+
+  findChangedSmartTrades() {
+    const candlestick = this.currentCandle;
+
+    return this.smartTrades.filter(smartTrade => {
+      if (smartTrade.type !== SmartTradeTypeEnum.BuySell) {
+        console.log(`findChangedSmartTrades: smartTrade ${smartTrade.type} type is not supported`)
+        return false
+      }
+
+      return smartTrade.buy.updatedAt === candlestick.timestamp ||
+        smartTrade.sell && smartTrade.sell.updatedAt === candlestick.timestamp
+    })
   }
 }
