@@ -6,7 +6,7 @@
 # NodeJS v16 required
 $ node -v
 
-# Check `pnpm` version (v7.29.3 required)
+# Check `pnpm` version (v8.6.10 required)
 $ pnpm -v
 
 # Install Turborepo globally (v1.8 required)
