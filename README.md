@@ -3,7 +3,7 @@
 ## Requirements
 
 ```bash
-# NodeJS v16 required
+# NodeJS v18 required
 $ node -v
 
 # Check `pnpm` version (v8.6.10 required)
