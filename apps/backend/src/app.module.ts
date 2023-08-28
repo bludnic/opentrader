@@ -27,6 +27,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 import { QueueModule } from 'src/queue/queue.module';
+import { TrpcModule } from 'src/trpc/trpc.module';
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { SmartTradingModule } from './smart-trading/smart-trading.module';
@@ -82,6 +83,7 @@ import { SymbolsModule } from './symbols/symbols.module';
     TradeBotModule,
     BacktestingModule,
     SymbolsModule,
+    TrpcModule,
   ],
   providers: [gridBotServiceFactory, AppService, GridBotSyncService, Logger],
   controllers: [GridBotController, AppController],

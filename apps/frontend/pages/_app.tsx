@@ -1,10 +1,11 @@
 import { SnackbarProvider } from "notistack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { darkTheme } from "src/theme";
 import { createEmotionCache } from "src/utils/next/createEmotionCache";
@@ -19,6 +20,8 @@ export type MyAppProps = AppProps & {
 
 function MyApp(props: MyAppProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
+
+  const [queryClient] = useState(() => new QueryClient());
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -37,13 +40,15 @@ function MyApp(props: MyAppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SnackbarProvider maxSnack={3}>
-        <ThemeProvider theme={darkTheme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </SnackbarProvider>
+      <QueryClientProvider client={queryClient}>
+        <SnackbarProvider maxSnack={3}>
+          <ThemeProvider theme={darkTheme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </SnackbarProvider>
+      </QueryClientProvider>
     </CacheProvider>
   );
 }

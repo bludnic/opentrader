@@ -17,7 +17,9 @@
   "dependencies": {
     "@bifrost/swagger": "workspace:*",
     "@bifrost/tools": "workspace:*",
+    "@bifrost/trpc": "workspace:*",
     "@bifrost/types": "workspace:*",
+    "@bifrost/backend": "workspace:*",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",
@@ -28,6 +30,8 @@
     "@mui/x-date-pickers": "^6.0.1",
     "@openapitools/openapi-generator-cli": "^2.4.25",
     "@reduxjs/toolkit": "^1.7.1",
+    "@tanstack/react-query": "^4.33.0",
+    "@trpc/client": "^10.38.0",
     "axios": "^0.25.0",
     "big.js": "^6.1.1",
     "clsx": "^1.1.1",
