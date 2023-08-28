@@ -47,7 +47,7 @@ export class SymbolsController {
     const exchangeService = exchanges[exchangeCode]();
 
     const symbol = await exchangeService.getSymbol({
-      symbolId: currencyPairSymbol,
+      currencyPair: currencyPairSymbol,
     });
 
     return {

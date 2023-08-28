@@ -164,11 +164,4 @@ export class GridBotController {
       activeSmartTrades,
     };
   }
-
-  @Get('/candlesticks')
-  async candlesticks() {
-    const exchange = exchanges[ExchangeCode.OKX]();
-
-    return exchange.getCandlesticks({});
-  }
 }
