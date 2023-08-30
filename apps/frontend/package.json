@@ -17,7 +17,6 @@
   "dependencies": {
     "@bifrost/swagger": "workspace:*",
     "@bifrost/tools": "workspace:*",
-    "@bifrost/trpc": "workspace:*",
     "@bifrost/types": "workspace:*",
     "@bifrost/backend": "workspace:*",
     "@emotion/cache": "^11.7.1",
