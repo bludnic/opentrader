@@ -23,6 +23,7 @@ export class ExchangeAccountsController {
   async getAccounts(
     @FirebaseUser() user: IUser,
   ): Promise<GetExchangeAccountsResponseBodyDto> {
+
     const exchangeAccounts = await this.accountsService.getExchangeAccounts(
       user.uid,
     );

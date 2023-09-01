@@ -10,7 +10,8 @@ export class SymbolsProcedures {
 
   getRouter() {
     return this.trpc.router({
-      symbolsList: this.trpc.procedure
+      list: this.trpc.procedure
+        .use(this.trpc.isLoggedIn)
         .input(z.nativeEnum(ExchangeCode))
         .query(async (opts) => {
           const { input: exchangeCode } = opts;

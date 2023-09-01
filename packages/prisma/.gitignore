@@ -1,4 +1,11 @@
 node_modules
 dist
+
+# Generated PrismaClient
 prisma/client/
+
+# Generate Zod types
 prisma/zod/
+
+# env
+.env

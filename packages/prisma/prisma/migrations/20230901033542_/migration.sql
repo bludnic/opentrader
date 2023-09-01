@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Bot" ALTER COLUMN "exchangeAccountId" DROP DEFAULT,
+ALTER COLUMN "ownerId" DROP DEFAULT;
