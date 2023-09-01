@@ -1,9 +1,0 @@
-{
-  "sortParamsByRequiredFlag": true,
-  "ensureUniqueParams": true,
-  "allowUnicodeIdentifiers": false,
-  "modelPropertyNaming": "original",
-  "supportsES6": false,
-  "npmName": "3commas-api",
-  "npmVersion": "9f02d0d"
-}

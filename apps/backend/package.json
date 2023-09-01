@@ -20,7 +20,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "openapi:3commas:generate": "node src/shared/3commas-api/swagger/bin/openapi-generate.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "typeorm:schema:sync": "pnpm run typeorm schema:sync -d ./src/config/typeorm-cli.config.ts",
     "markets:schema:build": "node ./scripts/markets-api/generate-client.mjs",
@@ -28,7 +27,6 @@
     "trpc:generate": "tsc -p ./tsconfig.trpc.json"
   },
   "dependencies": {
-    "3commas-typescript": "^1.3.5",
     "@bifrost/backtesting": "workspace:*",
     "@bifrost/bot-processor": "workspace:*",
     "@bifrost/bot-templates": "workspace:*",

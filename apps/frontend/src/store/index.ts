@@ -3,7 +3,6 @@ import createSagaMiddleware, { Task } from "redux-saga";
 import { Store } from "redux";
 import { createWrapper, Context } from "next-redux-wrapper";
 import { marketsApi } from "src/lib/markets/marketsApi";
-import { threeCommasAccountsApi } from "src/sections/3commas-accounts/common/store/api";
 import { gridBotCompletedSmartTradesApi } from "src/sections/grid-bot/common/store/api/completedDealsApi";
 import {
   createGridBotSlice,
@@ -46,9 +45,6 @@ export type RootState = {
   [gridBotCompletedSmartTradesApi.reducerPath]: ReturnType<
     typeof gridBotCompletedSmartTradesApi.reducer
   >;
-  [threeCommasAccountsApi.reducerPath]: ReturnType<
-    typeof threeCommasAccountsApi.reducer
-  >;
   [candlesticksHistoryApi.reducerPath]: ReturnType<
     typeof candlesticksHistoryApi.reducer
   >;
@@ -75,7 +71,6 @@ const makeStore = (context: Context) => {
       currentAssetPrice: currentAssetPriceSlice.reducer,
       candlesticks: candlesticksSlice.reducer,
       gridBotCompletedSmartTradesApi: gridBotCompletedSmartTradesApi.reducer,
-      threeCommasAccountsApi: threeCommasAccountsApi.reducer,
       candlesticksHistoryApi: candlesticksHistoryApi.reducer,
       rtkApi: rtkApi.reducer,
       marketsApi: marketsApi.reducer,
@@ -85,7 +80,6 @@ const makeStore = (context: Context) => {
       getDefaultMiddleware()
         .prepend(sagaMiddleware)
         .concat(gridBotCompletedSmartTradesApi.middleware)
-        .concat(threeCommasAccountsApi.middleware)
         .concat(candlesticksHistoryApi.middleware)
         .concat(rtkApi.middleware)
         .concat(marketsApi.middleware),

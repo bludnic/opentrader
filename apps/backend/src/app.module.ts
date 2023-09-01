@@ -28,7 +28,6 @@ import { Logger, Module, NestModule } from '@nestjs/common';
 import { GridBotModule } from 'src/grid-bot/grid-bot.module';
 import { QueueModule } from 'src/queue/queue.module';
 import { TrpcModule } from 'src/trpc/trpc.module';
-import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { SmartTradingModule } from './smart-trading/smart-trading.module';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
@@ -76,7 +75,6 @@ import { SymbolsModule } from './symbols/symbols.module';
     ExchangeAccountsModule,
     AppModule,
     MarketplaceModule,
-    TweetTradingModule,
     SmartTradingModule,
     BacktestingModule,
     SymbolsModule,

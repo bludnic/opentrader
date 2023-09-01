@@ -122,13 +122,6 @@ export const Navigation: FC<NavigationProps> = (props) => {
             href="/exchange-accounts"
             icon={<AccountBalanceIcon />}
           />
-
-          <DrawerListItem
-            drawerOpen={open}
-            text="3Commas Accounts"
-            href="/3commas/accounts"
-            icon={<PendingIcon />}
-          />
         </List>
       </Drawer>
 
