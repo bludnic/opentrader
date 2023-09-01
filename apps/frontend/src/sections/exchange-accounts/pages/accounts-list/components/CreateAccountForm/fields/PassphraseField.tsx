@@ -1,5 +1,4 @@
-import { Theme } from "@mui/material";
-import { SxProps } from "@mui/system";
+import { SxProps, Theme } from "@mui/material";
 import { TextField } from "mui-rff";
 import React, { FC } from "react";
 import { CreateExchangeAccountFormValues } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/types";
@@ -20,7 +19,6 @@ export const PassphraseField: FC<PassphraseFieldProps> = (props) => {
       label="Passphrase"
       name={fieldName}
       sx={sx}
-      required
       autoComplete="off"
     />
   );

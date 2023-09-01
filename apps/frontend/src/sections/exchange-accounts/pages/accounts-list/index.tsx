@@ -1,9 +1,11 @@
 import { Card } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { FC, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { FC, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
-import { ExchangeAccountDto, useLazyGetExchangeAccountsQuery } from 'src/lib/bifrost/rtkApi';
+import { trpc } from "src/lib/trpc";
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
 import { AccountsListTable } from "src/sections/exchange-accounts/pages/accounts-list/components/AccountsListTable/AccountsListTable";
 import { CreateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountDialog/CreateAccountDialog";
 import { UpdateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/UpdateAccountDialog/UpdateAccountDialog";
@@ -28,19 +30,14 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
   const [selectedAccount, setSelectedAccount] =
-    useState<ExchangeAccountDto | null>(null);
+    useState<TExchangeAccount | null>(null);
 
-  const [fetchAccounts, { data }] = useLazyGetExchangeAccountsQuery();
-
-  useEffect(() => {
-    fetchAccounts();
-  }, []);
+  const { isLoading, isError, data, refetch } = useQuery(
+    ["exchangeAccounts"],
+    async () => trpc.exchangeAccount.list.query(),
+  );
 
   const exchangeAccounts = data ? data.exchangeAccounts : [];
-
-  const handleRefetch = () => {
-    fetchAccounts();
-  };
 
   return (
     <Root
@@ -65,7 +62,7 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
         <CreateAccountDialog
           open={createDialogOpen}
           onClose={() => setCreateDialogOpen(false)}
-          onCreated={() => handleRefetch()}
+          onCreated={refetch}
         />
 
         {selectedAccount ? (
@@ -73,7 +70,7 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
             account={selectedAccount}
             open={updateDialogOpen}
             onClose={() => setUpdateDialogOpen(false)}
-            onCreated={() => handleRefetch()}
+            onCreated={refetch}
           />
         ) : null}
       </Card>

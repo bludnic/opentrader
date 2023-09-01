@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import { styled } from "@mui/material/styles";
 import React, { FC, useState } from "react";
 import clsx from "clsx";
-import { ExchangeAccountDto } from 'src/lib/bifrost/rtkApi';
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
 import { AccountsListTableRow } from "./AccountsListTableRow";
 import { AccountsListTableToolbar } from "./AccountsListTableToolbar";
 import { AccountsListTableHead } from "./AccountsListTableHead";
@@ -23,30 +23,22 @@ const Root = styled(Box)(({ theme }) => ({
 
 type AccountsListTableProps = {
   className?: string;
-  accounts: ExchangeAccountDto[];
+  accounts: TExchangeAccount[];
   onCreateAccountClick: () => void;
-  onEditAccountClick: (account: ExchangeAccountDto) => void;
+  onEditAccountClick: (account: TExchangeAccount) => void;
 };
 
 export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
-  const {
-    className,
-    accounts,
-    onCreateAccountClick,
-    onEditAccountClick,
-  } = props;
+  const { className, accounts, onCreateAccountClick, onEditAccountClick } =
+    props;
 
-  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [selected, setSelected] = useState<readonly number[]>([]);
 
-  const isSelected = (accountId: ExchangeAccountDto["id"]) =>
-    selected.indexOf(accountId) !== -1;
+  const isSelected = (accountId: number) => selected.indexOf(accountId) !== -1;
 
-  const handleClick = (
-    event: React.MouseEvent<unknown>,
-    accountId: ExchangeAccountDto["id"]
-  ) => {
+  const handleClick = (event: React.MouseEvent<unknown>, accountId: number) => {
     const selectedIndex = selected.indexOf(accountId);
-    let newSelected: readonly string[] = [];
+    let newSelected: readonly number[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, accountId);
@@ -57,7 +49,7 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -81,7 +73,7 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
         onCreateAccountClick={onCreateAccountClick}
         onEditAccountClick={() => {
           const account = accounts.find(
-            (account) => account.id === selected[0]
+            (account) => account.id === selected[0],
           );
 
           if (account) {

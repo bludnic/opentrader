@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { ExchangeAccountDto } from 'src/lib/bifrost/rtkApi';
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
 import { UpdateAccountForm } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/UpdateAccountForm";
 
 const componentName = "UpdateAccountDialog";
@@ -22,7 +22,7 @@ type UpdateAccountDialogProps = {
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
-  account: ExchangeAccountDto;
+  account: TExchangeAccount;
 };
 
 export const UpdateAccountDialog: FC<UpdateAccountDialogProps> = (props) => {

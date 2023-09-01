@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import clsx from "clsx";
 import { styled } from "@mui/material/styles";
-import { ExchangeAccountDto } from 'src/lib/bifrost/rtkApi';
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
 
 const componentName = "AccountsListTableRow";
 const classes = {
@@ -17,12 +17,12 @@ const StyledRow = styled(TableRow)(({ theme }) => ({
 }));
 
 type AccountsListTableRowProps = {
-  account: ExchangeAccountDto;
+  account: TExchangeAccount;
   className?: string;
   selected: boolean;
   onClick: (
     e: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
-    accountId: ExchangeAccountDto["id"]
+    accountId: number,
   ) => void;
 };
 

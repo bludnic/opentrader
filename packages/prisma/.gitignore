@@ -1,0 +1,4 @@
+node_modules
+dist
+prisma/client/
+prisma/zod/

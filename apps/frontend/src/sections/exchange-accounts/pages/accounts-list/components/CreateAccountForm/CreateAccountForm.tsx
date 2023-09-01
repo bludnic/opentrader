@@ -1,21 +1,18 @@
+import { useMutation } from "@tanstack/react-query";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { ExchangeCode } from "src/lib/bifrost/client";
-import { useCreateExchangeAccountMutation } from "src/lib/bifrost/rtkApi";
-import { AccountIdField } from "./fields/AccountIdField";
+import { trpc } from "src/lib/trpc";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
 import { Button, CircularProgress, Divider, Grid } from "@mui/material";
 import { CreateExchangeAccountFormValues } from "./types";
 import { ExchangeCodeField } from "./fields/ExchangeCodeField";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Form } from "react-final-form";
 import { FormApi } from "final-form";
 import { IsDemoAccountField } from "./fields/IsDemoAccountField";
 import { PassphraseField } from "./fields/PassphraseField";
 import { SecretKeyField } from "./fields/SecretKeyField";
-import { SerializedError } from "@reduxjs/toolkit";
-import { fromFormValuesToDto } from "./utils/create/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
 
 const componentName = "CreateAccountForm";
@@ -34,14 +31,15 @@ const Root = styled("div")(({ theme }) => ({
 type CreateAccountFormProps = {
   className?: string;
   onCreated: () => void;
-  onError: (error?: FetchBaseQueryError | SerializedError) => void;
+  onError: (error?: unknown) => void;
 };
 
 export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const { className, onCreated, onError } = props;
 
-  const [createAccount, { isLoading, isSuccess, isError, error }] =
-    useCreateExchangeAccountMutation();
+  const { mutateAsync, isLoading, isSuccess, isError, error } = useMutation({
+    mutationFn: trpc.exchangeAccount.create.mutate,
+  });
 
   useEffect(() => {
     if (isSuccess) {
@@ -57,7 +55,6 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
 
   const initialValues: CreateExchangeAccountFormValues = {
     // account
-    id: "",
     name: "",
     exchangeCode: ExchangeCode.Okx,
 
@@ -70,27 +67,21 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
 
   const handleSubmit = async (
     values: CreateExchangeAccountFormValues,
-    form: FormApi<CreateExchangeAccountFormValues>
+    form: FormApi<CreateExchangeAccountFormValues>,
   ) => {
-    const dto = fromFormValuesToDto(values);
-
-    const data = await createAccount(dto);
+    const data = await mutateAsync(values);
     form.reset();
 
     return data;
   };
 
   const validate = (
-    values: CreateExchangeAccountFormValues
+    values: CreateExchangeAccountFormValues,
   ):
     | Partial<Record<keyof CreateExchangeAccountFormValues, string>>
     | undefined => {
     if (!values.exchangeCode) {
       return { exchangeCode: "Required" };
-    }
-
-    if (!values.id) {
-      return { id: "Required" };
     }
 
     if (!values.name) {
@@ -103,10 +94,6 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
 
     if (!values.secretKey) {
       return { secretKey: "Required" };
-    }
-
-    if (!values.passphrase) {
-      return { passphrase: "Required" };
     }
 
     return;
@@ -123,10 +110,6 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <ExchangeCodeField />
-              </Grid>
-
-              <Grid item xs={12}>
-                <AccountIdField />
               </Grid>
 
               <Grid item xs={12}>

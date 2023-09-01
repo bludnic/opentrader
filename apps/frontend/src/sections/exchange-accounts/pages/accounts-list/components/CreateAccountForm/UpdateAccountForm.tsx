@@ -1,23 +1,19 @@
+import { useMutation } from "@tanstack/react-query";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
-import {
-  ExchangeAccountDto,
-  useUpdateExchangeAccountMutation,
-} from "src/lib/bifrost/rtkApi";
+import { trpc } from "src/lib/trpc";
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
 import { AccountIdField } from "./fields/AccountIdField";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
 import { Button, CircularProgress, Divider, Grid } from "@mui/material";
 import { UpdateExchangeAccountFormValues } from "./types";
 import { ExchangeCodeField } from "./fields/ExchangeCodeField";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Form } from "react-final-form";
 import { FormApi } from "final-form";
 import { IsDemoAccountField } from "./fields/IsDemoAccountField";
 import { PassphraseField } from "./fields/PassphraseField";
 import { SecretKeyField } from "./fields/SecretKeyField";
-import { SerializedError } from "@reduxjs/toolkit";
-import { fromFormValuesToDto } from "./utils/update/fromFormValuesToDto";
 import { styled } from "@mui/material/styles";
 
 const componentName = "UpdateAccountForm";
@@ -36,15 +32,16 @@ const Root = styled("div")(({ theme }) => ({
 type UpdateAccountFormProps = {
   className?: string;
   onUpdated: () => void;
-  onError: (error?: FetchBaseQueryError | SerializedError) => void;
-  account: ExchangeAccountDto;
+  onError: (error?: unknown) => void;
+  account: TExchangeAccount;
 };
 
 export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
   const { className, onUpdated, onError, account } = props;
 
-  const [updateAccount, { isLoading, isSuccess, isError, error }] =
-    useUpdateExchangeAccountMutation();
+  const { mutateAsync, isLoading, isSuccess, isError, error } = useMutation({
+    mutationFn: trpc.exchangeAccount.update.mutate,
+  });
 
   useEffect(() => {
     if (isSuccess) {
@@ -72,21 +69,18 @@ export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
 
   const handleSubmit = async (
     values: UpdateExchangeAccountFormValues,
-    form: FormApi<UpdateExchangeAccountFormValues>
+    form: FormApi<UpdateExchangeAccountFormValues>,
   ) => {
-    const dto = fromFormValuesToDto(values);
-
-    const data = await updateAccount({
+    const data = await mutateAsync({
       id: account.id,
-      updateExchangeAccountRequestBodyDto: dto,
+      body: values,
     });
-    form.reset();
 
     return data;
   };
 
   const validate = (
-    values: UpdateExchangeAccountFormValues
+    values: UpdateExchangeAccountFormValues,
   ):
     | Partial<Record<keyof UpdateExchangeAccountFormValues, string>>
     | undefined => {

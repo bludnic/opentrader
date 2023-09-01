@@ -1,5 +1,4 @@
-import { Theme } from "@mui/material";
-import { SxProps } from "@mui/system";
+import { SxProps, Theme } from "@mui/material";
 import { TextField } from "mui-rff";
 import React, { FC } from "react";
 import { CreateExchangeAccountFormValues } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/types";
@@ -8,7 +7,7 @@ type AccountIdFieldProps = {
   className?: string;
   disabled?: boolean;
   sx?: SxProps<Theme>;
-  value?: string;
+  value?: number;
 };
 
 const fieldName: keyof CreateExchangeAccountFormValues = "id";
