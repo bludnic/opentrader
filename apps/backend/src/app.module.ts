@@ -31,8 +31,6 @@ import { TrpcModule } from 'src/trpc/trpc.module';
 import { TweetTradingModule } from 'src/tweet-trading-bot/tweet-trading.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { SmartTradingModule } from './smart-trading/smart-trading.module';
-import { TradeBotModule } from './trade-bot/trade-bot.module';
-import { TradeBotController } from './trade-bot/trade-bot.controller';
 import { SmartTradingController } from './smart-trading/smart-trading.controller';
 import { BacktestingModule } from './backtesting/backtesting.module';
 import { SymbolsModule } from './symbols/symbols.module';
@@ -80,7 +78,6 @@ import { SymbolsModule } from './symbols/symbols.module';
     MarketplaceModule,
     TweetTradingModule,
     SmartTradingModule,
-    TradeBotModule,
     BacktestingModule,
     SymbolsModule,
     TrpcModule,
@@ -95,7 +92,6 @@ export class AppModule implements NestModule {
       .forRoutes(
         SmartTradingController,
         GridBotController,
-        TradeBotController,
         ExchangeAccountsController,
       );
   }
