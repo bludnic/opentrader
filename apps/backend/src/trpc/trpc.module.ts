@@ -1,18 +1,10 @@
 import { Module } from '@nestjs/common';
-import { SymbolsProcedures } from './symbols/symbols.procedures';
-import { ExchangeAccountProcedures } from './exchange-accounts/exchange-account.procedures';
-import { TrpcRouter } from './trpc.router';
-import { TrpcService } from './trpc.service';
+import { TrpcMiddleware } from './trpc.middleware';
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [
-    TrpcRouter,
-    TrpcService,
-    SymbolsProcedures,
-    ExchangeAccountProcedures,
-  ],
+  providers: [TrpcMiddleware],
   exports: [],
 })
 export class TrpcModule {}

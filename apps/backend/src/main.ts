@@ -5,7 +5,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { GLOBAL_PREFIX } from 'src/common/constants';
 import { TwitterApiExceptionFilter } from 'src/core/twitter-api/utils/client/errors/twitter-api-exception.filter';
 import { loadMarkets } from 'src/load-markets';
-import { TrpcRouter } from 'src/trpc/trpc.router';
+import { TrpcMiddleware } from 'src/trpc/trpc.middleware';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -17,7 +17,7 @@ async function bootstrap() {
   app.enableCors();
 
   // tRPC
-  const trpc = app.get(TrpcRouter);
+  const trpc = app.get(TrpcMiddleware);
   trpc.applyMiddleware(app);
 
   // Swagger configuration
