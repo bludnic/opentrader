@@ -34,6 +34,10 @@ export class OkxExchange implements IExchange {
       : undefined;
     this.ccxt = new ccxt.okex5(ccxtCredentials);
 
+    if (credentials?.isDemoAccount) {
+      this.ccxt.setSandboxMode(true);
+    }
+
     const cachedMarkets = getCachedMarkets(ExchangeCode.OKX);
     if (cachedMarkets) {
       this.ccxt.markets = cachedMarkets;
@@ -55,7 +59,7 @@ export class OkxExchange implements IExchange {
   }
 
   async getLimitOrder(
-    params: IGetLimitOrderRequest
+    params: IGetLimitOrderRequest,
   ): Promise<IGetLimitOrderResponse> {
     const args = normalize.getLimitOrder.request(params);
     const data = await this.ccxt.fetchOrder(...args);
@@ -64,11 +68,11 @@ export class OkxExchange implements IExchange {
   }
 
   async placeLimitOrder(
-    params: IPlaceLimitOrderRequest
+    params: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
     if ("clientOrderId" in params) {
       throw new Error(
-        "Fetch limit order by `clientOrderId` is not supported yet"
+        "Fetch limit order by `clientOrderId` is not supported yet",
       );
     }
 
@@ -78,7 +82,9 @@ export class OkxExchange implements IExchange {
     return normalize.placeLimitOrder.response(data);
   }
 
-  async cancelLimitOrder(params: ICancelLimitOrderRequest): Promise<ICancelLimitOrderResponse> {
+  async cancelLimitOrder(
+    params: ICancelLimitOrderRequest,
+  ): Promise<ICancelLimitOrderResponse> {
     const args = normalize.cancelLimitOrder.request(params);
     // The response is not typed properly.
     // Probably cause not all exchanges
@@ -86,12 +92,12 @@ export class OkxExchange implements IExchange {
     await this.ccxt.cancelOrder(...args);
 
     return {
-      orderId: params.orderId
-    }
+      orderId: params.orderId,
+    };
   }
 
   async getMarketPrice(
-    params: IGetMarketPriceRequest
+    params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse> {
     const args = normalize.getMarketPrice.request(params);
     const data = await this.ccxt.fetchTicker(...args);
@@ -100,7 +106,7 @@ export class OkxExchange implements IExchange {
   }
 
   async getCandlesticks(
-    params: IGetCandlesticksRequest
+    params: IGetCandlesticksRequest,
   ): Promise<ICandlestick[]> {
     const args = normalize.getCandlesticks.request(params);
     const data = await this.ccxt.fetchOHLCV(...args);
