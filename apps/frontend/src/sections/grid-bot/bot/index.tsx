@@ -2,11 +2,14 @@ import { composeSymbolId } from "@bifrost/tools";
 import { BarSize, ExchangeCode } from "@bifrost/types";
 import { CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
+import { trpc } from "src/lib/trpc";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
+import { ManualProcessButton } from "src/sections/grid-bot/common/components/BotCard/ManualProcessButton";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
 import { useGetGridBotQuery } from "src/lib/bifrost/rtkApi";
 import { useLazyGetCandlesticksQuery } from "src/lib/markets/marketsApi";
@@ -33,28 +36,39 @@ const BotPage: FC<BotPageProps> = (props) => {
 
   const router = useRouter();
 
-  const botQuery = useGetGridBotQuery(String(router.query.id));
+  const { isLoading, isError, error, data } = useQuery(
+    ["gridBot", Number(router.query.id)],
+    async () => trpc.gridBot.getOne.query(Number(router.query.id)),
+  );
+
+  const orders = useQuery(
+    ["gridBotOrders", Number(router.query.id)],
+    async () =>
+      trpc.gridBot.orders.query({
+        botId: Number(router.query.id),
+      }),
+  );
 
   const [fetchCandlesticks, candlesticks] = useLazyGetCandlesticksQuery();
   useEffect(() => {
-    if (!botQuery.data) return;
+    if (!data) return;
 
-    const { baseCurrency, quoteCurrency } = botQuery.data.bot;
+    const { baseCurrency, quoteCurrency } = data;
     const symbolId = composeSymbolId(
       ExchangeCode.OKX,
       baseCurrency,
-      quoteCurrency
+      quoteCurrency,
     ); // @todo extract exchangeCode from GridBotDto
 
     fetchCandlesticks({
       symbolId,
-      timeframe: BarSize.FOUR_HOURS,
+      timeframe: BarSize.ONE_HOUR,
       startDate: startOfYearISO(),
-      endDate: todayISO()
+      endDate: todayISO(),
     });
-  }, [botQuery.data]);
+  }, [data]);
 
-  if (botQuery.isLoading) {
+  if (isLoading) {
     return (
       <Root
         className={classes.root}
@@ -76,7 +90,7 @@ const BotPage: FC<BotPageProps> = (props) => {
     );
   }
 
-  if (botQuery.error) {
+  if (isError) {
     return (
       <Root
         className={classes.root}
@@ -93,12 +107,10 @@ const BotPage: FC<BotPageProps> = (props) => {
           title: "Grid Bots",
         }}
       >
-        {JSON.stringify(botQuery.error)}
+        {JSON.stringify(error)}
       </Root>
     );
   }
-
-  if (!botQuery.data) return null;
 
   return (
     <Root
@@ -118,19 +130,22 @@ const BotPage: FC<BotPageProps> = (props) => {
     >
       <Grid container spacing={4}>
         <Grid item xl={4} md={6} xs={12}>
-          <BotCard bot={botQuery.data.bot} />
+          <BotCard bot={data} />
 
-          <ActiveSmartTradesCard bot={botQuery.data.bot} sx={{ mt: 2 }} />
+          <ActiveSmartTradesCard bot={data} sx={{ mt: 2 }} />
 
-          <CompletedSmartTradesCard bot={botQuery.data.bot} sx={{ mt: 2 }} />
+          <CompletedSmartTradesCard bot={data} sx={{ mt: 2 }} />
+
+          <ManualProcessButton bot={data} />
         </Grid>
 
         <Grid container item xl={8} xs={12}>
           <Grid item xs={12}>
             {candlesticks.status === "fulfilled" && candlesticks.data ? (
               <GridBotChart
+                orders={orders.data ? orders.data : undefined}
                 candlesticks={candlesticks.data.candlesticks}
-                gridLines={botQuery.data.bot.gridLines}
+                gridLines={data.settings.gridLines}
               />
             ) : (
               "Loading candlesticks..."

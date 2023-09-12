@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { GridBotDto, SmartTradeDto } from 'src/lib/bifrost/rtkApi';
+import { TActiveSmartTrade, TGridBot } from "src/sections/grid-bot/common/trpc-types";
 import { GridsTableHead } from "./GridsTableHead";
 import { GridsTableItem } from "./GridsTableItem";
 
@@ -24,8 +24,8 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 type GridsTableProps = {
   className?: string;
-  bot: GridBotDto;
-  activeSmartTrades: SmartTradeDto[];
+  bot: TGridBot;
+  activeSmartTrades: TActiveSmartTrade[];
 };
 
 export const GridsTable: FC<GridsTableProps> = (props) => {

@@ -15,14 +15,14 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
 import { ICandlestick } from "src/lib/bifrost/apiClient";
+import { TGridBotOrder } from "src/sections/grid-bot/common/trpc-types";
 import { useElementSize } from "usehooks-ts";
-import { BacktestingTradeDto } from "src/lib/bifrost/rtkApi";
 import { chartMaxHeight, chartMaxWidth } from "./constants";
 
 function buy(
   price: number,
   time: Time,
-  smartTradeId: string
+  smartTradeId: number,
 ): SeriesMarker<Time> {
   return {
     time,
@@ -36,7 +36,7 @@ function buy(
 function sell(
   price: number,
   time: Time,
-  smartTradeId: string
+  smartTradeId: number,
 ): SeriesMarker<Time> {
   return {
     time,
@@ -47,14 +47,14 @@ function sell(
   };
 }
 
-function tradeToMarker(trade: BacktestingTradeDto): SeriesMarker<Time> {
-  const time = (new Date(trade.time).getTime() / 1000) as UTCTimestamp;
+function tradeToMarker(order: TGridBotOrder): SeriesMarker<Time> {
+  const time = (new Date(order.filledAt || 0).getTime() / 1000) as UTCTimestamp;
 
-  if (trade.side === "buy") {
-    return buy(trade.price, time, trade.smartTrade.id);
+  if (order.side === "Buy") {
+    return buy(order.price, time, order.smartTradeId);
   }
 
-  return sell(trade.price, time, trade.smartTrade.id);
+  return sell(order.price, time, order.smartTradeId);
 }
 
 const componentName = "BacktestingChart";
@@ -73,19 +73,19 @@ const Root = styled("div")(({ theme }) => ({
 type GridBotChartProps = {
   candlesticks: ICandlestick[];
   gridLines: IGridLine[];
-  trades?: BacktestingTradeDto[];
+  orders?: TGridBotOrder[];
   className?: string;
 };
 
 export const GridBotChart: FC<GridBotChartProps> = (props) => {
-  const { className, candlesticks, gridLines, trades = [] } = props;
+  const { className, candlesticks, gridLines, orders = [] } = props;
   const chartRef = useRef<HTMLDivElement | null>(null);
   const chartApi = useRef<IChartApi | null>(null);
   const lineSeriesApi = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const theme = useTheme();
 
   const sortedCandlesticks = [...candlesticks].sort(
-    (left, right) => left.timestamp - right.timestamp
+    (left, right) => left.timestamp - right.timestamp,
   );
 
   const lineSeriesData: BarData[] = sortedCandlesticks.map(
@@ -95,13 +95,13 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
       high,
       low,
       close,
-    })
+    }),
   );
 
   useEffect(() => {
     if (!chartRef.current) {
       console.error(
-        "Error: `chartRef.current` is `undefined`. Skip chart rendering."
+        "Error: `chartRef.current` is `undefined`. Skip chart rendering.",
       );
       return;
     }
@@ -164,7 +164,7 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
     lineSeries.setData(lineSeriesData);
 
     // Setting trades
-    const tradeMarkers: SeriesMarker<Time>[] = trades.map(tradeToMarker);
+    const tradeMarkers: SeriesMarker<Time>[] = orders.map(tradeToMarker);
     lineSeries.setMarkers(tradeMarkers);
 
     return () => {
@@ -172,7 +172,7 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
         lineSeriesApi.current?.removePriceLine(priceLine);
       });
     };
-  }, [gridLines, trades]);
+  }, [gridLines, orders]);
 
   const [containerRef, { width, height }] = useElementSize();
 

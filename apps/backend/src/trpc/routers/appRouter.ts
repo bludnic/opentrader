@@ -1,9 +1,14 @@
 import { trpc } from 'src/trpc/trpc';
-import { exchangeAccountsRouter, symbolsRouter } from './private';
+import {
+  exchangeAccountsRouter,
+  gridBotRouter,
+  symbolsRouter,
+} from './private';
 
 export const appRouter = trpc.router({
   exchangeAccount: exchangeAccountsRouter,
   symbol: symbolsRouter,
+  gridBot: gridBotRouter,
 });
 
 export type AppRouter = typeof appRouter;

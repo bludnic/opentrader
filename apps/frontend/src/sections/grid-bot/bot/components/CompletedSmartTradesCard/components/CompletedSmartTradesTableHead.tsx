@@ -24,9 +24,11 @@ export const CompletedSmartTradesTableHead: FC<
   return (
     <StyledTableHead className={clsx(classes.root, className)}>
       <TableRow>
-        <TableCell>Date</TableCell>
-        <TableCell align="right">Net Profit</TableCell>
-        <TableCell align="right">Gross Profit</TableCell>
+        <TableCell>Buy Date</TableCell>
+        <TableCell>Sell Date</TableCell>
+        <TableCell align="right">Quantity</TableCell>
+        <TableCell align="right">Buy Price</TableCell>
+        <TableCell align="right">Sell Price</TableCell>
       </TableRow>
     </StyledTableHead>
   );

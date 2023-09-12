@@ -3,10 +3,12 @@ import { Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { FC } from "react";
 import { MainLayout } from "src/layouts/main";
 import { useGetGridBotsQuery } from "src/lib/bifrost/rtkApi";
+import { trpc } from "src/lib/trpc";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 
 const componentName = "GridBotsListPage";
@@ -21,7 +23,9 @@ const Root = styled(MainLayout)(({ theme }) => ({
 }));
 
 export const BotsListPage: FC = () => {
-  const { data, error, isLoading } = useGetGridBotsQuery();
+  const { isLoading, isError, error, data } = useQuery(["gridBots"], async () =>
+    trpc.gridBot.list.query(),
+  );
 
   if (isLoading) {
     return (
@@ -39,7 +43,7 @@ export const BotsListPage: FC = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <Root
         className={classes.root}
@@ -75,7 +79,7 @@ export const BotsListPage: FC = () => {
     >
       <Grid container spacing={4}>
         <Grid item xl={6} md={6} xs={12}>
-          {data?.bots.map((bot, i) => (
+          {data.map((bot, i) => (
             <BotCard
               key={bot.id}
               bot={bot}

@@ -9,7 +9,7 @@ import {
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, SmartTradeWithProfitDto } from 'src/lib/bifrost/rtkApi';
+import { TCompletedSmartTrade, TGridBot } from "src/sections/grid-bot/common/trpc-types";
 import { CompletedSmartTradeItem } from "./CompletedSmartTradeItem";
 import { CompletedSmartTradesTableHead } from "./CompletedSmartTradesTableHead";
 
@@ -24,8 +24,8 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 type CompletedSmartTradesTableProps = {
   className?: string;
-  bot: GridBotDto;
-  smartTrades: SmartTradeWithProfitDto[];
+  bot: TGridBot;
+  smartTrades: TCompletedSmartTrade[];
 };
 
 export const CompletedSmartTradesTable: FC<CompletedSmartTradesTableProps> = (

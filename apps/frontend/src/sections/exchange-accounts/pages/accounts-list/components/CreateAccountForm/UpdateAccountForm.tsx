@@ -63,7 +63,7 @@ export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
     // credentials
     apiKey: account.credentials.apiKey,
     secretKey: account.credentials.secretKey,
-    passphrase: account.credentials.passphrase,
+    password: account.credentials.password,
     isDemoAccount: account.credentials.isDemoAccount,
   };
 
@@ -100,8 +100,8 @@ export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
       return { secretKey: "Required" };
     }
 
-    if (!values.passphrase) {
-      return { passphrase: "Required" };
+    if (!values.password) {
+      return { password: "Required" };
     }
 
     return;

@@ -10,7 +10,7 @@ type Options = {
 };
 
 export async function getExchangeAccount({ input, ctx }: Options) {
-  const exchangeAccount = await xprisma.exchangeAccount.findUnique({
+  const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
     where: {
       id: input,
       ownerId: ctx.user.id,

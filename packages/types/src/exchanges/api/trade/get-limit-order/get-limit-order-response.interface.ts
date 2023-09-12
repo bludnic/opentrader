@@ -1,7 +1,4 @@
-import {
-  OrderSide,
-  OrderStatus,
-} from 'src/exchanges/api/trade/common/types';
+import { OrderSide, OrderStatus } from "src/exchanges/api/trade/common/types";
 
 export interface IGetLimitOrderResponse {
   /**
@@ -21,6 +18,10 @@ export interface IGetLimitOrderResponse {
    * Order price.
    */
   price: number;
+  /**
+   * Filled price.
+   */
+  filledPrice: number | null;
   /**
    * Order status.
    */

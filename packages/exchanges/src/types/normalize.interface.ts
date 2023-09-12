@@ -3,7 +3,11 @@ import {
   ICancelLimitOrderRequest,
   ICancelLimitOrderResponse,
   ICandlestick,
+  IGetCanceledLimitOrdersRequest,
+  IGetCanceledLimitOrdersResponse,
   IGetCandlesticksRequest,
+  IGetFilledLimitOrdersRequest,
+  IGetFilledLimitOrdersResponse,
   IGetLimitOrderRequest,
   IGetLimitOrderResponse,
   IGetMarketPriceRequest,
@@ -31,39 +35,46 @@ export type Normalize = {
 
   getLimitOrder: {
     request: (
-      params: IGetLimitOrderRequest
+      params: IGetLimitOrderRequest,
     ) => Parameters<Exchange["fetchOrder"]>;
     response: (data: Order) => IGetLimitOrderResponse;
   };
 
   placeLimitOrder: {
     request: (
-      params: IPlaceLimitOrderRequest
+      params: IPlaceLimitOrderRequest,
     ) => Parameters<Exchange["createLimitOrder"]>;
     response: (data: Order) => IPlaceLimitOrderResponse;
   };
 
   cancelLimitOrder: {
     request: (
-      params: ICancelLimitOrderRequest
+      params: ICancelLimitOrderRequest,
     ) => Parameters<Exchange["cancelOrder"]>;
     // data is not typed by `ccxt`
     // so add type manually
     response: (
-      data: Pick<Order, "id" | "clientOrderId">
+      data: Pick<Order, "id" | "clientOrderId">,
     ) => ICancelLimitOrderResponse;
+  };
+
+  getFilledLimitOrders: {
+    request: (
+      params: IGetFilledLimitOrdersRequest,
+    ) => Parameters<Exchange["fetchClosedOrders"]>;
+    response: (data: Order[]) => IGetFilledLimitOrdersResponse;
   };
 
   getMarketPrice: {
     request: (
-      params: IGetMarketPriceRequest
+      params: IGetMarketPriceRequest,
     ) => Parameters<Exchange["fetchTicker"]>;
     response: (data: Ticker) => IGetMarketPriceResponse;
   };
 
   getCandlesticks: {
     request: (
-      params: IGetCandlesticksRequest
+      params: IGetCandlesticksRequest,
     ) => Parameters<Exchange["fetchOHLCV"]>;
     response: (data: OHLCV[]) => ICandlestick[];
   };

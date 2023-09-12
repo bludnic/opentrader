@@ -5,6 +5,8 @@ import {
   ICancelLimitOrderResponse,
   ICandlestick,
   IGetCandlesticksRequest,
+  IGetFilledLimitOrdersRequest,
+  IGetFilledLimitOrdersResponse,
   IGetLimitOrderRequest,
   IGetLimitOrderResponse,
   IGetMarketPriceRequest,
@@ -80,6 +82,15 @@ export class OkxExchange implements IExchange {
     const data = await this.ccxt.createLimitOrder(...args);
 
     return normalize.placeLimitOrder.response(data);
+  }
+
+  async getFilledLimitOrders(
+    params: IGetFilledLimitOrdersRequest,
+  ): Promise<IGetFilledLimitOrdersResponse> {
+    const args = normalize.getFilledLimitOrders.request(params);
+    const data = await this.ccxt.fetchClosedOrders(...args)
+
+    return normalize.getFilledLimitOrders.response(data)
   }
 
   async cancelLimitOrder(

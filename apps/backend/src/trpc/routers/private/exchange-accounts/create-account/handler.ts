@@ -11,9 +11,6 @@ type Options = {
 
 export async function createExchangeAccount({ input, ctx }: Options) {
   const exchangeAccount = await xprisma.exchangeAccount.create({
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore-next-line
-    // @todo enable strict: true
     data: {
       ...input,
       owner: {

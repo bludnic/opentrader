@@ -16,7 +16,7 @@ export class MarketsApiService {
   public candlesticks: CandlesticksApi;
 
   constructor(private config: ConfigService) {
-    this.basePath = config.get<string>('marketsApi.url');
+    this.basePath = config.getOrThrow<string>('marketsApi.url');
 
     this.exchanges = new ExchangesApi(undefined, this.basePath);
     this.markets = new MarketsApi(undefined, this.basePath);

@@ -1,1 +1,0 @@
-export type EffectType = 'order' | 'smart-trade'

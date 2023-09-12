@@ -13,7 +13,7 @@ export interface ISmartTrade {
 
   buyOrder: SmartBuyOrder;
   // Note: Sell order is optional for a SmartTrade
-  sellOrder: SmartSellOrder | null;
+  sellOrder: SmartSellOrder;
 
   quantity: number;
 

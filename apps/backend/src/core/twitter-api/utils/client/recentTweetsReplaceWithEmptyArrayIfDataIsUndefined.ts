@@ -28,5 +28,5 @@ export function recentTweetsReplaceWithEmptyArrayIfDataIsUndefined(
     };
   }
 
-  return response
+  return response;
 }

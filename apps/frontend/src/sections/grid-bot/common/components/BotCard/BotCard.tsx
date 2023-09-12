@@ -14,16 +14,14 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import { GridBotDto } from "src/lib/bifrost/rtkApi";
+import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
-import { calcInitialInvestmentInQuote } from "src/utils/grid-bot/calcInitialInvestmentInQuote";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
 import { BotStatusChip } from "./BotStatusChip";
 import { Bull } from "src/components/ui/Bull";
 import { FC } from "react";
-import { SxProps } from "@mui/system";
-import { Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const componentName = "BotCard";
@@ -49,20 +47,24 @@ const Root = styled(Card)(({ theme }) => ({
 export interface BotCardProps {
   className?: string;
   sx?: SxProps<Theme>;
-  bot: GridBotDto;
+  bot: TGridBot;
 }
 
 export const BotCard: FC<BotCardProps> = (props) => {
   const { bot, className, sx } = props;
 
-  const initialInvestmentInQuote = calcInitialInvestmentInQuote(
-    bot.initialInvestment
+  // @todo
+  // const initialInvestmentInQuote = calcInitialInvestmentInQuote(
+  //   bot.initialInvestment
+  // );
+  const initialInvestmentInQuote = 'hz' // @todo
+  const averageQuantityPerGrid = calcAverageQuantityPerGrid(
+    bot.settings.gridLines,
   );
-  const averageQuantityPerGrid = calcAverageQuantityPerGrid(bot.gridLines);
-  const gridLevels = bot.gridLines.length;
+  const gridLevels = bot.settings.gridLines.length;
 
-  const lowPrice = findLowestGridLinePrice(bot.gridLines);
-  const highPrice = findHighestGridLinePrice(bot.gridLines);
+  const lowPrice = findLowestGridLinePrice(bot.settings.gridLines);
+  const highPrice = findHighestGridLinePrice(bot.settings.gridLines);
 
   return (
     <Root className={clsx(classes.root, className)} sx={sx}>

@@ -22,6 +22,7 @@ const getLimitOrder: Normalize["getLimitOrder"] = {
     side: order.side,
     quantity: order.amount,
     price: order.price,
+    filledPrice: order.average || null,
     status: normalizeOrderStatus(order),
     fee: order.fee.cost,
     createdAt: order.timestamp,
@@ -46,6 +47,22 @@ const cancelLimitOrder: Normalize["cancelLimitOrder"] = {
   response: (data) => ({
     orderId: data.id,
   }),
+};
+
+const getFilledLimitOrders: Normalize["getFilledLimitOrders"] = {
+  request: (params) => [params.symbol],
+  response: (orders) =>
+    orders.map((order) => ({
+      exchangeOrderId: order.id,
+      clientOrderId: order.clientOrderId,
+      side: order.side,
+      quantity: order.amount,
+      price: order.price,
+      filledPrice: order.average || order.price, // assume that filled order must always contain `order.average`
+      status: "filled",
+      fee: order.fee.cost,
+      createdAt: order.timestamp,
+    })),
 };
 
 const getMarketPrice: Normalize["getMarketPrice"] = {
@@ -98,7 +115,7 @@ const getSymbol: Normalize["getSymbol"] = {
 const getSymbols: Normalize["getSymbols"] = {
   response: (markets) =>
     Object.entries(markets).map(([symbol, market]) =>
-      getSymbol.response(market)
+      getSymbol.response(market),
     ),
 };
 
@@ -107,6 +124,7 @@ export const normalize: Normalize = {
   getLimitOrder,
   placeLimitOrder,
   cancelLimitOrder,
+  getFilledLimitOrders,
   getMarketPrice,
   getCandlesticks,
   getSymbol,

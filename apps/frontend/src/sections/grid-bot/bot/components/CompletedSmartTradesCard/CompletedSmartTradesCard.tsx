@@ -1,10 +1,10 @@
-import { Card, CardContent, Divider, Typography } from "@mui/material";
+import { Card, CardContent, Divider, SxProps, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { SxProps } from "@mui/system";
-import { QueryStatus } from "@reduxjs/toolkit/query";
+import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { GridBotDto, useGetGridBotCompletedSmartTradesQuery } from 'src/lib/bifrost/rtkApi';
+import { trpc } from "src/lib/trpc";
+import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
 import { CompletedSmartTradesTable } from "./components/CompletedSmartTradesTable";
 
 const componentName = "CompletedSmartTradesCard";
@@ -19,31 +19,42 @@ const StyledCard = styled(Card)(({ theme }) => ({
 type CompletedSmartTradesCardProps = {
   className?: string;
   sx?: SxProps<Theme>;
-  bot: GridBotDto;
+  bot: TGridBot;
 };
 
 export const CompletedSmartTradesCard: FC<CompletedSmartTradesCardProps> = (
-  props
+  props,
 ) => {
   const { className, bot, sx } = props;
-  const query = useGetGridBotCompletedSmartTradesQuery(bot.id);
 
-  if (query.status === QueryStatus.fulfilled && query.data) {
-    return (
-      <StyledCard className={clsx(classes.root, className)} sx={sx}>
-        <CardContent>
-          <Typography variant="h6">Completed STs</Typography>
-        </CardContent>
+  const { isLoading, isError, error, data } = useQuery(
+    ["gridBotCompletedSmartTrades", bot.id],
+    async () =>
+      trpc.gridBot.completedSmartTrades.query({
+        botId: bot.id,
+      }),
+  );
 
-        <Divider />
-
-        <CompletedSmartTradesTable
-          bot={bot}
-          smartTrades={query.data.completedSmartTrades}
-        />
-      </StyledCard>
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  return null;
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
+
+  return (
+    <StyledCard className={clsx(classes.root, className)} sx={sx}>
+      <CardContent>
+        <Typography variant="h6">Completed STs</Typography>
+      </CardContent>
+
+      <Divider />
+
+      <CompletedSmartTradesTable
+        bot={bot}
+        smartTrades={data}
+      />
+    </StyledCard>
+  );
 };

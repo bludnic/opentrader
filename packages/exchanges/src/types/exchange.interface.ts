@@ -13,6 +13,10 @@ import {
   ITradingPairSymbolRequest,
   ISymbolInfo,
   IGetSymbolInfoRequest,
+  IGetFilledLimitOrdersResponse,
+  IGetFilledLimitOrdersRequest,
+  IGetCanceledLimitOrdersRequest,
+  IGetCanceledLimitOrdersResponse,
 } from "@bifrost/types";
 import { Dictionary, Market, okex5 } from "ccxt";
 
@@ -24,13 +28,16 @@ export interface IExchange {
   accountAssets(): Promise<IAccountAsset[]>;
   getLimitOrder(body: IGetLimitOrderRequest): Promise<IGetLimitOrderResponse>;
   placeLimitOrder(
-    body: IPlaceLimitOrderRequest
+    body: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse>;
   cancelLimitOrder(
-    body: ICancelLimitOrderRequest
+    body: ICancelLimitOrderRequest,
   ): Promise<ICancelLimitOrderResponse>;
+  getFilledLimitOrders(
+    body: IGetFilledLimitOrdersRequest,
+  ): Promise<IGetFilledLimitOrdersResponse>;
   getMarketPrice(
-    params: IGetMarketPriceRequest
+    params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse>;
   getCandlesticks(params: IGetCandlesticksRequest): Promise<ICandlestick[]>;
   getSymbols(): Promise<ISymbolInfo[]>;

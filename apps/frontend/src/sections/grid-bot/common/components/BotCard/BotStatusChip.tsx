@@ -1,12 +1,13 @@
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { QueryStatus } from "@reduxjs/toolkit/query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
-import { Chip } from "@mui/material";
-import { SxProps } from "@mui/system";
+import { Chip, SxProps } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { GridBotDto, useStartGridBotMutation, useStopGridBotMutation } from 'src/lib/bifrost/rtkApi';
+import { trpc } from "src/lib/trpc";
+import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
 
 const componentName = "BotStatusChip";
 const classes = {
@@ -19,7 +20,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
 
 type BotStatusChipProps = {
   className?: string;
-  bot: GridBotDto;
+  bot: TGridBot;
   sx?: SxProps<Theme>;
 };
 
@@ -27,48 +28,64 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
   const { className, bot, sx } = props;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [
-    startBot,
+  const queryClient = useQueryClient();
+  const startBot = useMutation(
+    ["startBot", bot.id],
+    async () =>
+      trpc.gridBot.start.mutate({
+        botId: bot.id,
+      }),
     {
-      error: startBotError,
-      status: startBotStatus,
-      isLoading: isStartBotLoading,
+      onSuccess() {
+        queryClient.invalidateQueries({
+          queryKey: ["gridBot", bot.id],
+        });
+      },
     },
-  ] = useStartGridBotMutation();
-  const [
-    stopBot,
-    { error: stopBotError, status: stopBotStatus, isLoading: isStopBotLoading },
-  ] = useStopGridBotMutation();
-  const handleEnable = () => startBot(bot.id);
-  const handleDisable = () => stopBot(bot.id);
+  );
+
+  const stopBot = useMutation(
+    ["stopBot", bot.id],
+    async () =>
+      trpc.gridBot.stop.mutate({
+        botId: bot.id,
+      }),
+    {
+      onSuccess() {
+        queryClient.invalidateQueries({
+          queryKey: ["gridBot", bot.id],
+        });
+      },
+    },
+  );
 
   useEffect(() => {
-    if (startBotStatus === QueryStatus.fulfilled) {
+    if (startBot.status === "success") {
       enqueueSnackbar("Bot has been enabled", {
         variant: "success",
       });
-    } else if (startBotStatus === QueryStatus.rejected) {
-      enqueueSnackbar(JSON.stringify(startBotError), {
+    } else if (startBot.status === "error") {
+      enqueueSnackbar(JSON.stringify(startBot.error), {
         variant: "error",
       });
-      console.log(startBotError);
+      console.log(startBot.error);
     }
-  }, [startBotStatus]);
+  }, [startBot.status]);
 
   useEffect(() => {
-    if (stopBotStatus === QueryStatus.fulfilled) {
+    if (stopBot.status === "success") {
       enqueueSnackbar("Bot has been disabled", {
         variant: "success",
       });
-    } else if (stopBotStatus === QueryStatus.rejected) {
-      enqueueSnackbar(JSON.stringify(stopBotError), {
+    } else if (stopBot.error === QueryStatus.rejected) {
+      enqueueSnackbar(JSON.stringify(stopBot.error), {
         variant: "error",
       });
-      console.log(stopBotError);
+      console.log(stopBot.error);
     }
-  }, [stopBotStatus]);
+  }, [stopBot.status]);
 
-  const isLoading = isStartBotLoading || isStopBotLoading;
+  const isLoading = startBot.isLoading || stopBot.isLoading;
 
   if (isLoading) {
     return (
@@ -92,7 +109,7 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
         variant="outlined"
         color="success"
         sx={sx}
-        onClick={handleDisable}
+        onClick={() => stopBot.mutate()}
       />
     );
   }
@@ -105,7 +122,7 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
       variant="outlined"
       color="error"
       sx={sx}
-      onClick={handleEnable}
+      onClick={() => startBot.mutate()}
     />
   );
 };

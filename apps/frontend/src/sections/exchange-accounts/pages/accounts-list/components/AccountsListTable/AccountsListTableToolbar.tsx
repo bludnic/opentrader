@@ -4,9 +4,8 @@ import React, { FC } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import { Button } from "@mui/material";
+import { alpha, Button } from "@mui/material";
 import { FlexSpacer } from "src/components/ui/FlexSpacer";
-import { alpha } from "@mui/system/colorManipulator";
 import { styled } from "@mui/material/styles";
 
 const componentName = "AccountsListTableToolbar";

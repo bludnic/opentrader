@@ -37,23 +37,27 @@ export class TwitterApiClientService {
 
     const fullRequestUrl = `${this.apiUrl}${requestPathWithParams}`;
 
-    return this.httpService
-      .request<
-        TwitterApiResponse<
-          ITweetsSearchRecentResponseData,
-          ITweetsSearchRecentMeta
-        >
-      >({
-        method: METHOD,
-        url: fullRequestUrl,
-        headers: {
-          Authorization: `Bearer ${this.config.get<string>(
-            'MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN',
-          )}`,
-        },
-      })
-      .toPromise()
-      .then(recentTweetsReplaceWithEmptyArrayIfDataIsUndefined)
-      .catch(throwExceptionIfErrorHttpStatus(fullRequestUrl));
+    return (
+      this.httpService
+        .request<
+          TwitterApiResponse<
+            ITweetsSearchRecentResponseData,
+            ITweetsSearchRecentMeta
+          >
+        >({
+          method: METHOD,
+          url: fullRequestUrl,
+          headers: {
+            Authorization: `Bearer ${this.config.get<string>(
+              'MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN',
+            )}`,
+          },
+        })
+        .toPromise()
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore-next-line
+        .then(recentTweetsReplaceWithEmptyArrayIfDataIsUndefined)
+        .catch(throwExceptionIfErrorHttpStatus(fullRequestUrl))
+    );
   }
 }

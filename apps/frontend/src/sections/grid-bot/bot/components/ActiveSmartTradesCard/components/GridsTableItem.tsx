@@ -1,10 +1,8 @@
-import { OrderStatusEnum } from "@bifrost/types";
-import { TableCell, TableRow } from "@mui/material";
+import { alpha, TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/system/colorManipulator";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { SmartTradeDto } from "src/lib/bifrost/rtkApi";
+import { TActiveSmartTrade } from "src/sections/grid-bot/common/trpc-types";
 
 const componentName = "GridsTableItem";
 const classes = {
@@ -25,16 +23,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type GridsTableItemProps = {
   className?: string;
-  smartTrade: SmartTradeDto;
+  smartTrade: TActiveSmartTrade;
   gridNumber: number;
 };
 
 export const GridsTableItem: FC<GridsTableItemProps> = (props) => {
   const { className, smartTrade, gridNumber } = props;
 
+  const buyOrder = smartTrade.orders.find((order) => order.side === "Buy");
+  const sellOrder = smartTrade.orders.find((order) => order.side === "Sell");
+
+  if (!buyOrder) {
+    return <div>Error: Buy order not found</div>;
+  }
+
+  if (!sellOrder) {
+    return <div>Error: Sell order not found</div>;
+  }
+
   const orderSide: "Buy" | "Sell" =
-    smartTrade.sellOrder.status === OrderStatusEnum.Placed ||
-    smartTrade.sellOrder.status === OrderStatusEnum.Filled
+    sellOrder.status === "Placed" || sellOrder.status === "Filled"
       ? "Sell"
       : "Buy";
 
@@ -50,15 +58,15 @@ export const GridsTableItem: FC<GridsTableItemProps> = (props) => {
       </TableCell>
 
       <TableCell component="th" scope="row">
-        {smartTrade.buyOrder.status} / {smartTrade.sellOrder.status}
+        {buyOrder.status} / {sellOrder.status}
       </TableCell>
 
       <TableCell component="th" align="right">
-        {smartTrade.quantity}
+        {buyOrder.quantity}
       </TableCell>
 
-      <TableCell align="right">{smartTrade.buyOrder.price}</TableCell>
-      <TableCell align="right">{smartTrade.sellOrder.price}</TableCell>
+      <TableCell align="right">{buyOrder.price}</TableCell>
+      <TableCell align="right">{sellOrder.price}</TableCell>
 
       <TableCell align="right">{orderSide}</TableCell>
     </StyledTableRow>

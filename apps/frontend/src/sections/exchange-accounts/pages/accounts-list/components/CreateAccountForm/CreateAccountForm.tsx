@@ -61,7 +61,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
     // credentials
     apiKey: "",
     secretKey: "",
-    passphrase: "",
+    password: "",
     isDemoAccount: false,
   };
 

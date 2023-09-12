@@ -1,13 +1,11 @@
-import { Card, CardContent, Divider, Typography } from "@mui/material";
+import { Card, CardContent, Divider, SxProps, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { SxProps } from "@mui/system";
 import { QueryStatus } from "@reduxjs/toolkit/query";
+import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import {
-  GridBotDto,
-  useGetGridBotActiveSmartTradesQuery,
-} from "src/lib/bifrost/rtkApi";
+import { trpc } from "src/lib/trpc";
+import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
 
 import { GridsTable } from "./components/GridsTable";
 
@@ -23,31 +21,39 @@ const CardRoot = styled(Card)(({ theme }) => ({
 type ActiveSmartTradesCardProps = {
   className?: string;
   sx?: SxProps<Theme>;
-  bot: GridBotDto;
+  bot: TGridBot;
 };
 
 export const ActiveSmartTradesCard: FC<ActiveSmartTradesCardProps> = (
-  props
+  props,
 ) => {
   const { className, bot, sx } = props;
-  const query = useGetGridBotActiveSmartTradesQuery(bot.id);
 
-  if (query.status === QueryStatus.fulfilled && query.data) {
-    return (
-      <CardRoot className={clsx(classes.root, className)} sx={sx}>
-        <CardContent>
-          <Typography variant="h6">Active STs</Typography>
-        </CardContent>
+  const { isLoading, isError, error, data } = useQuery(
+    ["gridBotActiveSmartTrades", bot.id],
+    async () =>
+      trpc.gridBot.activeSmartTrades.query({
+        botId: bot.id,
+      }),
+  );
 
-        <Divider />
-
-        <GridsTable
-          bot={bot}
-          activeSmartTrades={query.data.activeSmartTrades}
-        />
-      </CardRoot>
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  return null;
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
+
+  return (
+    <CardRoot className={clsx(classes.root, className)} sx={sx}>
+      <CardContent>
+        <Typography variant="h6">Active STs</Typography>
+      </CardContent>
+
+      <Divider />
+
+      <GridsTable bot={bot} activeSmartTrades={data} />
+    </CardRoot>
+  );
 };

@@ -6,7 +6,7 @@ export const ZCreateExchangeAccountInputSchema = zt.ExchangeAccountSchema.pick({
   name: true,
   apiKey: true,
   secretKey: true,
-  passphrase: true,
+  password: true,
   isDemoAccount: true,
 });
 

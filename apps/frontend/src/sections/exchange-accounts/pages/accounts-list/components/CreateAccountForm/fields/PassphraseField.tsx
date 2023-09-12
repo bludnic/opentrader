@@ -8,7 +8,7 @@ type PassphraseFieldProps = {
   sx?: SxProps<Theme>;
 };
 
-const fieldName: keyof CreateExchangeAccountFormValues = "passphrase";
+const fieldName: keyof CreateExchangeAccountFormValues = "password";
 
 export const PassphraseField: FC<PassphraseFieldProps> = (props) => {
   const { sx, className } = props;
@@ -16,7 +16,7 @@ export const PassphraseField: FC<PassphraseFieldProps> = (props) => {
   return (
     <TextField
       className={className}
-      label="Passphrase"
+      label="Password"
       name={fieldName}
       sx={sx}
       autoComplete="off"

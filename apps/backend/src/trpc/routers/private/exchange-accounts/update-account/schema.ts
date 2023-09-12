@@ -8,7 +8,7 @@ export const ZUpdateExchangeAccountInputSchema = z.object({
     name: true,
     apiKey: true,
     secretKey: true,
-    passphrase: true,
+    password: true,
     isDemoAccount: true,
   }),
 });
