@@ -10,7 +10,7 @@ import { postgresConfig } from './postgres.config';
 import { entities } from '../core/db/entities';
 
 const envFileName =
-  process.env.NODE_ENV !== 'production' ? '.env.development.local' : undefined;
+  process.env.NODE_ENV !== 'production' ? '.env.development.local' : '.env';
 const envFilePath = path.resolve(__dirname, '../../', envFileName);
 
 dotenv.config({
