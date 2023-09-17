@@ -1,14 +1,8 @@
-import { SmartTrade, SmartTradeTypeEnum } from "@bifrost/bot-processor";
+import { SmartTrade } from "@bifrost/bot-processor";
 import { OrderStatusEnum } from "@bifrost/types";
 
 export function fulfilledTable(smartTrades: SmartTrade[]) {
   const rows = smartTrades.flatMap((smartTrade, i) => {
-
-    if (smartTrade.type !== SmartTradeTypeEnum.BuySell) {
-      console.log(`fulfilledTable: smartTrade ${smartTrade.type} type is not supported`)
-      return []
-    }
-
     const { buy, sell } = smartTrade
 
     const isBuy = buy.status === OrderStatusEnum.Placed && sell.status === OrderStatusEnum.Idle
@@ -37,6 +31,7 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
 
     const gridLine = {
       stIndex: i,
+      ref: smartTrade.ref,
       stId: smartTrade.id,
       side,
       price,
@@ -48,6 +43,7 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
     if (isCurrent) {
       const currentLine = {
         stIndex: '-',
+        ref: '-',
         stId: '-',
         side: 'Curr',
         price: smartTrade.buy.price,

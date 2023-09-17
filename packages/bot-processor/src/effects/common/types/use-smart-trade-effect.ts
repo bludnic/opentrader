@@ -14,28 +14,7 @@ type SmartTradePayload = {
   quantity: number;
 };
 
-type SmartBuyPayload = {
-  buy: {
-    status?: OrderStatusEnum; // default to Idle
-    price: number;
-  };
-  sell: null;
-  quantity: number;
-};
-
-type SmartSellPayload = {
-  buy: null;
-  sell: {
-    status?: OrderStatusEnum; // default to Idle
-    price: number;
-  };
-  quantity: number;
-};
-
-export type UseSmartTradePayload =
-  | SmartTradePayload
-  | SmartBuyPayload
-  | SmartSellPayload;
+export type UseSmartTradePayload = SmartTradePayload;
 
 export type UseSmartTradeEffect = BaseEffect<
   typeof USE_SMART_TRADE,

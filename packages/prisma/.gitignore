@@ -2,10 +2,10 @@ node_modules
 dist
 
 # Generated PrismaClient
-prisma/client/
+src/client/
 
 # Generate Zod types
-prisma/zod/
+src/zod/
 
 # env
 .env

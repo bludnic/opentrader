@@ -16,6 +16,7 @@ import { FirebaseModule } from 'src/core/firebase';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module } from '@nestjs/common';
+import { ExchangeAccountsWatcher } from 'src/core/exchange-bus/exchange-accounts.watcher';
 import { QueueModule } from 'src/queue/queue.module';
 import { TrpcModule } from 'src/trpc/trpc.module';
 
@@ -61,4 +62,22 @@ import { TrpcModule } from 'src/trpc/trpc.module';
   providers: [AppService, Logger],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule {
+  private readonly logger = new Logger(AppModule.name);
+
+  constructor(private exchangeAccountsWatcher: ExchangeAccountsWatcher) {}
+
+  async onApplicationBootstrap() {
+    this.logger.log(
+      'onApplicationBootstrap: ExchangeAccountsWatcher -> create()',
+    );
+    await this.exchangeAccountsWatcher.create();
+  }
+
+  async beforeApplicationShutdown() {
+    this.logger.log(
+      'beforeApplicationShutdown: ExchangeAccountsWatcher -> destroy()',
+    );
+    await this.exchangeAccountsWatcher.destroy();
+  }
+}

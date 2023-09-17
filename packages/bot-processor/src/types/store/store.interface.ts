@@ -2,11 +2,18 @@ import { UseSmartTradePayload } from "../../effects/common/types/use-smart-trade
 import { SmartTrade } from "../smart-trade/smart-trade.type";
 
 export interface IStore {
-  stopBot(botId: string): Promise<void>;
-  getSmartTrade(key: string, botId: string): Promise<SmartTrade | null>;
+  stopBot(botId: number): Promise<void>;
+  getSmartTrade(ref: string, botId: number): Promise<SmartTrade | null>;
   createSmartTrade(
-    key: string,
+    ref: string,
     payload: UseSmartTradePayload,
-    botId: string
+    botId: number,
   ): Promise<SmartTrade>;
+
+  /**
+   * If `true` then SmartTrade was canceled with success.
+   * @param ref
+   * @param botId
+   */
+  cancelSmartTrade(ref: string, botId: number): Promise<boolean>;
 }

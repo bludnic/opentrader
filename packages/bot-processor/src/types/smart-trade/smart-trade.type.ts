@@ -1,5 +1,4 @@
 import { OrderStatusEnum } from "@bifrost/types";
-import { SmartTradeTypeEnum } from "../../types";
 
 export type Order = {
   status: OrderStatusEnum;
@@ -15,26 +14,12 @@ export type Order = {
 };
 
 type SmartTradeBase = {
-  id: string;
+  id: number | string; // @todo remove this prop, the bot processor is not required to know the ID of the bot
+  ref: string;
+};
+
+export type SmartTrade = SmartTradeBase & {
   quantity: number;
-};
-
-export type SmartBuySell = SmartTradeBase & {
-  type: SmartTradeTypeEnum.BuySell;
   buy: Order;
   sell: Order;
 };
-
-export type SmartBuyOnly = SmartTradeBase & {
-  type: SmartTradeTypeEnum.BuyOnly;
-  buy: Order;
-  sell: null;
-};
-
-export type SmartSellOnly = SmartTradeBase & {
-  type: SmartTradeTypeEnum.SellOnly;
-  buy: null;
-  sell: Order;
-};
-
-export type SmartTrade = SmartBuySell | SmartBuyOnly | SmartSellOnly;

@@ -1,8 +1,8 @@
-import { SmartBuySell } from "@bifrost/bot-processor";
+import { SmartTrade } from "@bifrost/bot-processor";
 import { OrderSideEnum } from "@bifrost/types";
 import { ActiveOrder } from "src/types";
 
-export function buyOrder(smartTrade: SmartBuySell): ActiveOrder {
+export function buyOrder(smartTrade: SmartTrade): ActiveOrder {
   return {
     side: OrderSideEnum.Buy,
     quantity: smartTrade.quantity,

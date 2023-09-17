@@ -1,5 +1,6 @@
 export interface IBotConfiguration {
-  id: string;
+  id: number;
   baseCurrency: string;
   quoteCurrency: string;
+  // @todo type
 }

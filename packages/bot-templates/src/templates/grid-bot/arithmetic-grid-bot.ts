@@ -1,27 +1,50 @@
 import { IExchange } from "@bifrost/exchanges";
 import {
+  cancelSmartTrade,
   IBotConfiguration,
-  IBotControl,
   SmartTradeService,
+  TBotContext,
   useExchange,
   useSmartTrade,
 } from "@bifrost/bot-processor";
 import { computeGridFromCurrentAssetPrice } from "@bifrost/tools";
-import { IGetMarketPriceResponse, IGridLine } from "@bifrost/types";
+import {
+  IGetMarketPriceResponse,
+  IGridBotLevel,
+  IGridLine,
+} from "@bifrost/types";
 
 export interface GridBotConfig extends IBotConfiguration {
   gridLines: IGridLine[];
 }
 
-export function* arithmeticGridBot(control: IBotControl<GridBotConfig>) {
-  const { bot } = control;
+export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
+  const { config: bot, onStart, onStop } = ctx;
 
   const exchange: IExchange = yield useExchange();
-  const { price }: IGetMarketPriceResponse = yield exchange.getMarketPrice({
-    symbol: `${bot.baseCurrency}/${bot.quoteCurrency}`,
-  });
 
-  const gridLevels = computeGridFromCurrentAssetPrice(bot.gridLines, price);
+  let price = 0;
+  if (onStart) {
+    const { price: markPrice }: IGetMarketPriceResponse =
+      yield exchange.getMarketPrice({
+        symbol: `${bot.baseCurrency}/${bot.quoteCurrency}`,
+      });
+    price = markPrice;
+    console.log(`[GridBotTemple] Bot started [markPrice: ${price}]`);
+  }
+
+  const gridLevels: IGridBotLevel[] = computeGridFromCurrentAssetPrice(
+    bot.gridLines,
+    price,
+  );
+
+  if (onStop) {
+    for (const [index, grid] of gridLevels.entries()) {
+      yield cancelSmartTrade(`${index}`);
+    }
+
+    return;
+  }
 
   for (const [index, grid] of gridLevels.entries()) {
     const smartTrade: SmartTradeService = yield useSmartTrade(`${index}`, {

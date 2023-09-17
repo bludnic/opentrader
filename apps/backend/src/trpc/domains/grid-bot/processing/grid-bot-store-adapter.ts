@@ -3,8 +3,7 @@ import {
   SmartTrade,
   UseSmartTradePayload,
 } from '@bifrost/bot-processor';
-import { exchanges } from '@bifrost/exchanges';
-import { OrderNotFound } from 'ccxt';
+import { SmartTradeService } from 'src/core/exchange-bus/smart-trade.service';
 import {
   toPrismaSmartTrade,
   toSmartTradeIteratorResult,
@@ -35,6 +34,7 @@ export class GridBotStoreAdapter implements IStore {
         },
         include: {
           orders: true,
+          exchangeAccount: true,
         },
       });
 
@@ -87,6 +87,7 @@ export class GridBotStoreAdapter implements IStore {
       data,
       include: {
         orders: true,
+        exchangeAccount: true,
       },
     });
 
@@ -98,7 +99,7 @@ export class GridBotStoreAdapter implements IStore {
   }
 
   async cancelSmartTrade(ref: string, botId: number) {
-    console.log(`[GridBotStateManagement] cancelSmartTrade (key:${ref})`);
+    console.log(`[GridBotStateManagement] cancelSmartTrade (ref:${ref})`);
 
     const bot = await this.prisma.bot.findUnique({
       where: {
@@ -110,7 +111,7 @@ export class GridBotStoreAdapter implements IStore {
         `[GridBotStateManagement] getSmartTrade(): botId ${botId} not found`,
       );
 
-    const smartTrade = await this.prisma.smartTrade.findFirstOrThrow({
+    const smartTrade = await this.prisma.smartTrade.findFirst({
       where: {
         type: 'Trade',
         ref,
@@ -123,36 +124,18 @@ export class GridBotStoreAdapter implements IStore {
         exchangeAccount: true,
       },
     });
-    const { exchangeAccount, orders } = smartTrade;
-
-    for (const order of orders) {
-      if (order.status === 'Idle') {
-        await this.prisma.order.setStatus(order.id, 'Revoked');
-      } else if (order.status === 'Placed') {
-        const exchange = exchanges[exchangeAccount.exchangeCode](
-          exchangeAccount.credentials,
-        );
-
-        if (!order.exchangeOrderId)
-          throw new Error(
-            `Order ${order.id} has missing \`exchangeOrderId\` field`,
-          );
-
-        try {
-          await exchange.cancelLimitOrder({
-            symbol: smartTrade.exchangeSymbolId,
-            orderId: order.exchangeOrderId,
-          });
-
-          await this.prisma.order.setStatus(order.id, 'Canceled');
-        } catch (err) {
-          if (err instanceof OrderNotFound) {
-            await this.prisma.order.setStatus(order.id, 'Deleted');
-          } else {
-            throw err;
-          }
-        }
-      }
+    if (!smartTrade) {
+      console.log('[GridBotStateManagement] SmartTrade not found');
+      return false;
     }
+
+    const smartTradeService = new SmartTradeService(
+      smartTrade,
+      smartTrade.exchangeAccount,
+    );
+
+    await smartTradeService.cancelOrders();
+
+    return true;
   }
 }

@@ -17,6 +17,10 @@ import {
   IGetSymbolInfoRequest,
   ISymbolInfo,
   ExchangeCode,
+  IGetFilledLimitOrdersRequest,
+  IGetFilledLimitOrdersResponse,
+  IWatchOrdersRequest,
+  IWatchOrdersResponse,
 } from "@bifrost/types";
 import { MarketSimulator } from "../market-simulator";
 
@@ -36,7 +40,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async getLimitOrder(
-    body: IGetLimitOrderRequest
+    body: IGetLimitOrderRequest,
   ): Promise<IGetLimitOrderResponse> {
     return {
       exchangeOrderId: "",
@@ -47,11 +51,12 @@ export class MemoryExchange implements IExchange {
       status: "filled",
       fee: 0,
       createdAt: 0,
+      filledPrice: null,
     };
   }
 
   async placeLimitOrder(
-    body: IPlaceLimitOrderRequest
+    body: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
     return {
       orderId: "",
@@ -60,7 +65,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async cancelLimitOrder(
-    body: ICancelLimitOrderRequest
+    body: ICancelLimitOrderRequest,
   ): Promise<ICancelLimitOrderResponse> {
     return {
       orderId: "",
@@ -68,7 +73,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async getMarketPrice(
-    params: IGetMarketPriceRequest
+    params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse> {
     const candlestick = this.marketSimulator.currentCandle;
     const assetPrice = candlestick.close;
@@ -82,13 +87,13 @@ export class MemoryExchange implements IExchange {
   }
 
   async getCandlesticks(
-    params: IGetCandlesticksRequest
+    params: IGetCandlesticksRequest,
   ): Promise<ICandlestick[]> {
     return [];
   }
 
   async getTradingFeeRates(
-    params: IGetTradingFeeRatesRequest
+    params: IGetTradingFeeRatesRequest,
   ): Promise<IGetTradingFeeRatesResponse> {
     return {
       makerFee: 0,
@@ -121,6 +126,20 @@ export class MemoryExchange implements IExchange {
 
   async getSymbols(): Promise<ISymbolInfo[]> {
     return [];
+  }
+
+  async getFilledLimitOrders(
+    body: IGetFilledLimitOrdersRequest,
+  ): Promise<IGetFilledLimitOrdersResponse> {
+    return [];
+  }
+
+  async watchOrders(
+    params?: IWatchOrdersRequest,
+  ): Promise<IWatchOrdersResponse> {
+    throw new Error(
+      "Not implemented. Backtesting doesn't require this method.",
+    );
   }
 
   tradingPairSymbol(params: ITradingPairSymbolRequest) {

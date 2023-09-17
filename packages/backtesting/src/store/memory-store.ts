@@ -3,7 +3,6 @@ import {
   SmartTrade,
   UseSmartTradePayload,
 } from "@bifrost/bot-processor";
-import { SmartTradeTypeEnum } from "@bifrost/bot-processor";
 import { OrderStatusEnum } from "@bifrost/types";
 import { uniqueId } from "lodash";
 import { MarketSimulator } from "../market-simulator";
@@ -17,111 +16,68 @@ export class MemoryStore implements IStore {
   /**
    * @internal
    */
-  smartTradesMap: Record<string, string> = {}; // Record<smartTradeKey, smartTrade.id>
-
-  /**
-   * @internal
-   */
   getSmartTrades() {
-    const smartTradesIds = Object.values(this.smartTradesMap)
+    // Return only used smartTrades by the bot.
+    // The smartTrade that doesn't contain a ref
+    // was replaced by other smartTrade.
+    const smartTrades = this.marketSimulator.smartTrades.filter(
+      (smartTrade) => !!smartTrade.ref,
+    );
 
-    const smartTrades = smartTradesIds.flatMap<SmartTrade>(smartTradeId => {
-      const smartTrade = this.marketSimulator.smartTrades.find(smartTrade => smartTrade.id === smartTradeId)
-
-      if (smartTrade) {
-        return [smartTrade]
-      }
-
-      return []
-    })
-
-    return smartTrades
+    return [...smartTrades].sort(
+      (left, right) => left.buy.price - right.buy.price,
+    );
   }
 
   async stopBot() {
     return Promise.resolve();
   }
 
-  async getSmartTrade(key: string, botId: string): Promise<SmartTrade | null> {
-    const smartTradeId = this.smartTradesMap[key];
+  async getSmartTrade(ref: string, botId: number): Promise<SmartTrade | null> {
+    const smartTrade = this.marketSimulator.smartTrades.find(
+      (smartTrade) => smartTrade.ref === ref,
+    );
 
-    if (smartTradeId) {
-      const smartTrade = this.marketSimulator.smartTrades.find(
-        (smartTrade) => smartTrade.id === smartTradeId
-      );
-
-      if (smartTrade) {
-        return smartTrade;
-      }
-    }
-
-    return null;
+    return smartTrade || null;
   }
 
   async createSmartTrade(
-    key: string,
+    ref: string,
     payload: UseSmartTradePayload,
-    botId: string
+    botId: number,
   ): Promise<SmartTrade> {
-    console.log(`createSmartTrade with key ${key}`);
     const candlestick = this.marketSimulator.currentCandle;
 
     const docId = uniqueId("id_");
     const { buy, sell, quantity } = payload;
     const createdAt = candlestick.timestamp;
 
-    let smartTrade: SmartTrade;
-    if (buy && sell) {
-      smartTrade = {
-        id: docId,
-        type: SmartTradeTypeEnum.BuySell,
-        buy: {
-          price: buy.price,
-          status: buy.status || OrderStatusEnum.Idle,
-          createdAt,
-          updatedAt: createdAt,
-        },
-        sell: {
-          price: sell.price,
-          status: sell.status || OrderStatusEnum.Idle,
-          createdAt,
-          updatedAt: createdAt,
-        },
-        quantity,
-      };
-    } else if (buy) {
-      smartTrade = {
-        id: docId,
-        type: SmartTradeTypeEnum.BuyOnly,
-        buy: {
-          price: buy.price,
-          status: buy.status || OrderStatusEnum.Idle,
-          createdAt,
-          updatedAt: createdAt,
-        },
-        sell: null,
-        quantity,
-      };
-    } else {
-      smartTrade = {
-        id: docId,
-        type: SmartTradeTypeEnum.SellOnly,
-        buy: null,
-        sell: {
-          price: sell.price,
-          status: sell.status || OrderStatusEnum.Idle,
-          createdAt,
-          updatedAt: createdAt,
-        },
-        quantity,
-      };
-    }
+    const smartTrade: SmartTrade = {
+      id: docId,
+      ref,
+      buy: {
+        price: buy.price,
+        status: buy.status || OrderStatusEnum.Idle,
+        createdAt,
+        updatedAt: createdAt,
+      },
+      sell: {
+        price: sell.price,
+        status: sell.status || OrderStatusEnum.Idle,
+        createdAt,
+        updatedAt: createdAt,
+      },
+      quantity,
+    };
 
-    console.log("createSmartTrade: created", smartTrade);
-
-    this.marketSimulator.smartTrades.push(smartTrade);
-    this.smartTradesMap[key] = smartTrade.id;
+    this.marketSimulator.addSmartTrade(smartTrade, ref);
 
     return smartTrade;
+  }
+
+  async cancelSmartTrade(ref: string, botId: number) {
+    throw new Error("Not implemented yet.");
+
+    return false;
   }
 }

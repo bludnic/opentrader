@@ -1,5 +1,5 @@
-export type BaseEffect<T, P, K = undefined> = {
-    type: T;
-    key: K;
-    payload: P
-}
+export type BaseEffect<T, P, R = undefined> = {
+  type: T;
+  ref: R;
+  payload: P;
+};

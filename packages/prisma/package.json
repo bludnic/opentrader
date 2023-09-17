@@ -6,10 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && cp -r src/client dist",
     "prisma:schema:migrate": "prisma migrate dev",
     "prisma:schema:generate": "prisma generate",
-    "bootstrap": "prisma migrate dev && pnpm run build && cp -r prisma/client dist/client"
+    "bootstrap": "prisma migrate dev && pnpm run build"
   },
   "author": "",
   "license": "ISC",
@@ -24,5 +24,8 @@
     "@bifrost/types": "workspace:*",
     "@prisma/client": "5.2.0",
     "zod": "3.21.1"
+  },
+  "prisma": {
+    "schema": "src/schema.prisma"
   }
 }

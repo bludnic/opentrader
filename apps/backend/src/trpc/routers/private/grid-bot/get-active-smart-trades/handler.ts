@@ -26,6 +26,9 @@ export async function getActiveSmartTrades({ ctx, input }: Options) {
           },
         },
       },
+      ref: {
+        not: null,
+      },
     },
     include: {
       orders: true,

@@ -16,6 +16,8 @@ import {
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
   ISymbolInfo,
+  IWatchOrdersRequest,
+  IWatchOrdersResponse,
 } from "@bifrost/types";
 import {
   Balances,
@@ -87,5 +89,12 @@ export type Normalize = {
   getSymbols: {
     // request: (params: never) => void; // no params
     response: (data: Dictionary<Market>) => ISymbolInfo[];
+  };
+
+  watchOrders: {
+    request: (
+      params: IWatchOrdersRequest,
+    ) => Parameters<Exchange["watchOrders"]>;
+    response: (data: Order[]) => IWatchOrdersResponse;
   };
 };

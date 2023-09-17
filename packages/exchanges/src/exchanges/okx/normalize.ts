@@ -119,6 +119,22 @@ const getSymbols: Normalize["getSymbols"] = {
     ),
 };
 
+const watchOrders: Normalize["watchOrders"] = {
+  request: (params) => [params.symbol],
+  response: (orders) =>
+    orders.map((order) => ({
+      exchangeOrderId: order.id,
+      clientOrderId: order.clientOrderId,
+      side: order.side,
+      quantity: order.amount,
+      price: order.price,
+      filledPrice: order.average || null,
+      status: normalizeOrderStatus(order),
+      fee: order.fee.cost,
+      createdAt: order.timestamp,
+    })),
+};
+
 export const normalize: Normalize = {
   accountAssets,
   getLimitOrder,
@@ -129,4 +145,5 @@ export const normalize: Normalize = {
   getCandlesticks,
   getSymbol,
   getSymbols,
+  watchOrders,
 };

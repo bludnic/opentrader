@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./client"
+}
+
+generator zod {
+  provider       = "zod-prisma-types"
+  output = "./zod"
+  useMultipleFiles = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ExchangeCode {
+  OKX
+}
+
+enum BotType {
+  GridBot
+}
+
+enum OrderSide {
+  Buy
+  Sell
+}
+
+enum OrderStatus {
+  Idle
+  Placed
+  Filled
+  Canceled
+  Revoked
+  Deleted
+}
+
+enum UserRole {
+  User
+  Admin
+}
+
+enum SmartTradeType {
+  Buy
+  Sell
+  Trade
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  displayName  String?
+  role UserRole @default(User)
+  password String
+
+  exchangeAccounts ExchangeAccount[]
+  smartTrades SmartTrade[]
+  bots Bot[]
+}
+
+model ExchangeAccount {
+  id Int @id @default(autoincrement())
+  name String
+  exchangeCode ExchangeCode // ExchangeCode
+
+  // Credentials
+  apiKey String
+  secretKey String
+  password String?
+  isDemoAccount Boolean @default(false)
+
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+  createdAt DateTime @default(now())
+
+  smartTrades SmartTrade[]
+  bots Bot[]
+}
+
+model SmartTrade {
+  id Int @id @default(autoincrement())
+  type SmartTradeType // buy/sell/trade/ladder
+  baseCurrency String
+  quoteCurrency String
+  exchangeSymbolId String // BTC/USDT, for future usage with Margin/Futures the symbolId may differ from patter `baseCurrency/quoteCurrency`
+  orders Order[]
+
+  ref String? // user provided reference value
+
+  exchangeAccount ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
+  exchangeAccountId Int
+
+  bot Bot? @relation(fields: [botId], references: [id])
+  botId Int?
+
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  status OrderStatus @default(Idle) // idle/placed/filled
+  side OrderSide
+  price Float
+  filledPrice Float?
+
+  exchangeOrderId String?
+
+  quantity Float
+  smartTrade SmartTrade @relation(fields: [smartTradeId], references: [id], onDelete: Cascade)
+  smartTradeId Int
+
+  createdAt DateTime @default(now())
+  placedAt DateTime?
+  syncedAt DateTime? // Last time the exchange Order status was synced with the DB
+  filledAt DateTime?
+
+  updatedAt DateTime @updatedAt
+}
+
+model Bot {
+  id Int @id @default(autoincrement())
+  type BotType
+  name String
+  baseCurrency String
+  quoteCurrency String
+  enabled Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  settings Json // @todo gridLines
+
+  smartTrades SmartTrade[]
+
+  exchangeAccount ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
+  exchangeAccountId Int
+
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  // @todo initialInvestment
+}
+
+// model BotState {
+//   id Int @id @default(autoincrement())
+//   type String // smartTradeRef
+//   key String // index provided by user
+//   value String // smartTrade.id
+//   bot Bot @relation(fields: [botId], references: [id])
+//   botId Int
+// }

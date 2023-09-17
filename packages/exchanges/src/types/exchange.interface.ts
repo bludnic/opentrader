@@ -17,6 +17,8 @@ import {
   IGetFilledLimitOrdersRequest,
   IGetCanceledLimitOrdersRequest,
   IGetCanceledLimitOrdersResponse,
+  IWatchOrdersRequest,
+  IWatchOrdersResponse,
 } from "@bifrost/types";
 import { Dictionary, Market, okex5 } from "ccxt";
 
@@ -43,4 +45,6 @@ export interface IExchange {
   getSymbols(): Promise<ISymbolInfo[]>;
   getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo>;
   tradingPairSymbol(params: ITradingPairSymbolRequest): string;
+
+  watchOrders(params?: IWatchOrdersRequest): Promise<IWatchOrdersResponse>;
 }

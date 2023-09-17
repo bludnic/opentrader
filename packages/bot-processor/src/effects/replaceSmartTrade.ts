@@ -4,8 +4,8 @@ import { ReplaceSmartTradeEffect } from "./common/types/replace-smart-trade-effe
 import { makeEffect } from "./utils/make-effect";
 
 export function replaceSmartTrade(
-  key: string,
+  ref: string,
   params: SmartTrade
 ): ReplaceSmartTradeEffect {
-  return makeEffect(REPLACE_SMART_TRADE, params, key);
+  return makeEffect(REPLACE_SMART_TRADE, params, ref);
 }

@@ -1,12 +1,8 @@
-import { SmartTrade, SmartTradeTypeEnum } from "@bifrost/bot-processor";
+import { SmartTrade } from "@bifrost/bot-processor";
 import { OrderStatusEnum } from "@bifrost/types";
 
 export function gridTable(smartTrades: SmartTrade[]) {
   const rows = smartTrades.flatMap((smartTrade, i) => {
-    if (smartTrade.type !== SmartTradeTypeEnum.BuySell) {
-      console.log(`gridTable: smartTrade ${smartTrade.type} type is not supported`)
-      return []
-    }
 
     const { buy, sell } = smartTrade
 
@@ -27,6 +23,7 @@ export function gridTable(smartTrades: SmartTrade[]) {
 
     const gridLine = {
       stIndex: i,
+      ref: smartTrade.ref,
       stId: smartTrade.id,
       side,
       price,
@@ -37,6 +34,7 @@ export function gridTable(smartTrades: SmartTrade[]) {
     if (isCurrent) {
       const currentLine = {
         stIndex: '-',
+        ref: '-',
         stId: '-',
         side: 'Curr',
         price: smartTrade.buy.price,

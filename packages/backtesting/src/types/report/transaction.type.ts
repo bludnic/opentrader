@@ -1,35 +1,35 @@
 import { OrderSideEnum } from "@bifrost/types";
 
 export type BuyTransaction = {
-  smartTradeId: string;
+  smartTradeId: number | string;
   side: OrderSideEnum.Buy;
   quantity: number;
   buy: {
     price: number;
     fee: number; // fee in quote currency
-    updateAt: number;
+    updatedAt: number;
   };
   sell?: {
     price: number;
     fee: number; // fee in quote currency
-    updateAt: number;
+    updatedAt: number;
   };
   profit: number;
 };
 
 export type SellTransaction = {
-  smartTradeId: string;
+  smartTradeId: number | string;
   side: OrderSideEnum.Sell;
   quantity: number;
   buy: {
     price: number;
     fee: number; // fee in quote currency
-    updateAt: number;
+    updatedAt: number;
   };
   sell: {
     price: number;
     fee: number; // fee in quote currency
-    updateAt: number;
+    updatedAt: number;
   };
   profit: number; // profit is defined only if sell order was filled
 };

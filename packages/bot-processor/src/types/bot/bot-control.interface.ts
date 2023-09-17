@@ -12,17 +12,19 @@ export interface IBotControl<T extends IBotConfiguration> {
    */
   stop(): Promise<void>;
 
-  getSmartTrade(key: string): Promise<SmartTrade | null>;
+  getSmartTrade(ref: string): Promise<SmartTrade | null>;
 
   createSmartTrade(
-    key: string,
-    payload: UseSmartTradePayload
+    ref: string,
+    payload: UseSmartTradePayload,
   ): Promise<SmartTrade>;
 
   getOrCreateSmartTrade(
-    key: string,
-    payload: UseSmartTradePayload
+    ref: string,
+    payload: UseSmartTradePayload,
   ): Promise<SmartTrade>;
 
-  replaceSmartTrade(key: string, payload: SmartTrade): Promise<SmartTrade>;
+  replaceSmartTrade(ref: string, payload: SmartTrade): Promise<SmartTrade>;
+
+  cancelSmartTrade(ref: string): Promise<boolean>;
 }

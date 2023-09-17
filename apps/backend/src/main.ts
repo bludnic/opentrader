@@ -1,9 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { GLOBAL_PREFIX } from 'src/common/constants';
-import { TwitterApiExceptionFilter } from 'src/core/twitter-api/utils/client/errors/twitter-api-exception.filter';
 import { loadMarkets } from 'src/load-markets';
 import { TrpcMiddleware } from 'src/trpc/trpc.middleware';
 import { AppModule } from './app.module';

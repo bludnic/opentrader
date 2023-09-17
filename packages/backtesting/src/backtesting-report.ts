@@ -1,4 +1,4 @@
-import { isSmartTrade, SmartTrade } from "@bifrost/bot-processor";
+import { SmartTrade } from "@bifrost/bot-processor";
 import { OrderStatusEnum } from "@bifrost/types";
 
 import { buyOrder } from "./report/buyOrder";
@@ -21,7 +21,7 @@ export class BacktestingReport {
   getTransactions(): Transaction[] {
     const transactions: Transaction[] = [];
 
-    const finishedSmartTrades = this.getFinishedSmartTrades()
+    const finishedSmartTrades = this.getFinishedSmartTrades();
 
     finishedSmartTrades.forEach((smartTrade) => {
       transactions.push(buyTransaction(smartTrade));
@@ -45,7 +45,7 @@ export class BacktestingReport {
   }
 
   private calcTotalProfit(): number {
-    return this.getSmartTrades().reduce((acc, curr) => {
+    return this.smartTrades.reduce((acc, curr) => {
       const priceDiff =
         curr.buy && curr.sell ? curr.sell.price - curr.buy.price : 0;
       const profit = priceDiff * curr.quantity;
@@ -55,21 +55,19 @@ export class BacktestingReport {
   }
 
   private getActiveSmartTrades() {
-    return this.getSmartTrades().filter(
+    return this.smartTrades.filter(
       (smartTrade) =>
         smartTrade.buy.status === OrderStatusEnum.Placed ||
-        smartTrade.sell.status === OrderStatusEnum.Placed
+        smartTrade.sell.status === OrderStatusEnum.Placed,
     );
   }
 
   private getFinishedSmartTrades() {
-    return this.getSmartTrades().filter(smartTrade => {
-      return smartTrade.buy.status === OrderStatusEnum.Filled &&
+    return this.smartTrades.filter((smartTrade) => {
+      return (
+        smartTrade.buy.status === OrderStatusEnum.Filled &&
         smartTrade.sell.status === OrderStatusEnum.Filled
-    })
-  }
-
-  private getSmartTrades() {
-    return this.smartTrades.filter(isSmartTrade);
+      );
+    });
   }
 }

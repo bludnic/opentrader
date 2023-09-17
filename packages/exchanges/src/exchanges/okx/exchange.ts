@@ -16,8 +16,10 @@ import {
   IPlaceLimitOrderResponse,
   ISymbolInfo,
   ITradingPairSymbolRequest,
+  IWatchOrdersRequest,
+  IWatchOrdersResponse,
 } from "@bifrost/types";
-import ccxt, { Dictionary, Market, okex5, Order } from "ccxt";
+import { Dictionary, Market, okex5, pro } from "ccxt";
 import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
 import { IExchange } from "src/types/exchange.interface";
 import { getCachedMarkets, cacheMarkets } from "../state";
@@ -34,7 +36,7 @@ export class OkxExchange implements IExchange {
           password: credentials.password,
         }
       : undefined;
-    this.ccxt = new ccxt.okex5(ccxtCredentials);
+    this.ccxt = new pro.okx(ccxtCredentials);
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
@@ -88,9 +90,9 @@ export class OkxExchange implements IExchange {
     params: IGetFilledLimitOrdersRequest,
   ): Promise<IGetFilledLimitOrdersResponse> {
     const args = normalize.getFilledLimitOrders.request(params);
-    const data = await this.ccxt.fetchClosedOrders(...args)
+    const data = await this.ccxt.fetchClosedOrders(...args);
 
-    return normalize.getFilledLimitOrders.response(data)
+    return normalize.getFilledLimitOrders.response(data);
   }
 
   async cancelLimitOrder(
@@ -146,5 +148,14 @@ export class OkxExchange implements IExchange {
     const { baseCurrency, quoteCurrency } = params;
 
     return `${baseCurrency}-${quoteCurrency}`;
+  }
+
+  async watchOrders(
+    params: IWatchOrdersRequest = {},
+  ): Promise<IWatchOrdersResponse> {
+    const args = normalize.watchOrders.request(params);
+    const data = await this.ccxt.watchOrders(...args);
+
+    return normalize.watchOrders.response(data);
   }
 }

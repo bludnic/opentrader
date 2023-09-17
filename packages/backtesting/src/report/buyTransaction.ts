@@ -1,8 +1,8 @@
-import { SmartBuySell } from "@bifrost/bot-processor";
+import {  SmartTrade } from "@bifrost/bot-processor";
 import { OrderSideEnum } from "@bifrost/types";
 import { BuyTransaction } from "src/types";
 
-export function buyTransaction(smartTrade: SmartBuySell): BuyTransaction {
+export function buyTransaction(smartTrade: SmartTrade): BuyTransaction {
   const { buy, sell, quantity, id } = smartTrade;
 
   return {
@@ -12,13 +12,13 @@ export function buyTransaction(smartTrade: SmartBuySell): BuyTransaction {
     buy: {
       price: buy.price,
       fee: 0, // @todo fee
-      updateAt: buy.updatedAt,
+      updatedAt: buy.updatedAt,
     },
     sell: sell
       ? {
           price: sell.price,
           fee: 0, // @todo fee
-          updateAt: sell.updatedAt,
+          updatedAt: sell.updatedAt,
         }
       : undefined,
     profit: 0,

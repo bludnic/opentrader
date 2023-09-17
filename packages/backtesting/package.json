@@ -22,8 +22,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bifrost/exchanges": "workspace:*",
     "@bifrost/bot-processor": "workspace:*",
+    "@bifrost/exchanges": "workspace:*",
     "@bifrost/tools": "workspace:*",
     "@bifrost/types": "workspace:*",
     "lodash": "^4.17.21"

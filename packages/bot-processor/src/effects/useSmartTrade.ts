@@ -6,8 +6,8 @@ import {
 import { makeEffect } from "./utils/make-effect";
 
 export function useSmartTrade(
-  key: string,
+  ref: string,
   params: UseSmartTradePayload
 ): UseSmartTradeEffect {
-  return makeEffect(USE_SMART_TRADE, params, key);
+  return makeEffect(USE_SMART_TRADE, params, ref);
 }
