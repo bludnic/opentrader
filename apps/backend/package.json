@@ -20,10 +20,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs",
-    "typeorm:schema:sync": "pnpm run typeorm schema:sync -d ./src/config/typeorm-cli.config.ts",
     "markets:schema:build": "node ./scripts/markets-api/generate-client.mjs",
-    "bootstrap": "pnpm run build && pnpm run trpc:generate && pnpm run typeorm:schema:sync && pnpm run markets:schema:build",
+    "bootstrap": "pnpm run build && pnpm run trpc:generate && pnpm run markets:schema:build",
     "trpc:generate": "tsc -p ./tsconfig.trpc.json"
   },
   "dependencies": {
@@ -71,6 +69,7 @@
     "zod": "3.21.1"
   },
   "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
     "@nestjs/cli": "^9.5.0",
     "@nestjs/schematics": "^9.2.0",
     "@nestjs/testing": "^9.4.3",
