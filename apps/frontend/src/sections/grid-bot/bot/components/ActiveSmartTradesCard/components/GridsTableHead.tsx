@@ -24,7 +24,7 @@ export const GridsTableHead: FC<GridsTableHeadProps> = (props) => {
   return (
     <StyledTableHead className={clsx(classes.root, className)}>
       <TableRow>
-        <TableCell>Grid №</TableCell>
+        <TableCell>Ref</TableCell>
         <TableCell>[Buy / Sell] order status</TableCell>
         <TableCell align="right">Qty ({baseCurrency})</TableCell>
         <TableCell align="right">Buy ({quoteCurrency})</TableCell>

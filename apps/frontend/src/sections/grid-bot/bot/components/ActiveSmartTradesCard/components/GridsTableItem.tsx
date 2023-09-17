@@ -54,7 +54,7 @@ export const GridsTableItem: FC<GridsTableItemProps> = (props) => {
       })}
     >
       <TableCell component="th" scope="row">
-        {gridNumber}
+        {smartTrade.ref}
       </TableCell>
 
       <TableCell component="th" scope="row">
