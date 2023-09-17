@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist-trpc",
-    "strict": true, // @todo remove when `strict: true` will be enabled in the `tsconfig.json`
   },
   "include": ["src/trpc/*"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
     "@types/lodash": "^4.14.191",
     "@types/node": "^20.4.4",
     "ts-node": "^10.9.1",

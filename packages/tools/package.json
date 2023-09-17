@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
     "@jest/globals": "^29.4.2",
     "@types/big.js": "^6.1.6",
     "@types/jest": "^29.4.0",

@@ -144,6 +144,9 @@ importers:
         specifier: 3.21.1
         version: 3.21.1
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@nestjs/cli':
         specifier: ^9.5.0
         version: 9.5.0
@@ -346,6 +349,9 @@ importers:
         specifier: ^2.9.1
         version: 2.9.1(react-dom@17.0.2)(react@17.0.2)
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@rtk-query/codegen-openapi':
         specifier: ^1.0.0
         version: 1.0.0(openapi-types@12.1.3)
@@ -440,6 +446,9 @@ importers:
         specifier: ^0.3.12
         version: 0.3.12(pg@8.10.0)(ts-node@10.9.1)
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@nestjs/cli':
         specifier: ^9.5.0
         version: 9.5.0
@@ -522,6 +531,9 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/lodash':
         specifier: ^4.14.191
         version: 4.14.191
@@ -562,6 +574,9 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: ^20.5.6
         version: 20.5.6
@@ -581,6 +596,9 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: ^20.4.4
         version: 20.4.4
@@ -615,6 +633,9 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/lodash':
         specifier: ^4.14.191
         version: 4.14.191
@@ -643,6 +664,9 @@ importers:
         specifier: ^4.0.55
         version: 4.0.55
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -659,6 +683,9 @@ importers:
         specifier: 3.21.1
         version: 3.21.1
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: ^20.5.6
         version: 20.5.6
@@ -677,6 +704,9 @@ importers:
 
   packages/swagger:
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -690,6 +720,9 @@ importers:
         specifier: ^6.2.1
         version: 6.2.1
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@jest/globals':
         specifier: ^29.4.2
         version: 29.5.0
@@ -709,8 +742,13 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
+  packages/tsconfig: {}
+
   packages/types:
     devDependencies:
+      '@bifrost/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       typescript:
         specifier: ^4.9.5
         version: 4.9.5

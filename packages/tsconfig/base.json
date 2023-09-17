@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Base",
+  "compilerOptions": {
+    "incremental": true,
+    "skipLibCheck": true,
+    "strict": true
+  }
+}

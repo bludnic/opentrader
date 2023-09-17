@@ -45,6 +45,7 @@
     "typeorm": "^0.3.12"
   },
   "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
     "@nestjs/cli": "^9.5.0",
     "@nestjs/schematics": "^9.2.0",
     "@nestjs/testing": "^9.4.3",
