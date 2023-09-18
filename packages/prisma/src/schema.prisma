@@ -118,7 +118,7 @@ model Order {
 
   createdAt DateTime @default(now())
   placedAt DateTime?
-  syncedAt DateTime? // Last time the exchange Order status was synced with the DB
+  syncedAt DateTime? @default(now()) // Last time the exchange Order status was synced with the DB
   filledAt DateTime?
 
   updatedAt DateTime @updatedAt
