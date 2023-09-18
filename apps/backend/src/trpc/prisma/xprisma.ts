@@ -66,6 +66,7 @@ export const xprisma = prisma.$extends({
           },
           data: {
             status: 'Filled',
+            filledPrice,
           },
         });
       },
