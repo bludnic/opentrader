@@ -1,5 +1,6 @@
 import { IWatchOrder } from '@bifrost/types';
 import { Injectable, Logger } from '@nestjs/common';
+import { GridBotService } from 'src/trpc/domains/grid-bot/grid-bot.service';
 import { xprisma } from 'src/trpc/prisma';
 import { OrderWithSmartTrade } from 'src/trpc/prisma/types/order/order-with-smart-trade';
 import { OrderSynchronizerPollingWatcher } from './order-synchronizer/order-synchronizer-polling.watcher';
@@ -56,8 +57,16 @@ export class ExchangeAccountsWatcher {
       filledPrice: exchangeOrder.filledPrice,
     });
     this.logger.debug(
-      `Order #${order.id} was filled with price ${exchangeOrder.filledPrice}`,
+      `onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
     );
+
+    const bot = await GridBotService.fromSmartTradeId(order.smartTrade.id);
+
+    // @todo minor feature:
+    // 1. Make an async queue to guarantee template execution
+    // on every order filled event.
+    // 2. OR cancel somehow current process, and run it again.
+    await bot.process();
   }
 
   private async onOrderCanceled(
@@ -66,6 +75,8 @@ export class ExchangeAccountsWatcher {
   ) {
     // Edge case: the user may cancel the order manually on the exchange
     await xprisma.order.updateStatus('Canceled', order.id);
-    this.logger.debug(`Updated status -> Canceled`);
+    this.logger.debug(
+      `onOrderCanceled: Order #${order.id}: ${order.exchangeOrderId} was canceled`,
+    );
   }
 }

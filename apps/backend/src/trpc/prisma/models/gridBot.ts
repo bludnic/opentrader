@@ -46,6 +46,25 @@ export const gridBot = {
       settings: bot.settings as unknown as TGridBotSettings,
     };
   },
+  async findFirstOrThrow<T extends Prisma.BotFindFirstOrThrowArgs>(
+    args: Prisma.SelectSubset<T, Prisma.BotFindFirstOrThrowArgs>,
+  ) {
+    const bot = await prisma.bot.findFirstOrThrow<T>({
+      ...args,
+      where: {
+        ...args.where,
+        type: 'GridBot',
+      },
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { settings, ...rest } = bot;
+
+    return {
+      ...rest,
+      settings: bot.settings as unknown as TGridBotSettings,
+    };
+  },
   async findMany<T extends Prisma.BotFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindManyArgs>,
   ) {
@@ -112,5 +131,15 @@ export const gridBot = {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
     };
+  },
+  async setProcessing(value: boolean, botId: number) {
+    return prisma.bot.update({
+      where: {
+        id: botId,
+      },
+      data: {
+        processing: value,
+      },
+    });
   },
 };

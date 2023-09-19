@@ -22,6 +22,23 @@ export class GridBotService {
     return new GridBotService(bot);
   }
 
+  static async fromSmartTradeId(smartTradeId: number) {
+    const bot = await xprisma.bot.grid.findFirstOrThrow({
+      where: {
+        smartTrades: {
+          some: {
+            id: smartTradeId,
+          },
+        },
+      },
+      include: {
+        exchangeAccount: true,
+      },
+    });
+
+    return new GridBotService(bot);
+  }
+
   async start() {
     this.bot = await xprisma.bot.grid.update({
       where: {
@@ -50,19 +67,51 @@ export class GridBotService {
     });
   }
 
-  async processStartCommand() {
+  async processCommand(command: 'start' | 'stop' | 'process') {
+    if (this.isBotProcessing()) {
+      console.warn(
+        `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
+      );
+      return;
+    }
+
     const processor = await this.getProcessor();
-    await processor.start();
+
+    await xprisma.bot.grid.setProcessing(true, this.bot.id);
+
+    if (command === 'start') {
+      await processor.start();
+    } else if (command === 'stop') {
+      await processor.stop();
+    } else if (command === 'process') {
+      await processor.process();
+    }
+
+    await xprisma.bot.grid.setProcessing(false, this.bot.id);
+  }
+
+  async processStartCommand() {
+    await this.processCommand('start');
   }
 
   async processStopCommand() {
-    const processor = await this.getProcessor();
-    await processor.stop();
+    await this.processCommand('stop');
   }
 
   async process() {
-    const processor = await this.getProcessor();
-    await processor.process();
+    await this.processCommand('process');
+  }
+
+  isBotRunning() {
+    return this.bot.enabled;
+  }
+
+  isBotStopped() {
+    return !this.bot.enabled;
+  }
+
+  isBotProcessing() {
+    return this.bot.processing;
   }
 
   assertIsRunning() {
@@ -87,6 +136,15 @@ export class GridBotService {
     if (!this.bot.enabled) {
       throw new TRPCError({
         message: 'Bot already stopped',
+        code: 'CONFLICT',
+      });
+    }
+  }
+
+  assertIsNotProcessing() {
+    if (this.bot.processing) {
+      throw new TRPCError({
+        message: 'The bot is busy with the previous processing job',
         code: 'CONFLICT',
       });
     }

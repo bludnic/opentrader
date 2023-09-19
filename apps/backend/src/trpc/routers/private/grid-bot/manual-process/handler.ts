@@ -15,6 +15,7 @@ export async function manualProcessGridBot({ ctx, input }: Options) {
   const botService = await GridBotService.fromId(botId);
 
   botService.assertIsRunning();
+  botService.assertIsNotProcessing();
   await botService.process();
 
   return {

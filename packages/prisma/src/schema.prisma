@@ -131,6 +131,13 @@ model Bot {
   baseCurrency String
   quoteCurrency String
   enabled Boolean @default(false)
+
+  // Means that the bot template is being processed right now.
+  // This must guarantee that the bot template will not be processed
+  // several times simultaneously.
+  // After process finish, the value must be set back to `false`.
+  processing Boolean @default(false)
+
   createdAt DateTime @default(now())
 
   settings Json // @todo gridLines

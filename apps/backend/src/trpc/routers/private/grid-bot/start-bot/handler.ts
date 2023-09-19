@@ -15,6 +15,7 @@ export async function startGridBot({ ctx, input }: Options) {
   const botService = await GridBotService.fromId(botId);
 
   botService.assertIsNotAlreadyRunning();
+  botService.assertIsNotProcessing();
   await botService.processStartCommand();
   await botService.start();
 

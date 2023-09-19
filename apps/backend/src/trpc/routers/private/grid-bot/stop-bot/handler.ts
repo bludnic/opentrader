@@ -15,6 +15,7 @@ export async function stopGridBot({ ctx, input }: Options) {
   const botService = await GridBotService.fromId(botId);
 
   botService.assertIsNotAlreadyStopped();
+  botService.assertIsNotProcessing();
   await botService.processStopCommand();
   await botService.stop();
 
