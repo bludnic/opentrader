@@ -136,7 +136,7 @@ export class CronService {
     if (candlesticks.length === 0) {
       this.logger.debug('History end reached');
 
-      await this.marketsService.update(
+      await this.marketsService.historyEndReached(
         symbol,
         exchangeCode,
         stringToBarSize(marketTimeframe.timeframe),

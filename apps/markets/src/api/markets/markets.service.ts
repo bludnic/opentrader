@@ -86,7 +86,7 @@ export class MarketsService {
     };
   }
 
-  async update(
+  async historyEndReached(
     symbol: string,
     exchangeCode: $Enums.ExchangeCode,
     historyEndReached: BarSize,
