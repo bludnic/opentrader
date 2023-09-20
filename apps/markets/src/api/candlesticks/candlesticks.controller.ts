@@ -33,7 +33,10 @@ export class CandlesticksController {
     );
 
     return {
-      candlesticks,
+      candlesticks: candlesticks.map((candlestick) => ({
+        ...candlestick,
+        timestamp: candlestick.timestamp.getTime(), // converts Date to timestamp
+      })),
       count: candlesticks.length,
     };
   }

@@ -19,12 +19,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs",
-    "typeorm:schema:sync": "pnpm run typeorm schema:sync -d ./src/config/typeorm-cli.config.ts",
-    "bootstrap": "pnpm run build && pnpm run typeorm:schema:sync"
+    "bootstrap": "pnpm run build"
   },
   "dependencies": {
     "@bifrost/exchanges": "workspace:*",
+    "@bifrost/markets-prisma": "workspace:*",
     "@bifrost/tools": "workspace:*",
     "@bifrost/types": "workspace:*",
     "@nestjs/common": "^9.4.3",
@@ -33,7 +32,6 @@
     "@nestjs/platform-express": "^9.4.3",
     "@nestjs/schedule": "^2.2.0",
     "@nestjs/swagger": "^6.2.1",
-    "@nestjs/typeorm": "^9.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "date-fns": "^2.30.0",
@@ -42,7 +40,7 @@
     "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.12"
+    "zod": "3.21.1"
   },
   "devDependencies": {
     "@bifrost/tsconfig": "workspace:*",

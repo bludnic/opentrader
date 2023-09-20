@@ -1,22 +1,21 @@
-import { BarSize, ExchangeCode } from "@bifrost/types";
-import { Injectable } from "@nestjs/common";
+import { BarSize } from '@bifrost/types';
+import { Injectable } from '@nestjs/common';
+import { $Enums } from '@bifrost/markets-prisma';
 
-import { DbService } from "src/core/db/db.service";
+import { prisma } from 'src/core/prisma';
 
 @Injectable()
 export class MarketsService {
-  constructor(private readonly db: DbService) {}
-
   async findAll() {
-    const markets = await this.db.marketRepository.find();
+    const markets = await prisma.market.findMany();
 
     return {
       markets,
     };
   }
 
-  async findAllByExchange(exchangeCode: ExchangeCode) {
-    const markets = await this.db.marketRepository.find({
+  async findAllByExchange(exchangeCode: $Enums.ExchangeCode) {
+    const markets = await prisma.market.findMany({
       where: {
         exchange: {
           code: exchangeCode,
@@ -33,8 +32,17 @@ export class MarketsService {
    * Get markets that required the history to be downloaded.
    */
   async findWithNoHistory() {
-    const markets = await this.db.marketRepository.find({
-      where: [{ oneMinute: false }, { oneHour: false }, { fourHours: false }],
+    const markets = await prisma.market.findMany({
+      where: {
+        timeframes: {
+          some: {
+            historyEndReached: false,
+          },
+        },
+      },
+      include: {
+        timeframes: true,
+      },
     });
 
     return {
@@ -46,11 +54,16 @@ export class MarketsService {
    * Get markets which history is already downloaded
    */
   async findWithHistory() {
-    const markets = await this.db.marketRepository.find({
+    const markets = await prisma.market.findFirst({
       where: {
-        oneMinute: true,
-        oneHour: true,
-        fourHours: true,
+        timeframes: {
+          every: {
+            historyEndReached: true,
+          },
+        },
+      },
+      include: {
+        timeframes: true,
       },
     });
 
@@ -59,13 +72,14 @@ export class MarketsService {
     };
   }
 
-  async create(symbol: string, exchangeCode: ExchangeCode) {
-    const marketEntity = this.db.marketRepository.create({
-      symbol,
-      exchangeCode,
+  async create(symbol: string, exchangeCode: $Enums.ExchangeCode) {
+    const market = await prisma.market.create({
+      data: {
+        symbol,
+        exchangeCode,
+      },
+      include: {},
     });
-
-    const market = await this.db.marketRepository.save(marketEntity);
 
     return {
       market,
@@ -74,21 +88,34 @@ export class MarketsService {
 
   async update(
     symbol: string,
-    exchangeCode: ExchangeCode,
-    historyReached: BarSize,
+    exchangeCode: $Enums.ExchangeCode,
+    historyEndReached: BarSize,
   ) {
-    const marketEntity = this.db.marketRepository.create({
-      symbol,
-      exchangeCode,
-      oneMinute: historyReached === BarSize.ONE_MINUTE ? true : undefined,
-      oneHour: historyReached === BarSize.ONE_HOUR ? true : undefined,
-      fourHours: historyReached === BarSize.FOUR_HOURS ? true : undefined,
+    await prisma.marketTimeframe.update({
+      where: {
+        id: {
+          timeframe: historyEndReached,
+          marketSymbol: symbol,
+          marketExchangeCode: exchangeCode,
+        },
+      },
+      data: {
+        historyEndReached: true,
+      },
     });
+  }
 
-    const market = await this.db.marketRepository.save(marketEntity);
-
-    return {
-      market,
-    };
+  async createTimeframe(
+    timeframe: string,
+    exchangeCode: $Enums.ExchangeCode,
+    symbol: string,
+  ) {
+    return prisma.marketTimeframe.create({
+      data: {
+        timeframe,
+        marketExchangeCode: exchangeCode,
+        marketSymbol: symbol,
+      },
+    });
   }
 }

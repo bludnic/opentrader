@@ -1,6 +1,6 @@
-import { CandlestickDto } from 'src/core/db/entities/dto/candlestick';
+import { GetCandlestickDto } from './types/get-candlestick.dto';
 
 export class GetCandlesticksResponseDto {
-  candlesticks: CandlestickDto[];
+  candlesticks: GetCandlestickDto[];
   count: number;
 }

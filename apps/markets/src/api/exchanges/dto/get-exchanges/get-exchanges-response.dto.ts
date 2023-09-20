@@ -1,4 +1,4 @@
-import { ExchangeFullDto } from 'src/core/db/entities/dto/exchange';
+import { ExchangeFullDto } from 'src/api/common/dto';
 
 export class GetExchangesResponseDto {
   exchanges: ExchangeFullDto[];

@@ -1,19 +1,17 @@
-import { ExchangeCode } from '@bifrost/types';
 import { Injectable } from '@nestjs/common';
+import { $Enums } from '@bifrost/markets-prisma';
 
-import { DbService } from 'src/core/db/db.service';
+import { prisma } from 'src/core/prisma';
 
 @Injectable()
 export class ExchangesService {
-  constructor(private readonly db: DbService) {}
-
-  async create(exchangeCode: ExchangeCode, exchangeName: string) {
-    const exchangeEntity = this.db.exchangeRepository.create({
-      code: exchangeCode,
-      name: exchangeName,
+  async create(exchangeCode: $Enums.ExchangeCode, exchangeName: string) {
+    const exchange = await prisma.exchange.create({
+      data: {
+        code: exchangeCode,
+        name: exchangeName,
+      },
     });
-
-    const exchange = await this.db.exchangeRepository.save(exchangeEntity);
 
     return {
       exchange,
@@ -21,8 +19,8 @@ export class ExchangesService {
   }
 
   async findAll() {
-    const exchanges = await this.db.exchangeRepository.find({
-      relations: {
+    const exchanges = await prisma.exchange.findMany({
+      include: {
         markets: true,
       },
     });

@@ -1,5 +1,5 @@
-import { Market } from 'src/core/db/entities/market.entity';
+import { MarketDto } from 'src/api/common/dto';
 
 export class CreateMarketResponseDto {
-  market: Market;
+  market: MarketDto;
 }

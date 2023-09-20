@@ -13,6 +13,7 @@ export class ExchangesController {
   @Post()
   async createExchange(@Body() body: CreateExchangeRequestDto) {
     const { code, name } = body;
+    console.log('body', body)
 
     return this.exchangeService.create(code, name);
   }

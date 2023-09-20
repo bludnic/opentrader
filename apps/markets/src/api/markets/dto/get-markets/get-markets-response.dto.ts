@@ -1,4 +1,4 @@
-import { MarketDto } from 'src/core/db/entities/dto/market';
+import { MarketDto } from 'src/api/common/dto';
 
 export class GetMarketsResponseDto {
   markets: MarketDto[];

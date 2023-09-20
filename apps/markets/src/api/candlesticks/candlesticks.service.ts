@@ -1,14 +1,10 @@
-import { BarSize, ExchangeCode, ICandlestick } from '@bifrost/types';
+import { BarSize, ICandlestick } from '@bifrost/types';
 import { Injectable } from '@nestjs/common';
-import { Between, DeepPartial, MoreThanOrEqual } from 'typeorm';
-
-import { DbService } from 'src/core/db/db.service';
-import { Candlestick } from 'src/core/db/entities/candlestick.entity';
+import { $Enums } from '@bifrost/markets-prisma';
+import { prisma } from 'src/core/prisma';
 
 @Injectable()
 export class CandlesticksService {
-  constructor(private readonly db: DbService) {}
-
   async create(
     open: number,
     high: number,
@@ -17,22 +13,22 @@ export class CandlesticksService {
     timeframe: BarSize,
     timestamp: number,
     symbol: string,
-    exchangeCode: ExchangeCode,
+    exchangeCode: $Enums.ExchangeCode,
   ) {
-    const candlestickEntity = this.db.candlestickRepository.create({
+    const data = {
       open,
       high,
       low,
       close,
       timeframe,
-      timestamp,
+      timestamp: new Date(timestamp),
       marketSymbol: symbol,
       marketExchangeCode: exchangeCode,
-    });
+    };
 
-    const candlestick = await this.db.candlestickRepository.save(
-      candlestickEntity,
-    );
+    const candlestick = prisma.candlestick.create({
+      data,
+    });
 
     return {
       candlestick,
@@ -42,45 +38,61 @@ export class CandlesticksService {
   async saveAll(
     candlesticks: ICandlestick[],
     symbol: string,
-    exchangeCode: ExchangeCode,
+    exchangeCode: $Enums.ExchangeCode,
     timeframe: BarSize,
   ) {
-    const entitiesArg: DeepPartial<Candlestick>[] = candlesticks.map(
-      (candlestick) => ({
-        open: candlestick.open,
-        high: candlestick.high,
-        low: candlestick.low,
-        close: candlestick.close,
-        timestamp: candlestick.timestamp,
-        timeframe: timeframe,
-        marketSymbol: symbol,
-        marketExchangeCode: exchangeCode,
-      }),
-    );
-    const entities = this.db.candlestickRepository.create(entitiesArg);
+    const data = candlesticks.map((candlestick) => ({
+      open: candlestick.open,
+      high: candlestick.high,
+      low: candlestick.low,
+      close: candlestick.close,
+      timestamp: new Date(candlestick.timestamp),
 
-    await this.db.candlestickRepository.save(entities);
+      timeframe: timeframe,
+      marketSymbol: symbol,
+      marketExchangeCode: exchangeCode,
+    }));
+
+    await prisma.candlestick.createMany({
+      data,
+    });
   }
 
   async findAll(
     symbol: string,
-    exchangeCode: ExchangeCode,
+    exchangeCode: $Enums.ExchangeCode,
     timeframe: BarSize,
     fromTimestamp: number,
     toTimestamp: number,
   ) {
-    const candlesticks = await this.db.candlestickRepository.find({
-      select: ['open', 'high', 'low', 'close', 'timestamp'],
+    const candlesticks = await prisma.candlestick.findMany({
+      select: {
+        open: true,
+        high: true,
+        low: true,
+        close: true,
+        timestamp: true,
+      },
       where: {
         marketSymbol: symbol,
         marketExchangeCode: exchangeCode,
         timeframe,
-        timestamp: Between(fromTimestamp, toTimestamp),
+        AND: [
+          {
+            timestamp: {
+              gte: new Date(fromTimestamp),
+            },
+          },
+          {
+            timestamp: {
+              lte: new Date(toTimestamp),
+            },
+          },
+        ],
       },
-      order: {
-        timestamp: 'ASC',
+      orderBy: {
+        timestamp: 'asc',
       },
-      // take: limit,
     });
 
     return {
@@ -90,17 +102,17 @@ export class CandlesticksService {
 
   async findOldestCandlestick(
     symbol: string,
-    exchangeCode: ExchangeCode,
+    exchangeCode: $Enums.ExchangeCode,
     timeframe: BarSize,
-  ): Promise<Candlestick | null> {
-    const candlestick = await this.db.candlestickRepository.findOne({
+  ) {
+    const candlestick = await prisma.candlestick.findFirst({
       where: {
         marketSymbol: symbol,
         marketExchangeCode: exchangeCode,
         timeframe,
       },
-      order: {
-        timestamp: 'ASC',
+      orderBy: {
+        timestamp: 'asc',
       },
     });
 

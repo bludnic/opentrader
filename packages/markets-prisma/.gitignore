@@ -1,0 +1,11 @@
+node_modules
+dist
+
+# Generated PrismaClient
+src/client/
+
+# Generate Zod types
+src/zod/
+
+# env
+.env

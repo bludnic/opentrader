@@ -1,6 +1,12 @@
 import { ExchangeCode } from '@bifrost/types';
+import { ApiProperty } from '@nestjs/swagger';
+import { $Enums } from '@bifrost/markets-prisma';
+import { Market } from 'src/core/prisma/types';
 
-export class CreateMarketRequestDto {
+export class CreateMarketRequestDto implements Omit<Market, 'updatedAt'> {
   symbol: string;
-  exchangeCode: ExchangeCode;
+  @ApiProperty({
+    enum: ExchangeCode,
+  })
+  exchangeCode: $Enums.ExchangeCode;
 }
