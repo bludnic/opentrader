@@ -1,14 +1,10 @@
-import { AxiosRequestConfig } from "axios";
+import { InternalAxiosRequestConfig } from "axios";
 import { getAuthToken } from "src/utils/auth/getAuthToken";
 
 export const authInterceptor = (
-  config: AxiosRequestConfig
-): AxiosRequestConfig => {
-  return {
-    ...config,
-    headers: {
-      ...config.headers,
-      Authorization: `Bearer ${getAuthToken()}`,
-    },
-  };
+  config: InternalAxiosRequestConfig,
+): InternalAxiosRequestConfig => {
+  config.headers.set("Authorization", `Bearer ${getAuthToken()}`);
+
+  return config;
 };
