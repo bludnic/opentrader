@@ -1,7 +1,6 @@
 import { SxProps, Theme } from "@mui/material";
-import { TextField } from "mui-rff";
+import TextField from "@mui/material/TextField";
 import React, { FC } from "react";
-import { CreateExchangeAccountFormValues } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/types";
 
 type AccountIdFieldProps = {
   className?: string;
@@ -10,8 +9,6 @@ type AccountIdFieldProps = {
   value?: number;
 };
 
-const fieldName: keyof CreateExchangeAccountFormValues = "id";
-
 export const AccountIdField: FC<AccountIdFieldProps> = (props) => {
   const { sx, className, disabled, value } = props;
 
@@ -19,7 +16,6 @@ export const AccountIdField: FC<AccountIdFieldProps> = (props) => {
     <TextField
       className={className}
       label="Account ID"
-      name={fieldName}
       sx={sx}
       required
       value={value}

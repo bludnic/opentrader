@@ -1,8 +1,8 @@
-import { ExchangeCode } from '@bifrost/types';
-import { SxProps } from "@mui/system";
+import { ExchangeCode } from "@bifrost/types";
 import { Select, ShowErrorFunc } from "mui-rff";
 import {
   MenuItem,
+  SxProps,
   TextFieldProps as MuiTextFieldProps,
   Theme,
 } from "@mui/material";
@@ -34,9 +34,7 @@ export const ExchangeCodeField: FC<ExchangeCodeFieldProps> = (props) => {
       sx={sx}
       className={className}
     >
-      <MenuItem value={ExchangeCode.OKX}>
-        OKx
-      </MenuItem>
+      <MenuItem value={ExchangeCode.OKX}>OKx</MenuItem>
     </Select>
   );
 };
