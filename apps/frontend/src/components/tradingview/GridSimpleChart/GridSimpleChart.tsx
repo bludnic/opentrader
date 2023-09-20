@@ -1,6 +1,7 @@
 import { useRef, useEffect, FC } from "react";
 
 import {
+  ColorType,
   createChart,
   LineData,
   LineStyle,
@@ -36,7 +37,7 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
   useEffect(() => {
     if (!chartRef.current) {
       console.error(
-        "Error: `chartRef.current` is `undefined`. Skip chart rendering."
+        "Error: `chartRef.current` is `undefined`. Skip chart rendering.",
       );
       return;
     }
@@ -49,7 +50,10 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
         borderColor: "rgba(255, 255, 255, 0.8)",
       },
       layout: {
-        backgroundColor: "#000",
+        background: {
+          type: ColorType.Solid,
+          color: "#000",
+        },
         textColor: "rgba(255, 255, 255, 0.8)",
       },
       grid: {
@@ -67,7 +71,7 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
 
     // Set price movement data
     const lineSeriesData: LineData[] = lineSeriesFromE2EData(
-      gridBotE2ETestingData
+      gridBotE2ETestingData,
     );
     const lineSeries = chart.addLineSeries({
       color: "rgba(255, 255, 255, 0.8)",
@@ -92,7 +96,7 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
 
     // Set deals
     const ordersMarkers: SeriesMarker<Time>[] = ordersMarkersFromE2EData(
-      gridBotE2ETestingData
+      gridBotE2ETestingData,
     );
     lineSeries.setMarkers([startBotMarker, stopBotMarker, ...ordersMarkers]);
 
@@ -114,6 +118,8 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
         lineWidth: priceLineWidth,
         lineStyle: LineStyle.Solid,
         axisLabelVisible: true,
+        axisLabelColor: "#FF0000",
+        axisLabelTextColor: "#00FF00",
         lineVisible: true,
         title: isUpperLimitPrice
           ? "Upper limit price"
