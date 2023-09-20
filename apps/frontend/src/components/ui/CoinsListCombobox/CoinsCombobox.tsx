@@ -56,8 +56,8 @@ export const CoinsCombobox: FC<CoinsComboboxProps> = (props) => {
       ListboxComponent={VariableSizeListboxComponent}
       options={coins}
       renderInput={(params) => <TextField {...params} label="Coins list" />}
-      renderOption={(props, option) => [props, option]}
-      renderGroup={(params) => params}
+      // renderOption={(props, option) => [props, option]}
+      // renderGroup={(params) => params}
       getOptionLabel={(option) => option.symbol || ""}
       sx={{ width: 300 }}
       {...AutocompleteProps}
