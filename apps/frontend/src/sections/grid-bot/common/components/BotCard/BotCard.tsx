@@ -83,8 +83,9 @@ export const BotCard: FC<BotCardProps> = (props) => {
             }}
             as={`/grid-bot/${bot.id}`}
             passHref
+            className={classes.botTitle}
           >
-            <Typography className={classes.botTitle} variant="h5">
+            <Typography variant="h5">
               {bot.name}
             </Typography>
           </Link>

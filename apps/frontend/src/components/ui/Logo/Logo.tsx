@@ -12,7 +12,7 @@ const classes = {
 const Root = styled("div")(({ theme }) => ({
   /* Styles applied to the root element. */
   [`&.${classes.root}`]: {
-    width: '100%',
+    width: "100%",
 
     "& a": {
       textDecoration: "none",
@@ -33,10 +33,10 @@ export const Logo: FC<LogoProps> = (props) => {
   return (
     <Root className={clsx(classes.root, className)}>
       <Link href="/grid-bot" passHref>
-        <a>
-          <Code fontSize="large" />
-          <Typography variant="h5" fontWeight="bold" sx={{ ml: 2 }}>0x6502</Typography>
-        </a>
+        <Code fontSize="large" />
+        <Typography variant="h5" fontWeight="bold" sx={{ ml: 2 }}>
+          0x6502
+        </Typography>
       </Link>
     </Root>
   );
