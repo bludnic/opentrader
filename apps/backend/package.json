@@ -4,8 +4,8 @@
   "description": "",
   "author": "",
   "license": "UNLICENSED",
-  "main": "dist-trpc/index.js",
-  "types": "dist-trpc/index.d.ts",
+  "main": "dist-trpc/trpc/index.js",
+  "types": "dist-trpc/trpc/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
