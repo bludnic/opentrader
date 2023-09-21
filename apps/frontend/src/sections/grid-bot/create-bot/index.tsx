@@ -2,7 +2,6 @@ import { calcGridLinesWithPriceFilter } from "@bifrost/tools";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
-import { addDays } from "date-fns";
 import React, { FC, useEffect } from "react";
 import { MainLayout } from "src/layouts/main";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
@@ -17,7 +16,6 @@ import {
 import { initPage } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
 import { isPageReadySelector } from "src/sections/grid-bot/create-bot/store/init-page/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { marketsApi } from "src/lib/markets/marketsApi";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";

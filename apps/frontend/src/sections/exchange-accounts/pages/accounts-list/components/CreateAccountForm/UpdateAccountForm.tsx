@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { trpc } from "src/lib/trpc";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
+import { TExchangeAccount } from "src/types/trpc";
 import { AccountIdField } from "./fields/AccountIdField";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";

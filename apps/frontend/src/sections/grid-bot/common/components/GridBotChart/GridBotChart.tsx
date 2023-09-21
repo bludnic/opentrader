@@ -15,7 +15,7 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
 import { ICandlestick } from "src/lib/bifrost/apiClient";
-import { TGridBotOrder } from "src/sections/grid-bot/common/trpc-types";
+import { TGridBotOrder } from "src/types/trpc";
 import { useElementSize } from "usehooks-ts";
 import { chartMaxHeight, chartMaxWidth } from "./constants";
 

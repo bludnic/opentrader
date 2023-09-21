@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { TActiveSmartTrade, TGridBot } from "src/sections/grid-bot/common/trpc-types";
+import { TActiveSmartTrade, TGridBot } from "src/types/trpc";
 import { GridsTableHead } from "./GridsTableHead";
 import { GridsTableItem } from "./GridsTableItem";
 

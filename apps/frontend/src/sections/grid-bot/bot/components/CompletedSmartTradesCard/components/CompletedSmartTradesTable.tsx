@@ -9,7 +9,7 @@ import {
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { TCompletedSmartTrade, TGridBot } from "src/sections/grid-bot/common/trpc-types";
+import { TCompletedSmartTrade, TGridBot } from "src/types/trpc";
 import { CompletedSmartTradeItem } from "./CompletedSmartTradeItem";
 import { CompletedSmartTradesTableHead } from "./CompletedSmartTradesTableHead";
 

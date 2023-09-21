@@ -1,9 +1,10 @@
 import {
   calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
-  findLowestCandlestickBy
+  findLowestCandlestickBy,
 } from "@bifrost/tools";
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
+import { trpc } from "src/lib/trpc";
 import {
   setExchangeAccountId,
   setExchangeCode,
@@ -27,8 +28,11 @@ import { typedSelect } from "src/utils/saga/select";
 export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch exchange accounts
   const {
-    data: { exchangeAccounts },
-  } = yield* query(rtkApi.endpoints.getExchangeAccounts);
+    exchangeAccounts,
+  }: Awaited<ReturnType<typeof trpc.exchangeAccount.list.query>> = yield call(
+    trpc.exchangeAccount.list.query,
+  );
+  console.log("exchangeAccounts", exchangeAccounts);
 
   const firstExchangeAccount = exchangeAccounts[0];
   yield put(setExchangeAccountId(firstExchangeAccount.id));
@@ -39,14 +43,14 @@ export function* initPageWorker(): Iterator<any, any, any> {
     data: { symbols },
   } = yield* query(
     rtkApi.endpoints.getSymbols,
-    firstExchangeAccount.exchangeCode
+    firstExchangeAccount.exchangeCode,
   );
 
   const firstSymbol = symbols[0];
   yield put(setSymbolId(firstSymbol.symbolId));
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
-    firstSymbol.filters.lot.minQuantity
+    firstSymbol.filters.lot.minQuantity,
   );
   yield put(setQuantityPerGrid(minQuantityPerGrid));
 
@@ -72,14 +76,14 @@ export function* initPageWorker(): Iterator<any, any, any> {
     lowestCandlestick.close,
     DEFAULT_GRID_LINES_NUMBER,
     Number(minQuantityPerGrid),
-    firstSymbol.filters
+    firstSymbol.filters,
   );
   yield put(setGridLines(gridLines));
 
   // Fetch current asset price
   const currentAssetPriceData = yield* query(
     rtkApi.endpoints.getSymbolCurrentPrice,
-    firstSymbol.symbolId
+    firstSymbol.symbolId,
   );
 
   yield put(markPageAsReady());

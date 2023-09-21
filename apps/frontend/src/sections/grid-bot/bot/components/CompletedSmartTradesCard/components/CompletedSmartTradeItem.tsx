@@ -2,10 +2,7 @@ import { TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
 import React, { FC } from "react";
-import {
-  TCompletedSmartTrade,
-  TGridBot,
-} from "src/sections/grid-bot/common/trpc-types";
+import { TCompletedSmartTrade, TGridBot } from "src/types/trpc";
 
 const componentName = "CompletedSmartTradeItem";
 const classes = {

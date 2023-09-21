@@ -2,7 +2,7 @@ import { alpha, TableCell, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { TActiveSmartTrade } from "src/sections/grid-bot/common/trpc-types";
+import { TActiveSmartTrade } from "src/types/trpc";
 
 const componentName = "GridsTableItem";
 const classes = {

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
 import clsx from "clsx";
 import { trpc } from "src/lib/trpc";
-import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
+import { TGridBot } from "src/types/trpc";
 
 import { GridsTable } from "./components/GridsTable";
 

@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { Chip, SxProps } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
 import { trpc } from "src/lib/trpc";
-import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
+import { TGridBot } from "src/types/trpc";
 
 const componentName = "BotStatusChip";
 const classes = {

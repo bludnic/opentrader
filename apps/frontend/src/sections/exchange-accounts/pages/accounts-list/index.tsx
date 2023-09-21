@@ -5,7 +5,7 @@ import React, { FC, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
 import { trpc } from "src/lib/trpc";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
+import { TExchangeAccount } from "src/types/trpc";
 import { AccountsListTable } from "src/sections/exchange-accounts/pages/accounts-list/components/AccountsListTable/AccountsListTable";
 import { CreateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountDialog/CreateAccountDialog";
 import { UpdateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/UpdateAccountDialog/UpdateAccountDialog";

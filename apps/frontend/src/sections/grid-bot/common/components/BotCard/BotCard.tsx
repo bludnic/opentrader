@@ -14,7 +14,7 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import { TGridBot } from "src/sections/grid-bot/common/trpc-types";
+import { TGridBot } from "src/types/trpc";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";

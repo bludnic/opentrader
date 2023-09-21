@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import clsx from "clsx";
 import { styled } from "@mui/material/styles";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
+import { TExchangeAccount } from "src/types/trpc";
 
 const componentName = "AccountsListTableRow";
 const classes = {
