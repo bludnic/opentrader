@@ -18,7 +18,5 @@ export async function updateExchangeAccount({ input, ctx }: Options) {
     data: input.body,
   });
 
-  return {
-    exchangeAccount,
-  };
+  return exchangeAccount;
 }

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
 import { UpdateAccountForm } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountForm/UpdateAccountForm";
 
 const componentName = "UpdateAccountDialog";

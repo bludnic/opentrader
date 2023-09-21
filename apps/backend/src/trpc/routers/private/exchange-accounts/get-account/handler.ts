@@ -17,7 +17,5 @@ export async function getExchangeAccount({ input, ctx }: Options) {
     },
   });
 
-  return {
-    exchangeAccount,
-  };
+  return exchangeAccount;
 }

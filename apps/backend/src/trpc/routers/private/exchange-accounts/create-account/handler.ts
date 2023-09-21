@@ -21,7 +21,5 @@ export async function createExchangeAccount({ input, ctx }: Options) {
     },
   });
 
-  return {
-    exchangeAccount,
-  };
+  return exchangeAccount;
 }

@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import { styled } from "@mui/material/styles";
 import React, { FC, useState } from "react";
 import clsx from "clsx";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
 import { AccountsListTableRow } from "./AccountsListTableRow";
 import { AccountsListTableToolbar } from "./AccountsListTableToolbar";
 import { AccountsListTableHead } from "./AccountsListTableHead";

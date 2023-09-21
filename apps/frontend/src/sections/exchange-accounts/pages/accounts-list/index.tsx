@@ -5,7 +5,7 @@ import React, { FC, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
 import { trpc } from "src/lib/trpc";
-import { TExchangeAccount } from "src/sections/exchange-accounts/common/types";
+import { TExchangeAccount } from "src/sections/exchange-accounts/common/trpc-types";
 import { AccountsListTable } from "src/sections/exchange-accounts/pages/accounts-list/components/AccountsListTable/AccountsListTable";
 import { CreateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountDialog/CreateAccountDialog";
 import { UpdateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/UpdateAccountDialog/UpdateAccountDialog";
@@ -32,12 +32,18 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
   const [selectedAccount, setSelectedAccount] =
     useState<TExchangeAccount | null>(null);
 
-  const { isLoading, isError, data, refetch } = useQuery(
+  const { isLoading, isError, error, data, refetch } = useQuery(
     ["exchangeAccounts"],
     async () => trpc.exchangeAccount.list.query(),
   );
 
-  const exchangeAccounts = data ? data.exchangeAccounts : [];
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
 
   return (
     <Root
@@ -51,7 +57,7 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
     >
       <Card>
         <AccountsListTable
-          accounts={exchangeAccounts}
+          accounts={data}
           onCreateAccountClick={() => setCreateDialogOpen(true)}
           onEditAccountClick={(account) => {
             setSelectedAccount(account);

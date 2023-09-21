@@ -14,7 +14,5 @@ export async function getExchangeAccounts({ ctx }: GetExchangeAccountsOptions) {
     },
   });
 
-  return {
-    exchangeAccounts,
-  };
+  return exchangeAccounts;
 }
