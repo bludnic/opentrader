@@ -150,8 +150,8 @@ export const GridBotChart: FC<GridBotChartProps> = (props) => {
         lineWidth: 1, // height of the line in px
         lineStyle: LineStyle.Solid,
         axisLabelVisible: true,
-        axisLabelColor: "#FF0000",
-        axisLabelTextColor: "#00FF00",
+        axisLabelColor: "#327b32",
+        axisLabelTextColor: "#fff",
         title: isUpperLimitPrice
           ? "Upper limit price"
           : isLowerLimitPrice

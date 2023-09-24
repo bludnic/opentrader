@@ -118,8 +118,8 @@ export const GridSimpleChart: FC<SimpleChartProps> = (props) => {
         lineWidth: priceLineWidth,
         lineStyle: LineStyle.Solid,
         axisLabelVisible: true,
-        axisLabelColor: "#FF0000",
-        axisLabelTextColor: "#00FF00",
+        axisLabelColor: "#327b32",
+        axisLabelTextColor: "#fff",
         lineVisible: true,
         title: isUpperLimitPrice
           ? "Upper limit price"
