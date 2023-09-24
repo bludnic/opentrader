@@ -1,9 +1,8 @@
 import { Card, CardContent, Divider, SxProps, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TGridBot } from "src/types/trpc";
 import { CompletedSmartTradesTable } from "./components/CompletedSmartTradesTable";
 
@@ -27,13 +26,12 @@ export const CompletedSmartTradesCard: FC<CompletedSmartTradesCardProps> = (
 ) => {
   const { className, bot, sx } = props;
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["gridBotCompletedSmartTrades", bot.id],
-    async () =>
-      trpc.gridBot.completedSmartTrades.query({
+  const { isLoading, isError, error, data } =
+    trpcApi.gridBot.getCompletedSmartTrades.useQuery({
+      input: {
         botId: bot.id,
-      }),
-  );
+      },
+    });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -51,10 +49,7 @@ export const CompletedSmartTradesCard: FC<CompletedSmartTradesCardProps> = (
 
       <Divider />
 
-      <CompletedSmartTradesTable
-        bot={bot}
-        smartTrades={data}
-      />
+      <CompletedSmartTradesTable bot={bot} smartTrades={data} />
     </StyledCard>
   );
 };

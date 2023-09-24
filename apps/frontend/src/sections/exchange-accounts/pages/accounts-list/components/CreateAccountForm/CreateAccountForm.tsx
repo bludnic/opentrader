@@ -1,8 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { ExchangeCode } from "src/lib/bifrost/client";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
 import { Button, CircularProgress, Divider, Grid } from "@mui/material";
@@ -37,9 +36,8 @@ type CreateAccountFormProps = {
 export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const { className, onCreated, onError } = props;
 
-  const { mutateAsync, isLoading, isSuccess, isError, error } = useMutation({
-    mutationFn: trpc.exchangeAccount.create.mutate,
-  });
+  const { mutateAsync, isLoading, isSuccess, isError, error } =
+    trpcApi.exchangeAccount.create.useMutation();
 
   useEffect(() => {
     if (isSuccess) {

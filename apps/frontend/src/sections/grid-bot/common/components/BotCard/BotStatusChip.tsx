@@ -1,12 +1,12 @@
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { QueryStatus } from "@reduxjs/toolkit/query";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { Chip, SxProps } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TGridBot } from "src/types/trpc";
 
 const componentName = "BotStatusChip";
@@ -29,35 +29,25 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const queryClient = useQueryClient();
-  const startBot = useMutation(
-    ["startBot", bot.id],
-    async () =>
-      trpc.gridBot.start.mutate({
-        botId: bot.id,
-      }),
-    {
+  const startBot = trpcApi.gridBot.start.useMutation({
+    options: {
       onSuccess() {
         queryClient.invalidateQueries({
-          queryKey: ["gridBot", bot.id],
+          queryKey: trpcApi.gridBot.getOne.queryKey(bot.id),
         });
       },
     },
-  );
+  });
 
-  const stopBot = useMutation(
-    ["stopBot", bot.id],
-    async () =>
-      trpc.gridBot.stop.mutate({
-        botId: bot.id,
-      }),
-    {
+  const stopBot = trpcApi.gridBot.stop.useMutation({
+    options: {
       onSuccess() {
         queryClient.invalidateQueries({
-          queryKey: ["gridBot", bot.id],
+          queryKey: trpcApi.gridBot.getOne.queryKey(bot.id),
         });
       },
     },
-  );
+  });
 
   useEffect(() => {
     if (startBot.status === "success") {
@@ -109,7 +99,11 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
         variant="outlined"
         color="success"
         sx={sx}
-        onClick={() => stopBot.mutate()}
+        onClick={() =>
+          stopBot.mutate({
+            botId: bot.id,
+          })
+        }
       />
     );
   }
@@ -122,7 +116,11 @@ export const BotStatusChip: FC<BotStatusChipProps> = (props) => {
       variant="outlined"
       color="error"
       sx={sx}
-      onClick={() => startBot.mutate()}
+      onClick={() =>
+        startBot.mutate({
+          botId: bot.id,
+        })
+      }
     />
   );
 };

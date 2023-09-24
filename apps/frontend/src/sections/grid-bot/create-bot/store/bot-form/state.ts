@@ -1,14 +1,17 @@
 import { BarSize, IGridLine } from "@bifrost/types";
-import { ExchangeCode } from "src/lib/bifrost/rtkApi";
-import { DEFAULT_GRID_LINES_NUMBER, DEFAULT_QUANTITY_PER_GRID } from "./constants";
+import { TExchangeCode } from "src/types/trpc";
+import {
+  DEFAULT_GRID_LINES_NUMBER,
+  DEFAULT_QUANTITY_PER_GRID,
+} from "./constants";
 import { GridBotFormType } from "./types";
 
 export interface GridBotFormState {
   type: GridBotFormType;
 
   // Common options
-  exchangeAccountId: string;
-  exchangeCode: ExchangeCode;
+  exchangeAccountId: number;
+  exchangeCode: TExchangeCode;
   symbolId: string;
 
   // Simple options
@@ -27,8 +30,8 @@ export const initialState: GridBotFormState = {
   type: "simple",
 
   // @todo rehardcore default values
-  exchangeAccountId: "",
-  exchangeCode: 'OKX',
+  exchangeAccountId: 0,
+  exchangeCode: "OKX",
   symbolId: "OKX:BTC/USDT",
 
   highPrice: 0,

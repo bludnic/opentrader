@@ -2,16 +2,14 @@ import { composeSymbolId } from "@bifrost/tools";
 import { BarSize, ExchangeCode } from "@bifrost/types";
 import { CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 import { ManualProcessButton } from "src/sections/grid-bot/common/components/BotCard/ManualProcessButton";
 import { GridBotChart } from "src/sections/grid-bot/common/components/GridBotChart/GridBotChart";
-import { useGetGridBotQuery } from "src/lib/bifrost/rtkApi";
 import { useLazyGetCandlesticksQuery } from "src/lib/markets/marketsApi";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";
@@ -36,18 +34,15 @@ const BotPage: FC<BotPageProps> = (props) => {
 
   const router = useRouter();
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["gridBot", Number(router.query.id)],
-    async () => trpc.gridBot.getOne.query(Number(router.query.id)),
-  );
+  const { isLoading, isError, error, data } = trpcApi.gridBot.getOne.useQuery({
+    input: Number(router.query.id),
+  });
 
-  const orders = useQuery(
-    ["gridBotOrders", Number(router.query.id)],
-    async () =>
-      trpc.gridBot.orders.query({
-        botId: Number(router.query.id),
-      }),
-  );
+  const orders = trpcApi.gridBot.getOrders.useQuery({
+    input: {
+      botId: Number(router.query.id),
+    },
+  });
 
   const [fetchCandlesticks, candlesticks] = useLazyGetCandlesticksQuery();
   useEffect(() => {

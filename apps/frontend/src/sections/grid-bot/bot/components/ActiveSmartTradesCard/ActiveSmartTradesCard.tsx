@@ -1,10 +1,8 @@
 import { Card, CardContent, Divider, SxProps, Typography } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { QueryStatus } from "@reduxjs/toolkit/query";
-import { useQuery } from "@tanstack/react-query";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TGridBot } from "src/types/trpc";
 
 import { GridsTable } from "./components/GridsTable";
@@ -29,13 +27,12 @@ export const ActiveSmartTradesCard: FC<ActiveSmartTradesCardProps> = (
 ) => {
   const { className, bot, sx } = props;
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["gridBotActiveSmartTrades", bot.id],
-    async () =>
-      trpc.gridBot.activeSmartTrades.query({
+  const { isLoading, isError, error, data } =
+    trpcApi.gridBot.getActiveSmartTrades.useQuery({
+      input: {
         botId: bot.id,
-      }),
-  );
+      },
+    });
 
   if (isLoading) {
     return <div>Loading...</div>;

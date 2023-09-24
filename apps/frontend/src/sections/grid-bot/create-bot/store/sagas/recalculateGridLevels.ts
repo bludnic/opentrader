@@ -6,7 +6,7 @@ import {
   selectHighPrice,
   selectLowPrice,
   selectQuantityPerGrid,
-  selectSymbolId
+  selectSymbolId,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { put } from "redux-saga/effects";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
@@ -19,14 +19,14 @@ export function* recalculateGridLevels(): SagaIterator {
   const quantityPerGrid = yield* typedSelect(selectQuantityPerGrid);
 
   const symbolId = yield* typedSelect(selectSymbolId);
-  const symbol = yield* typedSelect(selectSymbolById(symbolId));
+  const symbol = selectSymbolById(symbolId);
 
   const gridLines = calcGridLinesWithPriceFilter(
     highPrice,
     lowPrice,
     gridLinesNumber,
     Number(quantityPerGrid),
-    symbol.filters
+    symbol.filters,
   );
 
   yield put(setGridLines(gridLines));

@@ -1,7 +1,6 @@
 import { BarSize, IGridLine } from "@bifrost/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
-import { ExchangeCode } from "src/lib/bifrost/rtkApi";
+import { TExchangeAccount, TExchangeCode } from "src/types/trpc";
 import {
   addGridLineAction,
   changeFormTypeAction,
@@ -24,7 +23,7 @@ import {
   updateGridLinesAction,
   setExchangeCodeAction,
   setSymbolIdAction,
-  changeSymbolIdAction
+  changeSymbolIdAction,
 } from "./actions";
 import { initialState } from "./state";
 
@@ -34,19 +33,19 @@ export const gridBotFormSlice = createSlice({
   reducers: {
     [changeFormTypeAction.type]: (
       state,
-      action: PayloadAction<ChangeFormTypePayload>
+      action: PayloadAction<ChangeFormTypePayload>,
     ) => {
       state.type = action.payload;
     },
     [setExchangeAccountIdAction.type]: (
       state,
-      action: PayloadAction<ExchangeAccountDto["id"]>
+      action: PayloadAction<TExchangeAccount["id"]>,
     ) => {
       state.exchangeAccountId = action.payload;
     },
     [setExchangeCodeAction.type]: (
       state,
-      action: PayloadAction<ExchangeCode>
+      action: PayloadAction<TExchangeCode>,
     ) => {
       state.exchangeCode = action.payload;
     },
@@ -70,13 +69,13 @@ export const gridBotFormSlice = createSlice({
     },
     [changeGridLinesNumberAction.type]: (
       state,
-      action: PayloadAction<number>
+      action: PayloadAction<number>,
     ) => {
       state.gridLinesNumber = action.payload;
     },
     [changeQuantityPerGridAction.type]: (
       state,
-      action: PayloadAction<string>
+      action: PayloadAction<string>,
     ) => {
       state.quantityPerGrid = action.payload;
     },
@@ -91,7 +90,7 @@ export const gridBotFormSlice = createSlice({
     },
     [updateGridLinesAction.type]: (
       state,
-      action: PayloadAction<IGridLine[]>
+      action: PayloadAction<IGridLine[]>,
     ) => {
       state.gridLines = action.payload;
     },
@@ -105,7 +104,7 @@ export const gridBotFormSlice = createSlice({
     },
     [updateGridLinePriceAction.type]: (
       state,
-      action: PayloadAction<UpdateGridLinePricePayload>
+      action: PayloadAction<UpdateGridLinePricePayload>,
     ) => {
       const { gridLineIndex, price } = action.payload;
 
@@ -113,7 +112,7 @@ export const gridBotFormSlice = createSlice({
     },
     [updateGridLineQuantityAction.type]: (
       state,
-      action: PayloadAction<UpdateGridLineQuantityPayload>
+      action: PayloadAction<UpdateGridLineQuantityPayload>,
     ) => {
       const { gridLineIndex, quantity } = action.payload;
 

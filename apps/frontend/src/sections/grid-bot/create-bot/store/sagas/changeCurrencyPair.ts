@@ -4,6 +4,7 @@ import {
   findLowestCandlestickBy,
 } from "@bifrost/tools";
 import { SagaIterator } from "redux-saga";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import {
   setGridLines,
   setHighPrice,
@@ -14,40 +15,45 @@ import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/stor
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
 import {
   selectBarSize,
-  selectSymbolId
+  selectExchangeCode,
+  selectSymbolId,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { put } from "redux-saga/effects";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { call, put } from "redux-saga/effects";
 import { marketsApi } from "src/lib/markets/marketsApi";
-import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";
 import { query } from "src/utils/saga/query";
 import { typedSelect } from "src/utils/saga/select";
 
 export function* changeCurrencyPairWorker(): SagaIterator {
+  const exchangeCode = yield* typedSelect(selectExchangeCode);
   const symbolId = yield* typedSelect(selectSymbolId);
-  const symbol = yield* typedSelect(selectSymbolById(symbolId));
+  const symbols = trpcApi.symbol.list.selectOrThrow(exchangeCode);
+  const symbol = symbols.find((symbol) => symbol.symbolId === symbolId);
+  if (!symbol) throw new Error("changeCurrencyPairWorker: Symbol is undefined");
 
   const minQuantityPerGrid = calcMinQuantityPerGrid(
-    symbol.filters.lot.minQuantity
+    symbol.filters.lot.minQuantity,
   );
   yield put(setQuantityPerGrid(minQuantityPerGrid));
 
   const barSize = yield* typedSelect(selectBarSize);
-  const currentAssetPrice = yield* query(
-    rtkApi.endpoints.getSymbolCurrentPrice,
-    symbolId
-  );
-  const {
-    data: {
-      candlesticks
+
+  // The method must be called to cache the value
+  // Further it will be used inside selectors
+  yield call(trpcApi.symbol.price.query, {
+    input: {
+      symbolId,
     },
+  });
+
+  const {
+    data: { candlesticks },
   } = yield* query(marketsApi.endpoints.getCandlesticks, {
     symbolId,
     timeframe: barSize,
     startDate: startOfYearISO(),
-    endDate: todayISO()
+    endDate: todayISO(),
   });
 
   const highestCandlestick = findHighestCandlestickBy("close", candlesticks);
@@ -61,7 +67,7 @@ export function* changeCurrencyPairWorker(): SagaIterator {
     lowestCandlestick.close,
     DEFAULT_GRID_LINES_NUMBER,
     Number(minQuantityPerGrid),
-    symbol.filters
+    symbol.filters,
   );
   yield put(setGridLines(gridLines));
 }

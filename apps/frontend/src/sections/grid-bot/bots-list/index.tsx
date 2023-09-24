@@ -1,14 +1,11 @@
-import { ArrowBack } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { FC } from "react";
 import { MainLayout } from "src/layouts/main";
-import { useGetGridBotsQuery } from "src/lib/bifrost/rtkApi";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { BotCard } from "src/sections/grid-bot/common/components/BotCard";
 
 const componentName = "GridBotsListPage";
@@ -23,9 +20,7 @@ const Root = styled(MainLayout)(({ theme }) => ({
 }));
 
 export const BotsListPage: FC = () => {
-  const { isLoading, isError, error, data } = useQuery(["gridBots"], async () =>
-    trpc.gridBot.list.query(),
-  );
+  const { isLoading, isError, error, data } = trpcApi.gridBot.list.useQuery();
 
   if (isLoading) {
     return (

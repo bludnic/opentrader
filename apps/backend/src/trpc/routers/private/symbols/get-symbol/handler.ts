@@ -21,7 +21,5 @@ export async function getSymbol(opts: Options) {
     currencyPair: currencyPairSymbol,
   });
 
-  return {
-    symbol,
-  };
+  return symbol;
 }

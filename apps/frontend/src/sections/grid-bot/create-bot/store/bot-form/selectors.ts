@@ -1,41 +1,43 @@
 import {
   calculateInvestment,
-  computeGridFromCurrentAssetPrice, decomposeSymbolId,
+  computeGridFromCurrentAssetPrice,
+  decomposeSymbolId,
   filterPrice,
-  filterQuantity
+  filterQuantity,
 } from "@bifrost/tools";
 import { BarSize, ExchangeCode, IGridLine } from "@bifrost/types";
 import { Selector } from "@reduxjs/toolkit";
-import { QueryStatus } from "@reduxjs/toolkit/query";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/state";
 import { RootState } from "src/store";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
-import { useAppSelector } from "src/store/hooks";
 import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
+import { TExchangeAccount } from "src/types/trpc";
 import { GridBotFormType } from "./types";
 
 export const selectBotFormState: Selector<RootState, GridBotFormState> = (
-  rootState
+  rootState,
 ) => rootState.gridBotForm;
 
 export const selectFormType: Selector<RootState, GridBotFormType> = (
-  rootState
+  rootState,
 ) => rootState.gridBotForm.type;
 
 export const selectExchangeAccountId: Selector<
   RootState,
-  ExchangeAccountDto["id"]
+  TExchangeAccount["id"]
 > = (rootState) => rootState.gridBotForm.exchangeAccountId;
 
-export const selectExchangeCode: Selector<RootState, ExchangeCode> = (rootState) =>
-  rootState.gridBotForm.exchangeCode as ExchangeCode;
+export const selectExchangeCode: Selector<RootState, ExchangeCode> = (
+  rootState,
+) => rootState.gridBotForm.exchangeCode as ExchangeCode;
 
 export const selectCurrencyPair: Selector<RootState, string> = (rootState) => {
-  const { currencyPairSymbol } = decomposeSymbolId(rootState.gridBotForm.symbolId);
+  const { currencyPairSymbol } = decomposeSymbolId(
+    rootState.gridBotForm.symbolId,
+  );
 
   return currencyPairSymbol;
-}
+};
 
 export const selectSymbolId: Selector<RootState, string> = (rootState) =>
   rootState.gridBotForm.symbolId;
@@ -61,12 +63,13 @@ export const computeInvestmentAmount: Selector<
   }
 > = (rootState) => {
   const symbolId = selectSymbolId(rootState);
-  const currentAssetPriceState =
-    rtkApi.endpoints.getSymbolCurrentPrice.select(symbolId)(rootState);
-  const symbol = selectSymbolById(symbolId)(rootState);
+  const currentAssetPriceState = trpcApi.symbol.price.select({
+    symbolId,
+  });
 
-  const statsIsReady =
-    !!symbol && currentAssetPriceState.status === QueryStatus.fulfilled;
+  const symbol = selectSymbolById(symbolId);
+
+  const statsIsReady = !!symbol && currentAssetPriceState;
 
   if (!statsIsReady) {
     // @todo review this approach
@@ -77,15 +80,13 @@ export const computeInvestmentAmount: Selector<
     };
   }
 
-  const {
-    data: { price: currentAssetPrice },
-  } = currentAssetPriceState;
+  const { price: currentAssetPrice } = currentAssetPriceState;
 
   const gridLines = selectGridLines(rootState);
 
   const gridLevels = computeGridFromCurrentAssetPrice(
     gridLines,
-    currentAssetPrice
+    currentAssetPrice,
   );
 
   const { baseCurrencyAmount, quoteCurrencyAmount } =
@@ -106,7 +107,7 @@ export const selectGridLines: Selector<RootState, IGridLine[]> = (rootState) =>
   rootState.gridBotForm.gridLines;
 
 export const selectGridLine = (
-  gridLineIndex: number
+  gridLineIndex: number,
 ): Selector<RootState, IGridLine> => {
   return (rootState: RootState) =>
     rootState.gridBotForm.gridLines[gridLineIndex];

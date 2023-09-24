@@ -1,12 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from "react";
 import { QuantityInput } from "src/components/ui/QuantityInput";
+import { useSymbol } from "src/sections/grid-bot/create-bot/hooks/useSymbol";
 import { updateGridLineQuantity } from "src/sections/grid-bot/create-bot/store/bot-form";
-import {
-  selectGridLine,
-  selectSymbolId
-} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { selectGridLine } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 
 type GridLineQuantityFieldProps = {
   gridLineIndex: number;
@@ -15,17 +12,16 @@ type GridLineQuantityFieldProps = {
 };
 
 export const GridLineQuantityField: FC<GridLineQuantityFieldProps> = (
-  props
+  props,
 ) => {
   const { className, gridLineIndex, disabled } = props;
 
   const dispatch = useAppDispatch();
 
-  const symbolId = useAppSelector(selectSymbolId);
-  const symbol = useAppSelector(selectSymbolById(symbolId));
+  const symbol = useSymbol();
 
   const { quantity: reduxValue } = useAppSelector(
-    selectGridLine(gridLineIndex)
+    selectGridLine(gridLineIndex),
   );
   const [value, setValue] = useState(`${reduxValue}`);
   useEffect(() => {
@@ -42,7 +38,7 @@ export const GridLineQuantityField: FC<GridLineQuantityFieldProps> = (
         updateGridLineQuantity({
           gridLineIndex,
           quantity: Number(value),
-        })
+        }),
       );
     } else {
       setValue(`${reduxValue}`);

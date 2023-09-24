@@ -8,13 +8,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import {
   computeInvestmentAmount,
   selectBarSize,
-  selectSymbolId
+  selectSymbolId,
 } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { marketsApi } from "src/lib/markets/marketsApi";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";
@@ -44,7 +44,7 @@ export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
 
   const barSize = useAppSelector(selectBarSize);
 
-  const symbolId = useAppSelector(selectSymbolId)
+  const symbolId = useAppSelector(selectSymbolId);
   const { baseCurrency, quoteCurrency } = decomposeSymbolId(symbolId);
 
   const { totalInQuoteCurrency } = useAppSelector(computeInvestmentAmount);
@@ -54,16 +54,17 @@ export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
       symbolId,
       timeframe: barSize,
       startDate: startOfYearISO(),
-      endDate: todayISO()
-    })
+      endDate: todayISO(),
+    }),
   );
-  const { status: currentAssetPriceStatus } = useAppSelector(
-    rtkApi.endpoints.getSymbolCurrentPrice.select(symbolId)
-  );
+  const { status: currentAssetPriceStatus } = trpcApi.symbol.price.useQuery({
+    input: {
+      symbolId,
+    },
+  });
 
   const loading =
-    candlesticksStatus !== "fulfilled" ||
-    currentAssetPriceStatus !== "fulfilled";
+    candlesticksStatus !== "fulfilled" || currentAssetPriceStatus === "loading";
 
   const inputId = "investment-field";
   const label = "Investment";

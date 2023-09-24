@@ -7,12 +7,11 @@ import {
 } from "@mui/material";
 import { MenuItem, TextFieldProps as MuiTextFieldProps } from "@mui/material";
 
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { useExchangeAccounts } from "src/sections/grid-bot/create-bot/hooks/useExchangeAccounts";
 import { setExchangeAccountId } from "src/sections/grid-bot/create-bot/store/bot-form";
 import { selectExchangeAccountId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { selectExchangeAccounts } from "src/store/exchange-accounts/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
+import { TExchangeAccount } from "src/types/trpc";
 
 export type ExchangeFieldProps = Partial<
   Omit<MuiTextFieldProps, "type" | "onChange">
@@ -27,11 +26,11 @@ export const ExchangeAccountField: FC<ExchangeFieldProps> = (props) => {
   const labelId = "exchange-id";
 
   const dispatch = useAppDispatch();
-  const { data } = useAppSelector(rtkApi.endpoints.getExchangeAccounts.select());
+  const exchangeAccounts = useExchangeAccounts();
 
   const value = useAppSelector(selectExchangeAccountId);
-  const handleChange = (e: SelectChangeEvent<ExchangeAccountDto["id"]>) => {
-    dispatch(setExchangeAccountId(e.target.value));
+  const handleChange = (e: SelectChangeEvent<TExchangeAccount["id"]>) => {
+    dispatch(setExchangeAccountId(e.target.value as number)); // @todo fix number type
   };
 
   return (
@@ -44,7 +43,7 @@ export const ExchangeAccountField: FC<ExchangeFieldProps> = (props) => {
         value={value}
         onChange={handleChange}
       >
-        {data?.exchangeAccounts.map((account) => (
+        {exchangeAccounts.map((account) => (
           <MenuItem value={account.id} key={account.id}>
             {account.name}
           </MenuItem>

@@ -1,7 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TExchangeAccount } from "src/types/trpc";
 import { AccountIdField } from "./fields/AccountIdField";
 import { AccountNameField } from "./fields/AccountNameField";
@@ -39,9 +38,8 @@ type UpdateAccountFormProps = {
 export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
   const { className, onUpdated, onError, account } = props;
 
-  const { mutateAsync, isLoading, isSuccess, isError, error } = useMutation({
-    mutationFn: trpc.exchangeAccount.update.mutate,
-  });
+  const { mutateAsync, isLoading, isSuccess, isError, error } =
+    trpcApi.exchangeAccount.update.useMutation();
 
   useEffect(() => {
     if (isSuccess) {

@@ -6,13 +6,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { Select } from "@mui/material";
+import { useSymbols } from "src/sections/grid-bot/create-bot/hooks/useSymbols";
 import { changeSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form";
-import {
-  selectExchangeCode,
-  selectSymbolId
-} from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
+import { selectSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { selectSymbols } from 'src/store/rtk/getSymbols/selectors';
 
 type PairFieldProps = {
   className?: string;
@@ -25,8 +22,7 @@ export const PairField: FC<PairFieldProps> = (props) => {
   const labelId = "pair-symbol";
 
   const dispatch = useAppDispatch();
-  const exchangeCode = useAppSelector(selectExchangeCode);
-  const symbols = useAppSelector(selectSymbols(exchangeCode));
+  const symbols = useSymbols();
 
   const value = useAppSelector(selectSymbolId);
   const handleChange = (e: SelectChangeEvent<string>) => {

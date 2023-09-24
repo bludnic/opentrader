@@ -3,8 +3,9 @@ import {
   findHighestCandlestickBy,
   findLowestCandlestickBy,
 } from "@bifrost/tools";
-import { call, put } from "redux-saga/effects";
-import { trpc } from "src/lib/trpc";
+import { ExchangeCode } from "@bifrost/types";
+import { call, put, SagaReturnType } from "redux-saga/effects";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import {
   setExchangeAccountId,
   setExchangeCode,
@@ -18,7 +19,6 @@ import { DEFAULT_GRID_LINES_NUMBER } from "src/sections/grid-bot/create-bot/stor
 import { calcMinQuantityPerGrid } from "src/sections/grid-bot/create-bot/store/bot-form/helpers";
 import { selectBarSize } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
 import { markPageAsReady } from "src/sections/grid-bot/create-bot/store/init-page/reducers";
-import { rtkApi } from "src/lib/bifrost/rtkApi";
 import { marketsApi } from "src/lib/markets/marketsApi";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";
@@ -27,23 +27,20 @@ import { typedSelect } from "src/utils/saga/select";
 
 export function* initPageWorker(): Iterator<any, any, any> {
   // Fetch exchange accounts
-  const {
-    exchangeAccounts,
-  }: Awaited<ReturnType<typeof trpc.exchangeAccount.list.query>> = yield call(
-    trpc.exchangeAccount.list.query,
-  );
-  console.log("exchangeAccounts", exchangeAccounts);
+  const exchangeAccounts: SagaReturnType<
+    typeof trpcApi.exchangeAccount.list.query
+  > = yield call(trpcApi.exchangeAccount.list.query);
 
   const firstExchangeAccount = exchangeAccounts[0];
   yield put(setExchangeAccountId(firstExchangeAccount.id));
   yield put(setExchangeCode(firstExchangeAccount.exchangeCode));
 
   // Fetch symbols
-  const {
-    data: { symbols },
-  } = yield* query(
-    rtkApi.endpoints.getSymbols,
-    firstExchangeAccount.exchangeCode,
+  const symbols: SagaReturnType<typeof trpcApi.symbol.list.query> = yield call(
+    trpcApi.symbol.list.query,
+    {
+      input: firstExchangeAccount.exchangeCode as ExchangeCode,
+    },
   );
 
   const firstSymbol = symbols[0];
@@ -80,11 +77,15 @@ export function* initPageWorker(): Iterator<any, any, any> {
   );
   yield put(setGridLines(gridLines));
 
-  // Fetch current asset price
-  const currentAssetPriceData = yield* query(
-    rtkApi.endpoints.getSymbolCurrentPrice,
-    firstSymbol.symbolId,
-  );
+  // The method must be called to cache the value
+  // Further it will be used inside selectors
+  const currentAssetPriceData: SagaReturnType<
+    typeof trpcApi.symbol.price.query
+  > = yield call(trpcApi.symbol.price.query, {
+    input: {
+      symbolId: firstSymbol.symbolId,
+    },
+  });
 
   yield put(markPageAsReady());
 }

@@ -13,7 +13,5 @@ export async function getSymbols(opts: Options) {
 
   const symbols = await exchangeService.getSymbols();
 
-  return {
-    symbols,
-  };
+  return symbols;
 }

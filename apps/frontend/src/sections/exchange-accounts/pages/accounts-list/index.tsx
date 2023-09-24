@@ -1,10 +1,9 @@
 import { Card } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
 import React, { FC, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "src/layouts/main";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TExchangeAccount } from "src/types/trpc";
 import { AccountsListTable } from "src/sections/exchange-accounts/pages/accounts-list/components/AccountsListTable/AccountsListTable";
 import { CreateAccountDialog } from "src/sections/exchange-accounts/pages/accounts-list/components/CreateAccountDialog/CreateAccountDialog";
@@ -32,10 +31,8 @@ export const ExchangeAccountsPage: FC<ExchangeAccountsPageProps> = (props) => {
   const [selectedAccount, setSelectedAccount] =
     useState<TExchangeAccount | null>(null);
 
-  const { isLoading, isError, error, data, refetch } = useQuery(
-    ["exchangeAccounts"],
-    async () => trpc.exchangeAccount.list.query(),
-  );
+  const { isLoading, isError, error, data, refetch } =
+    trpcApi.exchangeAccount.list.useQuery();
 
   if (isLoading) {
     return <div>Loading...</div>;

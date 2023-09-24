@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import { Button, CircularProgress, SxProps } from "@mui/material";
 import { styled, Theme } from "@mui/material/styles";
-import { trpc } from "src/lib/trpc";
+import { trpcApi } from "src/lib/trpc/endpoints";
 import { TGridBot } from "src/types/trpc";
 
 const componentName = "ManualProcessButton";
@@ -27,20 +27,16 @@ export const ManualProcessButton: FC<ManualProcessButtonProps> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const queryClient = useQueryClient();
-  const { isLoading, error, mutate, status } = useMutation(
-    ["manualProcess", bot.id],
-    async () =>
-      trpc.gridBot.manualProcess.mutate({
-        botId: bot.id,
-      }),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries({
-          queryKey: ["gridBot", bot.id],
-        });
+  const { isLoading, error, mutate, status } =
+    trpcApi.gridBot.manualProcess.useMutation({
+      options: {
+        onSuccess() {
+          queryClient.invalidateQueries(
+            trpcApi.gridBot.getOne.queryKey(bot.id),
+          );
+        },
       },
-    },
-  );
+    });
 
   useEffect(() => {
     if (status === "success") {
@@ -57,7 +53,11 @@ export const ManualProcessButton: FC<ManualProcessButtonProps> = (props) => {
 
   return (
     <Button
-      onClick={() => mutate()}
+      onClick={() =>
+        mutate({
+          botId: bot.id,
+        })
+      }
       className={clsx(classes.root, className)}
       variant="contained"
       color="primary"

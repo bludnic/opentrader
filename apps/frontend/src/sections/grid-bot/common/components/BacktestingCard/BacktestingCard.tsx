@@ -6,9 +6,8 @@ import clsx from "clsx";
 import { FC } from "react";
 import { Box, Button, CircularProgress, SxProps, Theme } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useSymbol } from "src/sections/grid-bot/create-bot/hooks/useSymbol";
 import { useAppSelector } from "src/store/hooks";
-import { selectSymbolId } from "src/sections/grid-bot/create-bot/store/bot-form/selectors";
-import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
 import { BacktestingResultDto } from "src/lib/bifrost/rtkApi";
 import { TradesTable } from "./components/TradesTable/TradesTable";
 import { BacktestingForm } from "../BacktestingForm/BacktestingForm";
@@ -40,8 +39,7 @@ export interface BacktestingCardProps {
 export const BacktestingCard: FC<BacktestingCardProps> = (props) => {
   const { className, sx, isLoading, onRun, data } = props;
 
-  const symbolId = useAppSelector(selectSymbolId);
-  const symbol = useAppSelector(selectSymbolById(symbolId));
+  const symbol = useSymbol();
 
   const startDate = useAppSelector(selectStartDate);
   const endDate = useAppSelector(selectEndDate);
