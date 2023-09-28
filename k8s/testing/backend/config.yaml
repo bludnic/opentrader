@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bifrost-backend-config
+  namespace: bifrost-testing
+  labels:
+    app: bifrost-backend
+data:
+  MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN: "AAAAAAAAAAAAAAAAAAAAAGpAaAEAAAAA6Tut3%2BMdOnmbSYzTT4VrhrLx%2Byg%3DB2RR3ZnHL6L9YUbFXQD43TVddUWG4Aje1xyQQpQYbOEirBV4US"

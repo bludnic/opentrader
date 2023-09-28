@@ -1,0 +1,29 @@
+{
+  "name": "@bifrost/bot-templates",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "bootstrap": "pnpm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^20.4.4",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@bifrost/exchanges": "workspace:*",
+    "@bifrost/backtesting": "workspace:*",
+    "@bifrost/bot-processor": "workspace:*",
+    "@bifrost/tools": "workspace:*",
+    "@bifrost/types": "workspace:*"
+  }
+}

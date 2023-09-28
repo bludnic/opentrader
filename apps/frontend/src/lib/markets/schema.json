@@ -1,0 +1,358 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/mapi": {
+      "get": {
+        "operationId": "getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/mapi/test": {
+      "get": {
+        "operationId": "test",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TestDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapi/candlesticks": {
+      "get": {
+        "operationId": "getCandlesticks",
+        "parameters": [
+          {
+            "name": "symbolId",
+            "required": true,
+            "in": "query",
+            "example": "OKX:ETH/USDT",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "description": "Date ISO format",
+            "example": "2023-01-01",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "description": "Date ISO format",
+            "example": "2023-01-02",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeframe",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "enum": ["1m", "5m", "15m", "1h", "4h", "1d", "1w", "1M", "3M"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCandlesticksResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Candlesticks"]
+      }
+    },
+    "/mapi/markets": {
+      "post": {
+        "operationId": "createMarket",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMarketResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Markets"]
+      },
+      "get": {
+        "operationId": "getMarkets",
+        "parameters": [
+          {
+            "name": "exchangeCode",
+            "required": false,
+            "in": "query",
+            "schema": { "enum": ["OKX"], "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMarketsResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Markets"]
+      }
+    },
+    "/mapi/exchanges": {
+      "post": {
+        "operationId": "createExchange",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExchangeRequestDto"
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Exchanges"]
+      },
+      "get": {
+        "operationId": "getExchanges",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExchangesResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Exchanges"]
+      }
+    },
+    "/mapi/cron/candlesticks-history/start": {
+      "post": {
+        "operationId": "startCandlesticksHistoryJob",
+        "parameters": [],
+        "responses": { "201": { "description": "" } },
+        "tags": ["Cron"]
+      }
+    },
+    "/mapi/cron/candlesticks-history/stop": {
+      "put": {
+        "operationId": "stopCandlesticksHistoryJob",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Cron"]
+      }
+    }
+  },
+  "info": {
+    "title": "Bifrost Markets API",
+    "description": "<a href=\"/mapi/swagger-json\" target=\"_blank\">schema.json</a>",
+    "version": "dev",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ExchangeCode": { "type": "string", "enum": ["OKX"] },
+      "TestDto": {
+        "type": "object",
+        "properties": {
+          "prop": { "$ref": "#/components/schemas/ExchangeCode" }
+        },
+        "required": ["prop"]
+      },
+      "CandlestickDto": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "number" },
+          "open": { "type": "number" },
+          "high": { "type": "number" },
+          "low": { "type": "number" },
+          "close": { "type": "number" }
+        },
+        "required": ["timestamp", "open", "high", "low", "close"]
+      },
+      "GetCandlesticksResponseDto": {
+        "type": "object",
+        "properties": {
+          "candlesticks": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CandlestickDto" }
+          },
+          "count": { "type": "number" }
+        },
+        "required": ["candlesticks", "count"]
+      },
+      "CreateMarketRequestDto": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["OKX"] }
+        },
+        "required": ["symbol", "exchangeCode"]
+      },
+      "Exchange": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "enum": ["OKX"] },
+          "name": { "type": "string" },
+          "markets": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Market" }
+          }
+        },
+        "required": ["code", "name", "markets"]
+      },
+      "Candlestick": {
+        "type": "object",
+        "properties": {
+          "timeframe": {
+            "type": "string",
+            "enum": ["1m", "5m", "15m", "1h", "4h", "1d", "1w", "1M", "3M"]
+          },
+          "timestamp": { "type": "number" },
+          "market": { "$ref": "#/components/schemas/Market" },
+          "marketSymbol": { "type": "string" },
+          "marketExchangeCode": { "type": "string", "enum": ["OKX"] },
+          "open": { "type": "number" },
+          "high": { "type": "number" },
+          "low": { "type": "number" },
+          "close": { "type": "number" }
+        },
+        "required": [
+          "timeframe",
+          "timestamp",
+          "market",
+          "marketSymbol",
+          "marketExchangeCode",
+          "open",
+          "high",
+          "low",
+          "close"
+        ]
+      },
+      "Market": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "exchange": { "$ref": "#/components/schemas/Exchange" },
+          "exchangeCode": { "type": "string", "enum": ["OKX"] },
+          "historyReached": { "type": "boolean" },
+          "updatedAt": { "type": "string" },
+          "candlesticks": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Candlestick" }
+          }
+        },
+        "required": [
+          "symbol",
+          "exchange",
+          "exchangeCode",
+          "historyReached",
+          "updatedAt",
+          "candlesticks"
+        ]
+      },
+      "CreateMarketResponseDto": {
+        "type": "object",
+        "properties": { "market": { "$ref": "#/components/schemas/Market" } },
+        "required": ["market"]
+      },
+      "MarketDto": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "exchangeCode": { "type": "string", "enum": ["OKX"] },
+          "historyReached": { "type": "boolean" },
+          "updatedAt": { "type": "string" }
+        },
+        "required": ["symbol", "exchangeCode", "historyReached", "updatedAt"]
+      },
+      "GetMarketsResponseDto": {
+        "type": "object",
+        "properties": {
+          "markets": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MarketDto" }
+          }
+        },
+        "required": ["markets"]
+      },
+      "CreateExchangeRequestDto": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "enum": ["OKX"] },
+          "name": { "type": "string" }
+        },
+        "required": ["code", "name"]
+      },
+      "ExchangeFullDto": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "enum": ["OKX"] },
+          "name": { "type": "string" },
+          "markets": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MarketDto" }
+          }
+        },
+        "required": ["code", "name", "markets"]
+      },
+      "GetExchangesResponseDto": {
+        "type": "object",
+        "properties": {
+          "exchanges": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ExchangeFullDto" }
+          }
+        },
+        "required": ["exchanges"]
+      }
+    }
+  }
+}

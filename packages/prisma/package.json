@@ -1,0 +1,32 @@
+{
+  "name": "@bifrost/prisma",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && cp -r src/client dist",
+    "prisma:schema:migrate": "prisma migrate dev",
+    "prisma:schema:generate": "prisma generate",
+    "bootstrap": "prisma migrate dev && pnpm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@bifrost/tsconfig": "workspace:*",
+    "@types/node": "^20.5.6",
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5",
+    "zod-prisma-types": "^2.7.9"
+  },
+  "dependencies": {
+    "@bifrost/types": "workspace:*",
+    "@prisma/client": "5.2.0",
+    "zod": "3.21.1"
+  },
+  "prisma": {
+    "schema": "src/schema.prisma"
+  }
+}

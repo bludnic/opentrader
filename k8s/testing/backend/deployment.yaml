@@ -29,6 +29,11 @@ spec:
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+            - name: MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: bifrost-backend-config
+                  key: MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN
           ports:
             - containerPort: 4000
           livenessProbe:

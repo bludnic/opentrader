@@ -1,0 +1,7 @@
+{
+  "extends": "@bifrost/tsconfig/module.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist"
+  }
+}

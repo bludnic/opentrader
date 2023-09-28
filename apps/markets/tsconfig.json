@@ -1,0 +1,7 @@
+{
+  "extends": "@bifrost/tsconfig/nestjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist"
+  }
+}

@@ -1,7 +1,16 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@8.6.10",
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "prettier": "latest",
+    "turbo": "latest"
   }
 }
