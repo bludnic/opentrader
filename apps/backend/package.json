@@ -22,7 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "markets:schema:build": "node ./scripts/markets-api/generate-client.mjs",
     "bootstrap": "pnpm run build && pnpm run trpc:generate && pnpm run markets:schema:build",
-    "trpc:generate": "tsc -p ./tsconfig.trpc.json"
+    "trpc:generate": "rm -rf ./dist-trpc && tsc -p ./tsconfig.trpc.json"
   },
   "dependencies": {
     "@bifrost/backtesting": "workspace:*",
