@@ -1,8 +1,8 @@
-import { GridBotDto } from "src/lib/bifrost/client";
+import { TGridBot } from "src/types/trpc";
 import { FetchStatus } from "src/utils/redux/types";
 
 export interface CreateGridBotState {
-  bot: GridBotDto | null;
+  bot: TGridBot | null;
   status: FetchStatus;
   err: Error | null;
 }

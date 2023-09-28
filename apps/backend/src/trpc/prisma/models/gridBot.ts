@@ -95,7 +95,10 @@ export const gridBot = {
 
     const bot = await prisma.bot.create<T>({
       ...args,
-      type: 'GridBot',
+      data: {
+        ...args.data,
+        type: 'GridBot',
+      },
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

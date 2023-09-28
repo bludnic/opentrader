@@ -13,7 +13,7 @@ type Options = {
 export async function createGridBot({ ctx, input }: Options) {
   const { exchangeAccountId, data } = input;
 
-  const exchangeAccount = await xprisma.bot.findUnique({
+  const exchangeAccount = await xprisma.exchangeAccount.findUnique({
     where: {
       id: exchangeAccountId,
       owner: {
@@ -32,6 +32,7 @@ export async function createGridBot({ ctx, input }: Options) {
   const bot = await xprisma.bot.grid.create({
     data: {
       ...data,
+      type: 'GridBot',
       exchangeAccount: {
         connect: {
           id: exchangeAccount.id,

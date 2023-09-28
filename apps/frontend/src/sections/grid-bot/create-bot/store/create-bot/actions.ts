@@ -1,17 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
-import {
-  CreateBotRequestBodyDto,
-  GridBotDto,
-} from "src/lib/bifrost/client";
+import { TGridBot, TGridBotCreateInput } from "src/types/trpc";
 
 const CREATE_GRID_BOT = "createGridBot";
 export const createGridBotAction = createAction<
-  CreateBotRequestBodyDto,
+  TGridBotCreateInput,
   typeof CREATE_GRID_BOT
 >(CREATE_GRID_BOT);
 
 export const createGridBotSucceededAction = createAction<
-  GridBotDto,
+  TGridBot,
   "createGridBotSucceeded"
 >("createGridBotSucceeded");
 
