@@ -3,7 +3,6 @@ import { styled } from "@mui/material/styles";
 import Big from "big.js";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { BuyTransactionDto, SellTransactionDto } from "src/lib/bifrost/rtkApi";
 import { formatDateTime } from "src/utils/date/formatDateTime";
 
 const componentName = "TradesTableItem";
@@ -25,7 +24,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type TradesTableItemProps = {
   className?: string;
-  transaction: BuyTransactionDto | SellTransactionDto;
+  transaction: any; // @todo type from tRPC
 };
 
 export const TradesTableItem: FC<TradesTableItemProps> = (props) => {

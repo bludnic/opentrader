@@ -1,4 +1,4 @@
-import { IGridBotLevel } from "@bifrost/types";
+import { IGridBotLevel } from "@opentrader/types";
 import {
   CURRENT_ASSET_PRICE,
   GRID_LINES,

@@ -1,4 +1,4 @@
-import { IExchange } from "@bifrost/exchanges";
+import { IExchange } from "@opentrader/exchanges";
 import { TBotContext } from "src/types/bot/bot-context.type";
 import { createContext } from "./utils/createContext";
 import { SmartTradeService } from "./smart-trade.service";

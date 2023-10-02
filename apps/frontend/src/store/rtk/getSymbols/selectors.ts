@@ -1,4 +1,4 @@
-import { decomposeSymbolId } from "@bifrost/tools";
+import { decomposeSymbolId } from "@opentrader/tools";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import { TSymbol } from "src/types/trpc";
 

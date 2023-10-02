@@ -1,5 +1,5 @@
-import { exchanges, IExchange } from '@bifrost/exchanges';
-import { Prisma } from '@bifrost/prisma';
+import { exchanges, IExchange } from '@opentrader/exchanges';
+import { Prisma } from '@opentrader/prisma';
 import { OrderNotFound } from 'ccxt';
 import { xprisma } from 'src/trpc/prisma';
 import { Order } from 'src/trpc/prisma/models/order';

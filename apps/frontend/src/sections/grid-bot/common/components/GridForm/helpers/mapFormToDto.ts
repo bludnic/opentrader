@@ -1,4 +1,4 @@
-import { decomposeSymbolId } from "@bifrost/tools";
+import { decomposeSymbolId } from "@opentrader/tools";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form";
 import { TGridBotCreateInput } from "src/types/trpc";
 

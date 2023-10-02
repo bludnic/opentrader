@@ -1,23 +1,22 @@
 {
-  "name": "@bifrost/exchanges",
+  "name": "@opentrader/exchanges",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "bootstrap": "pnpm run build"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@bifrost/tsconfig": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@bifrost/types": "workspace:*",
-    "@bifrost/tools": "workspace:*",
+    "@opentrader/types": "workspace:*",
+    "@opentrader/tools": "workspace:*",
     "ccxt": "^4.0.55"
   }
 }

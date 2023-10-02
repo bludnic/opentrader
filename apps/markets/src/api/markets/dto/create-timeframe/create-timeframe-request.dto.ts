@@ -1,5 +1,5 @@
-import { BarSize, ExchangeCode } from '@bifrost/types';
-import { $Enums } from '@bifrost/markets-prisma';
+import { BarSize, ExchangeCode } from '@opentrader/types';
+import { $Enums } from '@opentrader/markets-prisma';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
 

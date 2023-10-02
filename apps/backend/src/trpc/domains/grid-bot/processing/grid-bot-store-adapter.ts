@@ -2,7 +2,7 @@ import {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
-} from '@bifrost/bot-processor';
+} from '@opentrader/bot-processor';
 import { SmartTradeService } from 'src/core/exchange-bus/smart-trade.service';
 import {
   toPrismaSmartTrade,

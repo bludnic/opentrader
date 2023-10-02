@@ -18,7 +18,7 @@ import {
   ISymbolInfo,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
-} from "@bifrost/types";
+} from "@opentrader/types";
 import {
   Balances,
   Exchange,

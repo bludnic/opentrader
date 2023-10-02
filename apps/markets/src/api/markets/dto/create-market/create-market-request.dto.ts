@@ -1,6 +1,6 @@
-import { ExchangeCode } from '@bifrost/types';
+import { ExchangeCode } from '@opentrader/types';
 import { ApiProperty } from '@nestjs/swagger';
-import { $Enums } from '@bifrost/markets-prisma';
+import { $Enums } from '@opentrader/markets-prisma';
 import { IsEnum, IsString } from 'class-validator';
 import { Market } from 'src/core/prisma/types';
 

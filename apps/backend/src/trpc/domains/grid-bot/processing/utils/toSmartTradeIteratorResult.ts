@@ -1,10 +1,10 @@
-import { SmartTrade as ProcessorSmartTrade } from '@bifrost/bot-processor';
+import { SmartTrade as ProcessorSmartTrade } from '@opentrader/bot-processor';
 import { toProcessorOrderStatus } from 'src/trpc/domains/grid-bot/processing/utils';
 import { SmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
 
 /**
  * Convert `ISmartTrade` entity into `SmartTrade` iterator result
- * of the `@bifrost/bot-processor` package
+ * of the `@opentrader/bot-processor` package
  */
 
 export function toSmartTradeIteratorResult(

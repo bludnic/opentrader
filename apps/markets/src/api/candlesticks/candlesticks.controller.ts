@@ -1,4 +1,4 @@
-import { decomposeSymbolId } from '@bifrost/tools';
+import { decomposeSymbolId } from '@opentrader/tools';
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { parseISO } from 'date-fns';

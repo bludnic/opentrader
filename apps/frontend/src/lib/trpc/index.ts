@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "@bifrost/backend";
+import type { AppRouter } from "@opentrader/backend";
 //     👆 **type-only** import
 
 const url = `${process.env.NEXT_PUBLIC_BIFROST_HOSTNAME}/trpc`;

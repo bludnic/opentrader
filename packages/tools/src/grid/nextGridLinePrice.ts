@@ -1,4 +1,4 @@
-import { IGridLine } from "@bifrost/types";
+import { IGridLine } from "@opentrader/types";
 
 export function nextGridLinePrice(
   gridLines: IGridLine[],

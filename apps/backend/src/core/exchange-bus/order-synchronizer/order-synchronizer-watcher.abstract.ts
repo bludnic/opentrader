@@ -1,5 +1,5 @@
-import { exchanges, IExchange } from '@bifrost/exchanges';
-import { IWatchOrder } from '@bifrost/types';
+import { exchanges, IExchange } from '@opentrader/exchanges';
+import { IWatchOrder } from '@opentrader/types';
 import { Logger } from '@nestjs/common';
 import { ExchangeAccountWithCredentials } from 'src/trpc/prisma/types/exchange-account/exchange-account-with-credentials';
 import { OrderWithSmartTrade } from 'src/trpc/prisma/types/order/order-with-smart-trade';

@@ -1,5 +1,5 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
-import type { AppRouter } from "@bifrost/backend";
+import type { AppRouter } from "@opentrader/backend";
 //     👆 **type-only** import
 
 // @see https://trpc.io/docs/client/vanilla/infer-types

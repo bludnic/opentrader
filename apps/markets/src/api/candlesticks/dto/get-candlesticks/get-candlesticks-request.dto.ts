@@ -1,4 +1,4 @@
-import { BarSize } from '@bifrost/types';
+import { BarSize } from '@opentrader/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsEnum } from 'class-validator';
 import { IsValidSymbolId } from 'src/common/validators';

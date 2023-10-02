@@ -1,4 +1,4 @@
-import { decomposeSymbolId } from "@bifrost/tools";
+import { decomposeSymbolId } from "@opentrader/tools";
 import { FormHelperText } from "@mui/material";
 import { FC } from "react";
 import {

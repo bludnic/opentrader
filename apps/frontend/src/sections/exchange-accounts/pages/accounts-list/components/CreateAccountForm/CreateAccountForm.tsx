@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
-import { ExchangeCode } from "src/lib/bifrost/client";
+import { ExchangeCode } from "@opentrader/types";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
@@ -54,7 +54,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const initialValues: CreateExchangeAccountFormValues = {
     // account
     name: "",
-    exchangeCode: ExchangeCode.Okx,
+    exchangeCode: ExchangeCode.OKX,
 
     // credentials
     apiKey: "",

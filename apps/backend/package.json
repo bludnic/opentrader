@@ -1,5 +1,5 @@
 {
-  "name": "@bifrost/backend",
+  "name": "@opentrader/backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -8,7 +8,7 @@
   "types": "dist-trpc/trpc/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "nest build && pnpm run trpc:generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
@@ -21,18 +21,18 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "markets:schema:build": "node ./scripts/markets-api/generate-client.mjs",
-    "bootstrap": "pnpm run build && pnpm run trpc:generate && pnpm run markets:schema:build",
-    "trpc:generate": "rm -rf ./dist-trpc && tsc -p ./tsconfig.trpc.json"
+    "trpc:generate": "rm -rf ./dist-trpc && tsc -p ./tsconfig.trpc.json",
+    "postinstall": "pnpm run markets:schema:build"
   },
   "dependencies": {
-    "@bifrost/backtesting": "workspace:*",
-    "@bifrost/bot-processor": "workspace:*",
-    "@bifrost/bot-templates": "workspace:*",
-    "@bifrost/exchanges": "workspace:*",
-    "@bifrost/prisma": "workspace:*",
-    "@bifrost/swagger": "workspace:*",
-    "@bifrost/tools": "workspace:*",
-    "@bifrost/types": "workspace:*",
+    "@opentrader/backtesting": "workspace:*",
+    "@opentrader/bot-processor": "workspace:*",
+    "@opentrader/bot-templates": "workspace:*",
+    "@opentrader/exchanges": "workspace:*",
+    "@opentrader/prisma": "workspace:*",
+    "@opentrader/swagger": "workspace:*",
+    "@opentrader/tools": "workspace:*",
+    "@opentrader/types": "workspace:*",
     "@bull-board/api": "^5.0.0",
     "@bull-board/express": "^5.0.0",
     "@nestjs/axios": "^3.0.0",
@@ -69,7 +69,7 @@
     "zod": "3.21.1"
   },
   "devDependencies": {
-    "@bifrost/tsconfig": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
     "@nestjs/cli": "^10.1.17",
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^10.2.5",

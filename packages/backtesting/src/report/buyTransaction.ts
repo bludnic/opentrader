@@ -1,5 +1,5 @@
-import {  SmartTrade } from "@bifrost/bot-processor";
-import { OrderSideEnum } from "@bifrost/types";
+import {  SmartTrade } from "@opentrader/bot-processor";
+import { OrderSideEnum } from "@opentrader/types";
 import { BuyTransaction } from "src/types";
 
 export function buyTransaction(smartTrade: SmartTrade): BuyTransaction {

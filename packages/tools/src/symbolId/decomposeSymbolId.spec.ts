@@ -1,4 +1,4 @@
-import { ExchangeCode } from "@bifrost/types";
+import { ExchangeCode } from "@opentrader/types";
 import {
   decomposeSymbolId,
   DecomposeSymbolIdResult,

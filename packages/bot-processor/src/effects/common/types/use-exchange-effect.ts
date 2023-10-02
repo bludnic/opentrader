@@ -1,4 +1,4 @@
-import { IExchange } from "@bifrost/exchanges";
+import { IExchange } from "@opentrader/exchanges";
 import { BaseEffect } from "./base-effect";
 import { USE_EXCHANGE } from "./effect-types";
 

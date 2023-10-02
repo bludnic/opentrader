@@ -1,5 +1,5 @@
-import { OrderStatusEnum } from '@bifrost/types';
-import { $Enums } from '@bifrost/prisma';
+import { OrderStatusEnum } from '@opentrader/types';
+import { $Enums } from '@opentrader/prisma';
 
 const map: Record<
   OrderStatusEnum,

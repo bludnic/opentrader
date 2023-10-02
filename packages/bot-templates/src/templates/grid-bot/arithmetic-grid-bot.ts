@@ -1,4 +1,4 @@
-import { IExchange } from "@bifrost/exchanges";
+import { IExchange } from "@opentrader/exchanges";
 import {
   cancelSmartTrade,
   IBotConfiguration,
@@ -6,13 +6,13 @@ import {
   TBotContext,
   useExchange,
   useSmartTrade,
-} from "@bifrost/bot-processor";
-import { computeGridFromCurrentAssetPrice } from "@bifrost/tools";
+} from "@opentrader/bot-processor";
+import { computeGridFromCurrentAssetPrice } from "@opentrader/tools";
 import {
   IGetMarketPriceResponse,
   IGridBotLevel,
   IGridLine,
-} from "@bifrost/types";
+} from "@opentrader/types";
 
 export interface GridBotConfig extends IBotConfiguration {
   gridLines: IGridLine[];

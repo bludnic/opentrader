@@ -1,5 +1,5 @@
 {
-  "name": "@bifrost/tsconfig",
+  "name": "@opentrader/tsconfig",
   "version": "0.0.1",
   "description": "TypeScript configuration from OpenTrader",
   "repository": {

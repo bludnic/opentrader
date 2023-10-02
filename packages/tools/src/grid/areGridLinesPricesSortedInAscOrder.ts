@@ -1,7 +1,7 @@
 /**
  * Return `true` if IGridLine[] prices are sorted ina ascendin order.
  */
-import { IGridLine } from "@bifrost/types";
+import { IGridLine } from "@opentrader/types";
 import Big from "big.js";
 
 export function areGridLinesPricesSortedInAscOrder(gridLines: IGridLine[]) {

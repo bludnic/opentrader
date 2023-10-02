@@ -1,4 +1,4 @@
-import { ExchangeCode } from "@bifrost/types";
+import { ExchangeCode } from "@opentrader/types";
 import Popper from "@mui/material/Popper";
 import TextField from "@mui/material/TextField";
 import Autocomplete, {

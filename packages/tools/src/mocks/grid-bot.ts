@@ -1,4 +1,4 @@
-import { IGridLine, IGridBotLevel, OrderStatusEnum } from '@bifrost/types';
+import { IGridLine, IGridBotLevel, OrderStatusEnum } from '@opentrader/types';
 
 export const ORDER_QUANTITY = 20;
 

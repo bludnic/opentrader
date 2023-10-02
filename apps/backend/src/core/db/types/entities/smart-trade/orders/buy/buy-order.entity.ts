@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import { OrderSideEnum, OrderStatusEnum } from '@opentrader/types';
 import {
   BaseSmartOrder,
   SmartBuyOrder,

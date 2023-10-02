@@ -9,9 +9,9 @@ import {
 } from "lightweight-charts";
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
-import { ICandlestick } from "src/lib/bifrost/apiClient";
 import { useElementSize } from "usehooks-ts";
 import { chartMaxHeight, chartMaxWidth } from "./constants";
+import { ICandlestick } from "@opentrader/types";
 
 const componentName = "SmartTradingChart";
 const classes = {

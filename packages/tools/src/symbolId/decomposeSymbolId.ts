@@ -1,4 +1,4 @@
-import { ExchangeCode } from "@bifrost/types";
+import { ExchangeCode } from "@opentrader/types";
 import {
   CURRENCY_PAIR_DELIMITER,
   EXCHANGE_CODE_DELIMITER,

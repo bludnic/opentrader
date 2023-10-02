@@ -1,4 +1,4 @@
-import { IGridLine } from "@bifrost/types";
+import { ICandlestick, IGridLine } from "@opentrader/types";
 import { useRef, useEffect, FC } from "react";
 
 import {
@@ -14,7 +14,6 @@ import {
 } from "lightweight-charts";
 import { styled, useTheme } from "@mui/material/styles";
 import clsx from "clsx";
-import { ICandlestick } from "src/lib/bifrost/apiClient";
 import { TGridBotOrder } from "src/types/trpc";
 import { useElementSize } from "usehooks-ts";
 import { chartMaxHeight, chartMaxWidth } from "./constants";
@@ -51,10 +50,10 @@ function tradeToMarker(order: TGridBotOrder): SeriesMarker<Time> {
   const time = (new Date(order.filledAt || 0).getTime() / 1000) as UTCTimestamp;
 
   if (order.side === "Buy") {
-    return buy(order.price, time, order.smartTradeId);
+    return buy(order.price || 0, time, order.smartTradeId);
   }
 
-  return sell(order.price, time, order.smartTradeId);
+  return sell(order.price || 0, time, order.smartTradeId);
 }
 
 const componentName = "BacktestingChart";

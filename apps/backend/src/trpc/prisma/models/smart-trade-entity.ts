@@ -1,4 +1,4 @@
-import { $Enums, Order as OrderModel } from '@bifrost/prisma';
+import { $Enums, Order as OrderModel } from '@opentrader/prisma';
 import { Order, toOrderModel } from './order';
 import { SmartTradeWithOrders } from '../types/smart-trade/smart-trade-with-orders';
 

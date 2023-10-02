@@ -1,3 +1,3 @@
-import { PrismaClient } from '@bifrost/markets-prisma';
+import { PrismaClient } from '@opentrader/markets-prisma';
 
 export const prisma = new PrismaClient();

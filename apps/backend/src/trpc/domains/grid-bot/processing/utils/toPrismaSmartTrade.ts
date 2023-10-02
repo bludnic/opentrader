@@ -1,5 +1,5 @@
-import { UseSmartTradePayload } from '@bifrost/bot-processor';
-import { $Enums, Prisma } from '@bifrost/prisma';
+import { UseSmartTradePayload } from '@opentrader/bot-processor';
+import { $Enums, Prisma } from '@opentrader/prisma';
 import { toPrismaOrder } from 'src/trpc/domains/grid-bot/processing/utils/order';
 
 /**

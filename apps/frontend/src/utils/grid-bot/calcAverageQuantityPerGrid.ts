@@ -1,11 +1,11 @@
 import big from "big.js";
-import { GridLineDto } from "src/lib/bifrost/client";
+import { IGridLine } from "@opentrader/types";
 
 /**
  * Calculates average quantityPerGrid in Base Currency
  * @param gridLines
  */
-export function calcAverageQuantityPerGrid(gridLines: GridLineDto[]): number {
+export function calcAverageQuantityPerGrid(gridLines: IGridLine[]): number {
   const quantitySum = gridLines.reduce((acc, curr) => {
     return acc + curr.quantity;
   }, 0);

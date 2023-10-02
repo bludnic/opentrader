@@ -9,9 +9,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { TSmartTrade } from "src/types/trpc/smart-trade";
 import { BacktestingTableHead } from "./BacktestingTableHead";
 import { BacktestingTableItem } from "./BacktestingTableItem";
-import { SmartTradeDto } from "src/lib/bifrost/rtkApi";
 
 const componentName = "BacktestingTable";
 const classes = {
@@ -24,7 +24,7 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 type BacktestingTableProps = {
   className?: string;
-  smartTrades: SmartTradeDto[];
+  smartTrades: TSmartTrade[];
   baseCurrency: string;
   quoteCurrency: string;
 };

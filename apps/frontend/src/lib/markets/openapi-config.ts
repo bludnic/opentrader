@@ -2,7 +2,8 @@ import type { ConfigFile } from "@rtk-query/codegen-openapi";
 import { RTK_API_NAME } from "./constants";
 
 const config: ConfigFile = {
-  schemaFile: `http://localhost:5000/mapi/swagger-json`,
+  // schemaFile: `http://localhost:5000/mapi/swagger-json`, // @todo update schema.json
+  schemaFile: `./schema.json`,
   apiFile: "./emptyApi.ts",
   apiImport: "emptyApi",
   outputFile: `./${RTK_API_NAME}.ts`,

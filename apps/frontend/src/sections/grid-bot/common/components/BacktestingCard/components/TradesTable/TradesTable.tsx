@@ -11,10 +11,6 @@ import {
 } from "@mui/material";
 import { TradesTableHead } from "./TradesTableHead";
 import { TradesTableItem } from "./TradesTableItem";
-import {
-  BuyTransactionDto,
-  SellTransactionDto
-} from "src/lib/bifrost/rtkApi";
 
 const componentName = "TradesTable";
 const classes = {
@@ -27,7 +23,7 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 type TradesTableProps = {
   className?: string;
-  transactions: Array<BuyTransactionDto | SellTransactionDto>;
+  transactions: Array<any>; // @todo type from tRPC
   baseCurrency: string;
   quoteCurrency: string;
 };

@@ -1,6 +1,6 @@
-import { BotProcessor } from '@bifrost/bot-processor';
-import { arithmeticGridBot, GridBotConfig } from '@bifrost/bot-templates';
-import { exchanges } from '@bifrost/exchanges';
+import { BotProcessor } from '@opentrader/bot-processor';
+import { arithmeticGridBot, GridBotConfig } from '@opentrader/bot-templates';
+import { exchanges } from '@opentrader/exchanges';
 import { TRPCError } from '@trpc/server';
 import { GridBotStoreAdapter } from 'src/trpc/domains/grid-bot/processing/grid-bot-store-adapter';
 import { xprisma } from 'src/trpc/prisma';

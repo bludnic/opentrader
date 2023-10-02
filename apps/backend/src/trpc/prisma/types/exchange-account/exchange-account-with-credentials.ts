@@ -1,4 +1,4 @@
-import { Prisma } from '@bifrost/prisma';
+import { Prisma } from '@opentrader/prisma';
 import { xprisma } from 'src/trpc/prisma/xprisma';
 
 export type ExchangeAccountWithCredentials = Prisma.PromiseReturnType<

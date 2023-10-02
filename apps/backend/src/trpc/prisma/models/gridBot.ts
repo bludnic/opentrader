@@ -1,4 +1,4 @@
-import { Prisma } from '@bifrost/prisma';
+import { Prisma } from '@opentrader/prisma';
 import { prisma } from 'src/trpc/prisma/prisma';
 import {
   TGridBotSettings,

@@ -1,4 +1,4 @@
-import { OrderSideEnum } from "@bifrost/types";
+import { OrderSideEnum } from "@opentrader/types";
 
 export type ActiveOrder = {
   side: OrderSideEnum;

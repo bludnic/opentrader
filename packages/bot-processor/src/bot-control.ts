@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "@bifrost/types";
+import { OrderStatusEnum } from "@opentrader/types";
 import { UseSmartTradePayload } from "./effects/common/types/use-smart-trade-effect";
 import { IBotConfiguration } from "./types/bot/bot-configuration.interface";
 import { IBotControl } from "./types/bot/bot-control.interface";

@@ -1,4 +1,4 @@
-import { exchanges } from '@bifrost/exchanges';
+import { exchanges } from '@opentrader/exchanges';
 import { Context } from 'src/trpc/utils/context';
 import { TGetSymbolsInputSchema } from './schema';
 

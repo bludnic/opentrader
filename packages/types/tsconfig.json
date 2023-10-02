@@ -1,5 +1,5 @@
 {
-  "extends": "@bifrost/tsconfig/module.json",
+  "extends": "@opentrader/tsconfig/module.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist"

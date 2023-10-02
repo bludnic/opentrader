@@ -1,6 +1,6 @@
 import big from 'big.js';
 import { calcGridStepSize } from './calcGridStepSize';
-import { IGridLine } from '@bifrost/types';
+import { IGridLine } from '@opentrader/types';
 
 // Note: Use this function only for tests purposes
 // to avoid boilerplate

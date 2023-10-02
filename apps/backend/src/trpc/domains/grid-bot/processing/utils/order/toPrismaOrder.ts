@@ -1,5 +1,5 @@
-import { $Enums, Prisma } from '@bifrost/prisma';
-import { OrderStatusEnum } from '@bifrost/types';
+import { $Enums, Prisma } from '@opentrader/prisma';
+import { OrderStatusEnum } from '@opentrader/types';
 import { toPrismaOrderStatus } from 'src/trpc/domains/grid-bot/processing/utils/order-status';
 
 export function toPrismaOrder(

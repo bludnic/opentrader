@@ -1,7 +1,7 @@
-import { ExchangeCode } from "@bifrost/types";
+import { ExchangeCode } from "@opentrader/types";
 import { Normalize } from "src/types/normalize.interface";
 import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
-import { composeSymbolIdFromPair } from "@bifrost/tools";
+import { composeSymbolIdFromPair } from "@opentrader/tools";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>

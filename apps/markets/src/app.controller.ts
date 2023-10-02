@@ -1,4 +1,4 @@
-import { ExchangeCode } from '@bifrost/types';
+import { ExchangeCode } from '@opentrader/types';
 import { Controller, Get } from '@nestjs/common';
 import { TestDto } from 'src/test.dto';
 import { AppService } from './app.service';

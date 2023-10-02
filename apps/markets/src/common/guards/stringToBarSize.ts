@@ -1,4 +1,4 @@
-import { BarSize } from '@bifrost/types';
+import { BarSize } from '@opentrader/types';
 
 export function stringToBarSize(timeframe: string): BarSize {
   const validTimeframes = Object.values(BarSize);

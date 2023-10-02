@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "@bifrost/types";
+import { OrderStatusEnum } from "@opentrader/types";
 import { BaseEffect } from "./base-effect";
 import { USE_SMART_TRADE } from "./effect-types";
 

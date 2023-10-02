@@ -1,4 +1,4 @@
-import { SelectEffect, Tail } from "@redux-saga/core/effects";
+import { SelectEffect, Tail } from "redux-saga/effects";
 import { select as originalSelect, Effect } from "redux-saga/effects";
 import { RootState } from "src/store";
 
@@ -14,7 +14,7 @@ export type SagaGenerator<RT, E extends Effect = Effect<any, any>> = Generator<
  * @param args
  */
 export function* typedSelect<
-  Fn extends (state: RootState, ...args: any[]) => any
+  Fn extends (state: RootState, ...args: any[]) => any,
 >(
   selector: Fn,
   ...args: Tail<Parameters<Fn>>

@@ -1,4 +1,4 @@
-import { BarSize } from "@bifrost/types";
+import { BarSize } from "@opentrader/types";
 import { marketsApi } from "src/lib/markets/marketsApi";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";

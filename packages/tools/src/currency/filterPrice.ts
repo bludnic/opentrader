@@ -1,4 +1,4 @@
-import { ISymbolFilter } from "@bifrost/types";
+import { ISymbolFilter } from "@opentrader/types";
 import Big from "big.js";
 import { countDecimalPlaces } from "./common/countDecimalPlaces";
 import { getExponentAbs } from "./common/getExponentAbs";

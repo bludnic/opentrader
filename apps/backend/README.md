@@ -30,7 +30,7 @@ Later it can be imported in other packages like this:
 
 ```ts
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "@bifrost/backend";
+import type { AppRouter } from "@opentrader/backend";
 //     👆 **type-only** import
 
 export const trpc = createTRPCProxyClient<AppRouter>({
