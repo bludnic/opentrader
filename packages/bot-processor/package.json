@@ -5,9 +5,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon",
     "build": "tsc"
   },
   "author": "",
@@ -15,7 +12,6 @@
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.4.4",
-    "nodemon": "^3.0.1",
     "ts-node": "^10.0.0",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
