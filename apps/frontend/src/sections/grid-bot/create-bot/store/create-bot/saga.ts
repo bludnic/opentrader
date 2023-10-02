@@ -1,24 +1,18 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
-import { call, put } from "redux-saga/effects";
-import { bifrostApi } from "src/lib/bifrost/apiClient";
-import {
-  CreateBotRequestBodyDto,
-  CreateBotResponseBodyDto,
-} from "src/lib/bifrost/client";
-import {
-  createGridBotSucceeded,
-  createGridBotFailed,
-} from "./reducers";
+import { call, put, SagaReturnType } from "redux-saga/effects";
+import { trpcApi } from "src/lib/trpc/endpoints";
+import { TGridBotCreateInput } from "src/types/trpc";
 
-export function* createGridBotWorker(action: PayloadAction<CreateBotRequestBodyDto>) {
+import { createGridBotSucceeded, createGridBotFailed } from "./reducers";
+
+export function* createGridBotWorker(
+  action: PayloadAction<TGridBotCreateInput>,
+) {
   try {
-    const { data }: AxiosResponse<CreateBotResponseBodyDto> = yield call(
-      bifrostApi.createGridBot,
-      action.payload
-    );
+    const gridBot: SagaReturnType<typeof trpcApi.gridBot.create.mutate> =
+      yield call(trpcApi.gridBot.create.mutate, action.payload);
 
-    yield put(createGridBotSucceeded(data.bot));
+    yield put(createGridBotSucceeded(gridBot));
   } catch (err) {
     yield put(createGridBotFailed(err as Error));
   }

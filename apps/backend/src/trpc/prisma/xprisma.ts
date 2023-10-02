@@ -1,4 +1,4 @@
-import { $Enums } from '@bifrost/prisma';
+import { $Enums } from '@opentrader/prisma';
 import { gridBot } from 'src/trpc/prisma/models/gridBot';
 import { isGridBotSettings } from 'src/trpc/prisma/utils/grid-bot/guards';
 import { prisma } from './prisma';

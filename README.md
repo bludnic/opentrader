@@ -6,10 +6,10 @@
 # NodeJS v18 required
 $ node -v
 
-# Check `pnpm` version (v8.6.10 required)
+# `pnpm` must be installed
 $ pnpm -v
 
-# Install Turborepo globally (v1.8 required)
+# Install Turborepo globally
 $ pnpm install turbo --global
 
 # Check Java is installed
@@ -19,69 +19,97 @@ $ java -version
 $ docker -v
 ```
 
-## Backend configuration
+## Configuration
 
-1. Create environment file `.env.development.local`
+### Backend configuration
+
+Create environment file `.env.development.local`
 
 ```bash
 $ cd apps/backend
 $ cp .env.sample .env.development.local
 ```
 
-2. Replace `MARKETPLACE_TWITTER_AUTH_BEARER_TOKEN` value
-
-3. Copy the `firebase-credentials.json` into the `apps/backend` directory
-
 ### Frontend configuration
 
-1. Copy `.env` configuration
+Create environment file `.env`
 
 ```bash
 $ cd apps/frontend
 $ cp .env.sample .env
 ```
 
-2. In the Browser console set the LocalStorage `auth_token` item to be able to access the Backend API
+### Database configuration
 
-```js
-localStorage.setItem('auth_token', 'YOUR_TOKEN_HERE')
+1. Create environment file `.env`.
+
+```bash
+$ cd packages/prisma
+$ cp .env.example .env
 ```
 
-## Bootstrap
+2. Replace the `DATABASE_URL` if your URL is different from the actual one.
 
-### Backend
+> 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d postgres-db`. Check below.
 
-#### Postgres service
+
+## Docker (optional)
+
+1. If you want to use PostgreSQL within a Docker container check the commands below:
 
 ```bash
 $ docker compose up -d postgres-db # start service
 $ docker compose -p bifrost stop postgres-db # stop service
 ```
 
-#### Redis service (used by BullMQ)
+2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️, near the service name.
+
+
+## Installation
+
+1. Install npm dependencies and run Prisma migrations.
 
 ```bash
-$ docker compose up -d redis # start service
-$ docker compose -p bifrost stop redis # stop service
+$ pnpm install
 ```
 
-### Markets
-
-#### Postgres service
+2. Build local `/apps` and `/packages`
 
 ```bash
-$ docker compose up -d markets-db # start service
-$ docker compose -p bifrost stop markets-db # stop service
+$ turbo run build
 ```
 
-### Frontend & Backend
+
+> ⚠️ **Note**: Due to that fact that packages doesn't have a `dev` server itself, the `build` command is mandatory on first run.
+>
+> If you made changes inside a package, don't forget to run `build` command again.
+
+
+## Development
+
+**Option 1**: Runs both `frontend` and `backend` apps in a single terminal
 
 ```bash
-$ turbo run bootstrap
-$ turbo run dev # runs both frontend and backend dev servers
+$ turbo run dev
 ```
+
+**Option 2**: Run each app in a separate terminal
+
+First Terminal
+
+```bash
+$ cd apps/backend
+$ pnpm run dev
+```
+
+Second Terminal
+```bash
+$ cd apps/frontend
+$ pnpm run dev
+```
+
+## Apps
 
 - Frontend: http://localhost:3000
 - Backend: http://localhost:4000
 - Markets: http://localhost:5000
-- Bull Board: http://localhost:4000/bapi/admin/queues

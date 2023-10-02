@@ -1,5 +1,5 @@
 import big from 'big.js';
-import { IGridLine } from '@bifrost/types';
+import { IGridLine } from '@opentrader/types';
 
 export function isWaitingGridLine(
   gridLine: IGridLine,

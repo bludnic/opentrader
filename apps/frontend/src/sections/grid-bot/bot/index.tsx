@@ -1,5 +1,5 @@
-import { composeSymbolId } from "@bifrost/tools";
-import { BarSize, ExchangeCode } from "@bifrost/types";
+import { composeSymbolId } from "@opentrader/tools";
+import { BarSize, ExchangeCode } from "@opentrader/types";
 import { CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";

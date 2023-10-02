@@ -4,8 +4,8 @@ import {
   decomposeSymbolId,
   filterPrice,
   filterQuantity,
-} from "@bifrost/tools";
-import { BarSize, ExchangeCode, IGridLine } from "@bifrost/types";
+} from "@opentrader/tools";
+import { BarSize, ExchangeCode, IGridLine } from "@opentrader/types";
 import { Selector } from "@reduxjs/toolkit";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import { GridBotFormState } from "src/sections/grid-bot/create-bot/store/bot-form/state";
@@ -92,7 +92,7 @@ export const computeInvestmentAmount: Selector<
   const { baseCurrencyAmount, quoteCurrencyAmount } =
     calculateInvestment(gridLevels);
 
-  // @todo make a helper in @bifrost/tools
+  // @todo make a helper in @opentrader/tools
   const totalInQuoteCurrency =
     quoteCurrencyAmount + baseCurrencyAmount * currentAssetPrice; // I assume that the user bought base currency for placing sell orders at a market price
 

@@ -2,12 +2,10 @@ import { Divider, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 import clsx from "clsx";
-import { useAppDispatch } from "src/store/hooks";
 import { QuantityPerGridField } from "./fields/QuantityPerGridField";
 import { GridLevelsField } from "./fields/GridLevelsField";
 import { HighPriceField } from "./fields/HighPriceField";
 import { LowPriceField } from "./fields/LowPriceField";
-import { CreateBotFormValues } from "./types";
 
 const componentName = "CreateBotForm";
 const classes = {
@@ -28,13 +26,6 @@ type SimpleGridFormProps = {
 
 export const SimpleGridForm: FC<SimpleGridFormProps> = (props) => {
   const { className } = props;
-
-  const dispatch = useAppDispatch();
-  const submitting = true;
-
-  const handleSubmit = (values: CreateBotFormValues) => {
-    console.log("handle submit", values);
-  };
 
   return (
     <Root className={clsx(classes.root, className)} container spacing={2}>

@@ -1,32 +1,28 @@
 {
-  "name": "@bifrost/backtesting",
+  "name": "@opentrader/backtesting",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "bootstrap": "pnpm run build",
     "start": "ts-node src/test.ts",
-    "dev": "nodemon"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@bifrost/tsconfig": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
     "@types/lodash": "^4.14.191",
     "@types/node": "^20.4.4",
-    "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bifrost/bot-processor": "workspace:*",
-    "@bifrost/exchanges": "workspace:*",
-    "@bifrost/tools": "workspace:*",
-    "@bifrost/types": "workspace:*",
+    "@opentrader/bot-processor": "workspace:*",
+    "@opentrader/exchanges": "workspace:*",
+    "@opentrader/tools": "workspace:*",
+    "@opentrader/types": "workspace:*",
     "lodash": "^4.17.21"
   }
 }

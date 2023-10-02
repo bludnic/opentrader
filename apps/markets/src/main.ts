@@ -13,7 +13,7 @@ async function bootstrap() {
 
   // Swagger configuration
   const config = new DocumentBuilder()
-    .setTitle('Bifrost Markets API')
+    .setTitle('OpenTrader Markets API')
     .setDescription(
       `<a href="/${GLOBAL_PREFIX}/swagger-json" target="_blank">schema.json</a>`,
     )

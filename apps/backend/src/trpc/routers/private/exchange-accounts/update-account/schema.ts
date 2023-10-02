@@ -1,4 +1,4 @@
-import { zt } from '@bifrost/prisma';
+import { zt } from '@opentrader/prisma';
 import { z } from 'zod';
 
 export const ZUpdateExchangeAccountInputSchema = z.object({

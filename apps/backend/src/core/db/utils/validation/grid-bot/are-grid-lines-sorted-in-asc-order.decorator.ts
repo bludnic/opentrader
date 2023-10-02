@@ -1,5 +1,5 @@
-import { areGridLinesPricesSortedInAscOrder } from '@bifrost/tools';
-import { IGridLine } from '@bifrost/types';
+import { areGridLinesPricesSortedInAscOrder } from '@opentrader/tools';
+import { IGridLine } from '@opentrader/types';
 import {
   registerDecorator,
   ValidationOptions,

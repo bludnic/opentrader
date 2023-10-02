@@ -1,6 +1,6 @@
-import { GridLineDto } from "src/lib/bifrost/client";
+import { IGridLine } from "@opentrader/types";
 
-export function findHighestGridLinePrice(gridLines: GridLineDto[]): number {
+export function findHighestGridLinePrice(gridLines: IGridLine[]): number {
   const priceArray = gridLines.map((gridLine) => gridLine.price);
 
   return Math.max(...priceArray);

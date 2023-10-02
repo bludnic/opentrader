@@ -19,7 +19,7 @@ import {
   IGetCanceledLimitOrdersResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
-} from "@bifrost/types";
+} from "@opentrader/types";
 import { Dictionary, Market, okex5 } from "ccxt";
 
 export interface IExchange {

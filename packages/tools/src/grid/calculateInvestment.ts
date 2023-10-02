@@ -1,6 +1,6 @@
 import big from "big.js";
-import { OrderStatusEnum } from "@bifrost/types";
-import { IGridBotLevel } from "@bifrost/types";
+import { OrderStatusEnum } from "@opentrader/types";
+import { IGridBotLevel } from "@opentrader/types";
 
 export type CalculateInvestmentResult = {
   baseCurrencyAmount: number;

@@ -1,5 +1,5 @@
 import Big from "big.js";
-import { SymbolFilterDto } from "src/lib/bifrost/client";
+import { ISymbolFilter } from "@opentrader/types";
 
 /**
  * Return error message or `null` if there are no validation errors.
@@ -8,7 +8,7 @@ import { SymbolFilterDto } from "src/lib/bifrost/client";
  */
 export function validateQuantityByFilter(
   numStr: string,
-  filter: SymbolFilterDto
+  filter: ISymbolFilter,
 ): string | null {
   // skip validation for empty string
   if (numStr.length === 0) {

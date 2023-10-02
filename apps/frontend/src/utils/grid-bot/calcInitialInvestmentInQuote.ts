@@ -2,11 +2,12 @@
  * Returns initialInvestment in Quote Currency
  */
 import big from "big.js";
-import { InitialInvestmentDto } from "src/lib/bifrost/client";
+import {} from "@opentrader/types";
 
 export function calcInitialInvestmentInQuote(
-  initialInvestment: InitialInvestmentDto
+  initialInvestment: any // @todo use type from @opentrader/types
 ): number {
+  throw new Error('missing type')
   const { baseCurrency, quoteCurrency } = initialInvestment;
 
   return big(baseCurrency.quantity)

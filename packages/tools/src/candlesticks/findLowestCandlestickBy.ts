@@ -1,4 +1,4 @@
-import { ICandlestick } from "@bifrost/types";
+import { ICandlestick } from "@opentrader/types";
 
 /**
  * Returns lowest candlestick by price

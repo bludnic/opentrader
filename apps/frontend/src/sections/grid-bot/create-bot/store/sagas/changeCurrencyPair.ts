@@ -2,7 +2,7 @@ import {
   calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
   findLowestCandlestickBy,
-} from "@bifrost/tools";
+} from "@opentrader/tools";
 import { SagaIterator } from "redux-saga";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import {

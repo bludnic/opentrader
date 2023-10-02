@@ -1,4 +1,4 @@
-import { IWatchOrder } from '@bifrost/types';
+import { IWatchOrder } from '@opentrader/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { GridBotService } from 'src/trpc/domains/grid-bot/grid-bot.service';
 import { xprisma } from 'src/trpc/prisma';

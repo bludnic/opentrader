@@ -1,5 +1,5 @@
-import { SmartTrade } from "@bifrost/bot-processor";
-import { ICandlestick, OrderStatusEnum } from "@bifrost/types";
+import { SmartTrade } from "@opentrader/bot-processor";
+import { ICandlestick, OrderStatusEnum } from "@opentrader/types";
 
 export class MarketSimulator {
   /**

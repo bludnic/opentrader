@@ -1,4 +1,4 @@
-import { Prisma } from '@bifrost/prisma';
+import { Prisma } from '@opentrader/prisma';
 import { prisma } from 'src/trpc/prisma/prisma';
 import {
   TGridBotSettings,
@@ -95,7 +95,10 @@ export const gridBot = {
 
     const bot = await prisma.bot.create<T>({
       ...args,
-      type: 'GridBot',
+      data: {
+        ...args.data,
+        type: 'GridBot',
+      },
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

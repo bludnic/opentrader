@@ -33,7 +33,7 @@ function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Bifrost</title>
+        <title>Opentrader</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"

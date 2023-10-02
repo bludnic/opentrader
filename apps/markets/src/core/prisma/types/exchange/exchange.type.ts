@@ -1,4 +1,4 @@
-import { Prisma } from '@bifrost/markets-prisma';
+import { Prisma } from '@opentrader/markets-prisma';
 
 const exchange = Prisma.validator<Prisma.ExchangeDefaultArgs>()({});
 

@@ -1,4 +1,4 @@
-import { RouterOutput } from "src/lib/trpc/types";
+import { RouterInput, RouterOutput } from "src/lib/trpc/types";
 
 export type TGridBot = RouterOutput["gridBot"]["getOne"];
 export type TActiveSmartTrade =
@@ -6,3 +6,4 @@ export type TActiveSmartTrade =
 export type TCompletedSmartTrade =
   RouterOutput["gridBot"]["completedSmartTrades"][number];
 export type TGridBotOrder = RouterOutput["gridBot"]["orders"][number];
+export type TGridBotCreateInput = RouterInput["gridBot"]["create"];

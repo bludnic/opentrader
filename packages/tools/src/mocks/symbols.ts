@@ -1,4 +1,4 @@
-import { ISymbolFilter } from '@bifrost/types';
+import { ISymbolFilter } from '@opentrader/types';
 
 export const ETH_SYMBOL_FILTER: ISymbolFilter = {
   // OKX:ETH/USDT

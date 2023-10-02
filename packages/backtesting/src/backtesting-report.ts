@@ -1,5 +1,5 @@
-import { SmartTrade } from "@bifrost/bot-processor";
-import { OrderStatusEnum } from "@bifrost/types";
+import { SmartTrade } from "@opentrader/bot-processor";
+import { OrderStatusEnum } from "@opentrader/types";
 
 import { buyOrder } from "./report/buyOrder";
 import { buyTransaction } from "./report/buyTransaction";

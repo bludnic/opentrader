@@ -1,4 +1,4 @@
-import { BarSize, IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@opentrader/types";
 import { TExchangeCode } from "src/types/trpc";
 import {
   DEFAULT_GRID_LINES_NUMBER,

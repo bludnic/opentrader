@@ -18,7 +18,7 @@ import {
   ITradingPairSymbolRequest,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
-} from "@bifrost/types";
+} from "@opentrader/types";
 import { Dictionary, Market, okex5, pro } from "ccxt";
 import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
 import { IExchange } from "src/types/exchange.interface";

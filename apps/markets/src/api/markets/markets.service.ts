@@ -1,6 +1,6 @@
-import { BarSize } from '@bifrost/types';
+import { BarSize } from '@opentrader/types';
 import { Injectable } from '@nestjs/common';
-import { $Enums } from '@bifrost/markets-prisma';
+import { $Enums } from '@opentrader/markets-prisma';
 
 import { prisma } from 'src/core/prisma';
 

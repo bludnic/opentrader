@@ -1,4 +1,4 @@
-import { Prisma } from '@bifrost/prisma';
+import { Prisma } from '@opentrader/prisma';
 
 // @todo rename to SmartTradeFull or SmartTradeIncludeAll or SmartTradeIncludedFull
 const smartTradeWithOrders = Prisma.validator<Prisma.SmartTradeDefaultArgs>()({

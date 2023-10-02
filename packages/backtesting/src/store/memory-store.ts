@@ -2,8 +2,8 @@ import {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
-} from "@bifrost/bot-processor";
-import { OrderStatusEnum } from "@bifrost/types";
+} from "@opentrader/bot-processor";
+import { OrderStatusEnum } from "@opentrader/types";
 import { uniqueId } from "lodash";
 import { MarketSimulator } from "../market-simulator";
 

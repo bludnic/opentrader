@@ -1,5 +1,5 @@
-import { exchanges, IExchange } from '@bifrost/exchanges';
-import { ICandlestick } from '@bifrost/types';
+import { exchanges, IExchange } from '@opentrader/exchanges';
+import { ICandlestick } from '@opentrader/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { CandlesticksService } from 'src/api/candlesticks/candlesticks.service';

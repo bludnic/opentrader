@@ -2,7 +2,7 @@
  *  Calc `startDate` based on `endDate`, `limit`, and `timeframe`
  * @param endDate
  */
-import { BarSize } from '@bifrost/types';
+import { BarSize } from '@opentrader/types';
 
 const ONE_MINUTE_MS = 60 * 1000;
 const ONE_HOUR_MS = ONE_MINUTE_MS * 60;

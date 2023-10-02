@@ -1,4 +1,4 @@
-import { ICandlestick } from "@bifrost/types";
+import { ICandlestick } from "@opentrader/types";
 
 /**
  * Returns highest candlestick by price

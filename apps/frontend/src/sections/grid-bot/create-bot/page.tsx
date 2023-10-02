@@ -1,4 +1,4 @@
-import { calcGridLinesWithPriceFilter } from "@bifrost/tools";
+import { calcGridLinesWithPriceFilter } from "@opentrader/tools";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
@@ -19,7 +19,6 @@ import { marketsApi } from "src/lib/markets/marketsApi";
 import { startOfYearISO } from "src/utils/date/startOfYearISO";
 import { todayISO } from "src/utils/date/todayISO";
 import { BacktestingCard } from "../common/components/BacktestingCard/BacktestingCard";
-import { useBacktesting } from "./hooks/useBacktesting";
 
 const componentName = "CreateBotPage";
 const classes = {
@@ -59,8 +58,6 @@ const Page: FC = () => {
         symbol.filters,
       )
     : [];
-
-  const { runBacktest, backtestQuery } = useBacktesting(gridLines);
 
   return (
     <Root
@@ -106,9 +103,9 @@ const Page: FC = () => {
 
         <Grid container item xs={12}>
           <BacktestingCard
-            onRun={runBacktest}
-            isLoading={backtestQuery.isLoading}
-            data={backtestQuery.data}
+            onRun={() => {}}
+            isLoading={false}
+            data={undefined}
           />
         </Grid>
       </Grid>

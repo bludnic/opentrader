@@ -1,5 +1,19 @@
 {
-  "name": "@bifrost/tsconfig",
+  "name": "@opentrader/tsconfig",
   "version": "0.0.1",
-  "private": true
+  "description": "TypeScript configuration from OpenTrader",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Open-Trader/opentrader.git"
+  },
+  "keywords": [
+    "tsconfig",
+    "opentrader"
+  ],
+  "author": "bludnic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Open-Trader/opentrader/issues"
+  },
+  "homepage": "https://github.com/Open-Trader/opentrader/tree/master/packages/tsconfig"
 }

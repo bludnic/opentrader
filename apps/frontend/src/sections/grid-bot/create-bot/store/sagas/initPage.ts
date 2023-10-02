@@ -2,8 +2,8 @@ import {
   calcGridLinesWithPriceFilter,
   findHighestCandlestickBy,
   findLowestCandlestickBy,
-} from "@bifrost/tools";
-import { ExchangeCode } from "@bifrost/types";
+} from "@opentrader/tools";
+import { ExchangeCode } from "@opentrader/types";
 import { call, put, SagaReturnType } from "redux-saga/effects";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import {

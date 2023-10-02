@@ -3,8 +3,8 @@ import {
   BotProcessor,
   BotManager,
   BotTemplate,
-} from "@bifrost/bot-processor";
-import { ICandlestick } from "@bifrost/types";
+} from "@opentrader/bot-processor";
+import { ICandlestick } from "@opentrader/types";
 import { fulfilledTable, gridTable } from "./debugging";
 import { BacktestingReport } from "./backtesting-report";
 import { ReportResult } from "./types";

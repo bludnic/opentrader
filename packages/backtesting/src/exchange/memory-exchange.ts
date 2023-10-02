@@ -1,4 +1,4 @@
-import { IExchange } from "@bifrost/exchanges";
+import { IExchange } from "@opentrader/exchanges";
 import {
   IAccountAsset,
   IGetTradingFeeRatesRequest,
@@ -21,7 +21,7 @@ import {
   IGetFilledLimitOrdersResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
-} from "@bifrost/types";
+} from "@opentrader/types";
 import { MarketSimulator } from "../market-simulator";
 
 export class MemoryExchange implements IExchange {

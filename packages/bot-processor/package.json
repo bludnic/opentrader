@@ -1,28 +1,23 @@
 {
-  "name": "@bifrost/bot-processor",
+  "name": "@opentrader/bot-processor",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "bootstrap": "pnpm run build",
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@bifrost/tsconfig": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.4.4",
-    "nodemon": "^3.0.1",
     "ts-node": "^10.0.0",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bifrost/types": "workspace:*",
-    "@bifrost/exchanges": "workspace:*"
+    "@opentrader/types": "workspace:*",
+    "@opentrader/exchanges": "workspace:*"
   }
 }

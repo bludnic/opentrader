@@ -1,5 +1,5 @@
 import { Order } from "ccxt";
-import { OrderStatus } from "@bifrost/types";
+import { OrderStatus } from "@opentrader/types";
 
 export function normalizeOrderStatus(
   order: Pick<Order, "filled" | "amount" | "status">

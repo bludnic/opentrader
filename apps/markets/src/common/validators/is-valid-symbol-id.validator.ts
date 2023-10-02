@@ -1,4 +1,4 @@
-import { isValidSymbolId } from '@bifrost/tools';
+import { isValidSymbolId } from '@opentrader/tools';
 import {
   registerDecorator,
   ValidationOptions,

@@ -5,9 +5,6 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "dist"]
     },
-    "bootstrap": {
-      "outputs": [".next/**", "dist"]
-    },
     "lint": {},
     "dev": {}
   }

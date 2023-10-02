@@ -1,4 +1,4 @@
-import { BarSize, IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@opentrader/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TExchangeAccount, TExchangeCode } from "src/types/trpc";
 import {

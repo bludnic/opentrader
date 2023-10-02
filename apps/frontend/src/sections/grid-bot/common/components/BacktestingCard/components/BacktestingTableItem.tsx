@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Big from "big.js";
 import clsx from "clsx";
 import React, { FC } from "react";
-import { SmartTradeDto } from "src/lib/bifrost/rtkApi";
+import { TSmartTrade } from "src/types/trpc/smart-trade";
 
 const componentName = "BacktestingTableItem";
 const classes = {
@@ -24,11 +24,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type BacktestingTableItemProps = {
   className?: string;
-  smartTrade: SmartTradeDto;
+  smartTrade: TSmartTrade;
 };
 
 export const BacktestingTableItem: FC<BacktestingTableItemProps> = (props) => {
   const { className, smartTrade } = props;
+
+  if (
+    smartTrade.entryType === "Ladder" ||
+    smartTrade.takeProfitType === "Ladder"
+  ) {
+    throw new Error("Unsupported order type Ladder");
+  }
 
   return (
     <StyledTableRow className={clsx(classes.root, className)}>
@@ -37,24 +44,24 @@ export const BacktestingTableItem: FC<BacktestingTableItemProps> = (props) => {
       </TableCell>
 
       <TableCell component="th" scope="row">
-        {new Date(smartTrade.sellOrder.updatedAt).toISOString()}
+        {new Date(smartTrade.takeProfitOrder.updatedAt).toISOString()}
       </TableCell>
 
       <TableCell component="th" scope="row">
-        {smartTrade.quantity}
+        {smartTrade.entryOrder.quantity}
       </TableCell>
 
       <TableCell component="th" scope="row">
-        {smartTrade.buyOrder.price}
+        {smartTrade.entryOrder.price}
       </TableCell>
 
       <TableCell component="th" align="right">
-        {smartTrade.sellOrder.price}
+        {smartTrade.takeProfitOrder.price}
       </TableCell>
 
       <TableCell component="th" align="right">
-        {new Big(smartTrade.sellOrder.price)
-          .minus(smartTrade.buyOrder.price)
+        {new Big(smartTrade.takeProfitOrder.price || 0)
+          .minus(smartTrade.entryOrder.price || 0)
           .toFixed(2)
           .toString()}
       </TableCell>

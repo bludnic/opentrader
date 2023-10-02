@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Equals, IsDefined, IsEnum, IsNumber, IsString } from 'class-validator';
-import { OrderSideEnum, OrderStatusEnum } from '@bifrost/types';
+import { OrderSideEnum, OrderStatusEnum } from '@opentrader/types';
 import {
   BaseSmartOrder,
   SmartSellOrder,

@@ -1,5 +1,5 @@
 {
-  "name": "@bifrost/markets",
+  "name": "@opentrader/markets",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,14 +18,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "bootstrap": "pnpm run build"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@bifrost/exchanges": "workspace:*",
-    "@bifrost/markets-prisma": "workspace:*",
-    "@bifrost/tools": "workspace:*",
-    "@bifrost/types": "workspace:*",
+    "@opentrader/exchanges": "workspace:*",
+    "@opentrader/markets-prisma": "workspace:*",
+    "@opentrader/tools": "workspace:*",
+    "@opentrader/types": "workspace:*",
     "@nestjs/common": "^10.2.5",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.2.5",
@@ -43,7 +42,7 @@
     "zod": "3.21.1"
   },
   "devDependencies": {
-    "@bifrost/tsconfig": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
     "@nestjs/cli": "^10.1.17",
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^10.2.5",

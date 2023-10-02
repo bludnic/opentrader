@@ -1,5 +1,5 @@
 import { SagaIterator } from "redux-saga";
-import { calcGridLinesWithPriceFilter } from "@bifrost/tools";
+import { calcGridLinesWithPriceFilter } from "@opentrader/tools";
 import { setGridLines } from "src/sections/grid-bot/create-bot/store/bot-form";
 import {
   selectGridLinesNumber,

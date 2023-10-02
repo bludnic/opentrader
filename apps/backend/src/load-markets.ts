@@ -1,5 +1,5 @@
-import { exchanges } from '@bifrost/exchanges';
-import { ExchangeCode } from '@bifrost/types';
+import { exchanges } from '@opentrader/exchanges';
+import { ExchangeCode } from '@opentrader/types';
 
 export async function loadMarkets() {
   const exchangesList = Object.values(ExchangeCode);

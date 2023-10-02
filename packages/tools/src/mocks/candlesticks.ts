@@ -1,4 +1,4 @@
-import { ICandlestick } from '@bifrost/types';
+import { ICandlestick } from '@opentrader/types';
 
 export const CANDLESTICKS: ICandlestick[] = [
   { open: 2148, high: 2149, low: 2145, close: 2149, timestamp: 1677199380000 },

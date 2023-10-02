@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "@bifrost/types";
+import { OrderStatusEnum } from "@opentrader/types";
 
 export type Order = {
   status: OrderStatusEnum;

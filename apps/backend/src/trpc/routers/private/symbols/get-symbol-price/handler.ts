@@ -1,5 +1,5 @@
-import { exchanges } from '@bifrost/exchanges';
-import { decomposeSymbolId } from '@bifrost/tools';
+import { exchanges } from '@opentrader/exchanges';
+import { decomposeSymbolId } from '@opentrader/tools';
 
 import { Context } from 'src/trpc/utils/context';
 import { TGetSymbolPriceInputSchema } from './schema';

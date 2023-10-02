@@ -1,4 +1,4 @@
-import { OrderStatusEnum, IGridBotLevel, IGridLine } from "@bifrost/types";
+import { OrderStatusEnum, IGridBotLevel, IGridLine } from "@opentrader/types";
 import { isWaitingGridLine } from "./isWaitingGridLine";
 import { nextGridLinePrice } from "./nextGridLinePrice";
 

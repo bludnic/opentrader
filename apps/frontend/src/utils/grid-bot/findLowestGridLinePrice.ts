@@ -1,6 +1,6 @@
-import { GridLineDto } from "src/lib/bifrost/client";
+import { IGridLine } from "@opentrader/types";
 
-export function findLowestGridLinePrice(gridLines: GridLineDto[]): number {
+export function findLowestGridLinePrice(gridLines: IGridLine[]): number {
   const priceArray = gridLines.map((gridLine) => gridLine.price);
 
   return Math.min(...priceArray);

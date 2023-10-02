@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CreateBotRequestBodyDto, GridBotDto } from "src/lib/bifrost/client";
+import { TGridBot, TGridBotCreateInput } from "src/types/trpc";
 import { FetchStatus } from "src/utils/redux/types";
 import {
   createGridBotAction,
@@ -14,14 +14,14 @@ export const createGridBotSlice = createSlice({
   reducers: {
     [createGridBotAction.type]: (
       state,
-      payload: PayloadAction<CreateBotRequestBodyDto>
+      payload: PayloadAction<TGridBotCreateInput>,
     ) => {
       state.status = FetchStatus.Loading;
       state.err = null;
     },
     [createGridBotSucceededAction.type]: (
       state,
-      action: PayloadAction<GridBotDto>
+      action: PayloadAction<TGridBot>,
     ) => {
       state.status = FetchStatus.Succeeded;
       state.bot = action.payload;

@@ -1,4 +1,4 @@
-import { exchanges } from '@bifrost/exchanges';
+import { exchanges } from '@opentrader/exchanges';
 import { Logger } from '@nestjs/common';
 import { OrderNotFound } from 'ccxt';
 import { subHours } from 'date-fns';

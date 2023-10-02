@@ -1,5 +1,5 @@
-import { UseSmartTradePayload } from '@bifrost/bot-processor';
-import { $Enums, Prisma } from '@bifrost/prisma';
+import { UseSmartTradePayload } from '@opentrader/bot-processor';
+import { $Enums, Prisma } from '@opentrader/prisma';
 import { toPrismaOrder } from 'src/trpc/domains/grid-bot/processing/utils/order';
 
 /**
@@ -36,14 +36,19 @@ export function toPrismaSmartTrade(
     buy,
     quantity,
     $Enums.OrderSide.Buy,
+    $Enums.EntityType.EntryOrder,
   );
   const sellOrderData = toPrismaOrder(
     sell,
     quantity,
     $Enums.OrderSide.Sell,
+    $Enums.EntityType.TakeProfitOrder,
   );
 
   return {
+    entryType: 'Order',
+    takeProfitType: 'Order',
+
     ref,
     type: $Enums.SmartTradeType.Trade,
     exchangeSymbolId,

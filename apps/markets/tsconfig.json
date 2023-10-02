@@ -1,5 +1,5 @@
 {
-  "extends": "@bifrost/tsconfig/nestjs.json",
+  "extends": "@opentrader/tsconfig/nestjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist"

@@ -1,5 +1,5 @@
 import { isWaitingGridLine } from './isWaitingGridLine';
-import { IGridLine } from '@bifrost/types';
+import { IGridLine } from '@opentrader/types';
 
 const gridLines: IGridLine[] = [
   {

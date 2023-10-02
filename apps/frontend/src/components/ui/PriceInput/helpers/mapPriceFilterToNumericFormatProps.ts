@@ -1,9 +1,9 @@
 import { NumericFormatProps } from "react-number-format";
-import { SymbolFilterDto } from 'src/lib/bifrost/client';
-import { getExponentAbs } from "@bifrost/tools";
+import { getExponentAbs } from "@opentrader/tools";
+import { ISymbolFilter } from "@opentrader/types";
 
 export function mapPriceFilterToNumericFormatProps(
-  filter: SymbolFilterDto
+  filter: ISymbolFilter,
 ): Pick<NumericFormatProps, "decimalScale"> {
   return {
     decimalScale: getExponentAbs(filter.price.tickSize),

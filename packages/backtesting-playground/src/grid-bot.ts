@@ -1,8 +1,8 @@
-import { IGridLine } from "@bifrost/types";
-import { arithmeticGridBot } from "@bifrost/bot-templates";
-import { Backtesting } from "@bifrost/backtesting";
-import { IBotConfiguration } from "@bifrost/bot-processor";
-import { calcGridLines } from "@bifrost/tools";
+import { IGridLine } from "@opentrader/types";
+import { arithmeticGridBot } from "@opentrader/bot-templates";
+import { Backtesting } from "@opentrader/backtesting";
+import { IBotConfiguration } from "@opentrader/bot-processor";
+import { calcGridLines } from "@opentrader/tools";
 import axios from "axios";
 
 interface BotConfig extends IBotConfiguration {
@@ -11,7 +11,7 @@ interface BotConfig extends IBotConfiguration {
 
 async function run() {
   const config: BotConfig = {
-    id: "ETH_USDT_LONG",
+    id: 1,
     gridLines: [
       { price: 1600, quantity: 1 },
       { price: 1655, quantity: 1 },

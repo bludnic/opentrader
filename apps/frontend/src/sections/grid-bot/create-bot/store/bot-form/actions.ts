@@ -1,6 +1,6 @@
-import { BarSize, IGridLine } from "@bifrost/types";
+import { BarSize, IGridLine } from "@opentrader/types";
 import { createAction } from "@reduxjs/toolkit";
-import { ExchangeAccountDto } from "src/lib/bifrost/client";
+import { TExchangeAccount } from "src/types/trpc";
 import { GridBotFormType } from "./types";
 
 const CHANGE_FORM_TYPE = "changeFormType";
@@ -13,13 +13,13 @@ export const changeFormTypeAction = createAction<
 
 const SET_EXCHANGE_ACCOUNT_ID = "setExchangeAccountId";
 export const setExchangeAccountIdAction = createAction<
-  ExchangeAccountDto["id"],
+  TExchangeAccount["id"],
   typeof SET_EXCHANGE_ACCOUNT_ID
 >(SET_EXCHANGE_ACCOUNT_ID);
 
 const SET_EXCHANGE_CODE = "setExchangeCode";
 export const setExchangeCodeAction = createAction<
-  ExchangeAccountDto["exchangeCode"],
+  TExchangeAccount["exchangeCode"],
   typeof SET_EXCHANGE_CODE
   >(SET_EXCHANGE_CODE);
 

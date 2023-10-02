@@ -1,5 +1,5 @@
-import { SmartTrade } from "@bifrost/bot-processor";
-import { OrderStatusEnum } from "@bifrost/types";
+import { SmartTrade } from "@opentrader/bot-processor";
+import { OrderStatusEnum } from "@opentrader/types";
 
 export function gridTable(smartTrades: SmartTrade[]) {
   const rows = smartTrades.flatMap((smartTrade, i) => {

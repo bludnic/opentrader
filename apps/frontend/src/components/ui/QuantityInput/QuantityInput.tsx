@@ -1,7 +1,7 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import React, { FC } from "react";
 import { NumericInput } from "src/components/ui/NumericInput";
-import { SymbolFilterDto } from "src/lib/bifrost/client";
+import { ISymbolFilter } from "@opentrader/types";
 import { mapQuantityFilterToNumericFormatProps } from "./helpers/mapQuantityFilterToNumericFormatProps";
 import { validateQuantityByFilter } from "./helpers/validateQuantityByFilter";
 
@@ -9,7 +9,7 @@ type QuantityInputProps = Omit<
   TextFieldProps,
   "value" | "onChange" | "InputProps" | "error" | "helperText"
 > & {
-  filter: SymbolFilterDto;
+  filter: ISymbolFilter;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
