@@ -7,7 +7,7 @@ import { prepareAuthHeaderHandler } from "src/utils/rtk/prepareAuthHeaderHandler
 export const emptyApi = createApi({
   reducerPath: RTK_API_NAME,
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_MARKETS_HOSTNAME,
+    baseUrl: process.env.NEXT_PUBLIC_MARKETS_API_URL,
     prepareHeaders: prepareAuthHeaderHandler,
   }),
   endpoints: () => ({}),

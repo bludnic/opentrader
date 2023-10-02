@@ -15,14 +15,12 @@ import {
 } from "src/sections/grid-bot/create-bot/store/bot-form";
 
 import rootSaga from "./rootSaga";
-import { todoReducer, TodoState } from "src/store/todo";
 import {
   backtestingFormSlice,
   BacktestingFormState,
 } from "src/sections/grid-bot/create-bot/store/backtesting-form";
 
 export type RootState = {
-  todo: TodoState;
   gridBotForm: GridBotFormState;
   gridBotInitPage: CreateGridBotPageInitState;
   createGridBot: CreateGridBotState;
@@ -41,7 +39,6 @@ const makeStore = (context: Context) => {
   // 2: Add an extra parameter for applying middleware:
   const store = configureStore({
     reducer: {
-      todo: todoReducer,
       gridBotForm: gridBotFormSlice.reducer,
       gridBotInitPage: gridBotInitPageSlice.reducer,
       createGridBot: createGridBotSlice.reducer,
