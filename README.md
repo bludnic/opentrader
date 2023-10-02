@@ -1,6 +1,4 @@
-# Getting Started
-
-## Requirements
+# Requirements
 
 ```bash
 # NodeJS v18 required
@@ -19,9 +17,9 @@ $ java -version
 $ docker -v
 ```
 
-## Configuration
+# Configuration
 
-### Backend configuration
+## Backend configuration
 
 Create environment file `.env.development.local`
 
@@ -30,7 +28,7 @@ $ cd apps/backend
 $ cp .env.sample .env.development.local
 ```
 
-### Frontend configuration
+## Frontend configuration
 
 Create environment file `.env`
 
@@ -39,7 +37,7 @@ $ cd apps/frontend
 $ cp .env.sample .env
 ```
 
-### Database configuration
+## Database configuration
 
 1. Create environment file `.env`.
 
@@ -53,7 +51,7 @@ $ cp .env.example .env
 > 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d postgres-db`. Check below.
 
 
-## Docker (optional)
+# Docker (optional)
 
 1. If you want to use PostgreSQL within a Docker container check the commands below:
 
@@ -65,7 +63,7 @@ $ docker compose -p bifrost stop postgres-db # stop service
 2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️, near the service name.
 
 
-## Installation
+# Installation
 
 1. Install npm dependencies and run Prisma migrations.
 
@@ -85,7 +83,7 @@ $ turbo run build
 > If you made changes inside a package, don't forget to run `build` command again.
 
 
-## Development
+# Development
 
 **Option 1**: Runs both `frontend` and `backend` apps in a single terminal
 
@@ -108,7 +106,7 @@ $ cd apps/frontend
 $ pnpm run dev
 ```
 
-## Apps
+# Apps
 
 - Frontend: http://localhost:3000
 - Backend: http://localhost:4000
