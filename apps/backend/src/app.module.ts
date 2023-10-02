@@ -8,7 +8,7 @@ import {
   winstonNestLikeTransport,
 } from 'src/common/helpers/logging/logging-transports';
 import { marketsApiConfig } from 'src/config/markets-api.config';
-import { envValidationSchema } from 'src/config/utils/envValidationSchema';
+import { envValidation } from 'src/config/utils/envValidationSchema';
 import { CoreModule } from 'src/core/core.module';
 import { FirebaseModule } from 'src/core/firebase';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -22,7 +22,7 @@ import { TrpcModule } from 'src/trpc/trpc.module';
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.development.local'],
       load: [marketsApiConfig],
-      validationSchema: envValidationSchema,
+      validationSchema: envValidation,
       isGlobal: true,
     }),
     HttpModule,

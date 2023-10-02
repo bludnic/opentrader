@@ -92,9 +92,6 @@ importers:
       firebase-admin:
         specifier: ^10.0.2
         version: 10.0.2(@firebase/app-compat@0.2.19)(@firebase/app-types@0.9.0)
-      joi:
-        specifier: ^17.7.1
-        version: 17.7.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21

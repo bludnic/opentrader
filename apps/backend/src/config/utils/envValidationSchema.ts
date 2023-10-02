@@ -1,10 +1,13 @@
-import * as joi from 'joi';
+import z from 'zod';
 
-export const envValidationSchema = joi.object({
-  ENVIRONMENT: joi.string().valid('development', 'production').optional(),
-
-  BULLMQ_REDIS_HOST: joi.string().required(),
-  BULLMQ_REDIS_PORT: joi.number().required(),
-
-  MARKETS_SERVICE_API_URL: joi.string().required(),
+const envSchema = z.object({
+  ENVIRONMENT: z.enum(['development', 'production']),
+  MARKETS_SERVICE_API_URL: z.string().min(1),
 });
+
+/**
+ * Custom validation handler for `@nestjs/config`
+ */
+export const envValidation = {
+  validate: (env: unknown) => envSchema.parse(env),
+};
