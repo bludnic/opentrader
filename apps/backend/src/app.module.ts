@@ -1,5 +1,4 @@
 import { HttpModule } from '@nestjs/axios';
-import { BullModule } from '@nestjs/bullmq';
 import { WinstonModule } from 'nest-winston';
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
@@ -8,7 +7,6 @@ import {
   winstonJsonConsoleTransport,
   winstonNestLikeTransport,
 } from 'src/common/helpers/logging/logging-transports';
-import { bullMQConfig } from 'src/config/bullmq.config';
 import { marketsApiConfig } from 'src/config/markets-api.config';
 import { envValidationSchema } from 'src/config/utils/envValidationSchema';
 import { CoreModule } from 'src/core/core.module';
@@ -17,14 +15,13 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module } from '@nestjs/common';
 import { ExchangeAccountsWatcher } from 'src/core/exchange-bus/exchange-accounts.watcher';
-import { QueueModule } from 'src/queue/queue.module';
 import { TrpcModule } from 'src/trpc/trpc.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.development.local'],
-      load: [bullMQConfig, marketsApiConfig],
+      load: [marketsApiConfig],
       validationSchema: envValidationSchema,
       isGlobal: true,
     }),
@@ -50,10 +47,6 @@ import { TrpcModule } from 'src/trpc/trpc.module';
           ? undefined
           : './firebase-credentials.json',
     }),
-    BullModule.forRoot({
-      connection: bullMQConfig(),
-    }),
-    QueueModule,
     ScheduleModule.forRoot(),
     CoreModule,
     AppModule,
