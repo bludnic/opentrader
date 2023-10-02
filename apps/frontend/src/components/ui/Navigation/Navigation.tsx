@@ -15,7 +15,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
-import PendingIcon from "@mui/icons-material/Pending";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 import { AppBar } from "./AppBar";
 import { Drawer } from "./Drawer";
@@ -123,6 +123,17 @@ export const Navigation: FC<NavigationProps> = (props) => {
             icon={<AccountBalanceIcon />}
           />
         </List>
+
+        {/*<Divider />*/}
+
+        {/*<List>*/}
+        {/*  <DrawerListItem*/}
+        {/*    drawerOpen={open}*/}
+        {/*    text="Smart Trading"*/}
+        {/*    href="/smart-trading"*/}
+        {/*    icon={<ListAltIcon />}*/}
+        {/*  />*/}
+        {/*</List>*/}
       </Drawer>
 
       <NavigationContainer component="main" sx={{ flexGrow: 1, p: 0 }}>

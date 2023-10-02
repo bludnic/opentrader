@@ -39,15 +39,36 @@ enum OrderStatus {
   Deleted
 }
 
+enum OrderType {
+  Limit
+  Market
+}
+
 enum UserRole {
   User
   Admin
 }
 
 enum SmartTradeType {
-  Buy
-  Sell
   Trade
+  DCA
+}
+
+// SmartTrade enums
+enum EntryType {
+  Order
+  Ladder
+}
+enum TakeProfitType {
+  Order
+  Ladder
+}
+
+enum EntityType {
+  EntryOrder
+  TakeProfitOrder
+  StopLossOrder
+  SafetyOrder
 }
 
 model User {
@@ -83,7 +104,11 @@ model ExchangeAccount {
 
 model SmartTrade {
   id Int @id @default(autoincrement())
-  type SmartTradeType // buy/sell/trade/ladder
+
+  type SmartTradeType
+  entryType EntryType
+  takeProfitType TakeProfitType
+
   baseCurrency String
   quoteCurrency String
   exchangeSymbolId String // BTC/USDT, for future usage with Margin/Futures the symbolId may differ from patter `baseCurrency/quoteCurrency`
@@ -105,9 +130,11 @@ model SmartTrade {
 
 model Order {
   id Int @id @default(autoincrement())
-  status OrderStatus @default(Idle) // idle/placed/filled
+  status OrderStatus @default(Idle)
+  type OrderType
+  entityType EntityType
   side OrderSide
-  price Float
+  price Float? // Market orders doesn't require price to be specified
   filledPrice Float?
 
   exchangeOrderId String?

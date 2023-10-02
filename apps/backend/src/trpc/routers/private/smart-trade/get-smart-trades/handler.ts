@@ -1,19 +1,19 @@
 import { xprisma } from 'src/trpc/prisma';
 import { toSmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
 import { Context } from 'src/trpc/utils/context';
-import { TGetSmartTradeInputSchema } from './schema';
 
 type Options = {
   ctx: {
     user: NonNullable<Context['user']>;
   };
-  input: TGetSmartTradeInputSchema;
 };
 
-export async function getSmartTrade({ ctx, input: id }: Options) {
-  const smartTrade = await xprisma.smartTrade.findUniqueOrThrow({
+export async function getSmartTrades({ ctx }: Options) {
+  const smartTrades = await xprisma.smartTrade.findMany({
     where: {
-      id,
+      owner: {
+        id: ctx.user.id,
+      },
     },
     include: {
       orders: true,
@@ -21,5 +21,5 @@ export async function getSmartTrade({ ctx, input: id }: Options) {
     },
   });
 
-  return toSmartTrade(smartTrade);
+  return smartTrades.map((smartTrade) => toSmartTrade(smartTrade));
 }

@@ -2,41 +2,43 @@ import { exchanges, IExchange } from '@bifrost/exchanges';
 import { Prisma } from '@bifrost/prisma';
 import { OrderNotFound } from 'ccxt';
 import { xprisma } from 'src/trpc/prisma';
+import { Order } from 'src/trpc/prisma/models/order';
+import {
+  SmartTrade,
+  toSmartTrade,
+} from 'src/trpc/prisma/models/smart-trade-entity';
 import { ExchangeAccountWithCredentials } from 'src/trpc/prisma/types/exchange-account/exchange-account-with-credentials';
 import { SmartTradeWithOrders } from 'src/trpc/prisma/types/smart-trade/smart-trade-with-orders';
 
 export class SmartTradeService {
   private exchange: IExchange;
+  private smartTrade: SmartTrade;
 
   constructor(
-    private smartTrade: SmartTradeWithOrders,
+    smartTradeModel: SmartTradeWithOrders,
     private exchangeAccount: ExchangeAccountWithCredentials,
   ) {
+    this.smartTrade = toSmartTrade(smartTradeModel);
     this.exchange = exchanges[exchangeAccount.exchangeCode](
       exchangeAccount.credentials,
     );
   }
 
   async placeOrders() {
-    const buyOrder = this.smartTrade.orders.find(
-      (order) => order.side === 'Buy',
-    );
-    if (!buyOrder) {
-      throw new Error('[SmartTradeService] SmartTrade missing Buy order');
+    if (this.smartTrade.entryType === 'Ladder') {
+      throw new Error('Unimplemented `entryType = Ladder`');
+    }
+    if (this.smartTrade.takeProfitType === 'Ladder') {
+      throw new Error('Unimplemented `takeProfitType = Ladder`');
     }
 
-    const sellOrder = this.smartTrade.orders.find(
-      (order) => order.side === 'Sell',
-    );
-    if (!sellOrder) {
-      throw new Error('[SmartTradeService] SmartTrade missing Sell order');
-    }
+    const { entryOrder, takeProfitOrder } = this.smartTrade;
 
     const orderPendingPlacement =
-      buyOrder.status === 'Idle'
-        ? buyOrder
-        : buyOrder.status === 'Filled' && sellOrder.status === 'Idle'
-        ? sellOrder
+      entryOrder.status === 'Idle'
+        ? entryOrder
+        : entryOrder.status === 'Filled' && takeProfitOrder.status === 'Idle'
+        ? takeProfitOrder
         : null;
 
     if (orderPendingPlacement) {
@@ -58,7 +60,11 @@ export class SmartTradeService {
     }
   }
 
-  async placeOrder(order: Prisma.OrderGetPayload<{}>) {
+  async placeOrder(order: Order) {
+    if (order.type === 'Market') {
+      throw new Error('placeOrder: Market order is not supported yet');
+    }
+
     return this.exchange.placeLimitOrder({
       symbol: this.smartTrade.exchangeSymbolId,
       side: order.side === 'Buy' ? 'buy' : 'sell', // @todo map helper

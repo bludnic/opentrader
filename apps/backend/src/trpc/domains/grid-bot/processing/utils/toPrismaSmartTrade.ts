@@ -36,14 +36,19 @@ export function toPrismaSmartTrade(
     buy,
     quantity,
     $Enums.OrderSide.Buy,
+    $Enums.EntityType.EntryOrder,
   );
   const sellOrderData = toPrismaOrder(
     sell,
     quantity,
     $Enums.OrderSide.Sell,
+    $Enums.EntityType.TakeProfitOrder,
   );
 
   return {
+    entryType: 'Order',
+    takeProfitType: 'Order',
+
     ref,
     type: $Enums.SmartTradeType.Trade,
     exchangeSymbolId,

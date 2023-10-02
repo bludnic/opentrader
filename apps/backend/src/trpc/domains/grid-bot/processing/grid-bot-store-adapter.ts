@@ -9,6 +9,7 @@ import {
   toSmartTradeIteratorResult,
 } from 'src/trpc/domains/grid-bot/processing/utils';
 import { XPrismaClient } from 'src/trpc/prisma';
+import { toSmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
 import { TGridBot } from 'src/trpc/prisma/types/grid-bot/grid-bot.schema';
 
 export class GridBotStoreAdapter implements IStore {
@@ -38,7 +39,7 @@ export class GridBotStoreAdapter implements IStore {
         },
       });
 
-      return toSmartTradeIteratorResult(smartTrade);
+      return toSmartTradeIteratorResult(toSmartTrade(smartTrade));
     } catch {
       return null; // throws error if not found
     }
@@ -95,7 +96,7 @@ export class GridBotStoreAdapter implements IStore {
       `[GridBotControl] Smart Trade with (key:${ref}) was saved to DB`,
     );
 
-    return toSmartTradeIteratorResult(smartTrade);
+    return toSmartTradeIteratorResult(toSmartTrade(smartTrade));
   }
 
   async cancelSmartTrade(ref: string, botId: number) {

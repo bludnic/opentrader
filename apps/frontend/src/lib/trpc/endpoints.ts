@@ -55,4 +55,11 @@ export const trpcApi = {
     start: createMutation(trpc.gridBot.start.mutate),
     stop: createMutation(trpc.gridBot.stop.mutate),
   },
+
+  smartTrade: {
+    list: createProcedure(
+      () => ["smartTrade", "list"] as const,
+      trpc.smartTrade.list.query,
+    ),
+  },
 };
