@@ -1,0 +1,23 @@
+{
+  "name": "@opentrader/trpc",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "bludnic",
+  "devDependencies": {
+    "@opentrader/tsconfig": "workspace:*",
+    "@types/module-alias": "^2.0.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3"
+  },
+  "_moduleAliases": {
+    "src": "dist"
+  }
+}
