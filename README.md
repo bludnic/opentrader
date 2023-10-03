@@ -53,14 +53,14 @@ $ cp .env.example .env
 
 # Docker (optional)
 
-1. If you want to use PostgreSQL within a Docker container check the commands below:
+1. If you want to use PostgreSQL within a Docker container use following commands:
 
 ```bash
 $ docker compose up -d postgres-db # start service
 $ docker compose -p bifrost stop postgres-db # stop service
 ```
 
-2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️, near the service name.
+2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
 
 
 # Installation
