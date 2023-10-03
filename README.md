@@ -57,7 +57,7 @@ $ cp .env.example .env
 
 ```bash
 $ docker compose up -d postgres-db # start service
-$ docker compose -p bifrost stop postgres-db # stop service
+$ docker compose -p opentrader stop postgres-db # stop service
 ```
 
 2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
