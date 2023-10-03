@@ -10,7 +10,6 @@ import {
 import { marketsApiConfig } from 'src/config/markets-api.config';
 import { envValidation } from 'src/config/utils/envValidationSchema';
 import { CoreModule } from 'src/core/core.module';
-import { FirebaseModule } from 'src/core/firebase';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module } from '@nestjs/common';
@@ -40,12 +39,6 @@ import { TrpcModule } from 'src/trpc/trpc.module';
           ],
         };
       },
-    }),
-    FirebaseModule.forRoot({
-      googleApplicationCredential:
-        process.env.NODE_ENV === 'production'
-          ? undefined
-          : './firebase-credentials.json',
     }),
     ScheduleModule.forRoot(),
     CoreModule,
