@@ -71,7 +71,7 @@ $ docker compose -p opentrader stop postgres-db # stop service
 $ pnpm install
 ```
 
-2. Build local `/apps` and `/packages`
+2. Build `/apps` and local `/packages`
 
 ```bash
 $ turbo run build
