@@ -38,5 +38,3 @@ lerna-debug.log*
 .env.development
 .env.development.local
 
-# trpc generated types
-/dist-trpc

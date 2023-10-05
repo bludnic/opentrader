@@ -1,8 +1,7 @@
 import { IWatchOrder } from '@opentrader/types';
 import { Injectable, Logger } from '@nestjs/common';
-import { GridBotService } from 'src/trpc/domains/grid-bot/grid-bot.service';
-import { xprisma } from 'src/trpc/prisma';
-import { OrderWithSmartTrade } from 'src/trpc/prisma/types/order/order-with-smart-trade';
+import { GridBotProcessor } from '@opentrader/processing';
+import { xprisma, OrderWithSmartTrade } from '@opentrader/db';
 import { OrderSynchronizerPollingWatcher } from './order-synchronizer/order-synchronizer-polling.watcher';
 import { OrderSynchronizerWsWatcher } from './order-synchronizer/order-synchronizer-ws.watcher';
 
@@ -60,7 +59,7 @@ export class ExchangeAccountsWatcher {
       `onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
     );
 
-    const bot = await GridBotService.fromSmartTradeId(order.smartTrade.id);
+    const bot = await GridBotProcessor.fromSmartTradeId(order.smartTrade.id);
 
     // @todo minor feature:
     // 1. Make an async queue to guarantee template execution

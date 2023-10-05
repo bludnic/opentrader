@@ -1,3 +1,2 @@
-import 'module-alias/register'
-
-export * from "src/nested/mm";
+export { type AppRouter, appRouter } from "./routers/appRouter";
+export { createContext } from "./utils/context";

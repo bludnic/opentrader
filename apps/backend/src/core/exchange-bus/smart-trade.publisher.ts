@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { SmartTradeService } from './smart-trade.service';
-import { xprisma } from 'src/trpc/prisma';
+import { xprisma } from '@opentrader/db';
 import { SMART_TRADE_PUBLISHER_JOB } from './constants';
 
 @Injectable()

@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { GLOBAL_PREFIX } from 'src/common/constants';
 import { loadMarkets } from 'src/load-markets';
-import { TrpcMiddleware } from 'src/trpc/trpc.middleware';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -14,10 +13,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
   app.enableCors();
-
-  // tRPC
-  const trpc = app.get(TrpcMiddleware);
-  trpc.applyMiddleware(app);
 
   // Swagger configuration
   const config = new DocumentBuilder()

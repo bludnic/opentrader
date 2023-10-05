@@ -2,7 +2,7 @@ import { exchanges } from '@opentrader/exchanges';
 import { Logger } from '@nestjs/common';
 import { OrderNotFound } from 'ccxt';
 import { subHours } from 'date-fns';
-import { xprisma } from 'src/trpc/prisma';
+import { xprisma } from '@opentrader/db';
 import { OrderSynchronizerWatcher } from './order-synchronizer-watcher.abstract';
 
 /**

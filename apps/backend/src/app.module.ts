@@ -14,7 +14,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Logger, Module } from '@nestjs/common';
 import { ExchangeAccountsWatcher } from 'src/core/exchange-bus/exchange-accounts.watcher';
-import { TrpcModule } from 'src/trpc/trpc.module';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { TrpcModule } from 'src/trpc/trpc.module';
     ScheduleModule.forRoot(),
     CoreModule,
     AppModule,
-    TrpcModule,
   ],
   providers: [AppService, Logger],
   controllers: [AppController],

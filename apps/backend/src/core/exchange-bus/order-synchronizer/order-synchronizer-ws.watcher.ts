@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { OrderSynchronizerWatcher } from './order-synchronizer-watcher.abstract';
-import { xprisma } from 'src/trpc/prisma';
+import { xprisma } from '@opentrader/db';
 
 export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
   protected readonly logger = new Logger(OrderSynchronizerWsWatcher.name);

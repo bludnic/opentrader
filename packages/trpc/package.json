@@ -2,22 +2,25 @@
   "name": "@opentrader/trpc",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "tsc"
   },
   "author": "bludnic",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
-    "@types/module-alias": "^2.0.2",
-    "tsconfig-paths": "^4.2.0",
+    "@opentrader/types": "workspace:*",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "module-alias": "^2.2.3"
-  },
-  "_moduleAliases": {
-    "src": "dist"
+    "@opentrader/bot-processor": "workspace:*",
+    "@opentrader/bot-templates": "workspace:*",
+    "@opentrader/db": "workspace:*",
+    "@opentrader/exchanges": "workspace:*",
+    "@opentrader/processing": "workspace:*",
+    "@opentrader/tools": "workspace:*",
+    "@trpc/server": "^10.38.0",
+    "zod": "3.21.1"
   }
 }

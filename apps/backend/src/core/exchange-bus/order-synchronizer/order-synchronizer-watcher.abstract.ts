@@ -1,8 +1,10 @@
 import { exchanges, IExchange } from '@opentrader/exchanges';
 import { IWatchOrder } from '@opentrader/types';
 import { Logger } from '@nestjs/common';
-import { ExchangeAccountWithCredentials } from 'src/trpc/prisma/types/exchange-account/exchange-account-with-credentials';
-import { OrderWithSmartTrade } from 'src/trpc/prisma/types/order/order-with-smart-trade';
+import {
+  ExchangeAccountWithCredentials,
+  OrderWithSmartTrade,
+} from '@opentrader/db';
 
 type Event = 'onFilled' | 'onCanceled';
 

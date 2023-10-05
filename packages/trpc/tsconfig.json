@@ -4,11 +4,14 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "src/*": ["./src/*"]
+      "#trpc/*": ["./src/*"],
+
+      // imported modules
+      "#bot-processor/*": ["../bot-processor/src/*"],
+      "#bot-templates/*": ["../bot-templates/src/*"],
+      "#db/*": ["../db/src/*"],
+      "#exchanges/*": ["../exchanges/src/*"],
+      "#processing/*": ["../processing/src/*"]
     }
-  },
-  "ts-node": {
-    // Do not forget to `npm i -D tsconfig-paths`
-    "require": ["tsconfig-paths/register"]
   }
 }
