@@ -20,8 +20,8 @@ import {
   IWatchOrdersResponse,
 } from "@opentrader/types";
 import { Dictionary, Market, okex5, pro } from "ccxt";
-import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
-import { IExchange } from "src/types/exchange.interface";
+import { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
+import { IExchange } from "#exchanges/types/exchange.interface";
 import { cache } from "../../cache";
 import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";

@@ -1,7 +1,7 @@
 import { Dictionary, Exchange, Market } from "ccxt";
 import { ExchangeCode } from "@opentrader/types";
 import { Prisma, xprisma } from "@opentrader/db";
-import { ICacheProvider } from "src/types/cache/cache-provider.interface";
+import { ICacheProvider } from "#exchanges/types/cache/cache-provider.interface";
 
 export class PrismaCacheProvider implements ICacheProvider {
   async getMarkets(exchangeCode: ExchangeCode, ccxtExchange: Exchange) {

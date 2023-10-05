@@ -1,5 +1,5 @@
 import { ExchangeCode } from "@opentrader/types";
-import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
+import { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
 
 import { OkxExchange } from "./okx/exchange";
 
