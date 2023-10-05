@@ -1,4 +1,4 @@
-import { prisma } from "@opentrader/db/prisma";
+import { prisma } from "#db/prisma";
 
 export const smartTradeModel = {
   async setRef(id: number, ref: string | null) {

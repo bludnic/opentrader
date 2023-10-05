@@ -1,6 +1,6 @@
 import { Prisma } from "@opentrader/prisma";
-import { prisma } from "@opentrader/db/prisma";
-import { TGridBotSettings, ZGridBotSettings } from "@opentrader/db/types/grid-bot";
+import { prisma } from "#db/prisma";
+import { TGridBotSettings, ZGridBotSettings } from "#db/types/grid-bot";
 
 export const gridBotModel = {
   async findUnique<T extends Prisma.BotFindUniqueArgs>(

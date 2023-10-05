@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@opentrader/db/*": ["./src/*"]
+      "#db/*": ["./src/*"]
     }
   }
 }

@@ -1,5 +1,5 @@
 import { $Enums } from "@opentrader/prisma";
-import { prisma } from "@opentrader/db/prisma";
+import { prisma } from "#db/prisma";
 
 export const orderModel = {
   async findByExchangeOrderId(exchangeOrderId: string) {
