@@ -2,6 +2,13 @@
   "extends": "@opentrader/tsconfig/module.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "#backtesting/*": ["./src/*"],
+
+      // imported modules
+      "#bot-processor/*": ["../bot-processor/src/*"],
+      "#exchanges/*": ["../exchanges/src/*"]
+    }
   }
 }

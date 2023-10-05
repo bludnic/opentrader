@@ -1,6 +1,6 @@
 import { SmartTrade } from "@opentrader/bot-processor";
 import { OrderSideEnum } from "@opentrader/types";
-import { ActiveOrder } from "src/types";
+import { ActiveOrder } from "#backtesting/types";
 
 export function sellOrder(smartTrade: SmartTrade): ActiveOrder {
   return {
