@@ -23,6 +23,7 @@ import { Dictionary, Market, okex5, pro } from "ccxt";
 import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
 import { IExchange } from "src/types/exchange.interface";
 import { cache } from "../../cache";
+import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";
 
 export class OkxExchange implements IExchange {
@@ -37,6 +38,7 @@ export class OkxExchange implements IExchange {
         }
       : undefined;
     this.ccxt = new pro.okx(ccxtCredentials);
+    this.ccxt.fetchImplementation = fetcher; // #57
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
