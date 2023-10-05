@@ -2,19 +2,14 @@ import {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
-} from '@opentrader/bot-processor';
-import { SmartTradeService } from 'src/core/exchange-bus/smart-trade.service';
-import {
-  toPrismaSmartTrade,
-  toSmartTradeIteratorResult,
-} from 'src/trpc/domains/grid-bot/processing/utils';
-import { XPrismaClient } from 'src/trpc/prisma';
-import { toSmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
-import { TGridBot } from 'src/trpc/prisma/types/grid-bot/grid-bot.schema';
+} from "@opentrader/bot-processor";
+import { TGridBot, toSmartTradeEntity, xprisma } from "@opentrader/db";
+import { SmartTradeRepository } from "#processing/repositories/smart-trade.repository";
+import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
 
 export class GridBotStoreAdapter implements IStore {
   constructor(
-    private prisma: XPrismaClient,
+    private prisma: typeof xprisma,
     private bot: TGridBot,
     private stopBotFn: (botId: number) => Promise<void>,
   ) {}
@@ -27,7 +22,7 @@ export class GridBotStoreAdapter implements IStore {
     try {
       const smartTrade = await this.prisma.smartTrade.findFirstOrThrow({
         where: {
-          type: 'Trade',
+          type: "Trade",
           ref,
           bot: {
             id: botId,
@@ -39,7 +34,7 @@ export class GridBotStoreAdapter implements IStore {
         },
       });
 
-      return toSmartTradeIteratorResult(toSmartTrade(smartTrade));
+      return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
     } catch {
       return null; // throws error if not found
     }
@@ -96,7 +91,7 @@ export class GridBotStoreAdapter implements IStore {
       `[GridBotControl] Smart Trade with (key:${ref}) was saved to DB`,
     );
 
-    return toSmartTradeIteratorResult(toSmartTrade(smartTrade));
+    return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
   }
 
   async cancelSmartTrade(ref: string, botId: number) {
@@ -114,7 +109,7 @@ export class GridBotStoreAdapter implements IStore {
 
     const smartTrade = await this.prisma.smartTrade.findFirst({
       where: {
-        type: 'Trade',
+        type: "Trade",
         ref,
         bot: {
           id: botId,
@@ -126,16 +121,16 @@ export class GridBotStoreAdapter implements IStore {
       },
     });
     if (!smartTrade) {
-      console.log('[GridBotStateManagement] SmartTrade not found');
+      console.log("[GridBotStateManagement] SmartTrade not found");
       return false;
     }
 
-    const smartTradeService = new SmartTradeService(
+    const smartTradeRepo = new SmartTradeRepository(
       smartTrade,
       smartTrade.exchangeAccount,
     );
 
-    await smartTradeService.cancelOrders();
+    await smartTradeRepo.cancelOrders();
 
     return true;
   }

@@ -1,6 +1,6 @@
-import { $Enums, Prisma } from '@opentrader/prisma';
-import { OrderStatusEnum } from '@opentrader/types';
-import { toPrismaOrderStatus } from 'src/trpc/domains/grid-bot/processing/utils/order-status';
+import { $Enums, Prisma } from "@opentrader/db";
+import { OrderStatusEnum } from "@opentrader/types";
+import { toPrismaOrderStatus } from "../order-status";
 
 export function toPrismaOrder(
   order: {
@@ -13,7 +13,7 @@ export function toPrismaOrder(
 ): Prisma.OrderCreateManySmartTradeInput {
   return {
     status: toPrismaOrderStatus(order.status || OrderStatusEnum.Idle),
-    type: 'Limit',
+    type: "Limit",
     entityType,
     price: order.price,
     // Must be a number when Order["status"] is Filled to satisfy

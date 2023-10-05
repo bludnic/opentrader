@@ -1,12 +1,12 @@
-import { BotProcessor } from '@opentrader/bot-processor';
-import { arithmeticGridBot, GridBotConfig } from '@opentrader/bot-templates';
-import { exchanges } from '@opentrader/exchanges';
-import { TRPCError } from '@trpc/server';
-import { GridBotStoreAdapter } from 'src/trpc/domains/grid-bot/processing/grid-bot-store-adapter';
-import { xprisma } from 'src/trpc/prisma';
-import { TGridBot } from 'src/trpc/prisma/types/grid-bot/grid-bot.schema';
+import { BotProcessor } from "@opentrader/bot-processor";
+import { arithmeticGridBot, GridBotConfig } from "@opentrader/bot-templates";
+import { exchanges } from "@opentrader/exchanges";
+import { xprisma, TGridBot } from "@opentrader/db";
+import { ExchangeCode } from "@opentrader/types";
 
-export class GridBotService {
+import { GridBotStoreAdapter } from "./grid-bot-store-adapter";
+
+export class GridBotProcessor {
   constructor(private bot: TGridBot) {}
 
   static async fromId(id: number) {
@@ -19,7 +19,7 @@ export class GridBotService {
       },
     });
 
-    return new GridBotService(bot);
+    return new GridBotProcessor(bot);
   }
 
   static async fromSmartTradeId(smartTradeId: number) {
@@ -36,10 +36,10 @@ export class GridBotService {
       },
     });
 
-    return new GridBotService(bot);
+    return new GridBotProcessor(bot);
   }
 
-  async start() {
+  private async start() {
     this.bot = await xprisma.bot.grid.update({
       where: {
         id: this.bot.id,
@@ -53,7 +53,7 @@ export class GridBotService {
     });
   }
 
-  async stop() {
+  private async stop() {
     this.bot = await xprisma.bot.grid.update({
       where: {
         id: this.bot.id,
@@ -67,7 +67,7 @@ export class GridBotService {
     });
   }
 
-  async processCommand(command: 'start' | 'stop' | 'process') {
+  async processCommand(command: "start" | "stop" | "process") {
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -79,11 +79,11 @@ export class GridBotService {
 
     await xprisma.bot.grid.setProcessing(true, this.bot.id);
 
-    if (command === 'start') {
+    if (command === "start") {
       await processor.start();
-    } else if (command === 'stop') {
+    } else if (command === "stop") {
       await processor.stop();
-    } else if (command === 'process') {
+    } else if (command === "process") {
       await processor.process();
     }
 
@@ -91,15 +91,15 @@ export class GridBotService {
   }
 
   async processStartCommand() {
-    await this.processCommand('start');
+    await this.processCommand("start");
   }
 
   async processStopCommand() {
-    await this.processCommand('stop');
+    await this.processCommand("stop");
   }
 
   async process() {
-    await this.processCommand('process');
+    await this.processCommand("process");
   }
 
   isBotRunning() {
@@ -114,51 +114,20 @@ export class GridBotService {
     return this.bot.processing;
   }
 
-  assertIsRunning() {
-    if (!this.bot.enabled) {
-      throw new TRPCError({
-        message: 'Bot is not enabled',
-        code: 'CONFLICT',
-      });
-    }
-  }
-
-  assertIsNotAlreadyRunning() {
-    if (this.bot.enabled) {
-      throw new TRPCError({
-        message: 'Bot already running',
-        code: 'CONFLICT',
-      });
-    }
-  }
-
-  assertIsNotAlreadyStopped() {
-    if (!this.bot.enabled) {
-      throw new TRPCError({
-        message: 'Bot already stopped',
-        code: 'CONFLICT',
-      });
-    }
-  }
-
-  assertIsNotProcessing() {
-    if (this.bot.processing) {
-      throw new TRPCError({
-        message: 'The bot is busy with the previous processing job',
-        code: 'CONFLICT',
-      });
-    }
-  }
-
   private async getProcessor() {
     const exchange = await xprisma.exchangeAccount.findUniqueOrThrow({
       where: {
         id: this.bot.exchangeAccountId,
       },
     });
-    const exchangeService = exchanges[exchange.exchangeCode](
-      exchange.credentials,
-    );
+
+    const credentials = {
+      ...exchange.credentials,
+      code: exchange.credentials.code as ExchangeCode, // workaround for casting string literal to `ExchangeCode`
+      password: exchange.password || "",
+    };
+
+    const exchangeService = exchanges[exchange.exchangeCode](credentials);
 
     const configuration: GridBotConfig = {
       id: this.bot.id,

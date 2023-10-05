@@ -1,5 +1,5 @@
-import { $Enums } from '@opentrader/prisma';
-import { OrderStatusEnum } from '@opentrader/types';
+import { $Enums } from "@opentrader/db";
+import { OrderStatusEnum } from "@opentrader/types";
 
 const map: Record<$Enums.OrderStatus, OrderStatusEnum> = {
   Idle: OrderStatusEnum.Idle,

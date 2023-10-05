@@ -1,6 +1,6 @@
-import { UseSmartTradePayload } from '@opentrader/bot-processor';
-import { $Enums, Prisma } from '@opentrader/prisma';
-import { toPrismaOrder } from 'src/trpc/domains/grid-bot/processing/utils/order';
+import { UseSmartTradePayload } from "@opentrader/bot-processor";
+import { $Enums, Prisma } from "@opentrader/db";
+import { toPrismaOrder } from "./order";
 
 /**
  * Convert `SmartTrade` iterator result into `ISmartTrade` entity
@@ -46,8 +46,8 @@ export function toPrismaSmartTrade(
   );
 
   return {
-    entryType: 'Order',
-    takeProfitType: 'Order',
+    entryType: "Order",
+    takeProfitType: "Order",
 
     ref,
     type: $Enums.SmartTradeType.Trade,

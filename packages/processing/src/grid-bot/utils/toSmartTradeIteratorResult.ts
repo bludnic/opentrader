@@ -1,6 +1,6 @@
-import { SmartTrade as ProcessorSmartTrade } from '@opentrader/bot-processor';
-import { toProcessorOrderStatus } from 'src/trpc/domains/grid-bot/processing/utils';
-import { SmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
+import { SmartTrade as ProcessorSmartTrade } from "@opentrader/bot-processor";
+import { toProcessorOrderStatus } from "./order-status";
+import { SmartTradeEntity } from "@opentrader/db";
 
 /**
  * Convert `ISmartTrade` entity into `SmartTrade` iterator result
@@ -8,27 +8,27 @@ import { SmartTrade } from 'src/trpc/prisma/models/smart-trade-entity';
  */
 
 export function toSmartTradeIteratorResult(
-  smartTrade: SmartTrade,
+  smartTrade: SmartTradeEntity,
 ): ProcessorSmartTrade {
   const { id } = smartTrade;
 
   if (!smartTrade.ref) {
-    throw new Error('SmartTrade is missing ref');
+    throw new Error("SmartTrade is missing ref");
   }
 
-  if (smartTrade.type === 'DCA') {
+  if (smartTrade.type === "DCA") {
     throw new Error(
-      'toSmartTradeIteratorResult: DCA trade is not supported yet',
+      "toSmartTradeIteratorResult: DCA trade is not supported yet",
     );
   }
 
-  if (smartTrade.entryType === 'Ladder') {
+  if (smartTrade.entryType === "Ladder") {
     throw new Error(
       'toSmartTradeIteratorResult: SmartTrade with "entryType = Ladder" is not supported yet',
     );
   }
 
-  if (smartTrade.takeProfitType === 'Ladder') {
+  if (smartTrade.takeProfitType === "Ladder") {
     throw new Error(
       'toSmartTradeIteratorResult: SmartTrade with "takeProfitType = Ladder" is not supported yet',
     );
@@ -36,10 +36,10 @@ export function toSmartTradeIteratorResult(
 
   const { entryOrder, takeProfitOrder } = smartTrade;
 
-  if (entryOrder.type === 'Market')
-    throw new Error('Order type Market is not supported yet');
-  if (takeProfitOrder.type === 'Market')
-    throw new Error('Order type Market is not supported yet');
+  if (entryOrder.type === "Market")
+    throw new Error("Order type Market is not supported yet");
+  if (takeProfitOrder.type === "Market")
+    throw new Error("Order type Market is not supported yet");
 
   return {
     id,
