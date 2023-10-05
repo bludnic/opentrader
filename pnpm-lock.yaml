@@ -47,12 +47,15 @@ importers:
       '@opentrader/bot-templates':
         specifier: workspace:*
         version: link:../../packages/bot-templates
+      '@opentrader/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../../packages/exchanges
-      '@opentrader/prisma':
+      '@opentrader/processing':
         specifier: workspace:*
-        version: link:../../packages/prisma
+        version: link:../../packages/processing
       '@opentrader/swagger':
         specifier: workspace:*
         version: link:../../packages/swagger
@@ -62,9 +65,6 @@ importers:
       '@opentrader/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@trpc/server':
-        specifier: ^10.38.0
-        version: 10.38.0
       axios:
         specifier: ^1.3.4
         version: 1.5.0
@@ -243,18 +243,21 @@ importers:
       '@openapitools/openapi-generator-cli':
         specifier: ^2.7.0
         version: 2.7.0(@nestjs/platform-express@10.2.5)(class-transformer@0.5.1)(class-validator@0.13.2)
-      '@opentrader/backend':
-        specifier: workspace:*
-        version: link:../backend
       '@opentrader/backtesting':
         specifier: workspace:*
         version: link:../../packages/backtesting
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../../packages/exchanges
       '@opentrader/swagger':
         specifier: workspace:*
         version: link:../../packages/swagger
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
+      '@opentrader/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
       '@opentrader/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -270,6 +273,9 @@ importers:
       '@trpc/client':
         specifier: ^10.38.0
         version: 10.38.0(@trpc/server@10.38.0)
+      '@trpc/react-query':
+        specifier: ^10.38.5
+        version: 10.38.5(@tanstack/react-query@4.35.3)(@trpc/client@10.38.0)(@trpc/server@10.38.0)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: ^10.38.0
         version: 10.38.0
@@ -279,6 +285,9 @@ importers:
       big.js:
         specifier: ^6.1.1
         version: 6.2.1
+      ccxt:
+        specifier: ^4.0.55
+        version: 4.0.55
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
@@ -330,6 +339,12 @@ importers:
       redux-saga:
         specifier: ^1.2.3
         version: 1.2.3
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      socks-proxy-agent:
+        specifier: ^8.0.2
+        version: 8.0.2
       usehooks-ts:
         specifier: ^2.9.1
         version: 2.9.1(react-dom@18.2.0)(react@18.2.0)
@@ -340,6 +355,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.3.1
+        version: 5.3.1
       '@rtk-query/codegen-openapi':
         specifier: ^1.0.0
         version: 1.0.0(openapi-types@12.1.3)
@@ -515,9 +533,6 @@ importers:
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../types
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -525,18 +540,12 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       '@types/lodash':
         specifier: ^4.14.191
         version: 4.14.191
-      '@types/node':
-        specifier: ^20.4.4
-        version: 20.5.6
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.5.6)(typescript@5.1.6)
-      tslib:
-        specifier: ^2.6.0
-        version: 2.6.0
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
@@ -555,9 +564,6 @@ importers:
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../types
       axios:
         specifier: ^1.5.0
         version: 1.5.0
@@ -565,6 +571,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^20.5.6
         version: 20.5.6
@@ -580,13 +589,13 @@ importers:
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../types
     devDependencies:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^20.4.4
         version: 20.5.6
@@ -602,9 +611,6 @@ importers:
 
   packages/bot-templates:
     dependencies:
-      '@opentrader/backtesting':
-        specifier: workspace:*
-        version: link:../backtesting
       '@opentrader/bot-processor':
         specifier: workspace:*
         version: link:../bot-processor
@@ -614,37 +620,41 @@ importers:
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../types
     devDependencies:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      '@types/lodash':
-        specifier: ^4.14.191
-        version: 4.14.191
-      '@types/node':
-        specifier: ^20.4.4
-        version: 20.5.6
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.5.6)(typescript@5.1.6)
-      tslib:
-        specifier: ^2.6.0
-        version: 2.6.0
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
 
+  packages/db:
+    dependencies:
+      '@opentrader/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      zod:
+        specifier: 3.21.1
+        version: 3.21.1
+    devDependencies:
+      '@opentrader/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+
   packages/exchanges:
     dependencies:
+      '@opentrader/db':
+        specifier: workspace:*
+        version: link:../db
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../types
       ccxt:
         specifier: ^4.0.55
         version: 4.0.55
@@ -652,6 +662,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -718,6 +731,34 @@ importers:
         specifier: ^2.7.9
         version: 2.7.9
 
+  packages/processing:
+    dependencies:
+      '@opentrader/bot-processor':
+        specifier: workspace:*
+        version: link:../bot-processor
+      '@opentrader/bot-templates':
+        specifier: workspace:*
+        version: link:../bot-templates
+      '@opentrader/db':
+        specifier: workspace:*
+        version: link:../db
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../exchanges
+      ccxt:
+        specifier: ^4.0.55
+        version: 4.0.55
+    devDependencies:
+      '@opentrader/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+
   packages/swagger:
     devDependencies:
       '@opentrader/tsconfig':
@@ -754,6 +795,43 @@ importers:
       ts-jest:
         specifier: ^29.0.5
         version: 29.1.0(@babel/core@7.23.0)(jest@29.5.0)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+
+  packages/trpc:
+    dependencies:
+      '@opentrader/bot-processor':
+        specifier: workspace:*
+        version: link:../bot-processor
+      '@opentrader/bot-templates':
+        specifier: workspace:*
+        version: link:../bot-templates
+      '@opentrader/db':
+        specifier: workspace:*
+        version: link:../db
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../exchanges
+      '@opentrader/processing':
+        specifier: workspace:*
+        version: link:../processing
+      '@opentrader/tools':
+        specifier: workspace:*
+        version: link:../tools
+      '@trpc/server':
+        specifier: ^10.38.0
+        version: 10.38.0
+      zod:
+        specifier: 3.21.1
+        version: 3.21.1
+    devDependencies:
+      '@opentrader/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -2671,6 +2749,10 @@ packages:
       - supports-color
     dev: true
 
+  /@prisma/nextjs-monorepo-workaround-plugin@5.3.1:
+    resolution: {integrity: sha512-SrM068G8BEUmxtyis97/NGTcVodJLcG+YV7fYW7A19ls549WEXvEjXt9jMBAtd2AUw6d8PER+0G6nCfeOtSQhQ==}
+    dev: true
+
   /@redux-devtools/extension@3.2.5(redux@4.2.1):
     resolution: {integrity: sha512-UhyDF7WmdnCrN1s++YC4sdQCo0z6YUnoB2eCh15nXDDq3QH1jDju1144UNRU6Nvi4inxhaIum4m9BXVYWVC1ng==}
     peerDependencies:
@@ -2841,6 +2923,22 @@ packages:
       '@trpc/server': 10.38.0
     dependencies:
       '@trpc/server': 10.38.0
+    dev: false
+
+  /@trpc/react-query@10.38.5(@tanstack/react-query@4.35.3)(@trpc/client@10.38.0)(@trpc/server@10.38.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-cGpKfiQen3ba3lTII3+Y6Hm3KnC60AS9n2AYt07I7LZx/GknsGHq4h570imdIxr6Qb5LtYe3DFV13kzbm+yGeA==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.38.5
+      '@trpc/server': 10.38.5
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.35.3(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/client': 10.38.0(@trpc/server@10.38.0)
+      '@trpc/server': 10.38.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@trpc/server@10.38.0:
@@ -3523,6 +3621,15 @@ packages:
       - supports-color
     dev: true
 
+  /agent-base@7.1.0:
+    resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
+    engines: {node: '>= 14'}
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /ajv-draft-04@1.0.0(ajv@8.12.0):
     resolution: {integrity: sha512-mv00Te6nmYbRp5DCwclxtt7yV/joXJPGS7nM+97GdxvuttCOfgI3K4U25zboyeX0O+myI8ERluxQe5wljMmVIw==}
     peerDependencies:
@@ -4183,6 +4290,7 @@ packages:
   /clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
+    requiresBuild: true
 
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
@@ -4572,6 +4680,7 @@ packages:
 
   /defaults@1.0.4:
     resolution: {integrity: sha512-eFuaLoy/Rxalv2kr+lqMlUnrDWV+3j4pljOIJgLIhI058IQfWJ7vXhyEIHu+HtC738klGALYxOKDO0bQP3tg8A==}
+    requiresBuild: true
     dependencies:
       clone: 1.0.4
 
@@ -6138,6 +6247,10 @@ packages:
     resolution: {integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==}
     engines: {node: '>= 0.10'}
     dev: true
+
+  /ip@2.0.0:
+    resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==}
+    dev: false
 
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
@@ -8773,6 +8886,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
+
   /set-function-name@2.0.1:
     resolution: {integrity: sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==}
     engines: {node: '>= 0.4'}
@@ -8874,6 +8991,30 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /smart-buffer@4.2.0:
+    resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
+    engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    dev: false
+
+  /socks-proxy-agent@8.0.2:
+    resolution: {integrity: sha512-8zuqoLv1aP/66PHF5TqwJ7Czm3Yv32urJQHrVyhD7mmA6d61Zv8cIXQYPTWwmg6qlupnPvs/QKDmfa4P/qct2g==}
+    engines: {node: '>= 14'}
+    dependencies:
+      agent-base: 7.1.0
+      debug: 4.3.4
+      socks: 2.7.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /socks@2.7.1:
+    resolution: {integrity: sha512-7maUZy1N7uo6+WVEX6psASxtNlKaNVMlGQKkG/63nEDdLOWNbiUMoLK7X4uYoLhQstau72mLgfEWcXcwsaHbYQ==}
+    engines: {node: '>= 10.13.0', npm: '>= 3.0.0'}
+    dependencies:
+      ip: 2.0.0
+      smart-buffer: 4.2.0
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
