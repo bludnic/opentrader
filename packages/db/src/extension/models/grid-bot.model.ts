@@ -1,11 +1,8 @@
-import { Prisma } from '@opentrader/prisma';
-import { prisma } from 'src/trpc/prisma/prisma';
-import {
-  TGridBotSettings,
-  ZGridBotSettings,
-} from 'src/trpc/prisma/types/grid-bot/grid-bot-settings.schema';
+import { Prisma } from "@opentrader/prisma";
+import { prisma } from "@opentrader/db/prisma";
+import { TGridBotSettings, ZGridBotSettings } from "@opentrader/db/types/grid-bot";
 
-export const gridBot = {
+export const gridBotModel = {
   async findUnique<T extends Prisma.BotFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindUniqueArgs>,
   ) {
@@ -13,7 +10,7 @@ export const gridBot = {
       ...args,
       where: {
         ...args.where,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 
@@ -34,7 +31,7 @@ export const gridBot = {
       ...args,
       where: {
         ...args.where,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 
@@ -53,7 +50,7 @@ export const gridBot = {
       ...args,
       where: {
         ...args.where,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 
@@ -72,7 +69,7 @@ export const gridBot = {
       ...args,
       where: {
         ...args.where,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 
@@ -97,7 +94,7 @@ export const gridBot = {
       ...args,
       data: {
         ...args.data,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 
@@ -123,7 +120,7 @@ export const gridBot = {
       ...args,
       where: {
         ...args.where,
-        type: 'GridBot',
+        type: "GridBot",
       },
     });
 

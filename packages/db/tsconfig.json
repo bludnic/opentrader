@@ -1,0 +1,10 @@
+{
+  "extends": "@opentrader/tsconfig/module.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@opentrader/db/*": ["./src/*"]
+    }
+  }
+}

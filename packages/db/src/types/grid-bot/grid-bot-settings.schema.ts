@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-import { ZGridLineSchema } from './grid-line.schema';
+import { ZGridLineSchema } from "./grid-line.schema";
 
 export const ZGridBotSettings = z.object({
   gridLines: z.array(ZGridLineSchema),
