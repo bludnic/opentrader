@@ -1,5 +1,5 @@
 import { exchanges, IExchange } from "@opentrader/exchanges";
-import { IPlaceLimitOrderResponse } from "@opentrader/types";
+import { ExchangeCode, IPlaceLimitOrderResponse } from "@opentrader/types";
 import { OrderNotFound } from "ccxt";
 import {
   SmartTradeWithOrders,
@@ -20,9 +20,14 @@ export class SmartTradeRepository {
     private exchangeAccount: ExchangeAccountWithCredentials,
   ) {
     this.smartTrade = toSmartTradeEntity(smartTradeModel);
-    this.exchange = exchanges[exchangeAccount.exchangeCode](
-      exchangeAccount.credentials,
-    );
+
+    const credentials = {
+      ...exchangeAccount.credentials,
+      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+      password: exchangeAccount.password || "",
+    };
+
+    this.exchange = exchanges[exchangeAccount.exchangeCode](credentials);
   }
 
   async placeOrders() {
