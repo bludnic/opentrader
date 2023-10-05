@@ -2,26 +2,20 @@
   "name": "@opentrader/bot-templates",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "tsc"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "bludnic",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
-    "@types/lodash": "^4.14.191",
-    "@types/node": "^20.4.4",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.6.0",
+    "@opentrader/types": "workspace:*",
     "typescript": "^5.1.6"
   },
   "dependencies": {
     "@opentrader/exchanges": "workspace:*",
-    "@opentrader/backtesting": "workspace:*",
     "@opentrader/bot-processor": "workspace:*",
-    "@opentrader/tools": "workspace:*",
-    "@opentrader/types": "workspace:*"
+    "@opentrader/tools": "workspace:*"
   }
 }
