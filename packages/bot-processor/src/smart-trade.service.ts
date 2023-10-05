@@ -1,5 +1,5 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import { CancelSmartTradeEffect } from "src/effects/common/types/cancel-smart-trade-effect";
+import { CancelSmartTradeEffect } from "./effects/common/types/cancel-smart-trade-effect";
 import {
   cancelSmartTrade,
   replaceSmartTrade,
