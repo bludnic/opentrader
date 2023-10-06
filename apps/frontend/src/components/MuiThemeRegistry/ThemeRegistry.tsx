@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import NextAppDirEmotionCacheProvider from "./EmotionCache";
 import theme from "./theme";
 
-export default function ThemeRegistry({
+export default function MuiThemeRegistry({
   children,
 }: {
   children: React.ReactNode;

@@ -1,4 +1,4 @@
-import ThemeRegistry from "src/components/ThemeRegistry/ThemeRegistry";
+import MuiThemeRegistry from "src/components/MuiThemeRegistry/ThemeRegistry";
 import { TrpcProvider } from "src/components/TrpcProvider";
 
 export const metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TrpcProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <MuiThemeRegistry>{children}</MuiThemeRegistry>
         </TrpcProvider>
       </body>
     </html>
