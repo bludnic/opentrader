@@ -1,5 +1,6 @@
 import { exchanges } from '@opentrader/exchanges';
 import { Logger } from '@nestjs/common';
+import { ExchangeCode } from '@opentrader/types';
 import { OrderNotFound } from 'ccxt';
 import { subHours } from 'date-fns';
 import { xprisma } from '@opentrader/db';
@@ -55,9 +56,13 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
 
       const { smartTrade } = order;
       const { exchangeAccount } = smartTrade;
-      const exchange = exchanges[exchangeAccount.exchangeCode](
-        exchangeAccount.credentials,
-      );
+
+      const credentials = {
+        ...exchangeAccount.credentials,
+        code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+        password: exchangeAccount.password || '',
+      };
+      const exchange = exchanges[exchangeAccount.exchangeCode](credentials);
 
       this.logger.debug(
         `Synchronize order #${order.id}: exchangeOrderId "${order.exchangeOrderId}": price: ${order.price}: status: ${order.status}`,

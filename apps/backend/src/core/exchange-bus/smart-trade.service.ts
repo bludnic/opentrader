@@ -8,20 +8,27 @@ import {
   ExchangeAccountWithCredentials,
   SmartTradeWithOrders,
 } from '@opentrader/db';
+import { ExchangeCode } from '@opentrader/types';
 import { OrderNotFound } from 'ccxt';
 
 export class SmartTradeService {
   private exchange: IExchange;
   private smartTrade: SmartTradeEntity;
+  private exchangeAccount: ExchangeAccountWithCredentials;
 
   constructor(
     smartTradeModel: SmartTradeWithOrders,
-    private exchangeAccount: ExchangeAccountWithCredentials,
+    exchangeAccount: ExchangeAccountWithCredentials,
   ) {
     this.smartTrade = toSmartTradeEntity(smartTradeModel);
-    this.exchange = exchanges[exchangeAccount.exchangeCode](
-      exchangeAccount.credentials,
-    );
+    this.exchangeAccount = exchangeAccount;
+
+    const credentials = {
+      ...exchangeAccount.credentials,
+      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+      password: exchangeAccount.password || '',
+    };
+    this.exchange = exchanges[exchangeAccount.exchangeCode](credentials);
   }
 
   async placeOrders() {

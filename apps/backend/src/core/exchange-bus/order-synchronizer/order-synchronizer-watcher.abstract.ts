@@ -1,5 +1,5 @@
 import { exchanges, IExchange } from '@opentrader/exchanges';
-import { IWatchOrder } from '@opentrader/types';
+import { ExchangeCode, IWatchOrder } from '@opentrader/types';
 import { Logger } from '@nestjs/common';
 import {
   ExchangeAccountWithCredentials,
@@ -24,9 +24,13 @@ export abstract class OrderSynchronizerWatcher {
 
   constructor(exchange: ExchangeAccountWithCredentials) {
     this.exchange = exchange;
-    this.exchangeService = exchanges[exchange.exchangeCode](
-      exchange.credentials,
-    );
+
+    const credentials = {
+      ...exchange.credentials,
+      code: exchange.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+      password: exchange.password || '',
+    };
+    this.exchangeService = exchanges[exchange.exchangeCode](credentials);
   }
 
   async enable() {
