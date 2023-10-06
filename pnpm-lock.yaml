@@ -38,15 +38,6 @@ importers:
       '@nestjs/swagger':
         specifier: 7.1.11
         version: 7.1.11(@nestjs/common@10.2.5)(@nestjs/core@10.2.5)(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)
-      '@opentrader/backtesting':
-        specifier: workspace:*
-        version: link:../../packages/backtesting
-      '@opentrader/bot-processor':
-        specifier: workspace:*
-        version: link:../../packages/bot-processor
-      '@opentrader/bot-templates':
-        specifier: workspace:*
-        version: link:../../packages/bot-templates
       '@opentrader/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -62,9 +53,6 @@ importers:
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       axios:
         specifier: ^1.3.4
         version: 1.5.0
@@ -141,6 +129,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@types/big.js':
         specifier: ^6.1.2
         version: 6.1.6
@@ -246,21 +237,12 @@ importers:
       '@opentrader/backtesting':
         specifier: workspace:*
         version: link:../../packages/backtesting
-      '@opentrader/exchanges':
-        specifier: workspace:*
-        version: link:../../packages/exchanges
-      '@opentrader/swagger':
-        specifier: workspace:*
-        version: link:../../packages/swagger
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
       '@opentrader/trpc':
         specifier: workspace:*
         version: link:../../packages/trpc
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@redux-devtools/extension':
         specifier: ^3.2.5
         version: 3.2.5(redux@4.2.1)
@@ -285,9 +267,6 @@ importers:
       big.js:
         specifier: ^6.1.1
         version: 6.2.1
-      ccxt:
-        specifier: ^4.0.55
-        version: 4.0.55
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
@@ -355,6 +334,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@prisma/nextjs-monorepo-workaround-plugin':
         specifier: ^5.3.1
         version: 5.3.1
@@ -424,9 +406,6 @@ importers:
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
-      '@opentrader/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -467,6 +446,9 @@ importers:
       '@opentrader/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.17
