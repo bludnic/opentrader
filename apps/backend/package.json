@@ -32,7 +32,6 @@
     "@opentrader/db": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/processing": "workspace:*",
-    "@opentrader/swagger": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "axios": "^1.3.4",
     "big.js": "^6.1.1",
