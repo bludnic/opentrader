@@ -19,11 +19,11 @@ module.exports = {
     }
 
     // Solves: Module not found: `bufferutil` and `utf-8-validate`
-    // when importing `@opentrader/trpc` in a Server Component (#57)
+    // when importing `ccxt` in a Server Component (#57)
     config.externals.push({
-      'utf-8-validate': 'commonjs utf-8-validate',
-      'bufferutil': 'commonjs bufferutil',
-    })
+      "utf-8-validate": "commonjs utf-8-validate",
+      bufferutil: "commonjs bufferutil",
+    });
 
     return config;
   },
