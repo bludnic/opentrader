@@ -20,9 +20,10 @@ import {
   IWatchOrdersResponse,
 } from "@opentrader/types";
 import { Dictionary, Market, okex5, pro } from "ccxt";
-import { IExchangeCredentials } from "src/types/exchange-credentials.interface";
-import { IExchange } from "src/types/exchange.interface";
-import { getCachedMarkets, cacheMarkets } from "../state";
+import { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
+import { IExchange } from "#exchanges/types/exchange.interface";
+import { cache } from "../../cache";
+import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";
 
 export class OkxExchange implements IExchange {
@@ -37,23 +38,16 @@ export class OkxExchange implements IExchange {
         }
       : undefined;
     this.ccxt = new pro.okx(ccxtCredentials);
+    this.ccxt.fetchImplementation = fetcher; // #57
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
     }
-
-    const cachedMarkets = getCachedMarkets(ExchangeCode.OKX);
-    if (cachedMarkets) {
-      this.ccxt.markets = cachedMarkets;
-    }
   }
 
   async loadMarkets(): Promise<Dictionary<Market>> {
-    const markets = await this.ccxt.loadMarkets();
-
-    cacheMarkets(markets, ExchangeCode.OKX);
-
-    return markets;
+    const cacheProvider = cache.getCacheProvider();
+    return cacheProvider.getMarkets(ExchangeCode.OKX, this.ccxt);
   }
 
   async accountAssets(): Promise<IAccountAsset[]> {

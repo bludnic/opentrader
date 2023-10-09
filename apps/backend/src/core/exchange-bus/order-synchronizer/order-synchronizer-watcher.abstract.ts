@@ -1,8 +1,10 @@
 import { exchanges, IExchange } from '@opentrader/exchanges';
-import { IWatchOrder } from '@opentrader/types';
+import { ExchangeCode, IWatchOrder } from '@opentrader/types';
 import { Logger } from '@nestjs/common';
-import { ExchangeAccountWithCredentials } from 'src/trpc/prisma/types/exchange-account/exchange-account-with-credentials';
-import { OrderWithSmartTrade } from 'src/trpc/prisma/types/order/order-with-smart-trade';
+import {
+  ExchangeAccountWithCredentials,
+  OrderWithSmartTrade,
+} from '@opentrader/db';
 
 type Event = 'onFilled' | 'onCanceled';
 
@@ -22,9 +24,13 @@ export abstract class OrderSynchronizerWatcher {
 
   constructor(exchange: ExchangeAccountWithCredentials) {
     this.exchange = exchange;
-    this.exchangeService = exchanges[exchange.exchangeCode](
-      exchange.credentials,
-    );
+
+    const credentials = {
+      ...exchange.credentials,
+      code: exchange.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+      password: exchange.password || '',
+    };
+    this.exchangeService = exchanges[exchange.exchangeCode](credentials);
   }
 
   async enable() {

@@ -1,4 +1,4 @@
-import { IExchange } from "@opentrader/exchanges";
+import type { IExchange } from "@opentrader/exchanges";
 import { BotControl } from "./bot-control";
 import { BotManager } from "./bot-manager";
 import { IBotConfiguration } from "./types/bot/bot-configuration.interface";

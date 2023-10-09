@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./dist-trpc",
-  },
-  "include": ["src/trpc/*"],
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
-}

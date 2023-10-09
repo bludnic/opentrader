@@ -38,11 +38,3 @@ lerna-debug.log*
 .env.development
 .env.development.local
 
-# firebase
-firebase-credentials.json
-
-# 3commas-api
-src/shared/3commas-api/swagger/client
-
-# trpc generated types
-/dist-trpc

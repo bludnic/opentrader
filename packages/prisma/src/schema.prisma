@@ -180,6 +180,12 @@ model Bot {
   // @todo initialInvestment
 }
 
+model Markets {
+  exchangeCode ExchangeCode @id
+  markets Json
+  updatedAt DateTime @updatedAt
+}
+
 // model BotState {
 //   id Int @id @default(autoincrement())
 //   type String // smartTradeRef

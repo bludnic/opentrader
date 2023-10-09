@@ -2,27 +2,23 @@
   "name": "@opentrader/backtesting",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/test.ts",
     "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
+    "@opentrader/types": "workspace:*",
     "@types/lodash": "^4.14.191",
-    "@types/node": "^20.4.4",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.6.0",
     "typescript": "^5.1.6"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "@opentrader/types": "workspace:*",
     "lodash": "^4.17.21"
   }
 }

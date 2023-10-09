@@ -1,5 +1,5 @@
-import { ActiveOrder } from "src/types/report/active-order.type";
-import { Transaction } from "src/types/report/transaction.type";
+import { ActiveOrder } from "#backtesting/types/report/active-order.type";
+import { Transaction } from "#backtesting/types/report/transaction.type";
 
 export type ReportResult = {
   transactions: Transaction[];

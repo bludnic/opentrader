@@ -2,6 +2,11 @@
   "extends": "@opentrader/tsconfig/module.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "#exchanges/*": ["./src/*"],
+      // imported modules
+      "#db/*": ["../db/src/*"]
+    }
   }
 }

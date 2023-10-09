@@ -2,6 +2,13 @@
   "extends": "@opentrader/tsconfig/nestjs.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      // imported modules
+      "#bot-processor/*": ["../../packages/bot-processor/src/*"],
+      "#db/*": ["../../packages/db/src/*"],
+      "#exchanges/*": ["../../packages/exchanges/src/*"],
+      "#processing/*": ["../../packages/processing/src/*"],
+    }
   }
 }

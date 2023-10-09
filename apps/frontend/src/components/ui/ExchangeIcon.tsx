@@ -5,7 +5,7 @@ const componentName = "ExchangeIcon" as const;
 
 type Props = {
   exchangeCode: TExchangeCode;
-  size: 64 | 50;
+  size?: 64 | 50;
   width?: number;
   height?: number;
 };

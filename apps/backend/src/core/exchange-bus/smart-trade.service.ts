@@ -1,27 +1,34 @@
 import { exchanges, IExchange } from '@opentrader/exchanges';
-import { Prisma } from '@opentrader/prisma';
-import { OrderNotFound } from 'ccxt';
-import { xprisma } from 'src/trpc/prisma';
-import { Order } from 'src/trpc/prisma/models/order';
 import {
-  SmartTrade,
-  toSmartTrade,
-} from 'src/trpc/prisma/models/smart-trade-entity';
-import { ExchangeAccountWithCredentials } from 'src/trpc/prisma/types/exchange-account/exchange-account-with-credentials';
-import { SmartTradeWithOrders } from 'src/trpc/prisma/types/smart-trade/smart-trade-with-orders';
+  Prisma,
+  xprisma,
+  SmartTradeEntity,
+  OrderEntity,
+  toSmartTradeEntity,
+  ExchangeAccountWithCredentials,
+  SmartTradeWithOrders,
+} from '@opentrader/db';
+import { ExchangeCode } from '@opentrader/types';
+import { OrderNotFound } from 'ccxt';
 
 export class SmartTradeService {
   private exchange: IExchange;
-  private smartTrade: SmartTrade;
+  private smartTrade: SmartTradeEntity;
+  private exchangeAccount: ExchangeAccountWithCredentials;
 
   constructor(
     smartTradeModel: SmartTradeWithOrders,
-    private exchangeAccount: ExchangeAccountWithCredentials,
+    exchangeAccount: ExchangeAccountWithCredentials,
   ) {
-    this.smartTrade = toSmartTrade(smartTradeModel);
-    this.exchange = exchanges[exchangeAccount.exchangeCode](
-      exchangeAccount.credentials,
-    );
+    this.smartTrade = toSmartTradeEntity(smartTradeModel);
+    this.exchangeAccount = exchangeAccount;
+
+    const credentials = {
+      ...exchangeAccount.credentials,
+      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
+      password: exchangeAccount.password || '',
+    };
+    this.exchange = exchanges[exchangeAccount.exchangeCode](credentials);
   }
 
   async placeOrders() {
@@ -60,7 +67,7 @@ export class SmartTradeService {
     }
   }
 
-  async placeOrder(order: Order) {
+  async placeOrder(order: OrderEntity) {
     if (order.type === 'Market') {
       throw new Error('placeOrder: Market order is not supported yet');
     }
