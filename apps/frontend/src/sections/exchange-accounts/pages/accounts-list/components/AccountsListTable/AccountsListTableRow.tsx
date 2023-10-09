@@ -6,6 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import clsx from "clsx";
 import { styled } from "@mui/material/styles";
 import { TExchangeAccount } from "src/types/trpc";
+import { formatDateTime } from "src/utils/date/formatDateTime";
 
 const componentName = "AccountsListTableRow";
 const classes = {
@@ -47,7 +48,7 @@ export const AccountsListTableRow: FC<AccountsListTableRowProps> = (props) => {
         <pre>{JSON.stringify(account.credentials, null, 2)}</pre>
       </TableCell>
 
-      <TableCell>{account.createdAt}</TableCell>
+      <TableCell>{formatDateTime(account.createdAt.getTime())}</TableCell>
 
       <TableCell>
         <Chip
