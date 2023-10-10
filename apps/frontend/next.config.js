@@ -27,4 +27,5 @@ module.exports = {
 
     return config;
   },
+  transpilePackages: ["@opentrader/exchanges"],
 };
