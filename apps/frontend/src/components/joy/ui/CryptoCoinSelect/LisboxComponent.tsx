@@ -81,7 +81,15 @@ export const ListboxComponent = React.forwardRef<
   const itemCount = itemData.length;
 
   return (
-    <Popper ref={ref} anchorEl={anchorEl} open={open} modifiers={modifiers}>
+    <Popper
+      ref={ref}
+      anchorEl={anchorEl}
+      open={open}
+      modifiers={modifiers}
+      style={{
+        zIndex: 1000,
+      }}
+    >
       <OuterElementContext.Provider value={other}>
         <FixedSizeList
           itemData={itemData}
