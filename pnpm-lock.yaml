@@ -216,6 +216,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.22)(react@18.2.0)
+      '@mui/base':
+        specifier: 5.0.0-beta.18
+        version: 5.0.0-beta.18(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
       '@mui/icons-material':
         specifier: ^5.14.9
         version: 5.14.9(@mui/material@5.14.10)(@types/react@18.2.22)(react@18.2.0)
@@ -237,6 +240,9 @@ importers:
       '@opentrader/backtesting':
         specifier: workspace:*
         version: link:../../packages/backtesting
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../../packages/exchanges
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
@@ -277,8 +283,8 @@ importers:
         specifier: ^4.20.10
         version: 4.20.10
       lightweight-charts:
-        specifier: ^4.0.1
-        version: 4.0.1
+        specifier: ^4.1.0
+        version: 4.1.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1866,29 +1872,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@mui/base@5.0.0-beta.17(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-xNbk7iOXrglNdIxFBN0k3ySsPIFLWCnFxqsAYl7CIcDkD9low4kJ7IUuy6ctwx/HAy2fenrT3KXHr1sGjAMgpQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.23.1
-      '@floating-ui/react-dom': 2.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@mui/types': 7.2.4(@types/react@18.2.22)
-      '@mui/utils': 5.14.11(@types/react@18.2.22)(react@18.2.0)
-      '@popperjs/core': 2.11.8
-      '@types/react': 18.2.22
-      clsx: 2.0.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /@mui/base@5.0.0-beta.18(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-e9ZCy/ndhyt5MTshAS3qAUy/40UiO0jX+kAo6a+XirrPJE+rrQW+mKPSI0uyp+5z4Vh+z0pvNoJ2S2gSrNz3BQ==}
     engines: {node: '>=12.0.0'}
@@ -2272,7 +2255,7 @@ packages:
       '@babel/runtime': 7.23.1
       '@emotion/react': 11.11.1(@types/react@18.2.22)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.22)(react@18.2.0)
-      '@mui/base': 5.0.0-beta.17(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/base': 5.0.0-beta.18(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
       '@mui/material': 5.14.10(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
       '@mui/system': 5.14.12(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.22)(react@18.2.0)
       '@mui/utils': 5.14.11(@types/react@18.2.22)(react@18.2.0)
@@ -7519,8 +7502,8 @@ packages:
   /libphonenumber-js@1.10.45:
     resolution: {integrity: sha512-eeHcvGafEYCaKB4fo2uBINfG7j7PcGwBHUaTVfbwl/6KcjCgIKNlIOsSXVRp9BH10NQwmvvk+nQ1e/Yp4BGB7w==}
 
-  /lightweight-charts@4.0.1:
-    resolution: {integrity: sha512-p+j6w41PVzf9Vn7IrmpmCJacunpN0kKsl0IZoxMOySSkDcSagZ7Is9pb6pclIfN/usHdta0aYm9FktkYpAQe0g==}
+  /lightweight-charts@4.1.0:
+    resolution: {integrity: sha512-O7RPoRLPPmwRNOTmBq1ne5eKgjdVZocd2TE77JCfaVJEwS+0meN9UwMKGNGiiRQBb2UkuhyBSiX7XrErBuL+CQ==}
     dependencies:
       fancy-canvas: 2.1.0
     dev: false
