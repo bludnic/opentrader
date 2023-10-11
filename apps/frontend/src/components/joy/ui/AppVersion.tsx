@@ -1,5 +1,6 @@
 import Chip from "@mui/joy/Chip";
-import { version } from "package.json";
+
+const version = "0.0.1";
 
 export const AppVersion = () => (
   <Chip variant="outlined" color="neutral">
