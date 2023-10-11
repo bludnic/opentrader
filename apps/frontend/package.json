@@ -20,7 +20,6 @@
     "@mui/icons-material": "^5.14.13",
     "@mui/joy": "5.0.0-beta.10",
     "@mui/material": "^5.14.13",
-    "@mui/styles": "^5.14.10",
     "@mui/x-date-pickers": "^6.14.0",
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@opentrader/backtesting": "workspace:*",
