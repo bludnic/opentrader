@@ -1,9 +1,15 @@
-import { exchanges } from "#exchanges/exchanges";
 import { ExchangeCode } from "@opentrader/types";
-import { useMemo } from "react";
+import type { Exchange } from "ccxt";
+import { useEffect, useRef } from "react";
+
+import { ccxtInstanceFromExchangeCode } from "./utils";
 
 export function useExchange(exchangeCode: ExchangeCode) {
-  const exchange = useMemo(() => exchanges[exchangeCode](), [exchangeCode]);
+  const exchange = useRef<Exchange | null>(null);
+
+  useEffect(() => {
+    exchange.current = ccxtInstanceFromExchangeCode(exchangeCode);
+  }, [exchangeCode]);
 
   return exchange;
 }
