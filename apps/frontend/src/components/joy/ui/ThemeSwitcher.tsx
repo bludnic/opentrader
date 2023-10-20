@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
-import { IconButton, useColorScheme } from "@mui/joy";
+import { useColorScheme } from "@mui/joy/styles";
+import IconButton from "@mui/joy/IconButton";
 
 export function ThemeSwitcher() {
   const { mode, setMode } = useColorScheme();

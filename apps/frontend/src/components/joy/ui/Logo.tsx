@@ -1,6 +1,6 @@
 "use client";
 
-import { useColorScheme } from "@mui/joy";
+import { useColorScheme } from "@mui/joy/styles";
 
 export function Logo() {
   const { mode } = useColorScheme();
