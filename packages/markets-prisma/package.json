@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && cp -r src/client dist",
+    "build_": "tsc && cp -r src/client dist",
     "prisma:schema:migrate": "prisma migrate dev",
     "prisma:schema:generate": "prisma generate",
-    "postinstall": "prisma migrate dev"
+    "postinstall_": "prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
