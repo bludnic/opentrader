@@ -690,6 +690,9 @@ importers:
 
   packages/prisma:
     dependencies:
+      '@opentrader/tools':
+        specifier: workspace:*
+        version: link:../tools
       '@opentrader/types':
         specifier: workspace:*
         version: link:../types

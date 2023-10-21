@@ -8,6 +8,7 @@
     "build": "tsc && cp -r src/client dist",
     "prisma:schema:migrate": "prisma migrate dev",
     "prisma:schema:generate": "prisma generate",
+    "prisma:db:seed": "prisma db seed",
     "postinstall": "prisma migrate dev"
   },
   "author": "",
@@ -22,10 +23,12 @@
   },
   "dependencies": {
     "@opentrader/types": "workspace:*",
+    "@opentrader/tools": "workspace:*",
     "@prisma/client": "5.2.0",
     "zod": "3.21.1"
   },
   "prisma": {
-    "schema": "src/schema.prisma"
+    "schema": "src/schema.prisma",
+    "seed": "ts-node seed.ts"
   }
 }
