@@ -36,6 +36,9 @@ export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
       autoHighlight
       getOptionLabel={(option) => option.name}
       disableClearable
+      isOptionEqualToValue={(option) =>
+        value ? value.id === option.id : false
+      }
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
           <ListItemDecorator>
