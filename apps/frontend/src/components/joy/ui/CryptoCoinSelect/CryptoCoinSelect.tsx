@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import { ExchangeCode } from "@opentrader/types";
 import Autocomplete from "@mui/joy/Autocomplete";
 import { tClient } from "src/lib/trpc/client";
@@ -15,18 +15,26 @@ export type CryptoCoinSelectProps = {
   defaultSymbols?: TSymbol[];
 };
 
+const getOptionLabel = (symbol: TSymbol) => symbol.symbolId;
+
 export const CryptoCoinSelect: FC<CryptoCoinSelectProps> = ({
   exchangeCode,
   value,
   onChange,
   defaultSymbols,
 }) => {
+  const [inputValue, setInputValue] = useState(
+    value ? getOptionLabel(value) : "",
+  );
+
   const [data] = defaultSymbols
     ? [defaultSymbols]
     : tClient.symbol.list.useSuspenseQuery(exchangeCode as ExchangeCode);
 
   return (
     <Autocomplete
+      inputValue={inputValue}
+      onInputChange={(_e, value) => setInputValue(value)}
       value={value}
       onChange={(e, value) => onChange(value)}
       disableListWrap
@@ -34,7 +42,7 @@ export const CryptoCoinSelect: FC<CryptoCoinSelectProps> = ({
       slots={{
         listbox: ListboxComponent,
       }}
-      getOptionLabel={(option) => option.symbolId}
+      getOptionLabel={getOptionLabel}
       // Actually it doesn't return ReactNode, but an array
       // with: option's `HTMLElement`, option data, `state` and `ownerState`.
       // Check `renderOption()` params for more details.
