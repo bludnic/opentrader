@@ -1,4 +1,6 @@
-import React, { FC } from "react";
+"use client";
+
+import React, { FC, useState } from "react";
 import Typography from "@mui/joy/Typography";
 import Autocomplete from "@mui/joy/Autocomplete";
 import AutocompleteOption from "@mui/joy/AutocompleteOption";
@@ -11,6 +13,7 @@ import ListItemContent from "@mui/joy/ListItemContent";
 export type ExchangeAccountSelectProps = {
   value: TExchangeAccount | null;
   onChange: (value: TExchangeAccount | null) => void;
+  defaultExchangeAccounts?: TExchangeAccount[];
 };
 
 const getOptionLabel = (exchangeAccount: TExchangeAccount) =>
@@ -19,18 +22,15 @@ const getOptionLabel = (exchangeAccount: TExchangeAccount) =>
 export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
   value,
   onChange,
+  defaultExchangeAccounts,
 }) => {
   const [inputValue, setInputValue] = useState(
     value ? getOptionLabel(value) : "",
   );
 
-  if (isLoading) {
-    return <>Loading...</>;
-  }
-
-  if (isError) {
-    return <>An error happened: {JSON.stringify(error)}</>;
-  }
+  const [data] = defaultExchangeAccounts
+    ? [defaultExchangeAccounts]
+    : tClient.exchangeAccount.list.useSuspenseQuery();
 
   return (
     <Autocomplete
