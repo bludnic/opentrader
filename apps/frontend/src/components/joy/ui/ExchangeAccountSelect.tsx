@@ -13,12 +13,16 @@ export type ExchangeAccountSelectProps = {
   onChange: (value: TExchangeAccount | null) => void;
 };
 
+const getOptionLabel = (exchangeAccount: TExchangeAccount) =>
+  exchangeAccount.name;
+
 export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
   value,
   onChange,
 }) => {
-  const { data, isLoading, isError, error } =
-    tClient.exchangeAccount.list.useQuery();
+  const [inputValue, setInputValue] = useState(
+    value ? getOptionLabel(value) : "",
+  );
 
   if (isLoading) {
     return <>Loading...</>;
@@ -30,11 +34,13 @@ export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
 
   return (
     <Autocomplete
+      inputValue={inputValue}
+      onInputChange={(_e, value) => setInputValue(value)}
       value={value || undefined}
       onChange={(e, value) => onChange(value)}
       options={data}
       autoHighlight
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={getOptionLabel}
       disableClearable
       isOptionEqualToValue={(option) =>
         value ? value.id === option.id : false
