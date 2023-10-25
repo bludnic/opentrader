@@ -1,33 +1,29 @@
+"use client";
+
 import React, { FC, ReactNode } from "react";
 import { ExchangeCode } from "@opentrader/types";
 import Autocomplete from "@mui/joy/Autocomplete";
+import { tClient } from "src/lib/trpc/client";
 import { ListboxComponent } from "./LisboxComponent";
 import { renderOption } from "./renderOption";
-import { trpcApi } from "src/lib/trpc/endpoints";
 import { TExchangeCode, TSymbol } from "src/types/trpc";
 
 export type CryptoCoinSelectProps = {
   exchangeCode: TExchangeCode;
   value: TSymbol | null;
   onChange: (value: TSymbol | null) => void;
+  defaultSymbols?: TSymbol[];
 };
 
 export const CryptoCoinSelect: FC<CryptoCoinSelectProps> = ({
   exchangeCode,
   value,
   onChange,
+  defaultSymbols,
 }) => {
-  const { data, isLoading, isError, error } = trpcApi.symbol.list.useQuery({
-    input: exchangeCode as ExchangeCode, // @todo tRPC: change enum to string literal on backend API
-  });
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
-
-  if (isError) {
-    return <>An error happened: {JSON.stringify(error)}</>;
-  }
+  const [data] = defaultSymbols
+    ? [defaultSymbols]
+    : tClient.symbol.list.useSuspenseQuery(exchangeCode as ExchangeCode);
 
   return (
     <Autocomplete
