@@ -37,7 +37,7 @@ export const PriceInput: FC<PriceInput> = (props) => {
         {...InputProps}
       />
 
-      <FormHelperText>{errorMessage}</FormHelperText>
+      {errorMessage ? <FormHelperText>{errorMessage}</FormHelperText> : null}
     </FormControl>
   );
 };

@@ -40,7 +40,7 @@ export const QuantityInput: FC<QuantityInputProps> = (props) => {
         {...InputProps}
       />
 
-      <FormHelperText>{errorMessage}</FormHelperText>
+      {errorMessage ? <FormHelperText>{errorMessage}</FormHelperText> : null}
     </FormControl>
   );
 };
