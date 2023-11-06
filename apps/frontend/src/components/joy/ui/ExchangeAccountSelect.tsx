@@ -46,7 +46,7 @@ export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
         value ? value.id === option.id : false
       }
       renderOption={(props, option) => (
-        <AutocompleteOption {...props}>
+        <AutocompleteOption {...props} key={option.id}>
           <ListItemDecorator>
             <ExchangeIcon
               size={64}

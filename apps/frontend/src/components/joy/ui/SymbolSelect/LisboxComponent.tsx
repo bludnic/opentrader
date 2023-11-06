@@ -23,9 +23,9 @@ function renderRow(props: ListChildComponentProps<RenderOptionParams[]>) {
 
   return (
     <AutocompleteOption
-      key={symbol.currencyPair}
       {...rowProps}
       style={inlineStyle}
+      key={symbol.symbolId}
     >
       <ListItemDecorator>
         <CryptoIcon symbol={symbol.baseCurrency} />
