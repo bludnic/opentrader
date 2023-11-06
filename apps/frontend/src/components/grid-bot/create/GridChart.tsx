@@ -39,7 +39,12 @@ export const GridChart: FC<GridChartProps> = ({
   return (
     <Suspense
       fallback={
-        <Skeleton variant="rectangular" width="100%" height={CHART_HEIGHT} />
+        <Skeleton
+          variant="rectangular"
+          animation="wave"
+          width="100%"
+          height={CHART_HEIGHT}
+        />
       }
     >
       <Chart
