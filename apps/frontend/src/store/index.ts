@@ -64,3 +64,7 @@ export type AppDispatch = ReturnType<typeof makeStore>["dispatch"];
 export const wrapper = createWrapper<Store<RootState>>(makeStore, {
   debug: process.env.NODE_ENV === "development",
 });
+
+export { makeStore };
+
+export const store = makeStore({});

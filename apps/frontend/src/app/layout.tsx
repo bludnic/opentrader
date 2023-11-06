@@ -1,4 +1,5 @@
 import JoyThemeRegistry from "src/components/JoyThemeRegistry/ThemeRegistry";
+import { StoreProvider } from "src/components/StoreProvider";
 import { TrpcProvider } from "src/components/TrpcProvider";
 
 export const metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TrpcProvider>
-          <JoyThemeRegistry>{children}</JoyThemeRegistry>
+          <StoreProvider>
+            <JoyThemeRegistry>{children}</JoyThemeRegistry>
+          </StoreProvider>
         </TrpcProvider>
       </body>
     </html>
