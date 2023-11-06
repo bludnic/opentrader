@@ -9,7 +9,6 @@ import { ExchangeAccountField } from "./form/fields/ExchangeAccountField";
 import { PairField } from "./form/fields/PairField";
 import { BarSizeSelect } from "src/components/joy/ui/BarSizeSelect";
 import { InputSkeleton } from "src/components/joy/ui/InputSkeleton";
-import { useAppDispatch } from "src/store/hooks";
 import { TBarSize } from "src/types/literals";
 
 const timeframes = ["1d", "4h", "1h", "5m"] as const;
