@@ -15,18 +15,19 @@ import { recalculateGridLevels } from "./recalculateGridLevels";
 import { initPageWorker } from "./initPage";
 
 export function* createGridBotSagas(): SagaIterator {
-  yield all([
-    takeLatest(initPage.type, initPageWorker),
-    takeLatest(changeSymbolId.type, changeCurrencyPairWorker),
-    takeLatest(
-      [
-        changeLowPrice.type,
-        changeHighPrice.type,
-        changeQuantityPerGrid.type,
-        changeGridLinesNumber.type,
-      ],
-      recalculateGridLevels
-    ),
-    takeLatest(createGridBot.type, createGridBotWorker)
-  ]);
+  // @todo disable saga
+  // yield all([
+  //   takeLatest(initPage.type, initPageWorker),
+  //   takeLatest(changeSymbolId.type, changeCurrencyPairWorker),
+  //   takeLatest(
+  //     [
+  //       changeLowPrice.type,
+  //       changeHighPrice.type,
+  //       changeQuantityPerGrid.type,
+  //       changeGridLinesNumber.type,
+  //     ],
+  //     recalculateGridLevels
+  //   ),
+  //   takeLatest(createGridBot.type, createGridBotWorker)
+  // ]);
 }

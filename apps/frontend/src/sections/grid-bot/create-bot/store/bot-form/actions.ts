@@ -21,13 +21,12 @@ const SET_EXCHANGE_CODE = "setExchangeCode";
 export const setExchangeCodeAction = createAction<
   TExchangeAccount["exchangeCode"],
   typeof SET_EXCHANGE_CODE
-  >(SET_EXCHANGE_CODE);
+>(SET_EXCHANGE_CODE);
 
 const SET_SYMBOL_ID = "setSymbolId";
-export const setSymbolIdAction = createAction<
-  string,
-  typeof SET_SYMBOL_ID
-  >(SET_SYMBOL_ID);
+export const setSymbolIdAction = createAction<string, typeof SET_SYMBOL_ID>(
+  SET_SYMBOL_ID,
+);
 
 const CHANGE_SYMBOL_ID = "changeSymbolId";
 export const changeSymbolIdAction = createAction<
@@ -37,7 +36,7 @@ export const changeSymbolIdAction = createAction<
 
 const SET_HIGH_PRICE = "setHighPrice";
 export const setHighPriceAction = createAction<number, typeof SET_HIGH_PRICE>(
-  SET_HIGH_PRICE
+  SET_HIGH_PRICE,
 );
 
 const CHANGE_HIGH_PRICE = "changeHighPrice";
@@ -48,7 +47,7 @@ export const changeHighPriceAction = createAction<
 
 const SET_LOW_PRICE = "setLowPrice";
 export const setLowPriceAction = createAction<number, typeof SET_LOW_PRICE>(
-  SET_LOW_PRICE
+  SET_LOW_PRICE,
 );
 
 const CHANGE_LOW_PRICE = "changeLowPrice";
@@ -75,9 +74,19 @@ export const changeQuantityPerGridAction = createAction<
   typeof CHANGE_QUANTITY_PER_GRID
 >(CHANGE_QUANTITY_PER_GRID);
 
+const SET_BOT_NAME = "setBotName";
+export const setBotNameAction = createAction<string, typeof SET_BOT_NAME>(
+  SET_BOT_NAME,
+);
+
+const CHANGE_BOT_NAME = "changeBotName";
+export const changeBotNameAction = createAction<string, typeof CHANGE_BOT_NAME>(
+  CHANGE_BOT_NAME,
+);
+
 const changeBarSize = "changeBarSize";
 export const changeBarSizeAction = createAction<BarSize, typeof changeBarSize>(
-  changeBarSize
+  changeBarSize,
 );
 
 const SET_GRID_LINES = "setGridLines";
@@ -94,7 +103,7 @@ export const updateGridLinesAction = createAction<
 
 const ADD_GRID_LINE = "addGridLine";
 export const addGridLineAction = createAction<IGridLine, typeof ADD_GRID_LINE>(
-  ADD_GRID_LINE
+  ADD_GRID_LINE,
 );
 
 const REMOVE_GRID_LINE = "removeGridLine";

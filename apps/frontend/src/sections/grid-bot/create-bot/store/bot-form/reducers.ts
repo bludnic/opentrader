@@ -24,6 +24,8 @@ import {
   setExchangeCodeAction,
   setSymbolIdAction,
   changeSymbolIdAction,
+  setBotNameAction,
+  changeBotNameAction,
 } from "./actions";
 import { initialState } from "./state";
 
@@ -82,6 +84,12 @@ export const gridBotFormSlice = createSlice({
     [setQuantityPerGridAction.type]: (state, action: PayloadAction<string>) => {
       state.quantityPerGrid = action.payload;
     },
+    [setBotNameAction.type]: (state, action: PayloadAction<string>) => {
+      state.botName = action.payload;
+    },
+    [changeBotNameAction.type]: (state, action: PayloadAction<string>) => {
+      state.botName = action.payload;
+    },
     [changeBarSizeAction.type]: (state, action: PayloadAction<BarSize>) => {
       state.barSize = action.payload;
     },
@@ -134,6 +142,8 @@ export const {
   changeGridLinesNumber,
   setQuantityPerGrid,
   changeQuantityPerGrid,
+  setBotName,
+  changeBotName,
   changeBarSize,
   setGridLines,
   updateGridLines,

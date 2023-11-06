@@ -54,6 +54,9 @@ export const selectGridLinesNumber: Selector<RootState, number> = (rootState) =>
 export const selectQuantityPerGrid: Selector<RootState, string> = (rootState) =>
   rootState.gridBotForm.quantityPerGrid;
 
+export const selectBotName: Selector<RootState, string> = (rootState) =>
+  rootState.gridBotForm.botName;
+
 export const computeInvestmentAmount: Selector<
   RootState,
   {

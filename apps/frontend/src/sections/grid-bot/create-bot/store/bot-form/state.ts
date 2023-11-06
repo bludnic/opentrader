@@ -10,6 +10,7 @@ export interface GridBotFormState {
   type: GridBotFormType;
 
   // Common options
+  botName: string;
   exchangeAccountId: number;
   exchangeCode: TExchangeCode;
   symbolId: string;
@@ -30,6 +31,7 @@ export const initialState: GridBotFormState = {
   type: "simple",
 
   // @todo rehardcore default values
+  botName: '',
   exchangeAccountId: 0,
   exchangeCode: "OKX",
   symbolId: "OKX:BTC/USDT",
