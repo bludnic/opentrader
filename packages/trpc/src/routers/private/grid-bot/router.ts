@@ -30,6 +30,9 @@ import { ZGetCompletedSmartTradesInputSchema } from "./get-completed-smart-trade
 import { getGridBotOrders } from "./get-orders/handler";
 import { ZGetGridBotOrdersInputSchema } from "./get-orders/schema";
 
+import { getFormOptions } from "./get-form-options/handler";
+import { ZGetGridBotFormOptionsInputSchema } from "./get-form-options/schema";
+
 export const gridBotRouter = router({
   list: authorizedProcedure.query(getGridBots),
   getOne: authorizedProcedure.input(ZGetGridBotInputSchema).query(getGridBot),
@@ -57,4 +60,7 @@ export const gridBotRouter = router({
   orders: authorizedProcedure
     .input(ZGetGridBotOrdersInputSchema)
     .query(getGridBotOrders),
+  formOptions: authorizedProcedure
+    .input(ZGetGridBotFormOptionsInputSchema)
+    .query(getFormOptions),
 });
