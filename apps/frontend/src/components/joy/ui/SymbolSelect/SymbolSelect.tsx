@@ -17,7 +17,7 @@ export type CryptoCoinSelectProps = {
 
 const getOptionLabel = (symbol: TSymbol) => symbol.symbolId;
 
-export const CryptoCoinSelect: FC<CryptoCoinSelectProps> = ({
+export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
   exchangeCode,
   value,
   onChange,
@@ -52,4 +52,4 @@ export const CryptoCoinSelect: FC<CryptoCoinSelectProps> = ({
   );
 };
 
-CryptoCoinSelect.displayName = "CryptoCoinSelect";
+SymbolSelect.displayName = "SymbolSelect";
