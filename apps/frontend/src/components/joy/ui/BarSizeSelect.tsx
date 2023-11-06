@@ -1,4 +1,6 @@
-import React, { FC } from "react";
+"use client";
+
+import React from "react";
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import { TBarSize } from "src/types/literals";
