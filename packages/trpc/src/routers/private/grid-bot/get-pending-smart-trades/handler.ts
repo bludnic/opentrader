@@ -4,16 +4,16 @@ import {
   xprisma,
 } from "@opentrader/db";
 import { Context } from "#trpc/utils/context";
-import { TGetActiveSmartTradesInputSchema } from "./schema";
+import { TGetPendingSmartTradesInputSchema } from "./schema";
 
 type Options = {
   ctx: {
     user: NonNullable<Context["user"]>;
   };
-  input: TGetActiveSmartTradesInputSchema;
+  input: TGetPendingSmartTradesInputSchema;
 };
 
-export async function getActiveSmartTrades({ ctx, input }: Options) {
+export async function getPendingSmartTrades({ ctx, input }: Options) {
   const smartTrades = await xprisma.smartTrade.findMany({
     where: {
       type: "Trade",
@@ -24,9 +24,15 @@ export async function getActiveSmartTrades({ ctx, input }: Options) {
         id: input.botId,
       },
       orders: {
-        some: {
+        // Querying orders:
+        // + Idle/Idle
+        // - Placed/Idle
+        // + Filled/Idle
+        // - Filled/Placed
+        // - Filled/Filled
+        every: {
           status: {
-            in: ["Idle", "Placed"],
+            in: ["Idle", "Filled"],
           },
         },
       },

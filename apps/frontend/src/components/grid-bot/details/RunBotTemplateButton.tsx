@@ -1,22 +1,23 @@
+"use client";
+
 import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
-import CircularProgress from "@mui/joy/CircularProgress";
 import { tClient } from "src/lib/trpc/client";
 import { TGridBot } from "src/types/trpc";
 
-const componentName = "ManualProcessButton";
+const componentName = "RunBotTemplateButton";
 const classes = {
   root: `${componentName}-root`,
 };
 
-type ManualProcessButtonProps = {
+type RunBotTemplateButtonProps = {
   className?: string;
   bot: TGridBot;
 };
 
-export const ManualProcessButton: FC<ManualProcessButtonProps> = (props) => {
+export const RunBotTemplateButton: FC<RunBotTemplateButtonProps> = (props) => {
   const { className, bot } = props;
   const { enqueueSnackbar } = useSnackbar();
 
@@ -42,13 +43,13 @@ export const ManualProcessButton: FC<ManualProcessButtonProps> = (props) => {
         })
       }
       className={clsx(classes.root, className)}
-      variant="solid"
+      variant="soft"
+      size="lg"
       color="primary"
-      type="submit"
-      disabled={isLoading}
-      startDecorator={isLoading ? <CircularProgress size="md" /> : null}
+      loading={isLoading}
+      loadingPosition="start"
     >
-      Manual Process
+      Run template
     </Button>
   );
 };

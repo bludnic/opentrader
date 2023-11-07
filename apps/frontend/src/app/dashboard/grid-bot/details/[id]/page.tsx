@@ -1,11 +1,17 @@
 import Card from "@mui/joy/Card";
+import Typography from "@mui/joy/Typography";
 import { composeSymbolId } from "@opentrader/tools";
 import { ExchangeCode } from "@opentrader/types";
 import React from "react";
-import { GridBotSettings } from "src/components/grid-bot/details/GridBotSettings";
+import { BotSettings } from "src/components/grid-bot/details/BotSettings";
+import { RunBotTemplateButton } from "src/components/grid-bot/details/RunBotTemplateButton";
+import { CronPlacePendingOrderButton } from "src/components/grid-bot/details/CronPlacePendingOrderButton";
 import { GridDetailChart } from "src/components/grid-bot/details/GridDetailChart";
+import { SmartTradesTable } from "src/components/grid-bot/details/SmartTradesTable";
+import { StartStopBotButton } from "src/components/grid-bot/details/StartStopBotButton";
 import { tServer } from "src/lib/trpc/server";
 import Grid from "@mui/joy/Grid";
+import Box from "@mui/joy/Box";
 
 type Props = {
   params: {
@@ -14,7 +20,8 @@ type Props = {
 };
 
 export default async function Page({ params }: Props) {
-  const bot = await tServer.gridBot.getOne(Number(params.id));
+  const botId = Number(params.id);
+  const bot = await tServer.gridBot.getOne(botId);
 
   const exchangeAccount = await tServer.exchangeAccount.getOne(
     bot.exchangeAccountId,
@@ -28,16 +35,56 @@ export default async function Page({ params }: Props) {
     ),
   });
 
+  const activeSmartTrades = await tServer.gridBot.activeSmartTrades({
+    botId,
+  });
+
+  const pendingSmartTrades = await tServer.gridBot.pendingSmartTrades({
+    botId,
+  });
+
   return (
     <Grid container spacing={2}>
       <Grid md={9}>
-        <GridDetailChart symbol={symbol} exchangeAccount={exchangeAccount} />
+        <GridDetailChart
+          symbol={symbol}
+          exchangeAccount={exchangeAccount}
+          gridLines={bot.settings.gridLines}
+        />
       </Grid>
 
       <Grid md={3}>
         <Card>
-          <GridBotSettings bot={bot} symbol={symbol} />
+          <Box display="flex" justifyContent="space-between">
+            <Typography level="h3" fontSize="xl2" fontWeight="xl">
+              {bot.name}
+            </Typography>
+
+            <Typography
+              level="h3"
+              fontSize="xl2"
+              fontWeight="xl"
+              color="neutral"
+            >
+              #{bot.id}
+            </Typography>
+          </Box>
+
+          <BotSettings bot={bot} />
+
+          <StartStopBotButton bot={bot} />
+
+          <RunBotTemplateButton bot={bot} />
+
+          <CronPlacePendingOrderButton
+            bot={bot}
+            smartTrades={pendingSmartTrades}
+          />
         </Card>
+      </Grid>
+
+      <Grid md={9}>
+        <SmartTradesTable smartTrades={activeSmartTrades} />
       </Grid>
     </Grid>
   );

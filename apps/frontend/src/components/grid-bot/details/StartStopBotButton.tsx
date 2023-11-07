@@ -1,33 +1,26 @@
 "use client";
 
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { SxProps } from "@mui/joy/styles/types";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import clsx from "clsx";
-import Chip, { ChipProps } from "@mui/joy/Chip";
-import { styled } from "@mui/joy/styles";
+import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
 import { TGridBot } from "src/types/trpc";
 
-const componentName = "BotStatusChip";
+const componentName = "StartStopBotButton";
 const classes = {
   root: `${componentName}-root`,
 };
-const StyledChip = styled(Chip)(({ theme }) => ({
-  /* Styles applied to the root element. */
-  [`&.${classes.root}`]: {},
-}));
 
-type BotStatusSwitcherProps = {
+type StartStopBotButtonProps = {
   className?: string;
   bot: TGridBot;
-  sx?: SxProps;
-  size?: ChipProps["size"];
 };
 
-export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
-  const { className, bot, sx, size } = props;
+export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
+  className,
+  bot,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [enabled, setEnabled] = useState(bot.enabled);
@@ -66,54 +59,50 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
 
   if (startBot.isLoading || stopBot.isLoading) {
     return (
-      <StyledChip
+      <Button
         className={clsx(classes.root, className)}
-        startDecorator={<FiberManualRecordIcon />}
-        variant="outlined"
-        disabled
-        sx={sx}
-        size={size}
+        loading
+        loadingPosition="start"
+        color={startBot.isLoading ? "success" : "danger"}
+        variant="soft"
+        size="lg"
       >
         {startBot.isLoading ? "Starting..." : "Stopping..."}
-      </StyledChip>
+      </Button>
     );
   }
 
   if (enabled) {
     return (
-      <StyledChip
-        className={clsx(classes.root, className)}
-        startDecorator={<FiberManualRecordIcon />}
-        variant="outlined"
-        color="success"
-        sx={sx}
-        size={size}
+      <Button
         onClick={() =>
           stopBot.mutate({
             botId: bot.id,
           })
         }
+        className={clsx(classes.root, className)}
+        variant="soft"
+        color="danger"
+        size="lg"
       >
-        Running
-      </StyledChip>
+        Stop bot
+      </Button>
     );
   }
 
   return (
-    <StyledChip
-      className={clsx(classes.root, className)}
-      startDecorator={<FiberManualRecordIcon />}
-      variant="outlined"
-      color="danger"
-      sx={sx}
-      size={size}
+    <Button
       onClick={() =>
         startBot.mutate({
           botId: bot.id,
         })
       }
+      className={clsx(classes.root, className)}
+      variant="soft"
+      color="success"
+      size="lg"
     >
-      Disabled
-    </StyledChip>
+      Start bot
+    </Button>
   );
 };
