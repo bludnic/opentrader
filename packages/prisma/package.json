@@ -9,14 +9,14 @@
     "prisma:schema:migrate": "prisma migrate dev",
     "prisma:schema:generate": "prisma generate",
     "prisma:db:seed": "prisma db seed",
-    "postinstall": "prisma migrate dev"
+    "postinstall": "prisma migrate dev && pnpm run prisma:schema:generate"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.5.6",
-    "prisma": "^5.3.1",
+    "prisma": "^5.5.2",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
     "zod-prisma-types": "^2.7.9"
@@ -24,7 +24,7 @@
   "dependencies": {
     "@opentrader/types": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "@prisma/client": "5.2.0",
+    "@prisma/client": "5.5.2",
     "zod": "3.21.1"
   },
   "prisma": {
