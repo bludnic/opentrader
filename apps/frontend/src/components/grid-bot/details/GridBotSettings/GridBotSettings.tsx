@@ -44,7 +44,10 @@ export const GridBotSettings: FC<SimpleGridFormProps> = ({ bot, symbol }) => {
         </Grid>
 
         <Grid md={6} xs={12}>
-          <SettingInput label="Grid levels" value={lowPrice} />
+          <SettingInput
+            label="Grid levels"
+            value={bot.settings.gridLines.length}
+          />
         </Grid>
       </Grid>
     </Grid>
