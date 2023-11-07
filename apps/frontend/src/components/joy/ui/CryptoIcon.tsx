@@ -1,5 +1,7 @@
+"use client";
+
 import { FC } from "react";
-import Image from "next/image";
+import Image, { ImageLoader } from "next/image";
 
 const componentName = "CryptoIcon" as const;
 
@@ -11,12 +13,15 @@ type Props = {
 // Icons from here: https://github.com/ViewBlock/cryptometa
 const cdnUrl = "https://meta.viewblock.io";
 
-export const CryptoIcon: FC<Props> = ({ symbol, size = 32 }) => {
-  const logoUrl = `${cdnUrl}/${symbol}/logo`;
+const imageLoader: ImageLoader = ({ src: symbol, width, quality }) => {
+  return `${cdnUrl}/${symbol}/logo`;
+};
 
+export const CryptoIcon: FC<Props> = ({ symbol, size = 32 }) => {
   return (
     <Image
-      src={logoUrl}
+      loader={imageLoader}
+      src={symbol}
       width={size}
       height={size}
       loading="lazy"
