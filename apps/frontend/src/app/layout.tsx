@@ -1,6 +1,6 @@
-import JoyThemeRegistry from "src/components/JoyThemeRegistry/ThemeRegistry";
-import { StoreProvider } from "src/components/StoreProvider";
-import { TrpcProvider } from "src/components/TrpcProvider";
+import { ThemeProvider } from "src/providers/ThemeProvider";
+import { StoreProvider } from "src/providers/StoreProvider";
+import { TrpcProvider } from "src/providers/TrpcProvider";
 
 export const metadata = {
   title: "Next.js",
@@ -17,7 +17,7 @@ export default function RootLayout({
       <body>
         <TrpcProvider>
           <StoreProvider>
-            <JoyThemeRegistry>{children}</JoyThemeRegistry>
+            <ThemeProvider>{children}</ThemeProvider>
           </StoreProvider>
         </TrpcProvider>
       </body>

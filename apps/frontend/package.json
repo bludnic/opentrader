@@ -7,8 +7,6 @@
     "start": "next start",
     "start:prod": "next start",
     "lint": "next lint",
-    "openapi:markets:rtk:generate": "npx @rtk-query/codegen-openapi src/lib/markets/openapi-config.ts",
-    "postinstall": "pnpm run openapi:markets:rtk:generate",
     "test:unit": "jest"
   },
   "dependencies": {
@@ -19,7 +17,6 @@
     "@mui/base": "5.0.0-beta.22",
     "@mui/icons-material": "^5.14.13",
     "@mui/joy": "5.0.0-beta.13",
-    "@mui/material": "^5.14.13",
     "@mui/x-date-pickers": "^6.14.0",
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@opentrader/backtesting": "workspace:*",
@@ -51,7 +48,6 @@
     "react-redux": "^8.1.2",
     "react-window": "^1.8.9",
     "redux": "^4.2.1",
-    "redux-saga": "^1.2.3",
     "server-only": "^0.0.1",
     "superjson": "^1.13.3",
     "usehooks-ts": "^2.9.1",

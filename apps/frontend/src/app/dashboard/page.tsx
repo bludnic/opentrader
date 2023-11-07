@@ -1,4 +1,4 @@
-import { LoginForm } from "src/components/joy/LoginForm";
+import { LoginForm } from "src/components/login/LoginForm";
 
 export default async function Page() {
   return (

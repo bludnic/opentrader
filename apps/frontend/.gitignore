@@ -38,6 +38,3 @@ yarn-error.log*
 
 # coingecko
 src/lib/coingecko/client
-
-# markets swagger
-src/lib/markets/marketsApi.ts

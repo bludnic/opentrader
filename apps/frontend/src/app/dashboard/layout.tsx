@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
-import { ThemeSwitcher } from "src/components/joy/ui/ThemeSwitcher";
-import { AppBar } from "src/components/joy/ui/AppBar";
-import { AppVersionInfo } from "src/components/joy/ui/AppVersionInfo";
-import { FlexSpacer } from "src/components/joy/ui/FlexSpacer";
-import { LeftNavigation } from "src/components/joy/ui/LeftNavigation";
-import { Logo } from "src/components/joy/ui/Logo";
-import { Main } from "src/components/joy/ui/Main";
-import { TopNavigation } from "src/components/joy/ui/TopNavigation";
-import { AppDrawer } from "src/components/joy/ui/AppDrawer";
+import { ThemeSwitcher } from "src/ui/navigation/ThemeSwitcher";
+import { AppBar } from "src/ui/navigation/AppBar";
+import { AppVersionInfo } from "src/ui/navigation/AppVersionInfo";
+import { FlexSpacer } from "src/ui/FlexSpacer";
+import { LeftNavigation } from "src/ui/navigation/LeftNavigation";
+import { Logo } from "src/ui/Logo";
+import { Main } from "src/ui/Main";
+import { TopNavigation } from "src/ui/navigation/TopNavigation";
+import { AppDrawer } from "src/ui/navigation/AppDrawer";
 
 type Props = {
   children: ReactNode;

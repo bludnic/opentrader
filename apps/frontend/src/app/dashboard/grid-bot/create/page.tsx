@@ -1,7 +1,7 @@
 import Grid from "@mui/joy/Grid";
 import { ExchangeCode } from "@opentrader/types";
 import React from "react";
-import CreateGridBotPage from "src/components/grid-bot/create/page";
+import CreateGridBotPage from "src/components/grid-bot/create-bot/page";
 import { tServer } from "src/lib/trpc/server";
 
 async function fetchData() {

@@ -1,6 +1,6 @@
 import Grid from "@mui/joy/Grid";
 import React from "react";
-import { BotCard } from "src/components/grid-bot/list/BotCard";
+import { BotCard } from "src/components/grid-bot/bots-list/BotCard";
 import { tServer } from "src/lib/trpc/server";
 
 export default async function Page() {
