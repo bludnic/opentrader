@@ -9,6 +9,7 @@ import { CronPlacePendingOrderButton } from "src/components/grid-bot/bot-details
 import { GridDetailChart } from "src/components/grid-bot/bot-details/GridDetailChart";
 import { SmartTradesTable } from "src/components/grid-bot/bot-details/SmartTradesTable";
 import { StartStopBotButton } from "src/components/grid-bot/bot-details/StartStopBotButton";
+import { SyncOrdersButton } from "src/components/grid-bot/bot-details/SyncOrdersButton";
 import { tServer } from "src/lib/trpc/server";
 import Grid from "@mui/joy/Grid";
 import Box from "@mui/joy/Box";
@@ -75,6 +76,8 @@ export default async function Page({ params }: Props) {
           <StartStopBotButton bot={bot} />
 
           <RunBotTemplateButton bot={bot} />
+
+          <SyncOrdersButton bot={bot} />
 
           <CronPlacePendingOrderButton
             bot={bot}

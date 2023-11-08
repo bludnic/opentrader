@@ -39,6 +39,9 @@ import { ZGetGridBotFormOptionsInputSchema } from "./get-form-options/schema";
 import { cronPlacePendingOrders } from "./cron-place-pending-orders/handler";
 import { ZCronPlacePendingOrdersInputSchema } from "./cron-place-pending-orders/schema";
 
+import { syncOrders } from "./sync-orders/handler";
+import { ZSyncGridBotOrdersInputSchema } from "./sync-orders/schema";
+
 export const gridBotRouter = router({
   list: authorizedProcedure.query(getGridBots),
   getOne: authorizedProcedure.input(ZGetGridBotInputSchema).query(getGridBot),
@@ -60,6 +63,9 @@ export const gridBotRouter = router({
   cronPlaceLimitOrders: authorizedProcedure
     .input(ZCronPlacePendingOrdersInputSchema)
     .mutation(cronPlacePendingOrders),
+  syncOrders: authorizedProcedure
+    .input(ZSyncGridBotOrdersInputSchema)
+    .mutation(syncOrders),
   activeSmartTrades: authorizedProcedure
     .input(ZGetActiveSmartTradesInputSchema)
     .query(getActiveSmartTrades),
