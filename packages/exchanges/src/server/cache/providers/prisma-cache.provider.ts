@@ -5,6 +5,11 @@ import { ICacheProvider } from "#exchanges/types/cache/cache-provider.interface"
 
 export class PrismaCacheProvider implements ICacheProvider {
   async getMarkets(exchangeCode: ExchangeCode, ccxtExchange: Exchange) {
+    console.log("🏛️ @opentrader/exchanges");
+    console.log(`    getMarkets() from ${exchangeCode} exchange using PrismaCacheProvider`)
+
+    const startTime = Date.now();
+
     const cachedMarkets = await xprisma.markets.findUnique({
       where: {
         exchangeCode,
@@ -12,14 +17,21 @@ export class PrismaCacheProvider implements ICacheProvider {
     });
 
     if (cachedMarkets) {
-      console.log(`PrismaCache(${exchangeCode}): from cache`);
+      const endTime = Date.now();
+      const duration = (endTime - startTime) / 1000;
+
+      console.log(`    Returned from cache in ${duration}s`);
       return cachedMarkets.markets as any as Dictionary<Market>; // @todo better types
     }
 
-    console.log(`PrismaCache(${exchangeCode}): from Exchange`);
-
     // If not cached, loadMarkets and cache to DB
     const markets = await ccxtExchange.loadMarkets();
+
+    const endTime = Date.now();
+    const duration = (endTime - startTime) / 1000;
+
+    console.log(`    Fetched from Exchange in ${duration}s`);
+
     return this.cacheMarkets(markets, exchangeCode);
   }
 
