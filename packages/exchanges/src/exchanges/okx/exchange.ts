@@ -122,15 +122,18 @@ export class OkxExchange implements IExchange {
   }
 
   async getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo> {
+    const markets = await this.loadMarkets();
+
     const args = normalize.getSymbol.request(params);
     // method market() not typed by CCXT
-    const data: Market = await this.ccxt.market(...args);
+    // const data: Market = await this.ccxt.market(...args);
+    const data: Market = markets[args[0]]
 
-    return normalize.getSymbol.response(data);
+    return normalize.getSymbol.response(data); // @todo refactor
   }
 
   async getSymbols(): Promise<ISymbolInfo[]> {
-    const markets = await this.ccxt.loadMarkets();
+    const markets = await this.loadMarkets();
 
     return normalize.getSymbols.response(markets);
   }
