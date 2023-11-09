@@ -1,9 +1,7 @@
-import { GridBotProcessor } from "#processing/grid-bot";
-import { xprisma } from "@opentrader/db";
-import { exchanges } from "@opentrader/exchanges";
-import { ExchangeCode } from "@opentrader/types";
-import { OrderNotFound } from "ccxt";
+import { GridBotProcessor, SmartTradeProcessor } from "@opentrader/processing";
+import { OrderEntity, xprisma } from "@opentrader/db";
 import { Context } from "#trpc/utils/context";
+import { IGetLimitOrderResponse } from "@opentrader/types";
 import { TSyncGridBotOrdersInputSchema } from "./schema";
 
 type Options = {
@@ -14,109 +12,92 @@ type Options = {
 };
 
 /**
- * Sync orders statuses: exchange -> db
+ * 1. Sync orders statuses: exchange -> db
+ * 2. Run bot template if any order status changed
  * @param ctx
  * @param input
  */
+// @todo rename to process?
 export async function syncOrders({ input, ctx }: Options) {
   const { botId } = input;
 
-  // // Find orders with `status == Placed` and the last sync was >5 minutes ago.
-  // const ONE_HOUR_AGO = subMinutes(new Date(), 5);
-  const orders = await xprisma.order.findMany({
+  // 1. Place pending SmartTrades
+  const pendingSmartTrades = await xprisma.smartTrade.findMany({
     where: {
-      status: "Placed",
-      smartTrade: {
-        botId,
-      },
-    },
-    orderBy: {
-      syncedAt: "asc",
-    },
-    include: {
-      smartTrade: {
-        include: {
-          exchangeAccount: true,
+      type: "Trade",
+      orders: {
+        some: {
+          status: "Idle",
         },
       },
+      bot: {
+        id: botId,
+      },
+    },
+    include: {
+      orders: true,
+      exchangeAccount: true,
     },
   });
 
-  for (const order of orders) {
-    if (!order.exchangeOrderId) {
-      throw new Error("Order: Missing `exchangeOrderId`");
-    }
-
-    const { smartTrade } = order;
-    const { exchangeAccount } = smartTrade;
-
-    const credentials = {
-      ...exchangeAccount.credentials,
-      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
-      password: exchangeAccount.password || "",
-    };
-    const exchange = exchanges[exchangeAccount.exchangeCode](credentials);
-
-    console.log(
-      `Synchronize order #${order.id}: exchangeOrderId "${order.exchangeOrderId}": price: ${order.price}: status: ${order.status}`,
+  for (const smartTrade of pendingSmartTrades) {
+    const processor = new SmartTradeProcessor(
+      smartTrade,
+      smartTrade.exchangeAccount,
     );
-    try {
-      const exchangeOrder = await exchange.getLimitOrder({
-        orderId: order.exchangeOrderId,
-        symbol: smartTrade.exchangeSymbolId,
-      });
 
-      await xprisma.order.updateSyncedAt(order.id);
+    await processor.placeNext();
+  }
 
-      if (exchangeOrder.status === "filled") {
-        const statusChanged = order.status !== "Filled";
-        if (statusChanged) {
-          // onFilled
+  // 2.a. Sync order statuses: exchange -> db
+  // 2.b. Run bot template
+  //
+  // Get SmartTrades that contain at least on Order with status "Placed"
+  const smartTrades = await xprisma.smartTrade.findMany({
+    where: {
+      orders: {
+        some: {
+          status: "Placed",
+        },
+      },
+      bot: {
+        id: botId,
+      },
+    },
+    include: {
+      orders: true,
+      exchangeAccount: true,
+    },
+  });
 
-          await xprisma.order.updateStatusToFilled({
-            orderId: order.id,
-            filledPrice: exchangeOrder.filledPrice,
-          });
-          console.log(
-            `onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
-          );
+  const onFilled = async (
+    order: OrderEntity,
+    exchangeOrder: IGetLimitOrderResponse,
+  ) => {
+    const bot = await GridBotProcessor.fromSmartTradeId(order.smartTradeId);
+    await bot.process();
+  };
 
-          const bot = await GridBotProcessor.fromSmartTradeId(
-            order.smartTrade.id,
-          );
-          // @todo minor feature:
-          // 1. Make an async queue to guarantee template execution
-          // on every order filled event.
-          // 2. OR cancel somehow current process, and run it again.
-          await bot.process();
-        }
-      } else if (exchangeOrder.status === "canceled") {
-        const statusChanged = order.status !== "Canceled";
-        if (statusChanged) {
-          // onCancelled
+  const onCanceled = async (
+    order: OrderEntity,
+    exchangeOrder: IGetLimitOrderResponse,
+  ) => {
+    // NOOP
+  };
 
-          // Edge case: the user may cancel the order manually on the exchange
-          await xprisma.order.updateStatus("Canceled", order.id);
-          console.log(
-            `onOrderCanceled: Order #${order.id}: ${order.exchangeOrderId} was canceled`,
-          );
-        }
-      }
-    } catch (err) {
-      if (err instanceof OrderNotFound) {
-        await xprisma.order.updateStatus("Deleted", order.id);
+  for (const smartTrade of smartTrades) {
+    const processor = new SmartTradeProcessor(
+      smartTrade,
+      smartTrade.exchangeAccount,
+    );
 
-        console.log(
-          `Order not found on the exchange. Change status to "Deleted"`,
-        );
-      } else {
-        throw err;
-      }
-    }
+    await processor.sync({
+      onFilled,
+      onCanceled,
+    });
   }
 
   return {
     ok: true,
-    orders,
   };
 }

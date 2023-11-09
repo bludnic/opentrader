@@ -68,6 +68,7 @@ export class GridBotProcessor {
   }
 
   async processCommand(command: "start" | "stop" | "process") {
+    console.log("🤖 @opentrader/processing: GridBotProcessor");
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,

@@ -1,5 +1,5 @@
 import { xprisma } from "#db/xprimsa";
-import { SmartTradeRepository } from "@opentrader/processing";
+import { SmartTradeProcessor } from "@opentrader/processing";
 import { Context } from "#trpc/utils/context";
 import { TCronPlacePendingOrdersInputSchema } from "./schema";
 
@@ -21,7 +21,9 @@ export async function cronPlacePendingOrders({ ctx, input }: Options) {
           status: "Idle",
         },
       },
-      botId,
+      bot: {
+        id: botId,
+      },
     },
     include: {
       exchangeAccount: true,
@@ -37,12 +39,12 @@ export async function cronPlacePendingOrders({ ctx, input }: Options) {
   }
 
   for (const smartTrade of smartTrades) {
-    const smartTradeRepo = new SmartTradeRepository(
+    const processor = new SmartTradeProcessor(
       smartTrade,
       smartTrade.exchangeAccount,
     );
 
-    await smartTradeRepo.placeOrders();
+    await processor.placeNext();
   }
 
   return {

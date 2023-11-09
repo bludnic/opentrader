@@ -1,2 +1,2 @@
-export * from "./repositories";
 export * from "./grid-bot";
+export * from "./smart-trade";

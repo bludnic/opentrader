@@ -1,10 +1,10 @@
+import { SmartTradeProcessor } from "#processing/smart-trade";
 import {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
 import { TGridBot, toSmartTradeEntity, xprisma } from "@opentrader/db";
-import { SmartTradeRepository } from "#processing/repositories/smart-trade.repository";
 import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
 
 export class GridBotStoreAdapter implements IStore {
@@ -125,12 +125,12 @@ export class GridBotStoreAdapter implements IStore {
       return false;
     }
 
-    const smartTradeRepo = new SmartTradeRepository(
+    const processor = new SmartTradeProcessor(
       smartTrade,
       smartTrade.exchangeAccount,
     );
 
-    await smartTradeRepo.cancelOrders();
+    await processor.cancelOrders();
 
     return true;
   }
