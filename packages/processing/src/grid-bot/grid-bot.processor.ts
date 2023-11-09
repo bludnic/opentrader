@@ -79,12 +79,18 @@ export class GridBotProcessor {
 
     await xprisma.bot.grid.setProcessing(true, this.bot.id);
 
-    if (command === "start") {
-      await processor.start();
-    } else if (command === "stop") {
-      await processor.stop();
-    } else if (command === "process") {
-      await processor.process();
+    try {
+      if (command === "start") {
+        await processor.start();
+      } else if (command === "stop") {
+        await processor.stop();
+      } else if (command === "process") {
+        await processor.process();
+      }
+    } catch (err) {
+      await xprisma.bot.grid.setProcessing(false, this.bot.id);
+
+      throw err;
     }
 
     await xprisma.bot.grid.setProcessing(false, this.bot.id);
