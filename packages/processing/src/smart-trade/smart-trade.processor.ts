@@ -224,9 +224,11 @@ export class SmartTradeProcessor {
           await xprisma.order.updateStatusToFilled({
             orderId: order.id,
             filledPrice: exchangeOrder.filledPrice,
+            filledAt: new Date(exchangeOrder.lastTradeTimestamp),
+            fee: exchangeOrder.fee,
           });
           console.log(
-            `        -> Filled with price ${exchangeOrder.filledPrice}`,
+            `        -> Filled with price ${exchangeOrder.filledPrice} and fee ${exchangeOrder.fee}`,
           );
 
           // emit onFilled

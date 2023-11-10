@@ -4,6 +4,7 @@ import { composeSymbolId } from "@opentrader/tools";
 import { ExchangeCode } from "@opentrader/types";
 import React from "react";
 import { BotSettings } from "src/components/grid-bot/bot-details/BotSettings";
+import { ProfitsCard } from "src/components/grid-bot/bot-details/ProfitsCard";
 import { RunBotTemplateButton } from "src/components/grid-bot/bot-details/RunBotTemplateButton";
 import { CronPlacePendingOrderButton } from "src/components/grid-bot/bot-details/CronPlacePendingOrderButton";
 import { GridDetailChart } from "src/components/grid-bot/bot-details/GridDetailChart";
@@ -41,6 +42,10 @@ export default async function Page({ params }: Props) {
   });
 
   const pendingSmartTrades = await tServer.gridBot.pendingSmartTrades({
+    botId,
+  });
+
+  const completedSmartTrades = await tServer.gridBot.completedSmartTrades({
     botId,
   });
 
@@ -88,6 +93,14 @@ export default async function Page({ params }: Props) {
 
       <Grid md={9}>
         <SmartTradesTable smartTrades={activeSmartTrades} />
+      </Grid>
+
+      <Grid md={3}>
+        <ProfitsCard
+          smartTrades={completedSmartTrades}
+          baseCurrency={bot.baseCurrency}
+          quoteCurrency={bot.quoteCurrency}
+        />
       </Grid>
     </Grid>
   );

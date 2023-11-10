@@ -1,4 +1,8 @@
-import { xprisma } from "@opentrader/db";
+import {
+  SmartTradeEntity_Order_Order,
+  toSmartTradeEntity,
+  xprisma,
+} from "@opentrader/db";
 import { Context } from "#trpc/utils/context";
 import { TGetCompletedSmartTradesInputSchema } from "./schema";
 
@@ -27,8 +31,16 @@ export async function getCompletedSmartTrades({ ctx, input }: Options) {
     },
     include: {
       orders: true,
+      exchangeAccount: true,
     },
+    orderBy: {
+      updatedAt: 'desc'
+    }
   });
 
-  return smartTrades;
+  const smartTradesDto = smartTrades.map(
+    toSmartTradeEntity,
+  ) as SmartTradeEntity_Order_Order[]; // more concrete type (need to add a generic prop to "toSmartTradeEntity()")
+
+  return smartTradesDto;
 }

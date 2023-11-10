@@ -26,6 +26,7 @@ const getLimitOrder: Normalize["getLimitOrder"] = {
     status: normalizeOrderStatus(order),
     fee: order.fee.cost,
     createdAt: order.timestamp,
+    lastTradeTimestamp: order.lastTradeTimestamp,
   }),
 };
 

@@ -51,6 +51,7 @@ export class MemoryExchange implements IExchange {
       status: "filled",
       fee: 0,
       createdAt: 0,
+      lastTradeTimestamp: 0,
       filledPrice: null,
     };
   }

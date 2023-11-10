@@ -126,6 +126,7 @@ model SmartTrade {
   ownerId Int
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {
@@ -136,6 +137,7 @@ model Order {
   side OrderSide
   price Float? // Market orders doesn't require price to be specified
   filledPrice Float?
+  fee Float?
 
   exchangeOrderId String?
 

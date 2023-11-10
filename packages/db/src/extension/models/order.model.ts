@@ -39,12 +39,26 @@ export const orderModel = {
   async updateStatusToFilled(data: {
     orderId: number;
     filledPrice: number | null;
+    filledAt: Date | null;
+    fee: number | null;
   }) {
-    const { orderId, filledPrice } = data;
+    const { orderId, filledPrice, filledAt, fee } = data;
 
     if (filledPrice === null) {
       throw new Error(
         'Cannot update order status to "filled" without specifying "filledPrice"',
+      );
+    }
+
+    if (fee === null) {
+      throw new Error(
+        'Cannot update order status to "filled" without specifying "fee"',
+      );
+    }
+
+    if (filledAt === null) {
+      throw new Error(
+        'Cannot update order status to "filled" without specifying "filledAt"',
       );
     }
 
@@ -55,6 +69,8 @@ export const orderModel = {
       data: {
         status: "Filled",
         filledPrice,
+        filledAt,
+        fee,
       },
     });
   },
