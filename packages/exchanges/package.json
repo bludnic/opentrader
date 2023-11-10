@@ -16,7 +16,7 @@
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "typescript": "^4.9.5"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@opentrader/db": "workspace:*",
