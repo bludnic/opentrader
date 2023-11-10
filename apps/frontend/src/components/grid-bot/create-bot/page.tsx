@@ -4,6 +4,7 @@ import React from "react";
 import Grid from "@mui/joy/Grid";
 import { BarSize, ICandlestick } from "@opentrader/types";
 
+import { TRPCClientErrorBoundary } from "src/ui/errors/TRPCClientErrorBoundary";
 import { CreateGridBotForm } from "./form";
 import { ChartBarSize, GridChart } from "./GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";
@@ -58,7 +59,7 @@ export default function CreateGridBotPage(props: Props) {
   const gridLines = useAppSelector(selectGridLines);
 
   return (
-    <>
+    <TRPCClientErrorBoundary>
       <Grid md={9}>
         <GridChart
           symbolId={symbolId}
@@ -71,6 +72,6 @@ export default function CreateGridBotPage(props: Props) {
       <Grid md={3}>
         <CreateGridBotForm />
       </Grid>
-    </>
+    </TRPCClientErrorBoundary>
   );
 }
