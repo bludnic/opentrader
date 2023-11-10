@@ -26,7 +26,7 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
 
       setTimeout(() => {
         router.push(`/dashboard/grid-bot/details/${bot.id}`);
-      }, 3000);
+      }, 1000);
     },
   });
 
