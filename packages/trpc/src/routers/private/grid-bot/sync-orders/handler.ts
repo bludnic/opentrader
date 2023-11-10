@@ -12,8 +12,9 @@ type Options = {
 };
 
 /**
- * 1. Sync orders statuses: exchange -> db
- * 2. Run bot template if any order status changed
+ * 1.a. Sync orders statuses: exchange -> db
+ * 1.b. Run bot template if any order status changed
+ * 2. Place pending SmartTrades
  * @param ctx
  * @param input
  */
@@ -21,36 +22,8 @@ type Options = {
 export async function syncOrders({ input, ctx }: Options) {
   const { botId } = input;
 
-  // 1. Place pending SmartTrades
-  const pendingSmartTrades = await xprisma.smartTrade.findMany({
-    where: {
-      type: "Trade",
-      orders: {
-        some: {
-          status: "Idle",
-        },
-      },
-      bot: {
-        id: botId,
-      },
-    },
-    include: {
-      orders: true,
-      exchangeAccount: true,
-    },
-  });
-
-  for (const smartTrade of pendingSmartTrades) {
-    const processor = new SmartTradeProcessor(
-      smartTrade,
-      smartTrade.exchangeAccount,
-    );
-
-    await processor.placeNext();
-  }
-
-  // 2.a. Sync order statuses: exchange -> db
-  // 2.b. Run bot template
+  // 1.a. Sync order statuses: exchange -> db
+  // 1.b. Run bot template
   //
   // Get SmartTrades that contain at least on Order with status "Placed"
   const smartTrades = await xprisma.smartTrade.findMany({
@@ -95,6 +68,34 @@ export async function syncOrders({ input, ctx }: Options) {
       onFilled,
       onCanceled,
     });
+  }
+
+  // 2. Place pending SmartTrades
+  const pendingSmartTrades = await xprisma.smartTrade.findMany({
+    where: {
+      type: "Trade",
+      orders: {
+        some: {
+          status: "Idle",
+        },
+      },
+      bot: {
+        id: botId,
+      },
+    },
+    include: {
+      orders: true,
+      exchangeAccount: true,
+    },
+  });
+
+  for (const smartTrade of pendingSmartTrades) {
+    const processor = new SmartTradeProcessor(
+      smartTrade,
+      smartTrade.exchangeAccount,
+    );
+
+    await processor.placeNext();
   }
 
   return {
