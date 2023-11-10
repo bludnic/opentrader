@@ -33,12 +33,6 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
         variant: "success",
       });
     },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
-    },
   });
 
   const stopBot = tClient.gridBot.stop.useMutation({
@@ -48,12 +42,6 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
       enqueueSnackbar("Bot has been stoped", {
         variant: "success",
       });
-    },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
     },
   });
 

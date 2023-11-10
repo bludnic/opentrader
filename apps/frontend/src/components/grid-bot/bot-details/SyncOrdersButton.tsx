@@ -27,12 +27,6 @@ export const SyncOrdersButton: FC<SyncOrdersButtonProps> = (props) => {
         variant: "success",
       });
     },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
-    },
   });
 
   return (

@@ -1,6 +1,7 @@
 import { ThemeProvider } from "src/providers/ThemeProvider";
 import { StoreProvider } from "src/providers/StoreProvider";
 import { TrpcProvider } from "src/providers/TrpcProvider";
+import { TRPCApiErrorProvider } from "src/ui/errors/api";
 
 export const metadata = {
   title: "Next.js",
@@ -15,11 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TrpcProvider>
-          <StoreProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </StoreProvider>
-        </TrpcProvider>
+        <TRPCApiErrorProvider>
+          <TrpcProvider>
+            <StoreProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </StoreProvider>
+          </TrpcProvider>{" "}
+        </TRPCApiErrorProvider>
       </body>
     </html>
   );

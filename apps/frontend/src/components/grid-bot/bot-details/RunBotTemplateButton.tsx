@@ -27,12 +27,6 @@ export const RunBotTemplateButton: FC<RunBotTemplateButtonProps> = (props) => {
         variant: "success",
       });
     },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
-    },
   });
 
   return (

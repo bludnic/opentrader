@@ -28,11 +28,6 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
         router.push(`/dashboard/grid-bot/details/${bot.id}`);
       }, 3000);
     },
-    onError(err) {
-      enqueueSnackbar(JSON.stringify(err), {
-        variant: "error",
-      });
-    },
   });
 
   const handleSubmit = () => {

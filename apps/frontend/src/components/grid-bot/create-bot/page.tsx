@@ -4,7 +4,7 @@ import React from "react";
 import Grid from "@mui/joy/Grid";
 import { BarSize, ICandlestick } from "@opentrader/types";
 
-import { TRPCClientErrorBoundary } from "src/ui/errors/TRPCClientErrorBoundary";
+import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
 import { CreateGridBotForm } from "./form";
 import { ChartBarSize, GridChart } from "./GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";

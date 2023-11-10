@@ -60,12 +60,6 @@ export const CronPlacePendingOrderButton: FC<
           variant: "success",
         });
       },
-      onError(error) {
-        enqueueSnackbar(JSON.stringify(error), {
-          variant: "error",
-        });
-        console.log(error);
-      },
     });
 
   const buttonNode = (

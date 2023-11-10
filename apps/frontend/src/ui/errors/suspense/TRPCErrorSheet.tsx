@@ -4,34 +4,23 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Divider from "@mui/joy/Divider";
 import Typography from "@mui/joy/Typography";
-import { type TRPCErrorShape } from "@trpc/server/rpc";
 import { FC } from "react";
-import { TTRPCErrorSchema } from "src/ui/errors/utils/trpcErrorSchema";
+import { TRPCApiError } from "src/ui/errors/types";
+import { getTRPCErrorValue } from "src/ui/errors/utils/getTrpcErrorValue";
 
 type TRPCErrorSheetProps = {
-  error: TRPCErrorShape;
+  error: TRPCApiError;
 };
 
-type ErrorData = TTRPCErrorSchema["shape"]["data"];
-
-function getOptionalValue<K extends keyof ErrorData>(
-  obj: Record<string, unknown>,
-  key: K,
-): ErrorData[K] | undefined {
-  if (key in obj) {
-    return obj[key] as ErrorData[K];
-  }
-}
-
 export const TRPCErrorSheet: FC<TRPCErrorSheetProps> = ({ error }) => {
-  const path = getOptionalValue(error.data, "path");
-  const stacktrace = getOptionalValue(error.data, "stack");
-  const httpStatus = getOptionalValue(error.data, "httpStatus");
-  const code = getOptionalValue(error.data, "code");
+  const path = getTRPCErrorValue(error.data, "path");
+  const stacktrace = getTRPCErrorValue(error.data, "stack");
+  const httpStatus = getTRPCErrorValue(error.data, "httpStatus");
+  const code = getTRPCErrorValue(error.data, "code");
 
   return (
     <Card>
-      <Typography level="h2">{code ?? error.code}</Typography>
+      <Typography level="h2">{code}</Typography>
       <Typography>{error.message}</Typography>
 
       <Divider />

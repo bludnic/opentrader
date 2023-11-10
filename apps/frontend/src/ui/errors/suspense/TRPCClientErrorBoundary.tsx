@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
-import { TRPCErrorSheet } from "src/ui/errors/TRPCErrorSheet";
-import { UnknownErrorSheet } from "src/ui/errors/UnknownErrorSheet";
-import { isTRPCError } from "./utils/isTrpcError";
+import { isTRPCError } from "src/ui/errors/utils/isTrpcError";
+import { TRPCErrorSheet } from "./TRPCErrorSheet";
+import { UnknownErrorSheet } from "./UnknownErrorSheet";
 
 type Props = {
   children: ReactNode;
@@ -37,7 +37,7 @@ export class TRPCClientErrorBoundary extends React.Component<Props, State> {
     }
 
     if (isTRPCError(error)) {
-      return <TRPCErrorSheet error={error.shape} />;
+      return <TRPCErrorSheet error={error} />;
     }
 
     return <UnknownErrorSheet error={error} />;

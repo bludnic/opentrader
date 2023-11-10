@@ -40,12 +40,6 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
         variant: "success",
       });
     },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
-    },
   });
 
   const stopBot = tClient.gridBot.stop.useMutation({
@@ -55,12 +49,6 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
       enqueueSnackbar("Bot has been stoped", {
         variant: "success",
       });
-    },
-    onError(error) {
-      enqueueSnackbar(JSON.stringify(error), {
-        variant: "error",
-      });
-      console.log(error);
     },
   });
 
