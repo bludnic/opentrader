@@ -84,8 +84,8 @@ importers:
         specifier: ^4.20.10
         version: 4.20.10
       lightweight-charts:
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -4530,8 +4530,8 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /lightweight-charts@4.1.0:
-    resolution: {integrity: sha512-O7RPoRLPPmwRNOTmBq1ne5eKgjdVZocd2TE77JCfaVJEwS+0meN9UwMKGNGiiRQBb2UkuhyBSiX7XrErBuL+CQ==}
+  /lightweight-charts@4.1.1:
+    resolution: {integrity: sha512-HYjm66NAIOhoLDNaaQsiwOVWiFHL1yrygZeKd4PgdZESnWyp5dPoTe3pH3t2h4ix+Ix5TwLZaNbWroZqQuj6OA==}
     dependencies:
       fancy-canvas: 2.1.0
     dev: false
