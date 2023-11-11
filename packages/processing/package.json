@@ -18,6 +18,6 @@
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
-    "ccxt": "^4.0.55"
+    "ccxt": "^4.1.48"
   }
 }

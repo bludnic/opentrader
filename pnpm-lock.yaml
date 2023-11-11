@@ -72,8 +72,8 @@ importers:
         specifier: ^6.2.1
         version: 6.2.1
       ccxt:
-        specifier: ^4.0.55
-        version: 4.0.55
+        specifier: ^4.1.48
+        version: 4.1.48
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
@@ -306,8 +306,8 @@ importers:
         specifier: workspace:*
         version: link:../tools
       ccxt:
-        specifier: ^4.0.55
-        version: 4.0.55
+        specifier: ^4.1.48
+        version: 4.1.48
     devDependencies:
       '@opentrader/tsconfig':
         specifier: workspace:*
@@ -368,8 +368,8 @@ importers:
         specifier: workspace:*
         version: link:../exchanges
       ccxt:
-        specifier: ^4.0.55
-        version: 4.0.55
+        specifier: ^4.1.48
+        version: 4.1.48
     devDependencies:
       '@opentrader/tsconfig':
         specifier: workspace:*
@@ -436,8 +436,8 @@ importers:
         specifier: ^10.38.0
         version: 10.38.0
       ccxt:
-        specifier: ^4.0.55
-        version: 4.0.55
+        specifier: ^4.1.48
+        version: 4.1.48
       superjson:
         specifier: ^1.13.3
         version: 1.13.3
@@ -2412,8 +2412,8 @@ packages:
   /caniuse-lite@1.0.30001542:
     resolution: {integrity: sha512-UrtAXVcj1mvPBFQ4sKd38daP8dEcXXr5sQe6QNNinaPd0iA/cxg9/l3VrSdL73jgw5sKyuQ6jNgiKO12W3SsVA==}
 
-  /ccxt@4.0.55:
-    resolution: {integrity: sha512-rUyx/WGUFCjBu5HQysDYmPlNHNPa68K3AiUm0wQaAE10BoRd4jPGzdq5+/IDWMPbNPMjro/NBS545007Ku9HkA==}
+  /ccxt@4.1.48:
+    resolution: {integrity: sha512-+caI8xubVqeTLoOXPI6qLm1Ln49bHEIfqUUlASDo+oBmh98F66B8V79ztrqPsPLS5n4cSZxZ9VOxP+n2RdvLRA==}
     engines: {node: '>=15.0.0'}
     requiresBuild: true
     dependencies:
