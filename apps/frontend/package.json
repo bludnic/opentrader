@@ -20,6 +20,7 @@
     "@mui/x-date-pickers": "^6.14.0",
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@opentrader/backtesting": "workspace:*",
+    "@opentrader/exchanges": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "@opentrader/trpc": "workspace:*",
     "@redux-devtools/extension": "^3.2.5",

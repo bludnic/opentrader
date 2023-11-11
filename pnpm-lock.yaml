@@ -47,6 +47,9 @@ importers:
       '@opentrader/backtesting':
         specifier: workspace:*
         version: link:../../packages/backtesting
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../../packages/exchanges
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../../packages/tools
