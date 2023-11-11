@@ -1,0 +1,19 @@
+{
+  "name": "processor",
+  "version": "0.0.1",
+  "description": "Node for processing (syncing and publishing) orders on the Exchange",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "bludnic",
+  "devDependencies": {
+    "@opentrader/tsconfig": "workspace:*",
+    "@types/node": "^20.9.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  }
+}
