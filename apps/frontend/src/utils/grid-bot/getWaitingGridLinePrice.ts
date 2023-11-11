@@ -22,6 +22,18 @@ export function getWaitingGridLinePrice(
     (smartTrade) => smartTrade.entryOrder.status === "Filled",
   );
 
+  if (filledSmartTrades.length === 0) {
+    const highestSmartTrade = smartTrades[0]; // highest by price (assume that the array was sorted before)
+
+    return highestSmartTrade.takeProfitOrder.price!;
+  }
+
+  if (filledSmartTrades.length === 1) {
+    const smartTrade = filledSmartTrades[0];
+
+    return smartTrade.entryOrder.price!;
+  }
+
   // Find SmartTrade with the lowest price
   const smartTrade = filledSmartTrades.reduce((acc, curr) => {
     if (curr.entryOrder.price! < acc.entryOrder.price!) {
