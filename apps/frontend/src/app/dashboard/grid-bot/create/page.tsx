@@ -17,14 +17,19 @@ async function fetchData() {
   const symbol =
     symbols.find((symbol) => symbol.currencyPair === "BTC/USDT") || symbols[0];
 
+  const { price: currentAssetPrice } = await tServer.symbol.price({
+    symbolId: symbol.symbolId,
+  });
+
   return {
     exchangeAccount,
     symbol,
+    currentAssetPrice,
   };
 }
 
 export default async function Page() {
-  const { exchangeAccount, symbol } = await fetchData();
+  const { exchangeAccount, symbol, currentAssetPrice } = await fetchData();
   const { lowestCandlestick, highestCandlestick } =
     await tServer.gridBot.formOptions({
       symbolId: symbol.symbolId,
@@ -37,6 +42,7 @@ export default async function Page() {
         symbol={symbol}
         highestCandlestick={highestCandlestick}
         lowestCandlestick={lowestCandlestick}
+        currentAssetPrice={currentAssetPrice}
       />
     </Grid>
   );

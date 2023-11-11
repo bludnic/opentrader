@@ -101,8 +101,6 @@ export function useOHLC(
     setSince(calcNextSince(since, barSize));
   };
 
-  console.log("useChart: render");
-
   return {
     candlesticks,
     fetchPrev: updateSince,

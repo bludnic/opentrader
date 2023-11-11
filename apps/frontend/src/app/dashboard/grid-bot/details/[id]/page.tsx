@@ -7,7 +7,7 @@ import { BotSettings } from "src/components/grid-bot/bot-details/BotSettings";
 import { ProfitsCard } from "src/components/grid-bot/bot-details/ProfitsCard";
 import { RunBotTemplateButton } from "src/components/grid-bot/bot-details/RunBotTemplateButton";
 import { CronPlacePendingOrderButton } from "src/components/grid-bot/bot-details/CronPlacePendingOrderButton";
-import { GridDetailChart } from "src/components/grid-bot/bot-details/GridDetailChart";
+import { GridDetailChart } from "src/components/grid-bot/bot-details/GridDetailChart/GridDetailChart";
 import { SmartTradesTable } from "src/components/grid-bot/bot-details/SmartTradesTable";
 import { StartStopBotButton } from "src/components/grid-bot/bot-details/StartStopBotButton";
 import { SyncOrdersButton } from "src/components/grid-bot/bot-details/SyncOrdersButton";
@@ -55,7 +55,7 @@ export default async function Page({ params }: Props) {
         <GridDetailChart
           symbol={symbol}
           exchangeAccount={exchangeAccount}
-          gridLines={bot.settings.gridLines}
+          smartTrades={activeSmartTrades}
         />
       </Grid>
 

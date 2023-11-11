@@ -6,7 +6,6 @@ import { OHLCV } from "ccxt";
 import {
   CreatePriceLineOptions,
   IPriceLine,
-  LineStyle,
   UTCTimestamp,
 } from "lightweight-charts";
 import React, { FC, ReactNode, useEffect } from "react";
@@ -30,36 +29,6 @@ function normalizeCandle(candle: OHLCV) {
   };
 }
 
-/**
- * @param price
- * @param index Price line index, starting from `0` (from top to bottom)
- * @param length Total number of price lines
- */
-export function priceLine(
-  price: number,
-  index: number,
-  length: number,
-): CreatePriceLineOptions {
-  const lineNumber = index + 1;
-  const isUpperLimitPrice = lineNumber === length;
-  const isLowerLimitPrice = lineNumber === 1;
-
-  return {
-    price,
-    color: "#327b32",
-    axisLabelVisible: true,
-    axisLabelColor: "#327b32",
-    axisLabelTextColor: "#fff",
-    title: isUpperLimitPrice
-      ? "Upper limit price"
-      : isLowerLimitPrice
-      ? "Lower limit price"
-      : `${index}`,
-    lineVisible: true,
-    lineStyle: LineStyle.Solid,
-  };
-}
-
 type ChartProps = {
   symbolId: string;
   barSize: TBarSize;
@@ -67,7 +36,7 @@ type ChartProps = {
    * Chart AppBar
    */
   children?: ReactNode;
-  priceLines?: number[];
+  priceLines?: CreatePriceLineOptions[];
   dimmed?: boolean;
 };
 
@@ -98,12 +67,12 @@ export const Chart: FC<ChartProps> = ({
     const series = chart.series.current;
 
     // Setting price lines
-    const savedPlaceLines: IPriceLine[] = priceLines.map((price, i) =>
-      series.createPriceLine(priceLine(price, i, priceLines.length)),
+    const savedPriceLines: IPriceLine[] = priceLines.map((priceLine, i) =>
+      series.createPriceLine(priceLine),
     );
 
     return () => {
-      savedPlaceLines.forEach((priceLine) => {
+      savedPriceLines.forEach((priceLine) => {
         series?.removePriceLine(priceLine);
       });
     };

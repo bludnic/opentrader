@@ -6,7 +6,10 @@ import { BarSize, ICandlestick } from "@opentrader/types";
 
 import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
 import { CreateGridBotForm } from "./form";
-import { ChartBarSize, GridChart } from "./GridChart";
+import {
+  ChartBarSize,
+  GridChart,
+} from "src/components/grid-bot/create-bot/GridChart/GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";
 import {
   changeBarSize,
@@ -32,11 +35,17 @@ type Props = {
   symbol: TSymbol;
   lowestCandlestick: ICandlestick;
   highestCandlestick: ICandlestick;
+  currentAssetPrice: number;
 };
 
 export default function CreateGridBotPage(props: Props) {
-  const { exchangeAccount, symbol, lowestCandlestick, highestCandlestick } =
-    props;
+  const {
+    exchangeAccount,
+    symbol,
+    lowestCandlestick,
+    highestCandlestick,
+    currentAssetPrice,
+  } = props;
   const dispatch = useAppDispatch();
 
   const isFirstRender = useIsFirstRender();
@@ -66,6 +75,7 @@ export default function CreateGridBotPage(props: Props) {
           barSize={barSize}
           onBarSizeChange={handleBarSizeChange}
           gridLines={gridLines}
+          currentAssetPrice={currentAssetPrice}
         />
       </Grid>
 
