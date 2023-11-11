@@ -21,6 +21,6 @@
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "axios": "^1.5.0"
+    "axios": "^1.6.1"
   }
 }
