@@ -8,7 +8,7 @@ import { ApiKeyField } from "./fields/ApiKeyField";
 import { CreateExchangeAccountFormValues } from "./types";
 import { ExchangeCodeField } from "./fields/ExchangeCodeField";
 import { Form } from "react-final-form";
-import { FormApi } from "final-form";
+import type { FormApi } from "final-form";
 import { IsDemoAccountField } from "./fields/IsDemoAccountField";
 import { PassphraseField } from "./fields/PassphraseField";
 import { SecretKeyField } from "./fields/SecretKeyField";
