@@ -12,14 +12,14 @@
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.5.6",
+    "@types/node": "^20.9.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@opentrader/backtesting": "workspace:*",
-    "@opentrader/bot-templates": "workspace:*",
     "@opentrader/bot-processor": "workspace:*",
+    "@opentrader/bot-templates": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "axios": "^1.6.1"
   }

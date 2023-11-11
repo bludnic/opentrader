@@ -20,7 +20,7 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "@trpc/server": "^10.38.0",
+    "@trpc/server": "^10.43.3",
     "ccxt": "^4.1.48",
     "superjson": "^1.13.3",
     "zod": "3.21.1"
