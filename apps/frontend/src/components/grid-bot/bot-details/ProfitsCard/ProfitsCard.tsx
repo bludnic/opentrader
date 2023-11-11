@@ -35,11 +35,13 @@ export const ProfitsCard: FC<ProfitsCardProps> = ({
           Profits
         </Typography>
 
-        <Tooltip title="Total profit">
-          <Typography level="h3" fontSize="xl2" fontWeight="xl">
-            <Profit profit={totalProfit} currency={quoteCurrency} size="lg" />
-          </Typography>
-        </Tooltip>
+        {smartTrades.length > 0 ? (
+          <Tooltip title="Total profit">
+            <Typography level="h3" fontSize="xl2" fontWeight="xl">
+              <Profit profit={totalProfit} currency={quoteCurrency} size="lg" />
+            </Typography>
+          </Tooltip>
+        ) : null}
       </Box>
 
       {smartTrades.length > 0 ? (
