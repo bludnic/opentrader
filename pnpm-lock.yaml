@@ -78,7 +78,7 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0
       big.js:
-        specifier: ^6.1.1
+        specifier: ^6.2.1
         version: 6.2.1
       ccxt:
         specifier: ^4.0.55
