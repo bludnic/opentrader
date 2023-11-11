@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       prettier:
-        specifier: latest
+        specifier: ^3.0.3
         version: 3.0.3
       turbo:
         specifier: ^1.10.16
