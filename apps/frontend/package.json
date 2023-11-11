@@ -21,7 +21,6 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "@opentrader/trpc": "workspace:*",
-    "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.35.3",
     "@trpc/client": "^10.38.0",
