@@ -104,9 +104,6 @@ importers:
       next:
         specifier: 14.0.1
         version: 14.0.1(@babel/core@7.23.0)(react-dom@18.2.0)(react@18.2.0)
-      next-redux-wrapper:
-        specifier: ^8.1.0
-        version: 8.1.0(next@14.0.1)(react-redux@8.1.2)(react@18.2.0)
       notistack:
         specifier: ^3.0.1
         version: 3.0.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
@@ -5254,18 +5251,6 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
-
-  /next-redux-wrapper@8.1.0(next@14.0.1)(react-redux@8.1.2)(react@18.2.0):
-    resolution: {integrity: sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==}
-    peerDependencies:
-      next: '>=9'
-      react: '*'
-      react-redux: '*'
-    dependencies:
-      next: 14.0.1(@babel/core@7.23.0)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-redux: 8.1.2(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
-    dev: false
 
   /next@14.0.1(@babel/core@7.23.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-s4YaLpE4b0gmb3ggtmpmV+wt+lPRuGtANzojMQ2+gmBpgX9w5fTbjsy6dXByBuENsdCX5pukZH/GxdFgO62+pA==}

@@ -27,5 +27,7 @@ module.exports = {
 
     return config;
   },
-  transpilePackages: ["@opentrader/exchanges"],
+  experimental: {
+    optimizePackageImports: ["@mui/base", "@mui/joy"],
+  },
 };
