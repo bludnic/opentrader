@@ -136,8 +136,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/types
       '@prisma/nextjs-monorepo-workaround-plugin':
-        specifier: ^5.5.2
-        version: 5.5.2
+        specifier: toniopelo/prisma-nextjs-monorepo-workaround-plugin
+        version: github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38
       '@types/big.js':
         specifier: ^6.2.2
         version: 6.2.2
@@ -1732,10 +1732,6 @@ packages:
       kleur: 4.1.5
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@prisma/nextjs-monorepo-workaround-plugin@5.5.2:
-    resolution: {integrity: sha512-iYXDnY0L7HkZS57ui6Q+vL7g+RFlJDFrW3lQcUXs/RxYia7YGiq7OwF452An+K11YL1YDUo5LF/E48hPgeI9ZQ==}
     dev: true
 
   /@reduxjs/toolkit@1.9.7(react-redux@8.1.3)(react@18.2.0):
@@ -6199,3 +6195,9 @@ packages:
 
   /zod@3.21.1:
     resolution: {integrity: sha512-+dTu2m6gmCbO9Ahm4ZBDapx2O6ZY9QSPXst2WXjcznPMwf2YNpn3RevLx4KkZp1OPW/ouFcoBtBzFz/LeY69oA==}
+
+  github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38:
+    resolution: {tarball: https://codeload.github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/tar.gz/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38}
+    name: '@prisma/nextjs-monorepo-workaround-plugin'
+    version: 0.0.0
+    dev: true
