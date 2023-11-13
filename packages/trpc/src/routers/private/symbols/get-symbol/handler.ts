@@ -1,4 +1,4 @@
-import { exchanges } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
 import { decomposeSymbolId } from "@opentrader/tools";
 
 import { Context } from "#trpc/utils/context";
@@ -15,7 +15,7 @@ export async function getSymbol(opts: Options) {
   const { exchangeCode, currencyPairSymbol } = decomposeSymbolId(
     input.symbolId,
   );
-  const exchangeService = exchanges[exchangeCode]();
+  const exchangeService = exchangeProvider.fromCode(exchangeCode);
 
   const symbol = await exchangeService.getSymbol({
     currencyPair: currencyPairSymbol,

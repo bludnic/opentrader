@@ -1,4 +1,4 @@
-import { exchanges, IExchange } from "@opentrader/exchanges";
+import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
 import {
   assertHasExchangeOrderId,
   assertIsOrderBased,
@@ -43,13 +43,7 @@ export class SmartTradeProcessor {
 
     this.smartTrade = smartTrade;
 
-    const credentials = {
-      ...exchangeAccount.credentials,
-      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
-      password: exchangeAccount.password || "",
-    };
-
-    this.exchange = exchanges[exchangeAccount.exchangeCode](credentials);
+    this.exchange = exchangeProvider.fromAccount(exchangeAccount);
   }
 
   static async fromSmartTradeId(id: number) {

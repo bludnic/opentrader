@@ -1,9 +1,8 @@
 import { SmartTradeProcessor } from "#processing/smart-trade";
 import { BotProcessor } from "@opentrader/bot-processor";
 import { arithmeticGridBot, GridBotConfig } from "@opentrader/bot-templates";
-import { exchanges } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
 import { xprisma, TGridBot } from "@opentrader/db";
-import { ExchangeCode } from "@opentrader/types";
 
 import { GridBotStoreAdapter } from "./grid-bot-store-adapter";
 
@@ -124,19 +123,13 @@ export class GridBotProcessor {
   }
 
   private async getProcessor() {
-    const exchange = await xprisma.exchangeAccount.findUniqueOrThrow({
+    const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
       where: {
         id: this.bot.exchangeAccountId,
       },
     });
 
-    const credentials = {
-      ...exchange.credentials,
-      code: exchange.credentials.code as ExchangeCode, // workaround for casting string literal to `ExchangeCode`
-      password: exchange.password || "",
-    };
-
-    const exchangeService = exchanges[exchange.exchangeCode](credentials);
+    const exchange = exchangeProvider.fromAccount(exchangeAccount);
 
     const configuration: GridBotConfig = {
       id: this.bot.id,
@@ -151,7 +144,7 @@ export class GridBotProcessor {
 
     const processor = BotProcessor.create({
       store: storeAdapter,
-      exchange: exchangeService,
+      exchange: exchange,
       botConfig: configuration,
       botTemplate: arithmeticGridBot,
     });
