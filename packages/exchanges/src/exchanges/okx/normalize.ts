@@ -133,6 +133,7 @@ const watchOrders: Normalize["watchOrders"] = {
       status: normalizeOrderStatus(order),
       fee: order.fee.cost,
       createdAt: order.timestamp,
+      lastTradeTimestamp: order.lastTradeTimestamp,
     })),
 };
 
