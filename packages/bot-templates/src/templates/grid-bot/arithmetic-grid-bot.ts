@@ -1,4 +1,4 @@
-import { IExchange } from "@opentrader/exchanges";
+import type { IExchange } from "@opentrader/exchanges";
 import {
   cancelSmartTrade,
   IBotConfiguration,
