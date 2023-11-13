@@ -12,6 +12,21 @@ export const orderModel = {
       },
     });
   },
+  async removeRef(orderId: number) {
+    const resetSmartTradeRef = {
+      update: {
+        ref: null,
+      },
+    };
+    return prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        smartTrade: resetSmartTradeRef,
+      },
+    });
+  },
   /**
    * This method is meant to just update the `status` in the DB when
    * synchronizing with the Exchange.

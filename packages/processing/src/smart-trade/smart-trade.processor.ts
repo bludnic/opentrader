@@ -102,7 +102,7 @@ export class SmartTradeProcessor {
     if (orderPendingPlacement) {
       const exchangeOrder = await this.placeOrder(orderPendingPlacement);
       console.log(
-        `⚙️ @opentrader/processing: Order #${orderPendingPlacement.id} placed`,
+        `⚙️ @SmartTradeProcessor.placeNext(): Order #${orderPendingPlacement.id} placed`,
       );
       console.log(exchangeOrder);
     }
@@ -179,6 +179,9 @@ export class SmartTradeProcessor {
             throw err;
           }
         }
+        return;
+      case "Filled":
+        await xprisma.order.removeRef(order.id);
         return;
     }
   }
