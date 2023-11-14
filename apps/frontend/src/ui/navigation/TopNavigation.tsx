@@ -9,7 +9,7 @@ export function TopNavigation() {
         size="lg"
         color="neutral"
         component={NextLink}
-        href="/dashboard/grid-bot/list"
+        href="/dashboard/grid-bot"
       >
         Bots
       </Button>

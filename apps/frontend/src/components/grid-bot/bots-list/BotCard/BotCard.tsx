@@ -73,7 +73,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
       <CardContent>
         <Box display="flex">
           <Link
-            href={`/dashboard/grid-bot/details/${bot.id}`}
+            href={`/dashboard/grid-bot/${bot.id}`}
             className={classes.botTitle}
           >
             <Typography level="h3" fontWeight="400">
