@@ -4,3 +4,5 @@ node_modules
 .turbo
 playground
 .env
+
+.vercel
