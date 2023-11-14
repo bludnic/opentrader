@@ -5,8 +5,8 @@ const { z } = require("zod");
 const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
 
 const envValidationSchema = z.object({
-  NEXT_PUBLIC_BACKEND_API_URL: z.string().min(1),
-  NEXT_PUBLIC_MARKETS_API_URL: z.string().min(1),
+  NEXT_PUBLIC_PROCESSOR_API_URL: z.string().min(1),
+  DATABASE_URL: z.string().min(1),
 });
 envValidationSchema.parse(process.env); // validate ENV schema
 

@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./client": "./src/client/cache/providers/memory-cache.provider.ts",
-    "./server": "./src/server/cache/providers/prisma-cache.provider.ts"
+    "./server": "./src/server/cache/providers/prisma-cache.provider.ts",
+    "./dist": "./src/index.ts"
   },
   "scripts": {
     "build": "tsc"
