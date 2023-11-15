@@ -13,10 +13,10 @@ import {
   ITradingPairSymbolRequest,
   ISymbolInfo,
   IGetSymbolInfoRequest,
-  IGetFilledLimitOrdersResponse,
-  IGetFilledLimitOrdersRequest,
-  IGetCanceledLimitOrdersRequest,
-  IGetCanceledLimitOrdersResponse,
+  IGetOpenOrdersRequest,
+  IGetOpenOrdersResponse,
+  IGetClosedOrdersRequest,
+  IGetClosedOrdersResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
@@ -35,9 +35,10 @@ export interface IExchange {
   cancelLimitOrder(
     body: ICancelLimitOrderRequest,
   ): Promise<ICancelLimitOrderResponse>;
-  getFilledLimitOrders(
-    body: IGetFilledLimitOrdersRequest,
-  ): Promise<IGetFilledLimitOrdersResponse>;
+  getOpenOrders(body: IGetOpenOrdersRequest): Promise<IGetOpenOrdersResponse>;
+  getClosedOrders(
+    body: IGetClosedOrdersRequest,
+  ): Promise<IGetClosedOrdersResponse>;
   getMarketPrice(
     params: IGetMarketPriceRequest,
   ): Promise<IGetMarketPriceResponse>;
@@ -45,6 +46,5 @@ export interface IExchange {
   getSymbols(): Promise<ISymbolInfo[]>;
   getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo>;
   tradingPairSymbol(params: ITradingPairSymbolRequest): string;
-
   watchOrders(params?: IWatchOrdersRequest): Promise<IWatchOrdersResponse>;
 }

@@ -1,4 +1,4 @@
-export type IGetFilledLimitOrdersRequest = {
+export type IGetOpenOrdersRequest = {
   /**
    * e.g. ADA/USDT
    */
