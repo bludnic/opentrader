@@ -1,4 +1,4 @@
-import { $Enums, Order as OrderModel } from "@opentrader/prisma";
+import { $Enums, Order as OrderModel } from "@prisma/client";
 
 type GenericOrderProps =
   | "type"

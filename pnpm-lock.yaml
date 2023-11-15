@@ -372,6 +372,9 @@ importers:
       '@opentrader/prisma':
         specifier: workspace:*
         version: link:../prisma
+      '@prisma/client':
+        specifier: 5.5.2
+        version: 5.5.2(prisma@5.5.2)
       zod:
         specifier: 3.21.1
         version: 3.21.1
@@ -512,6 +515,9 @@ importers:
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges
+      '@opentrader/prisma':
+        specifier: workspace:*
+        version: link:../prisma
       '@opentrader/processing':
         specifier: workspace:*
         version: link:../processing

@@ -1,4 +1,4 @@
-import { Prisma } from "@opentrader/prisma";
+import { Prisma } from "@prisma/client";
 import { xprisma } from "#db/xprimsa";
 
 export type ExchangeAccountWithCredentials = Prisma.PromiseReturnType<

@@ -2,7 +2,7 @@ import { OrderNotFound } from "ccxt";
 import { subHours } from "date-fns";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { ExchangeCode } from "@opentrader/types";
-import { xprisma } from "@opentrader/db/dist";
+import { xprisma } from "@opentrader/db";
 
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
 
