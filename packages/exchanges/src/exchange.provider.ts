@@ -28,9 +28,9 @@ export class ExchangeProvider {
     // Return cached if instance available
     const cachedExchange = this.privateExchanges[id];
     if (cachedExchange) {
-      console.log(
-        `🔌 ExchangeProvider: Reused cached private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (#${exchangeAccount.id})`,
-      );
+      // console.log(
+      //   `🔌 ExchangeProvider: Reused cached private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (#${exchangeAccount.id})`,
+      // );
       return cachedExchange;
     }
 
@@ -54,9 +54,9 @@ export class ExchangeProvider {
     // Return cached if instance available
     const cachedExchange = this.publicExchanges[exchangeCode];
     if (cachedExchange) {
-      console.log(
-        `🔌 ExchangeProvider: Reused cached public instance of ${exchangeCode}`,
-      );
+      // console.log(
+      //   `🔌 ExchangeProvider: Reused cached public instance of ${exchangeCode}`,
+      // );
       return cachedExchange;
     }
 
