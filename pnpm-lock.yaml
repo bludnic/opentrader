@@ -135,9 +135,6 @@ importers:
       '@opentrader/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@prisma/nextjs-monorepo-workaround-plugin':
-        specifier: toniopelo/prisma-nextjs-monorepo-workaround-plugin
-        version: github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38
       '@types/big.js':
         specifier: ^6.2.2
         version: 6.2.2
@@ -7074,9 +7071,3 @@ packages:
 
   /zod@3.21.1:
     resolution: {integrity: sha512-+dTu2m6gmCbO9Ahm4ZBDapx2O6ZY9QSPXst2WXjcznPMwf2YNpn3RevLx4KkZp1OPW/ouFcoBtBzFz/LeY69oA==}
-
-  github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38:
-    resolution: {tarball: https://codeload.github.com/toniopelo/prisma-nextjs-monorepo-workaround-plugin/tar.gz/6a37ec791786a2a7f386ad4c5da1f19b1fd78f38}
-    name: '@prisma/nextjs-monorepo-workaround-plugin'
-    version: 0.0.0
-    dev: true
