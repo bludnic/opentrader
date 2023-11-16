@@ -83,7 +83,7 @@ export default async function Page({ params }: Props) {
 
           <RunBotTemplateButton bot={bot} />
 
-          <SyncClosedOrdersButton polling />
+          <SyncClosedOrdersButton polling={false} />
 
           <SyncOrdersButton bot={bot} />
 
