@@ -1,7 +1,7 @@
 import { OrderNotFound } from "ccxt";
 import { subHours } from "date-fns";
 import { exchangeProvider } from "@opentrader/exchanges";
-import { ExchangeCode } from "@opentrader/types";
+import { OrdersSynchronizer } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
 
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
@@ -17,15 +17,56 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
 
   protected async watchOrders() {
     while (this.enabled) {
-      const ordersCount = await this.syncOrders();
+      await this.syncOrders();
 
       // timeout 60s
-      console.debug(`Synced ${ordersCount} orders. Timeout for 60s`);
+      console.debug(`Synced orders. Timeout for 60s`);
       await new Promise((resolve) => setTimeout(resolve, 60000));
     }
   }
 
   private async syncOrders() {
+    const exchangeAccounts = await xprisma.exchangeAccount.findMany();
+
+    for (const exchangeAccount of exchangeAccounts) {
+      const enabledBots = await xprisma.bot.findMany({
+        where: {
+          enabled: true,
+          exchangeAccount: {
+            id: exchangeAccount.id,
+          },
+        },
+      });
+
+      console.log(
+        `OrderSynchronizerPollingWatcher: Start syncing order statuses of "${exchangeAccount.name}"`,
+      );
+      console.log(
+        `OrderSynchronizerPollingWatcher: Enabled bots ${enabledBots.length}:`,
+      );
+      for (const bot of enabledBots) {
+        console.log(`    #${bot.id}: ${bot.name}`);
+      }
+
+      // get uniq array of symbols across all enabled bots
+      const symbols = enabledBots
+        .map((bot) => `${bot.baseCurrency}/${bot.quoteCurrency}`)
+        .filter((value, index, array) => array.indexOf(value) === index);
+
+      for (const symbol of symbols) {
+        const ordersSynchronizer = new OrdersSynchronizer(exchangeAccount);
+
+        await ordersSynchronizer.syncBySymbol(symbol, {
+          onFilled: (exchangeOrder, order) =>
+            this.emit("onFilled", [exchangeOrder, order]),
+          onCanceled: (exchangeOrder, order) =>
+            this.emit("onCanceled", [exchangeOrder, order]),
+        });
+      }
+    }
+  }
+
+  private async syncOrders__deprecated() {
     // Find orders with `status == Placed` and the last sync was >1 hour ago.
     const ONE_HOUR_AGO = subHours(new Date(), 1);
 

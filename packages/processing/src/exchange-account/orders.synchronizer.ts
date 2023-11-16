@@ -6,12 +6,21 @@ import {
 } from "@opentrader/db";
 import type { IClosedOrder } from "@opentrader/types";
 
+type SyncBySymbolParams = {
+  onFilled?: (exchangeOrder: IClosedOrder, order: OrderWithSmartTrade) => void;
+  onCanceled?: (
+    exchangeOrder: IClosedOrder,
+    order: OrderWithSmartTrade,
+  ) => void;
+};
+
 type SyncBySymbolResponse = {
   /**
    * If any order belonging to the bot was filled/canceled
    * the botId will be pushed to that array.
    */
   affectedBotsIds: number[];
+  ordersStatusChangedCount: number;
 };
 
 export class OrdersSynchronizer {
@@ -23,12 +32,16 @@ export class OrdersSynchronizer {
     this.exchange = exchangeProvider.fromAccount(exchangeAccount);
   }
 
-  async syncBySymbol(symbol: string): Promise<SyncBySymbolResponse> {
+  async syncBySymbol(
+    symbol: string,
+    params?: SyncBySymbolParams,
+  ): Promise<SyncBySymbolResponse> {
     const closedOrders = await this.exchange.getClosedOrders({
       symbol,
     });
 
     const affectedBotsIds: number[] = [];
+    let ordersStatusChangedCount = 0;
 
     for (const exchangeOrder of closedOrders) {
       const order = await xprisma.order.findFirst({
@@ -51,8 +64,16 @@ export class OrdersSynchronizer {
       );
 
       if (orderStatusChanged) {
+        ordersStatusChangedCount++;
+
         if (order.smartTrade.botId) {
           affectedBotsIds.push(order.smartTrade.botId);
+
+          if (exchangeOrder.status === "filled") {
+            params?.onFilled?.(exchangeOrder, order);
+          } else if (exchangeOrder.status === "canceled") {
+            params?.onCanceled?.(exchangeOrder, order);
+          }
         } else {
           console.log(
             `❗ SmartTrade ${order.smartTrade.id} does not belong to any bot`,
@@ -67,6 +88,7 @@ export class OrdersSynchronizer {
 
     return {
       affectedBotsIds: affectedBotsIdsUnique,
+      ordersStatusChangedCount,
     };
   }
 
