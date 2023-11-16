@@ -1,8 +1,8 @@
+import { SmartTradeProcessor } from "#processing/smart-trade";
 import { BotProcessor } from "@opentrader/bot-processor";
 import { arithmeticGridBot, GridBotConfig } from "@opentrader/bot-templates";
-import { exchanges } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
 import { xprisma, TGridBot } from "@opentrader/db";
-import { ExchangeCode } from "@opentrader/types";
 
 import { GridBotStoreAdapter } from "./grid-bot-store-adapter";
 
@@ -68,6 +68,7 @@ export class GridBotProcessor {
   }
 
   async processCommand(command: "start" | "stop" | "process") {
+    console.log("🤖 @opentrader/processing: GridBotProcessor.process() start");
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -79,15 +80,22 @@ export class GridBotProcessor {
 
     await xprisma.bot.grid.setProcessing(true, this.bot.id);
 
-    if (command === "start") {
-      await processor.start();
-    } else if (command === "stop") {
-      await processor.stop();
-    } else if (command === "process") {
-      await processor.process();
+    try {
+      if (command === "start") {
+        await processor.start();
+      } else if (command === "stop") {
+        await processor.stop();
+      } else if (command === "process") {
+        await processor.process();
+      }
+    } catch (err) {
+      await xprisma.bot.grid.setProcessing(false, this.bot.id);
+
+      throw err;
     }
 
     await xprisma.bot.grid.setProcessing(false, this.bot.id);
+    console.log("🤖 @opentrader/processing: GridBotProcessor.process() end");
   }
 
   async processStartCommand() {
@@ -115,19 +123,13 @@ export class GridBotProcessor {
   }
 
   private async getProcessor() {
-    const exchange = await xprisma.exchangeAccount.findUniqueOrThrow({
+    const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
       where: {
         id: this.bot.exchangeAccountId,
       },
     });
 
-    const credentials = {
-      ...exchange.credentials,
-      code: exchange.credentials.code as ExchangeCode, // workaround for casting string literal to `ExchangeCode`
-      password: exchange.password || "",
-    };
-
-    const exchangeService = exchanges[exchange.exchangeCode](credentials);
+    const exchange = exchangeProvider.fromAccount(exchangeAccount);
 
     const configuration: GridBotConfig = {
       id: this.bot.id,
@@ -142,11 +144,48 @@ export class GridBotProcessor {
 
     const processor = BotProcessor.create({
       store: storeAdapter,
-      exchange: exchangeService,
+      exchange: exchange,
       botConfig: configuration,
       botTemplate: arithmeticGridBot,
     });
 
     return processor;
+  }
+
+  async placePendingOrders() {
+    console.log(
+      "🤖 @opentrader/processing: GridBotProcessor.placePendingOrders() start",
+    );
+    const smartTrades = await xprisma.smartTrade.findMany({
+      where: {
+        type: "Trade",
+        orders: {
+          some: {
+            status: "Idle",
+          },
+        },
+        bot: {
+          id: this.bot.id,
+        },
+      },
+      include: {
+        exchangeAccount: true,
+        orders: true,
+      },
+    });
+
+    for (const smartTrade of smartTrades) {
+      const { exchangeAccount } = smartTrade;
+
+      const smartTradeService = new SmartTradeProcessor(
+        smartTrade,
+        exchangeAccount,
+      );
+      await smartTradeService.placeNext();
+    }
+
+    console.log(
+      "🤖 @opentrader/processing: GridBotProcessor.placePendingOrders() end",
+    );
   }
 }

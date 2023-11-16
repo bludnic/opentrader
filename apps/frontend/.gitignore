@@ -36,11 +36,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# env
-.env
-
 # coingecko
 src/lib/coingecko/client
-
-# markets swagger
-src/lib/markets/marketsApi.ts

@@ -10,10 +10,11 @@
   "author": "bludnic",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
-    "typescript": "^4.9.5"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@opentrader/prisma": "workspace:*",
+    "@prisma/client": "5.5.2",
     "zod": "3.21.1"
   }
 }

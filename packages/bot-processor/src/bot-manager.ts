@@ -74,7 +74,7 @@ export class BotManager<T extends IBotConfiguration> {
         item = generator.next(this.exchange);
       } else {
         console.log(item.value);
-        throw Error("Unsupported effect");
+        throw new Error("Unsupported effect");
       }
     }
   }

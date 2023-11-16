@@ -7,7 +7,8 @@
       "#bot-processor/*": ["./src/*"],
 
       // imported modules
-      "#exchanges/*": ["../exchanges/src/*"]
+      "#exchanges/*": ["../exchanges/src/*"],
+      "#db/*": ["../db/src/*"]
     }
   }
 }

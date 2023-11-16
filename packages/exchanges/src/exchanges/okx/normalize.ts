@@ -26,6 +26,7 @@ const getLimitOrder: Normalize["getLimitOrder"] = {
     status: normalizeOrderStatus(order),
     fee: order.fee.cost,
     createdAt: order.timestamp,
+    lastTradeTimestamp: order.lastTradeTimestamp,
   }),
 };
 
@@ -49,7 +50,24 @@ const cancelLimitOrder: Normalize["cancelLimitOrder"] = {
   }),
 };
 
-const getFilledLimitOrders: Normalize["getFilledLimitOrders"] = {
+const getOpenOrders: Normalize["getOpenOrders"] = {
+  request: (params) => [params.symbol],
+  response: (orders) =>
+    orders.map((order) => ({
+      exchangeOrderId: order.id,
+      clientOrderId: order.clientOrderId,
+      side: order.side,
+      quantity: order.amount,
+      price: order.price,
+      filledPrice: null,
+      status: normalizeOrderStatus(order),
+      fee: order.fee.cost,
+      createdAt: order.timestamp,
+      lastTradeTimestamp: order.lastTradeTimestamp,
+    })),
+};
+
+const getClosedOrders: Normalize["getClosedOrders"] = {
   request: (params) => [params.symbol],
   response: (orders) =>
     orders.map((order) => ({
@@ -59,9 +77,10 @@ const getFilledLimitOrders: Normalize["getFilledLimitOrders"] = {
       quantity: order.amount,
       price: order.price,
       filledPrice: order.average || order.price, // assume that filled order must always contain `order.average`
-      status: "filled",
+      status: normalizeOrderStatus(order),
       fee: order.fee.cost,
       createdAt: order.timestamp,
+      lastTradeTimestamp: order.lastTradeTimestamp,
     })),
 };
 
@@ -132,6 +151,7 @@ const watchOrders: Normalize["watchOrders"] = {
       status: normalizeOrderStatus(order),
       fee: order.fee.cost,
       createdAt: order.timestamp,
+      lastTradeTimestamp: order.lastTradeTimestamp,
     })),
 };
 
@@ -140,7 +160,8 @@ export const normalize: Normalize = {
   getLimitOrder,
   placeLimitOrder,
   cancelLimitOrder,
-  getFilledLimitOrders,
+  getOpenOrders,
+  getClosedOrders,
   getMarketPrice,
   getCandlesticks,
   getSymbol,

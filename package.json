@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@8.6.10",
   "devDependencies": {
-    "prettier": "latest",
-    "turbo": "latest"
+    "prettier": "^3.0.3",
+    "turbo": "^1.10.16"
   }
 }

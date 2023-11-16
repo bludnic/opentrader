@@ -24,11 +24,23 @@ import { ZManualProcessGridBotInputSchema } from "./manual-process/schema";
 import { getActiveSmartTrades } from "./get-active-smart-trades/handler";
 import { ZGetActiveSmartTradesInputSchema } from "./get-active-smart-trades/schema";
 
+import { getPendingSmartTrades } from "./get-pending-smart-trades/handler";
+import { ZGetPendingSmartTradesInputSchema } from "./get-pending-smart-trades/schema";
+
 import { getCompletedSmartTrades } from "./get-completed-smart-trades/handler";
 import { ZGetCompletedSmartTradesInputSchema } from "./get-completed-smart-trades/schema";
 
 import { getGridBotOrders } from "./get-orders/handler";
 import { ZGetGridBotOrdersInputSchema } from "./get-orders/schema";
+
+import { getFormOptions } from "./get-form-options/handler";
+import { ZGetGridBotFormOptionsInputSchema } from "./get-form-options/schema";
+
+import { cronPlacePendingOrders } from "./cron-place-pending-orders/handler";
+import { ZCronPlacePendingOrdersInputSchema } from "./cron-place-pending-orders/schema";
+
+import { syncOrders } from "./sync-orders/handler";
+import { ZSyncGridBotOrdersInputSchema } from "./sync-orders/schema";
 
 export const gridBotRouter = router({
   list: authorizedProcedure.query(getGridBots),
@@ -48,13 +60,25 @@ export const gridBotRouter = router({
   manualProcess: authorizedProcedure
     .input(ZManualProcessGridBotInputSchema)
     .mutation(manualProcessGridBot),
+  cronPlaceLimitOrders: authorizedProcedure
+    .input(ZCronPlacePendingOrdersInputSchema)
+    .mutation(cronPlacePendingOrders),
+  syncOrders: authorizedProcedure
+    .input(ZSyncGridBotOrdersInputSchema)
+    .mutation(syncOrders),
   activeSmartTrades: authorizedProcedure
     .input(ZGetActiveSmartTradesInputSchema)
     .query(getActiveSmartTrades),
+  pendingSmartTrades: authorizedProcedure
+    .input(ZGetPendingSmartTradesInputSchema)
+    .query(getPendingSmartTrades),
   completedSmartTrades: authorizedProcedure
     .input(ZGetCompletedSmartTradesInputSchema)
     .query(getCompletedSmartTrades),
   orders: authorizedProcedure
     .input(ZGetGridBotOrdersInputSchema)
     .query(getGridBotOrders),
+  formOptions: authorizedProcedure
+    .input(ZGetGridBotFormOptionsInputSchema)
+    .query(getFormOptions),
 });

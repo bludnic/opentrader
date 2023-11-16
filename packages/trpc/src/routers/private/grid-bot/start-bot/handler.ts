@@ -22,6 +22,8 @@ export async function startGridBot({ ctx, input }: Options) {
 
   await botService.start();
 
+  await botProcessor.placePendingOrders();
+
   return {
     ok: true,
   };

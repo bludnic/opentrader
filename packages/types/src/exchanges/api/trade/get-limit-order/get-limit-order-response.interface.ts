@@ -23,6 +23,10 @@ export interface IGetLimitOrderResponse {
    */
   filledPrice: number | null;
   /**
+   * Unix timestamp of the most recent trade on this order.
+   */
+  lastTradeTimestamp: number;
+  /**
    * Order status.
    */
   status: OrderStatus;

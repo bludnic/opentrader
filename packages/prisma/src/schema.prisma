@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./client"
 }
 
 generator zod {
@@ -13,8 +12,9 @@ generator zod {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 enum ExchangeCode {
@@ -126,6 +126,7 @@ model SmartTrade {
   ownerId Int
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {
@@ -136,6 +137,7 @@ model Order {
   side OrderSide
   price Float? // Market orders doesn't require price to be specified
   filledPrice Float?
+  fee Float?
 
   exchangeOrderId String?
 

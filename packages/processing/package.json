@@ -9,15 +9,15 @@
   },
   "author": "bludnic",
   "devDependencies": {
-    "@opentrader/types": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
-    "typescript": "^4.9.5"
+    "@opentrader/types": "workspace:*",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
-    "ccxt": "^4.0.55"
+    "ccxt": "^4.1.48"
   }
 }

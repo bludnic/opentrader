@@ -6,3 +6,4 @@ export * from "./computeGridFromCurrentAssetPrice";
 export * from "./isWaitingGridLine";
 export * from "./nextGridLinePrice";
 export * from "./areGridLinesPricesSortedInAscOrder";
+export * from "./computeInvestmentAmount";

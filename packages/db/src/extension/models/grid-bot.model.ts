@@ -1,4 +1,4 @@
-import { Prisma } from "@opentrader/prisma";
+import { Prisma } from "@prisma/client";
 import { prisma } from "#db/prisma";
 import { TGridBotSettings, ZGridBotSettings } from "#db/types/grid-bot";
 

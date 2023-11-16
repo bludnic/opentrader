@@ -1,3 +1,4 @@
 # Prisma
 
-Importing the package is allowed only in `@opentrader/db`. The Prisma types are re-exported from that package.
+The `@prisma/client` is exported from `@opentrader/db`.
+Import this package only if you need Zod types `import { zt } from '@opentrader/prisma''`.

@@ -2,9 +2,9 @@
 
 import Box from "@mui/joy/Box";
 import React, { useState } from "react";
-import { AccountsListTable } from "src/components/joy/accounts/AccountsListTable";
-import { CreateAccountDialog } from "src/components/joy/accounts/CreateAccountDialog/CreateAccountDialog";
-import { UpdateAccountDialog } from "src/components/joy/accounts/UpdateAccountDialog/UpdateAccountDialog";
+import { AccountsListTable } from "src/components/accounts/AccountsListTable";
+import { CreateAccountDialog } from "src/components/accounts/CreateAccountDialog/CreateAccountDialog";
+import { UpdateAccountDialog } from "src/components/accounts/UpdateAccountDialog/UpdateAccountDialog";
 import { tClient } from "src/lib/trpc/client";
 import { TExchangeAccount } from "src/types/trpc";
 
@@ -37,20 +37,20 @@ export default function Page() {
         }}
       />
 
-        <CreateAccountDialog
-          open={createDialogOpen}
-          onClose={() => setCreateDialogOpen(false)}
+      <CreateAccountDialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onCreated={refetch}
+      />
+
+      {selectedAccount ? (
+        <UpdateAccountDialog
+          account={selectedAccount}
+          open={updateDialogOpen}
+          onClose={() => setUpdateDialogOpen(false)}
           onCreated={refetch}
         />
-
-        {selectedAccount ? (
-          <UpdateAccountDialog
-            account={selectedAccount}
-            open={updateDialogOpen}
-            onClose={() => setUpdateDialogOpen(false)}
-            onCreated={refetch}
-          />
-        ) : null}
+      ) : null}
     </Box>
   );
 }

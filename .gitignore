@@ -3,3 +3,6 @@ node_modules
 .DS_Store
 .turbo
 playground
+.env
+
+.vercel

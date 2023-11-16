@@ -1,4 +1,4 @@
-import { zt } from "@opentrader/db";
+import { zt } from "@opentrader/prisma";
 import { z } from "zod";
 
 export const ZCreateExchangeAccountInputSchema = zt.ExchangeAccountSchema.pick({

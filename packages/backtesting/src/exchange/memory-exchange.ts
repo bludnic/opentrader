@@ -17,8 +17,6 @@ import {
   IGetSymbolInfoRequest,
   ISymbolInfo,
   ExchangeCode,
-  IGetFilledLimitOrdersRequest,
-  IGetFilledLimitOrdersResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
@@ -51,6 +49,7 @@ export class MemoryExchange implements IExchange {
       status: "filled",
       fee: 0,
       createdAt: 0,
+      lastTradeTimestamp: 0,
       filledPrice: null,
     };
   }
@@ -128,9 +127,11 @@ export class MemoryExchange implements IExchange {
     return [];
   }
 
-  async getFilledLimitOrders(
-    body: IGetFilledLimitOrdersRequest,
-  ): Promise<IGetFilledLimitOrdersResponse> {
+  async getOpenOrders() {
+    return [];
+  }
+
+  async getClosedOrders() {
     return [];
   }
 

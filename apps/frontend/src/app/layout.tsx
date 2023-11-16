@@ -1,5 +1,12 @@
-import JoyThemeRegistry from "src/components/JoyThemeRegistry/ThemeRegistry";
-import { TrpcProvider } from "src/components/TrpcProvider";
+import { ThemeProvider } from "src/providers/ThemeProvider";
+import { StoreProvider } from "src/providers/StoreProvider";
+import { TrpcProvider } from "src/providers/TrpcProvider";
+import { TRPCApiErrorProvider } from "src/ui/errors/api";
+
+import { cache } from "@opentrader/exchanges";
+import { PrismaCacheProvider } from "@opentrader/exchanges/server";
+
+cache.setCacheProvider(new PrismaCacheProvider());
 
 export const metadata = {
   title: "Next.js",
@@ -14,9 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TrpcProvider>
-          <JoyThemeRegistry>{children}</JoyThemeRegistry>
-        </TrpcProvider>
+        <TRPCApiErrorProvider>
+          <TrpcProvider>
+            <StoreProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </StoreProvider>
+          </TrpcProvider>{" "}
+        </TRPCApiErrorProvider>
       </body>
     </html>
   );

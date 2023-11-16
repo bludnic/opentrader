@@ -1,4 +1,4 @@
-import { $Enums } from "@opentrader/prisma";
+import { $Enums } from "@prisma/client";
 import { prisma } from "#db/prisma";
 
 export const orderModel = {
@@ -9,6 +9,21 @@ export const orderModel = {
       },
       include: {
         smartTrade: true,
+      },
+    });
+  },
+  async removeRef(orderId: number) {
+    const resetSmartTradeRef = {
+      update: {
+        ref: null,
+      },
+    };
+    return prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        smartTrade: resetSmartTradeRef,
       },
     });
   },
@@ -39,12 +54,26 @@ export const orderModel = {
   async updateStatusToFilled(data: {
     orderId: number;
     filledPrice: number | null;
+    filledAt: Date | null;
+    fee: number | null;
   }) {
-    const { orderId, filledPrice } = data;
+    const { orderId, filledPrice, filledAt, fee } = data;
 
     if (filledPrice === null) {
       throw new Error(
         'Cannot update order status to "filled" without specifying "filledPrice"',
+      );
+    }
+
+    if (fee === null) {
+      throw new Error(
+        'Cannot update order status to "filled" without specifying "fee"',
+      );
+    }
+
+    if (filledAt === null) {
+      throw new Error(
+        'Cannot update order status to "filled" without specifying "filledAt"',
       );
     }
 
@@ -55,6 +84,8 @@ export const orderModel = {
       data: {
         status: "Filled",
         filledPrice,
+        filledAt,
+        fee,
       },
     });
   },

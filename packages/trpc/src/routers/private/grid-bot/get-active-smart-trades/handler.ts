@@ -1,4 +1,8 @@
-import { xprisma } from "@opentrader/db";
+import {
+  SmartTradeEntity_Order_Order,
+  toSmartTradeEntity,
+  xprisma,
+} from "@opentrader/db";
 import { Context } from "#trpc/utils/context";
 import { TGetActiveSmartTradesInputSchema } from "./schema";
 
@@ -19,21 +23,21 @@ export async function getActiveSmartTrades({ ctx, input }: Options) {
       bot: {
         id: input.botId,
       },
-      orders: {
-        some: {
-          status: {
-            in: ["Idle", "Placed"],
-          },
-        },
-      },
       ref: {
         not: null,
       },
     },
     include: {
       orders: true,
+      exchangeAccount: true,
     },
   });
 
-  return smartTrades;
+  const smartTradesDto = smartTrades.map(
+    toSmartTradeEntity,
+  ) as SmartTradeEntity_Order_Order[]; // more concrete type (need to add a generic prop to "toSmartTradeEntity()")
+
+  return smartTradesDto.sort(
+    (left, right) => right.entryOrder.price! - left.entryOrder.price!, // sort by entry price from high to low
+  );
 }
