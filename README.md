@@ -1,7 +1,7 @@
 # Requirements
 
 ```bash
-# NodeJS v18 required
+# NodeJS v18 or higher
 $ node -v
 
 # `pnpm` must be installed
@@ -10,46 +10,25 @@ $ pnpm -v
 # Install Turborepo globally
 $ pnpm install turbo --global
 
-# Check Java is installed
-$ java -version
-
-# Docker should be installed
+# Docker (optional)
 $ docker -v
 ```
 
-# Configuration
+## Environment variables
 
-## Backend configuration
+The project uses a single `.env` file located in the root directory.
+Frameworks like Next.js requires `.env` file to be located in the project dir itself.
+To solve this some apps/packages may contain a symlink to the root `.env`.
 
-Create environment file `.env.development.local`
-
-```bash
-$ cd apps/backend
-$ cp .env.sample .env.development.local
-```
-
-## Frontend configuration
-
-Create environment file `.env`
+1. Create environment file `.env` in the root directory
 
 ```bash
-$ cd apps/frontend
-$ cp .env.sample .env
-```
-
-## Database configuration
-
-1. Create environment file `.env`.
-
-```bash
-$ cd packages/prisma
 $ cp .env.example .env
 ```
 
-2. Replace the `DATABASE_URL` if your URL is different from the actual one.
+2. Replace the `POSTGRES_URL` if your URL is different from the actual one.
 
 > 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d postgres-db`. See details below.
-
 
 # Docker (optional)
 
@@ -62,6 +41,22 @@ $ docker compose -p opentrader stop postgres-db # stop service
 
 2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
 
+
+# Processing app (optional)
+
+The `apps/processor` is a separate NodeJS app that synchronizes orders with the Exchange faster by using WebSockets.
+
+Features:
+
+- Sync orders statuses with the Exchange by using WebSocket
+- Fallback to REST API by polling every 60s
+- Runs the bot template if any order was filled
+- Place pending orders on the Exchange
+- Async queue (in case two or more orders were filled at the same time)
+
+The package is optional. If you decide to use it, don't forget to disable the sync orders statuses in the `frontend` app.
+Otherwise, it may end up in an inconsistent bot state, when two synchronizers running at the same time.
+For development it's enough to run the `frontend` app.
 
 # Installation
 
@@ -85,7 +80,7 @@ $ turbo run build
 
 # Development
 
-**Option 1**: Runs both `frontend` and `backend` apps in a single terminal
+**Option 1**: Runs both `frontend` and `processor` apps in a single terminal
 
 ```bash
 $ turbo run dev
@@ -96,18 +91,17 @@ $ turbo run dev
 First Terminal
 
 ```bash
-$ cd apps/backend
+$ cd apps/frontend
 $ pnpm run dev
 ```
 
 Second Terminal
 ```bash
-$ cd apps/frontend
+$ cd apps/processor
 $ pnpm run dev
 ```
 
 # Apps
 
 - Frontend: http://localhost:3000
-- Backend: http://localhost:4000
-- Markets: http://localhost:5000
+- Processor: http://localhost:4000
