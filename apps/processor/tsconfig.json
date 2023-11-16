@@ -1,0 +1,21 @@
+{
+  "extends": "@opentrader/tsconfig/base.json",
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      // imported modules
+      //      "#backtesting/*": ["../../packages/backtesting/src/*"],
+      "#bot-processor/*": ["../../packages/bot-processor/src/*"],
+      "#db/*": ["../../packages/db/src/*"],
+      "#exchanges/*": ["../../packages/exchanges/src/*"],
+      "#processing/*": ["../../packages/processing/src/*"]
+      //      "#trpc/*": ["../../packages/trpc/src/*"]
+    }
+  },
+  "include": ["src/index.ts"]
+}

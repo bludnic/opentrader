@@ -8,6 +8,7 @@
       // imported modules
       "#exchanges/*": ["../exchanges/src/*"],
       "#bot-processor/*": ["../bot-processor/src/*"],
+      "#db/*": ["../db/src/*"],
     }
   }
 }

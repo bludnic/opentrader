@@ -1,4 +1,4 @@
-import { $Enums } from "@opentrader/prisma";
+import { $Enums } from "@prisma/client";
 import { prisma } from "#db/prisma";
 
 export const orderModel = {
@@ -9,6 +9,21 @@ export const orderModel = {
       },
       include: {
         smartTrade: true,
+      },
+    });
+  },
+  async removeRef(orderId: number) {
+    const resetSmartTradeRef = {
+      update: {
+        ref: null,
+      },
+    };
+    return prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        smartTrade: resetSmartTradeRef,
       },
     });
   },

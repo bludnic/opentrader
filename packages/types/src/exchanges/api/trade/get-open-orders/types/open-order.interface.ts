@@ -1,6 +1,6 @@
-import { OrderSide } from "src/exchanges/api/trade/common/types";
+import { OrderStatus, OrderSide } from "src/exchanges/api/trade/common/types";
 
-export interface IFilledLimitOrder {
+export interface IOpenOrder {
   /**
    * Exchange-supplied order ID.
    */
@@ -21,11 +21,15 @@ export interface IFilledLimitOrder {
   /**
    * Filled price.
    */
-  filledPrice: number;
+  filledPrice: null;
+  /**
+   * Unix timestamp of the most recent trade on this order.
+   */
+  lastTradeTimestamp: number;
   /**
    * Order status.
    */
-  status: "filled";
+  status: Extract<OrderStatus, "open">;
   /**
    * Order fee.
    */

@@ -34,4 +34,8 @@ export interface IWatchOrder {
    * Creation time, Unix timestamp format in milliseconds, e.g. `1597026383085`
    */
   createdAt: number;
+  /**
+   * Unix timestamp of the most recent trade on this order.
+   */
+  lastTradeTimestamp: number;
 }

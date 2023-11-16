@@ -9,8 +9,8 @@
   },
   "author": "bludnic",
   "devDependencies": {
-    "@opentrader/types": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
+    "@opentrader/types": "workspace:*",
     "typescript": "^5.2.2"
   },
   "dependencies": {

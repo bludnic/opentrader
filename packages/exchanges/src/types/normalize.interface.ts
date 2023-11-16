@@ -3,11 +3,11 @@ import {
   ICancelLimitOrderRequest,
   ICancelLimitOrderResponse,
   ICandlestick,
-  IGetCanceledLimitOrdersRequest,
-  IGetCanceledLimitOrdersResponse,
   IGetCandlesticksRequest,
-  IGetFilledLimitOrdersRequest,
-  IGetFilledLimitOrdersResponse,
+  IGetOpenOrdersRequest,
+  IGetOpenOrdersResponse,
+  IGetClosedOrdersRequest,
+  IGetClosedOrdersResponse,
   IGetLimitOrderRequest,
   IGetLimitOrderResponse,
   IGetMarketPriceRequest,
@@ -60,11 +60,18 @@ export type Normalize = {
     ) => ICancelLimitOrderResponse;
   };
 
-  getFilledLimitOrders: {
+  getOpenOrders: {
     request: (
-      params: IGetFilledLimitOrdersRequest,
+      params: IGetOpenOrdersRequest,
+    ) => Parameters<Exchange["fetchOpenOrders"]>;
+    response: (data: Order[]) => IGetOpenOrdersResponse;
+  };
+
+  getClosedOrders: {
+    request: (
+      params: IGetClosedOrdersRequest,
     ) => Parameters<Exchange["fetchClosedOrders"]>;
-    response: (data: Order[]) => IGetFilledLimitOrdersResponse;
+    response: (data: Order[]) => IGetClosedOrdersResponse;
   };
 
   getMarketPrice: {

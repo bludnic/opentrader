@@ -3,6 +3,7 @@ import Typography from "@mui/joy/Typography";
 import { composeSymbolId } from "@opentrader/tools";
 import { ExchangeCode } from "@opentrader/types";
 import React from "react";
+import { SyncClosedOrdersButton } from "src/components/debug/SyncClosedOrdersButton";
 import { BotSettings } from "src/components/grid-bot/bot-details/BotSettings";
 import { ProfitsCard } from "src/components/grid-bot/bot-details/ProfitsCard";
 import { RunBotTemplateButton } from "src/components/grid-bot/bot-details/RunBotTemplateButton";
@@ -81,6 +82,8 @@ export default async function Page({ params }: Props) {
           <StartStopBotButton bot={bot} />
 
           <RunBotTemplateButton bot={bot} />
+
+          <SyncClosedOrdersButton polling />
 
           <SyncOrdersButton bot={bot} />
 

@@ -51,7 +51,6 @@
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@prisma/nextjs-monorepo-workaround-plugin": "toniopelo/prisma-nextjs-monorepo-workaround-plugin",
     "@types/big.js": "^6.2.2",
     "@types/jest": "^29.5.8",
     "@types/lodash": "^4.14.201",

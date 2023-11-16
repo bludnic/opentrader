@@ -1,4 +1,4 @@
-import { $Enums, Order as OrderModel } from "@opentrader/prisma";
+import { $Enums, Order as OrderModel } from "@prisma/client";
 
 import { OrderEntity, toOrderEntity } from "./order.entity";
 import { SmartTradeWithOrders } from "#db/types/smart-trade";

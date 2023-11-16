@@ -19,7 +19,7 @@ export function LeftNavigation() {
       </ListItem>
 
       <ListItem>
-        <ListItemButton component={NextLink} href="/dashboard/grid-bot/list">
+        <ListItemButton component={NextLink} href="/dashboard/grid-bot">
           <ListItemDecorator>🤖</ListItemDecorator>
           <ListItemContent>Bots</ListItemContent>
           <Chip color="success" variant="outlined" size="sm">

@@ -1,4 +1,4 @@
-import { Prisma } from "@opentrader/prisma";
+import { Prisma } from "@prisma/client";
 
 const orderWithSmartTrade = Prisma.validator<Prisma.OrderDefaultArgs>()({
   include: {

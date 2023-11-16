@@ -1,4 +1,4 @@
-import { exchanges, IExchange } from "@opentrader/exchanges";
+import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
 import {
   assertHasExchangeOrderId,
   assertIsOrderBased,
@@ -43,13 +43,7 @@ export class SmartTradeProcessor {
 
     this.smartTrade = smartTrade;
 
-    const credentials = {
-      ...exchangeAccount.credentials,
-      code: exchangeAccount.credentials.code as ExchangeCode, // workaround for casting string literal into `ExchangeCode`
-      password: exchangeAccount.password || "",
-    };
-
-    this.exchange = exchanges[exchangeAccount.exchangeCode](credentials);
+    this.exchange = exchangeProvider.fromAccount(exchangeAccount);
   }
 
   static async fromSmartTradeId(id: number) {
@@ -102,7 +96,7 @@ export class SmartTradeProcessor {
     if (orderPendingPlacement) {
       const exchangeOrder = await this.placeOrder(orderPendingPlacement);
       console.log(
-        `⚙️ @opentrader/processing: Order #${orderPendingPlacement.id} placed`,
+        `⚙️ @SmartTradeProcessor.placeNext(): Order #${orderPendingPlacement.id} placed`,
       );
       console.log(exchangeOrder);
     }
@@ -179,6 +173,9 @@ export class SmartTradeProcessor {
             throw err;
           }
         }
+        return;
+      case "Filled":
+        await xprisma.order.removeRef(order.id);
         return;
     }
   }

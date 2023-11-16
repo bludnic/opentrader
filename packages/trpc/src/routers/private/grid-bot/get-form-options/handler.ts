@@ -1,4 +1,4 @@
-import { exchanges } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
 import { Context } from "#trpc/utils/context";
 import {
   decomposeSymbolId,
@@ -25,7 +25,7 @@ async function fetchHighestAndLowestPrice(
   exchangeCode: ExchangeCode,
   currencyPair: string,
 ) {
-  const exchange = exchanges[exchangeCode]();
+  const exchange = exchangeProvider.fromCode(exchangeCode);
 
   const oneMonthAgo = Date.now() - 28 * 24 * 3600 * 1000; // days * hours * seconds * ms
   const candlesticks = await exchange.getCandlesticks({
@@ -44,10 +44,8 @@ export async function getFormOptions({ ctx, input }: Options) {
   const { symbolId } = input;
   const { exchangeCode, currencyPairSymbol } = decomposeSymbolId(symbolId);
 
-  const { lowestCandlestick, highestCandlestick } = await fetchHighestAndLowestPrice(
-    exchangeCode,
-    currencyPairSymbol,
-  );
+  const { lowestCandlestick, highestCandlestick } =
+    await fetchHighestAndLowestPrice(exchangeCode, currencyPairSymbol);
 
   return {
     lowestCandlestick,

@@ -5,12 +5,14 @@ import {
   ICancelLimitOrderResponse,
   ICandlestick,
   IGetCandlesticksRequest,
-  IGetFilledLimitOrdersRequest,
-  IGetFilledLimitOrdersResponse,
+  IGetClosedOrdersRequest,
+  IGetClosedOrdersResponse,
   IGetLimitOrderRequest,
   IGetLimitOrderResponse,
   IGetMarketPriceRequest,
   IGetMarketPriceResponse,
+  IGetOpenOrdersRequest,
+  IGetOpenOrdersResponse,
   IGetSymbolInfoRequest,
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
@@ -80,13 +82,22 @@ export class OkxExchange implements IExchange {
     return normalize.placeLimitOrder.response(data);
   }
 
-  async getFilledLimitOrders(
-    params: IGetFilledLimitOrdersRequest,
-  ): Promise<IGetFilledLimitOrdersResponse> {
-    const args = normalize.getFilledLimitOrders.request(params);
+  async getOpenOrders(
+    params: IGetOpenOrdersRequest,
+  ): Promise<IGetOpenOrdersResponse> {
+    const args = normalize.getOpenOrders.request(params);
     const data = await this.ccxt.fetchClosedOrders(...args);
 
-    return normalize.getFilledLimitOrders.response(data);
+    return normalize.getOpenOrders.response(data);
+  }
+
+  async getClosedOrders(
+    params: IGetClosedOrdersRequest,
+  ): Promise<IGetClosedOrdersResponse> {
+    const args = normalize.getClosedOrders.request(params);
+    const data = await this.ccxt.fetchClosedOrders(...args);
+
+    return normalize.getClosedOrders.response(data);
   }
 
   async cancelLimitOrder(
@@ -127,7 +138,7 @@ export class OkxExchange implements IExchange {
     const args = normalize.getSymbol.request(params);
     // method market() not typed by CCXT
     // const data: Market = await this.ccxt.market(...args);
-    const data: Market = markets[args[0]]
+    const data: Market = markets[args[0]];
 
     return normalize.getSymbol.response(data); // @todo refactor
   }

@@ -23,13 +23,6 @@ export async function getActiveSmartTrades({ ctx, input }: Options) {
       bot: {
         id: input.botId,
       },
-      orders: {
-        some: {
-          status: {
-            in: ["Idle", "Placed"],
-          },
-        },
-      },
       ref: {
         not: null,
       },
