@@ -30,18 +30,17 @@ async function fetchData() {
 
 export default async function Page() {
   const { exchangeAccount, symbol, currentAssetPrice } = await fetchData();
-  const { lowestCandlestick, highestCandlestick } =
-    await tServer.gridBot.formOptions({
-      symbolId: symbol.symbolId,
-    });
+  const { lowPrice, highPrice } = await tServer.gridBot.formOptions({
+    symbolId: symbol.symbolId,
+  });
 
   return (
     <Grid container spacing={2}>
       <CreateGridBotPage
         exchangeAccount={exchangeAccount}
         symbol={symbol}
-        highestCandlestick={highestCandlestick}
-        lowestCandlestick={lowestCandlestick}
+        lowPrice={lowPrice}
+        highPrice={highPrice}
         currentAssetPrice={currentAssetPrice}
       />
     </Grid>

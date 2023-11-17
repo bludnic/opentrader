@@ -40,15 +40,33 @@ async function fetchHighestAndLowestPrice(
   return { lowestCandlestick, highestCandlestick };
 }
 
+async function calcHighLowPrice(
+  exchangeCode: ExchangeCode,
+  currencyPair: string,
+) {
+  const exchange = exchangeProvider.fromCode(exchangeCode);
+
+  const { price } = await exchange.getMarketPrice({
+    symbol: currencyPair,
+  });
+
+  const highPrice = price + price * 0.3; // +30% up
+  const lowPrice = price - price * 0.3; // -30% down
+
+  return { highPrice, lowPrice };
+}
+
 export async function getFormOptions({ ctx, input }: Options) {
   const { symbolId } = input;
   const { exchangeCode, currencyPairSymbol } = decomposeSymbolId(symbolId);
 
-  const { lowestCandlestick, highestCandlestick } =
-    await fetchHighestAndLowestPrice(exchangeCode, currencyPairSymbol);
+  const { highPrice, lowPrice } = await calcHighLowPrice(
+    exchangeCode,
+    currencyPairSymbol,
+  );
 
   return {
-    lowestCandlestick,
-    highestCandlestick,
+    highPrice,
+    lowPrice,
   };
 }

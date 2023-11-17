@@ -47,8 +47,8 @@ export const CreateGridBotForm: FC = () => {
   const { data: options } = tClient.gridBot.formOptions.useQuery({ symbolId });
   if (useIsStale(options)) {
     if (options) {
-      dispatch(setHighPrice(options.highestCandlestick.open));
-      dispatch(setLowPrice(options.lowestCandlestick.open));
+      dispatch(setHighPrice(options.highPrice));
+      dispatch(setLowPrice(options.lowPrice));
     }
   }
 

@@ -33,19 +33,14 @@ import { generateBotName } from "src/utils/grid-bot/generateBotName";
 type Props = {
   exchangeAccount: TExchangeAccount;
   symbol: TSymbol;
-  lowestCandlestick: ICandlestick;
-  highestCandlestick: ICandlestick;
+  lowPrice: number;
+  highPrice: number;
   currentAssetPrice: number;
 };
 
 export default function CreateGridBotPage(props: Props) {
-  const {
-    exchangeAccount,
-    symbol,
-    lowestCandlestick,
-    highestCandlestick,
-    currentAssetPrice,
-  } = props;
+  const { exchangeAccount, symbol, lowPrice, highPrice, currentAssetPrice } =
+    props;
   const dispatch = useAppDispatch();
 
   const isFirstRender = useIsFirstRender();
@@ -54,8 +49,8 @@ export default function CreateGridBotPage(props: Props) {
     dispatch(setExchangeCode(exchangeAccount.exchangeCode));
     dispatch(setSymbolId(symbol.symbolId));
     dispatch(setQuantityPerGrid(symbol.filters.lot.minQuantity));
-    dispatch(setLowPrice(lowestCandlestick.open));
-    dispatch(setHighPrice(highestCandlestick.open));
+    dispatch(setLowPrice(lowPrice));
+    dispatch(setHighPrice(highPrice));
     dispatch(setBotName(generateBotName(symbol)));
   }
 
