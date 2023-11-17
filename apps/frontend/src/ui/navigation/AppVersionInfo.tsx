@@ -9,31 +9,32 @@ import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import { AppVersion } from "src/ui/navigation/AppVersion";
 import { GITHUB_REPOSITORY_URL } from "src/ui/constants";
 import { GithubIcon } from "src/ui/icons/GithubIcon";
+import { FC } from "react";
+import { LeftNavigationItem } from "./LeftNavigationItem";
 
-export function AppVersionInfo() {
+type AppVersionInfoProps = {
+  size: "sm" | "md";
+};
+
+export const AppVersionInfo: FC<AppVersionInfoProps> = ({ size }) => {
   return (
     <List
       sx={{
         flexGrow: "unset",
       }}
-      size="md"
+      size="lg"
     >
       <ListDivider />
 
-      <ListItem>
-        <ListItemButton
-          href={GITHUB_REPOSITORY_URL}
-          component="a"
-          target="_blank"
-        >
-          <ListItemDecorator>
-            <GithubIcon />
-          </ListItemDecorator>
-          <ListItemContent>opentrader</ListItemContent>
-
-          <AppVersion />
-        </ListItemButton>
-      </ListItem>
+      <LeftNavigationItem
+        size={size}
+        icon={<GithubIcon />}
+        href={GITHUB_REPOSITORY_URL}
+        append={<AppVersion />}
+        target="_blank"
+      >
+        opentrader
+      </LeftNavigationItem>
     </List>
   );
-}
+};

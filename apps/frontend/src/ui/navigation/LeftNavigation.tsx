@@ -1,32 +1,33 @@
 "use client";
 
-import Chip from "@mui/joy/Chip";
+import { FC } from "react";
 import List from "@mui/joy/List";
-import ListItem from "@mui/joy/ListItem";
-import ListItemButton from "@mui/joy/ListItemButton";
-import ListItemContent from "@mui/joy/ListItemContent";
-import ListItemDecorator from "@mui/joy/ListItemDecorator";
-import NextLink from "next/link";
+import Chip from "@mui/joy/Chip";
+import { LeftNavigationItem } from "./LeftNavigationItem";
 
-export function LeftNavigation() {
+type LeftNavigationProps = {
+  size: "sm" | "md";
+};
+
+export const LeftNavigation: FC<LeftNavigationProps> = ({ size }) => {
   return (
     <List size="lg">
-      <ListItem>
-        <ListItemButton component={NextLink} href="/dashboard/accounts">
-          <ListItemDecorator>🏛️</ListItemDecorator>
-          <ListItemContent>My exchanges</ListItemContent>
-        </ListItemButton>
-      </ListItem>
+      <LeftNavigationItem icon={"🏛️"} href="/dashboard/accounts" size={size}>
+        My exchanges
+      </LeftNavigationItem>
 
-      <ListItem>
-        <ListItemButton component={NextLink} href="/dashboard/grid-bot">
-          <ListItemDecorator>🤖</ListItemDecorator>
-          <ListItemContent>Bots</ListItemContent>
+      <LeftNavigationItem
+        icon={"🤖"}
+        href="/dashboard/grid-bot"
+        size={size}
+        append={
           <Chip color="success" variant="outlined" size="sm">
             New
           </Chip>
-        </ListItemButton>
-      </ListItem>
+        }
+      >
+        Bots
+      </LeftNavigationItem>
     </List>
   );
-}
+};
