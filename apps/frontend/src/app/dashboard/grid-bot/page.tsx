@@ -1,12 +1,15 @@
+"use client";
+
 import NextLink from "next/link";
 import Button from "@mui/joy/Button";
 import Grid from "@mui/joy/Grid";
-import React from "react";
-import { BotCard } from "src/components/grid-bot/bots-list/BotCard";
-import { tServer } from "src/lib/trpc/server";
+import React, { Suspense } from "react";
+import { BotList } from "src/components/grid-bot/bots-list/BotList";
+import { BotListSkeleton } from "src/components/grid-bot/bots-list/BotListSkeleton";
+import { tClient } from "src/lib/trpc/client";
 
-export default async function Page() {
-  const bots = await tServer.gridBot.list();
+export default function Page() {
+  const [bots] = tClient.gridBot.list.useSuspenseQuery();
 
   return (
     <Grid container spacing={4}>
@@ -21,13 +24,9 @@ export default async function Page() {
       </Grid>
 
       <Grid xl={4} md={5} xs={12}>
-        {bots.map((bot, i) => (
-          <BotCard
-            key={bot.id}
-            bot={bot}
-            sx={{ marginTop: i !== 0 ? "32px" : undefined }}
-          />
-        ))}
+        <Suspense fallback={<BotListSkeleton />}>
+          <BotList />
+        </Suspense>
       </Grid>
     </Grid>
   );
