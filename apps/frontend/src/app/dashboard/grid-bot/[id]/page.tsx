@@ -27,6 +27,9 @@ export default function Page({ params }: Props) {
               variant="rectangular"
               animation="wave"
               width="100%"
+              sx={{
+                borderRadius: 8,
+              }}
               height={CHART_HEIGHT}
             />
           }
@@ -42,6 +45,9 @@ export default function Page({ params }: Props) {
               variant="rectangular"
               animation="wave"
               width="100%"
+              sx={{
+                borderRadius: 8,
+              }}
               height={CHART_HEIGHT}
             />
           }
@@ -57,6 +63,9 @@ export default function Page({ params }: Props) {
               variant="rectangular"
               animation="wave"
               width="100%"
+              sx={{
+                borderRadius: 8,
+              }}
               height={250}
             />
           }
@@ -72,6 +81,9 @@ export default function Page({ params }: Props) {
               variant="rectangular"
               animation="wave"
               width="100%"
+              sx={{
+                borderRadius: 8,
+              }}
               height={250}
             />
           }
