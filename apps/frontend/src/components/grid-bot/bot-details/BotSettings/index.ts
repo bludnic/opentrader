@@ -1,1 +1,1 @@
-export * from "./BotSettings";
+export * from "./BotSettingsCard";

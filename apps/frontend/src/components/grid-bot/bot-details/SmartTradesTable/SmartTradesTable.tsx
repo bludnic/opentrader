@@ -3,18 +3,20 @@
 import Sheet from "@mui/joy/Sheet";
 import Table from "@mui/joy/Table";
 import { FC } from "react";
-import { TActiveSmartTrade } from "src/types/trpc";
+import { tClient } from "src/lib/trpc/client";
 import { SmartTradesTableHead } from "./SmartTradesTableHead";
 import { SmartTradesTableItem } from "./SmartTradesTableItem";
 import { NoActiveSmartTradesPlaceholder } from "./NoActiveSmartTradesPlaceholder";
 
 type SmartTradesTableProps = {
-  smartTrades: TActiveSmartTrade[];
+  botId: number;
 };
 
-export const SmartTradesTable: FC<SmartTradesTableProps> = ({
-  smartTrades,
-}) => {
+export const SmartTradesTable: FC<SmartTradesTableProps> = ({ botId }) => {
+  const [smartTrades] = tClient.gridBot.activeSmartTrades.useSuspenseQuery({
+    botId,
+  });
+
   return (
     <Sheet
       variant="outlined"

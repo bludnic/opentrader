@@ -29,12 +29,17 @@ type BotStatusSwitcherProps = {
 export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
   const { className, bot, sx, size } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const tUtils = tClient.useUtils();
 
-  const [enabled, setEnabled] = useState(bot.enabled);
+  const invalidateState = () => {
+    tUtils.gridBot.getOne.invalidate(bot.id);
+    tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
+    tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
+  };
 
   const startBot = tClient.gridBot.start.useMutation({
     onSuccess() {
-      setEnabled(true);
+      invalidateState();
 
       enqueueSnackbar("Bot has been enabled", {
         variant: "success",
@@ -44,9 +49,9 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
 
   const stopBot = tClient.gridBot.stop.useMutation({
     onSuccess() {
-      setEnabled(false);
+      invalidateState();
 
-      enqueueSnackbar("Bot has been stoped", {
+      enqueueSnackbar("Bot has been stopped", {
         variant: "success",
       });
     },
@@ -67,7 +72,7 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     );
   }
 
-  if (enabled) {
+  if (bot.enabled) {
     return (
       <StyledChip
         className={clsx(classes.root, className)}

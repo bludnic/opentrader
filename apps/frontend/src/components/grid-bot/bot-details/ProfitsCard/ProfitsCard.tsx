@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC } from "react";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -6,22 +8,21 @@ import ListDivider from "@mui/joy/ListDivider";
 import Tooltip from "@mui/joy/Tooltip";
 import Typography from "@mui/joy/Typography";
 import List from "@mui/joy/List";
+import { tClient } from "src/lib/trpc/client";
 import { calcTotalProfitFromSmartTrades } from "src/utils/grid-bot/calcTotalProfitFromSmartTrades";
 import { ProfitItem } from "./ProfitItem";
 import { Profit } from "./Profit";
-import { TCompletedSmartTrade } from "src/types/trpc";
 
 type ProfitsCardProps = {
-  smartTrades: TCompletedSmartTrade[];
-  baseCurrency: string;
-  quoteCurrency: string;
+  botId: number;
 };
 
-export const ProfitsCard: FC<ProfitsCardProps> = ({
-  smartTrades,
-  baseCurrency,
-  quoteCurrency,
-}) => {
+export const ProfitsCard: FC<ProfitsCardProps> = ({ botId }) => {
+  const [bot] = tClient.gridBot.getOne.useSuspenseQuery(botId);
+  const [smartTrades] = tClient.gridBot.completedSmartTrades.useSuspenseQuery({
+    botId,
+  });
+
   const totalProfit = calcTotalProfitFromSmartTrades(smartTrades);
 
   return (
@@ -38,7 +39,11 @@ export const ProfitsCard: FC<ProfitsCardProps> = ({
         {smartTrades.length > 0 ? (
           <Tooltip title="Total profit">
             <Typography level="h3" fontSize="xl2" fontWeight="xl">
-              <Profit profit={totalProfit} currency={quoteCurrency} size="lg" />
+              <Profit
+                profit={totalProfit}
+                currency={bot.quoteCurrency}
+                size="lg"
+              />
             </Typography>
           </Tooltip>
         ) : null}

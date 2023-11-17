@@ -22,12 +22,17 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
   bot,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
+  const tUtils = tClient.useUtils();
 
-  const [enabled, setEnabled] = useState(bot.enabled);
+  const invalidateState = () => {
+    tUtils.gridBot.getOne.invalidate(bot.id);
+    tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
+    tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
+  };
 
   const startBot = tClient.gridBot.start.useMutation({
     onSuccess() {
-      setEnabled(true);
+      invalidateState();
 
       enqueueSnackbar("Bot has been enabled", {
         variant: "success",
@@ -37,7 +42,7 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
 
   const stopBot = tClient.gridBot.stop.useMutation({
     onSuccess() {
-      setEnabled(false);
+      invalidateState();
 
       enqueueSnackbar("Bot has been stoped", {
         variant: "success",
@@ -60,7 +65,7 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
     );
   }
 
-  if (enabled) {
+  if (bot.enabled) {
     return (
       <Button
         onClick={() =>
