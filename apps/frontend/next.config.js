@@ -2,8 +2,7 @@ const { z } = require("zod");
 
 const envValidationSchema = z.object({
   NEXT_PUBLIC_PROCESSOR_API_URL: z.string().min(1),
-  POSTGRES_URL: z.string().min(1),
-  POSTGRES_URL_NON_POOLING: z.string().min(1),
+  DATABASE_URL: z.string().min(1),
 });
 envValidationSchema.parse(process.env); // validate ENV schema
 
