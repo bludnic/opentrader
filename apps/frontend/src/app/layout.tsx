@@ -26,7 +26,7 @@ export default function RootLayout({
             <StoreProvider>
               <ThemeProvider>{children}</ThemeProvider>
             </StoreProvider>
-          </TrpcProvider>{" "}
+          </TrpcProvider>
         </TRPCApiErrorProvider>
       </body>
     </html>
