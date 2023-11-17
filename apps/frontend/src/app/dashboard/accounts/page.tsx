@@ -15,21 +15,13 @@ export default function Page() {
   const [selectedAccount, setSelectedAccount] =
     useState<TExchangeAccount | null>(null);
 
-  const { isLoading, isError, error, data, refetch } =
-    tClient.exchangeAccount.list.useQuery();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>{JSON.stringify(error)}</div>;
-  }
+  const [exchangeAccounts, { refetch }] =
+    tClient.exchangeAccount.list.useSuspenseQuery();
 
   return (
     <Box>
       <AccountsListTable
-        accounts={data}
+        accounts={exchangeAccounts}
         onCreateAccountClick={() => setCreateDialogOpen(true)}
         onEditAccountClick={(account) => {
           setSelectedAccount(account);
