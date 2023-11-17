@@ -7,7 +7,7 @@ import {
   useExchange,
   useSmartTrade,
 } from "@opentrader/bot-processor";
-import { computeGridFromCurrentAssetPrice } from "@opentrader/tools";
+import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
 import {
   IGetMarketPriceResponse,
   IGridBotLevel,
@@ -33,7 +33,7 @@ export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
     console.log(`[GridBotTemple] Bot started [markPrice: ${price}]`);
   }
 
-  const gridLevels: IGridBotLevel[] = computeGridFromCurrentAssetPrice(
+  const gridLevels: IGridBotLevel[] = computeGridLevelsFromCurrentAssetPrice(
     bot.gridLines,
     price,
   );

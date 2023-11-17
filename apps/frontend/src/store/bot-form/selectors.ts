@@ -1,6 +1,6 @@
 import {
   calculateInvestment,
-  computeGridFromCurrentAssetPrice,
+  computeGridLevelsFromCurrentAssetPrice,
   decomposeSymbolId,
   filterPrice,
   filterQuantity,
@@ -87,7 +87,7 @@ export const computeInvestmentAmount: Selector<
 
   const gridLines = selectGridLines(rootState);
 
-  const gridLevels = computeGridFromCurrentAssetPrice(
+  const gridLevels = computeGridLevelsFromCurrentAssetPrice(
     gridLines,
     currentAssetPrice,
   );

@@ -5,13 +5,13 @@ import {
   GRID_LEVELS,
 } from "src/mocks/grid-bot";
 import { calcGridLines } from "./calcGridLines";
-import { computeGridFromCurrentAssetPrice } from "./computeGridFromCurrentAssetPrice";
+import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice";
 
-describe("computeGridFromCurrentAssetPrice", () => {
+describe("computeGridLevelsFromCurrentAssetPrice", () => {
   it("should calculate initial grid levels", () => {
-    const gridLevels = computeGridFromCurrentAssetPrice(
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
       GRID_LINES,
-      CURRENT_ASSET_PRICE
+      CURRENT_ASSET_PRICE,
     );
     const expectedGridLevels: IGridBotLevel[] = GRID_LEVELS;
 
@@ -22,9 +22,9 @@ describe("computeGridFromCurrentAssetPrice", () => {
     const currentAssetPrice = 1.13;
     const gridLines = calcGridLines(1.14, 1.11, 4, 5);
 
-    const gridLevels = computeGridFromCurrentAssetPrice(
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice
+      currentAssetPrice,
     );
 
     expect(gridLevels).toMatchObject([
@@ -38,9 +38,9 @@ describe("computeGridFromCurrentAssetPrice", () => {
     const currentAssetPrice = 2610;
     const gridLines = calcGridLines(2800, 2500, 16, 0.1);
 
-    const gridLevels = computeGridFromCurrentAssetPrice(
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice
+      currentAssetPrice,
     );
 
     expect(gridLevels).toHaveLength(15);
@@ -68,9 +68,9 @@ describe("computeGridFromCurrentAssetPrice", () => {
     const currentAssetPrice = 9.8;
     const gridLines = calcGridLines(12, 7.5, 10, 10);
 
-    const gridLevels = computeGridFromCurrentAssetPrice(
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
       gridLines,
-      currentAssetPrice
+      currentAssetPrice,
     );
 
     expect(gridLevels).toHaveLength(9);

@@ -1,14 +1,14 @@
 import { IGridLine, ISymbolInfo } from "@opentrader/types";
 import { filterPrice, filterQuantity } from "../currency";
 import { calculateInvestment } from "./calculateInvestment";
-import { computeGridFromCurrentAssetPrice } from "./computeGridFromCurrentAssetPrice";
+import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice";
 
 export function computeInvestmentAmount(
   symbol: ISymbolInfo,
   gridLines: IGridLine[],
   currentAssetPrice: number,
 ) {
-  const gridLevels = computeGridFromCurrentAssetPrice(
+  const gridLevels = computeGridLevelsFromCurrentAssetPrice(
     gridLines,
     currentAssetPrice,
   );

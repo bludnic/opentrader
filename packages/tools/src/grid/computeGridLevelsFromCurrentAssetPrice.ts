@@ -9,9 +9,9 @@ import { nextGridLinePrice } from "./nextGridLinePrice";
  * @param currentAssetPrice
  * @returns
  */
-export function computeGridFromCurrentAssetPrice(
+export function computeGridLevelsFromCurrentAssetPrice(
   gridLines: IGridLine[],
-  currentAssetPrice: number
+  currentAssetPrice: number,
 ): IGridBotLevel[] {
   return gridLines.flatMap<IGridBotLevel>((gridLine, i) => {
     if (i === gridLines.length - 1) {
