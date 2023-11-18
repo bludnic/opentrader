@@ -35,7 +35,7 @@ export const BotSettingsCard: FC<BotSettingsCardProps> = ({ botId }) => {
 
       <RunBotTemplateButton bot={bot} />
 
-      <SyncClosedOrdersButton polling={false} />
+      <SyncClosedOrdersButton polling={true} />
     </Card>
   );
 };

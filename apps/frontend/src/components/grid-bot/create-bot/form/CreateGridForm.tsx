@@ -36,7 +36,12 @@ export const CreateGridBotForm: FC = () => {
 
   // Update `quantityPerGrid` when symbol change
   const symbolId = useAppSelector(selectSymbolId);
-  const { data: symbol } = tClient.symbol.getOne.useQuery({ symbolId });
+  const { data: symbol } = tClient.symbol.getOne.useQuery(
+    { symbolId },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   if (useIsStale(symbol)) {
     if (symbol) {
       dispatch(setQuantityPerGrid(symbol.filters.lot.minQuantity));
@@ -44,7 +49,12 @@ export const CreateGridBotForm: FC = () => {
   }
 
   // Update high/low prices when symbol change
-  const { data: options } = tClient.gridBot.formOptions.useQuery({ symbolId });
+  const { data: options } = tClient.gridBot.formOptions.useQuery(
+    { symbolId },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   if (useIsStale(options)) {
     if (options) {
       dispatch(setHighPrice(options.highPrice));
