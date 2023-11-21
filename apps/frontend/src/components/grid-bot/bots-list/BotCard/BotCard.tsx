@@ -134,7 +134,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
                 <NumbersIcon fontSize="large" />
               </ListItemDecorator>
               <ListItemContent>
-                <Typography level="title-sm">Avg. Quantity per grid</Typography>
+                <Typography level="title-sm">Avg. Qty. per grid</Typography>
                 <Typography level="body-sm" noWrap>
                   {`${averageQuantityPerGrid} ${bot.baseCurrency}`}
                 </Typography>
