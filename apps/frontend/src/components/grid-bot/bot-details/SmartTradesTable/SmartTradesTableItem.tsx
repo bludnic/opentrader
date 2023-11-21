@@ -1,3 +1,5 @@
+import List from "@mui/joy/List";
+import ListItem from "@mui/joy/ListItem";
 import Tooltip from "@mui/joy/Tooltip";
 import Big from "big.js";
 import React, { FC } from "react";
@@ -19,9 +21,8 @@ export const SmartTradesTableItem: FC<SmartTradeTableItemProps> = ({
     .toFixed(2)
     .toString();
   const createdAt = formatDateTime(new Date(smartTrade.createdAt).getTime());
-  const price = isPositionOpen
-    ? smartTrade.takeProfitOrder.price
-    : smartTrade.entryOrder.price;
+  const { entryOrder, takeProfitOrder } = smartTrade;
+  const price = isPositionOpen ? takeProfitOrder.price : entryOrder.price;
 
   return (
     <tr tabIndex={-1}>
@@ -32,7 +33,16 @@ export const SmartTradesTableItem: FC<SmartTradeTableItemProps> = ({
           width: "auto",
         }}
       >
-        {smartTrade.id}
+        <Tooltip
+          title={
+            <List size="sm">
+              <ListItem>Entry Order ID: {entryOrder.id}:{entryOrder.exchangeOrderId ?? "null"}</ListItem>
+              <ListItem>TP Order ID: {takeProfitOrder.id}:{takeProfitOrder.exchangeOrderId}</ListItem>
+            </List>
+          }
+        >
+          <div>{smartTrade.id}</div>
+        </Tooltip>
       </th>
       <th
         scope="row"
