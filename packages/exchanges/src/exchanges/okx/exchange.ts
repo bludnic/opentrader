@@ -86,7 +86,7 @@ export class OkxExchange implements IExchange {
     params: IGetOpenOrdersRequest,
   ): Promise<IGetOpenOrdersResponse> {
     const args = normalize.getOpenOrders.request(params);
-    const data = await this.ccxt.fetchClosedOrders(...args);
+    const data = await this.ccxt.fetchOpenOrders(...args);
 
     return normalize.getOpenOrders.response(data);
   }
