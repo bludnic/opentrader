@@ -1,14 +1,16 @@
+"use client";
+
 import Grid from "@mui/joy/Grid";
 import { ExchangeCode } from "@opentrader/types";
 import React from "react";
 import CreateGridBotPage from "src/components/grid-bot/create-bot/page";
-import { tServer } from "src/lib/trpc/server";
+import { tClient } from "src/lib/trpc/client";
 
-async function fetchData() {
-  const exchangeAccounts = await tServer.exchangeAccount.list();
+const useData = () => {
+  const [exchangeAccounts] = tClient.exchangeAccount.list.useSuspenseQuery();
   const exchangeAccount = exchangeAccounts[0];
 
-  const symbols = await tServer.symbol.list(
+  const [symbols] = tClient.symbol.list.useSuspenseQuery(
     exchangeAccount.exchangeCode as ExchangeCode,
   );
 
@@ -17,7 +19,7 @@ async function fetchData() {
   const symbol =
     symbols.find((symbol) => symbol.currencyPair === "BTC/USDT") || symbols[0];
 
-  const { price: currentAssetPrice } = await tServer.symbol.price({
+  const [{ price: currentAssetPrice }] = tClient.symbol.price.useSuspenseQuery({
     symbolId: symbol.symbolId,
   });
 
@@ -26,13 +28,15 @@ async function fetchData() {
     symbol,
     currentAssetPrice,
   };
-}
+};
 
-export default async function Page() {
-  const { exchangeAccount, symbol, currentAssetPrice } = await fetchData();
-  const { lowPrice, highPrice } = await tServer.gridBot.formOptions({
-    symbolId: symbol.symbolId,
-  });
+export default function Page() {
+  const { exchangeAccount, symbol, currentAssetPrice } = useData();
+
+  const [{ lowPrice, highPrice }] =
+    tClient.gridBot.formOptions.useSuspenseQuery({
+      symbolId: symbol.symbolId,
+    });
 
   return (
     <Grid container spacing={2}>
