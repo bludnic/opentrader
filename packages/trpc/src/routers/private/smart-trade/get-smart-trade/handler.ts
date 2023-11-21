@@ -1,4 +1,8 @@
-import { xprisma, toSmartTradeEntity } from "@opentrader/db";
+import {
+  xprisma,
+  toSmartTradeEntity,
+  SmartTradeEntity_Order_Order,
+} from "@opentrader/db";
 import { Context } from "#trpc/utils/context";
 import { TGetSmartTradeInputSchema } from "./schema";
 
@@ -20,5 +24,5 @@ export async function getSmartTrade({ ctx, input: id }: Options) {
     },
   });
 
-  return toSmartTradeEntity(smartTrade);
+  return toSmartTradeEntity(smartTrade) as SmartTradeEntity_Order_Order; // more concrete type (need to add a generic prop to "toSmartTradeEntity()")
 }
