@@ -1,8 +1,7 @@
-import path from "path";
-import webpack from "webpack";
-import nodeExternals from "webpack-node-externals";
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
-const config: webpack.Configuration = {
+module.exports = {
   target: "node",
   entry: "./src/index.ts",
   mode: "production",
@@ -41,5 +40,3 @@ const config: webpack.Configuration = {
     clean: true,
   },
 };
-
-export default config;

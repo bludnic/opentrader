@@ -18,5 +18,5 @@
       //      "#trpc/*": ["../../packages/trpc/src/*"]
     }
   },
-  "include": ["src/index.ts", "webpack.config.ts"]
+  "include": ["src/index.ts"]
 }
