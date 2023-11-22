@@ -9,7 +9,7 @@
     "prisma:schema:migrate": "prisma migrate dev",
     "prisma:schema:generate": "prisma generate",
     "prisma:db:seed": "prisma db seed",
-    "postinstall": "prisma migrate dev && pnpm run prisma:schema:generate"
+    "postinstall": "pnpm run prisma:schema:generate"
   },
   "author": "",
   "license": "ISC",
