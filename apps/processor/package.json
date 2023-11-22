@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "dev:preview": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "bludnic",
@@ -15,11 +16,16 @@
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.23",
     "@types/node": "^20.9.0",
+    "@types/webpack-node-externals": "^3.0.4",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "@opentrader/db": "workspace:*",
