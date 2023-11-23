@@ -2,7 +2,7 @@
 
 import React from "react";
 import Grid from "@mui/joy/Grid";
-import { BarSize, ICandlestick } from "@opentrader/types";
+import { BarSize } from "@opentrader/types";
 
 import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
 import { CreateGridBotForm } from "./form";
@@ -27,20 +27,12 @@ import {
   selectSymbolId,
 } from "src/store/bot-form";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { TExchangeAccount, TSymbol } from "src/types/trpc";
 import { generateBotName } from "src/utils/grid-bot/generateBotName";
+import { usePageData } from "./hooks/usePagaData";
 
-type Props = {
-  exchangeAccount: TExchangeAccount;
-  symbol: TSymbol;
-  lowPrice: number;
-  highPrice: number;
-  currentAssetPrice: number;
-};
-
-export default function CreateGridBotPage(props: Props) {
+export default function CreateGridBotPage() {
   const { exchangeAccount, symbol, lowPrice, highPrice, currentAssetPrice } =
-    props;
+    usePageData();
   const dispatch = useAppDispatch();
 
   const isFirstRender = useIsFirstRender();
@@ -63,20 +55,22 @@ export default function CreateGridBotPage(props: Props) {
   const gridLines = useAppSelector(selectGridLines);
 
   return (
-    <TRPCClientErrorBoundary>
-      <Grid md={9}>
-        <GridChart
-          symbolId={symbolId}
-          barSize={barSize}
-          onBarSizeChange={handleBarSizeChange}
-          gridLines={gridLines}
-          currentAssetPrice={currentAssetPrice}
-        />
-      </Grid>
+    <Grid container spacing={2}>
+      <TRPCClientErrorBoundary>
+        <Grid md={9}>
+          <GridChart
+            symbolId={symbolId}
+            barSize={barSize}
+            onBarSizeChange={handleBarSizeChange}
+            gridLines={gridLines}
+            currentAssetPrice={currentAssetPrice}
+          />
+        </Grid>
 
-      <Grid md={3}>
-        <CreateGridBotForm />
-      </Grid>
-    </TRPCClientErrorBoundary>
+        <Grid md={3}>
+          <CreateGridBotForm />
+        </Grid>
+      </TRPCClientErrorBoundary>
+    </Grid>
   );
 }

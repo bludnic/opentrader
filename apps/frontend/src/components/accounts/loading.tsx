@@ -1,3 +1,5 @@
+"use client";
+
 import Box from "@mui/joy/Box";
 import Skeleton from "@mui/joy/Skeleton";
 
@@ -13,6 +15,9 @@ export default function Loading() {
         animation="wave"
         width="100%"
         height={280}
+        style={{
+          borderRadius: 6,
+        }}
       />
     </Box>
   );

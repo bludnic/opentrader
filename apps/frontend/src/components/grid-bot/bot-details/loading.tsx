@@ -11,6 +11,9 @@ export default function Loading() {
           animation="wave"
           width="100%"
           height={420}
+          sx={{
+            borderRadius: 8,
+          }}
         />
       </Grid>
 
@@ -20,6 +23,9 @@ export default function Loading() {
           animation="wave"
           width="100%"
           height={232}
+          sx={{
+            borderRadius: 8,
+          }}
         />
       </Grid>
     </Grid>
