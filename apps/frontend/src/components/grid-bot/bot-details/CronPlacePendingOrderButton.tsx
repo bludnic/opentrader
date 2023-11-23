@@ -1,6 +1,6 @@
 "use client";
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from "src/ui/snackbar";
 import React, { FC } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
@@ -51,14 +51,12 @@ export const CronPlacePendingOrderButton: FC<
   CronPlacePendingOrderButtonProps
 > = (props) => {
   const { className, bot, smartTrades = [] } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const { isLoading, mutate } =
     tClient.gridBot.cronPlaceLimitOrders.useMutation({
       onSuccess() {
-        enqueueSnackbar("Orders has been placed", {
-          variant: "success",
-        });
+        showSnackbar("Orders has been placed");
       },
     });
 

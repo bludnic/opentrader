@@ -3,26 +3,24 @@
 import CircularProgress from "@mui/joy/CircularProgress";
 import Button from "@mui/joy/Button";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import { tClient } from "src/lib/trpc/client";
 import { mapFormToDto } from "./helpers/mapFormToDto";
 import { selectBotFormState } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
+import { useSnackbar } from "src/ui/snackbar";
 
 type SubmitButtonProps = {};
 
 export const SubmitButton: FC<SubmitButtonProps> = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const router = useRouter();
 
   const botFormState = useAppSelector(selectBotFormState);
 
   const { mutate, isLoading } = tClient.gridBot.create.useMutation({
     onSuccess(bot) {
-      enqueueSnackbar("Bot created successfully", {
-        variant: "success",
-      });
+      showSnackbar("Bot created successfully");
 
       setTimeout(() => {
         router.push(`/dashboard/grid-bot/${bot.id}`);

@@ -1,9 +1,9 @@
-import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import { CreateAccountForm } from "../CreateAccountForm/CreateAccountForm";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
+import { useSnackbar } from "src/ui/snackbar";
 
 type NewAccountDialogProps = {
   open: boolean;
@@ -13,7 +13,7 @@ type NewAccountDialogProps = {
 
 export const CreateAccountDialog: FC<NewAccountDialogProps> = (props) => {
   const { open, onClose, onCreated } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -25,13 +25,12 @@ export const CreateAccountDialog: FC<NewAccountDialogProps> = (props) => {
             onCreated();
             onClose();
 
-            enqueueSnackbar("Account created", {
-              variant: "success",
-            });
+            showSnackbar("Account created");
           }}
           onError={(error) => {
-            enqueueSnackbar(JSON.stringify(error), {
-              variant: "error",
+            showSnackbar(JSON.stringify(error), {
+              color: "danger",
+              autoHideDuration: 5000,
             });
             console.log(error);
           }}

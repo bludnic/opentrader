@@ -1,11 +1,11 @@
 "use client";
 
-import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
 import { TGridBot } from "src/types/trpc";
+import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "RunBotTemplateButton";
 const classes = {
@@ -19,13 +19,11 @@ type RunBotTemplateButtonProps = {
 
 export const RunBotTemplateButton: FC<RunBotTemplateButtonProps> = (props) => {
   const { className, bot } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const { isLoading, mutate } = tClient.gridBot.manualProcess.useMutation({
     onSuccess() {
-      enqueueSnackbar("Bot has been enabled", {
-        variant: "success",
-      });
+      showSnackbar("Bot has been enabled");
     },
   });
 

@@ -1,11 +1,11 @@
 "use client";
 
-import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
 import { TGridBot } from "src/types/trpc";
+import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "StartStopBotButton";
 const classes = {
@@ -21,7 +21,7 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
   className,
   bot,
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
@@ -34,9 +34,7 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
     onSuccess() {
       invalidateState();
 
-      enqueueSnackbar("Bot has been enabled", {
-        variant: "success",
-      });
+      showSnackbar("Bot has been enabled");
     },
   });
 
@@ -44,9 +42,7 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
     onSuccess() {
       invalidateState();
 
-      enqueueSnackbar("Bot has been stoped", {
-        variant: "success",
-      });
+      showSnackbar("Bot has been stopped");
     },
   });
 

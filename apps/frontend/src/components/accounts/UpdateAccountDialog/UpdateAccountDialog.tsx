@@ -1,10 +1,10 @@
-import { useSnackbar } from "notistack";
 import React, { FC } from "react";
 import { TExchangeAccount } from "src/types/trpc";
 import { UpdateAccountForm } from "../CreateAccountForm/UpdateAccountForm";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
+import { useSnackbar } from "src/ui/snackbar";
 
 type UpdateAccountDialogProps = {
   className?: string;
@@ -16,7 +16,7 @@ type UpdateAccountDialogProps = {
 
 export const UpdateAccountDialog: FC<UpdateAccountDialogProps> = (props) => {
   const { className, open, onClose, onCreated, account } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -29,13 +29,11 @@ export const UpdateAccountDialog: FC<UpdateAccountDialogProps> = (props) => {
             onCreated();
             onClose();
 
-            enqueueSnackbar("Account updated", {
-              variant: "success",
-            });
+            showSnackbar("Account updated");
           }}
           onError={(error) => {
-            enqueueSnackbar(JSON.stringify(error), {
-              variant: "error",
+            showSnackbar(JSON.stringify(error), {
+              color: "danger",
             });
             console.log(error);
           }}

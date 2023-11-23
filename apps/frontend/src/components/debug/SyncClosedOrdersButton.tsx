@@ -1,10 +1,10 @@
 "use client";
 
-import { useSnackbar } from "notistack";
 import React, { FC, useEffect } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
+import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "SyncClosedOrdersButton";
 const classes = {
@@ -20,14 +20,12 @@ export const SyncClosedOrdersButton: FC<SyncClosedOrdersButtonProps> = (
   props,
 ) => {
   const { className, polling } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const { isLoading, mutate, mutateAsync } =
     tClient.cron.syncClosedOrders.useMutation({
       onSuccess() {
-        enqueueSnackbar("Orders have been synced", {
-          variant: "success",
-        });
+        showSnackbar("Orders have been synced");
       },
     });
 
@@ -35,8 +33,7 @@ export const SyncClosedOrdersButton: FC<SyncClosedOrdersButtonProps> = (
     if (!polling) return;
 
     const timer = setInterval(() => {
-      console.log("SyncClosedOrders: mutate()");
-      mutateAsync().then((data) => console.log('response', data));
+      mutateAsync().then((data) => console.log("response", data));
     }, 15000);
 
     return () => {

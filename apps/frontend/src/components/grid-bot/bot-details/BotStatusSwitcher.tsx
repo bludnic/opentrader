@@ -2,13 +2,13 @@
 
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { SxProps } from "@mui/joy/styles/types";
-import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import clsx from "clsx";
 import Chip, { ChipProps } from "@mui/joy/Chip";
 import { styled } from "@mui/joy/styles";
 import { tClient } from "src/lib/trpc/client";
 import { TGridBot } from "src/types/trpc";
+import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "BotStatusChip";
 const classes = {
@@ -28,7 +28,7 @@ type BotStatusSwitcherProps = {
 
 export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
   const { className, bot, sx, size } = props;
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
@@ -41,9 +41,7 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     onSuccess() {
       invalidateState();
 
-      enqueueSnackbar("Bot has been enabled", {
-        variant: "success",
-      });
+      showSnackbar("Bot has been enabled");
     },
   });
 
@@ -51,9 +49,7 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     onSuccess() {
       invalidateState();
 
-      enqueueSnackbar("Bot has been stopped", {
-        variant: "success",
-      });
+      showSnackbar("Bot has been stopped");
     },
   });
 

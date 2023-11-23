@@ -5,6 +5,7 @@ import { TRPCApiErrorProvider } from "src/ui/errors/api";
 
 import { cache } from "@opentrader/exchanges";
 import { PrismaCacheProvider } from "@opentrader/exchanges/server";
+import { SnackbarProvider } from "src/ui/snackbar";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
@@ -24,7 +25,9 @@ export default function RootLayout({
         <TRPCApiErrorProvider>
           <TrpcProvider>
             <StoreProvider>
-              <ThemeProvider>{children}</ThemeProvider>
+              <SnackbarProvider>
+                <ThemeProvider>{children}</ThemeProvider>
+              </SnackbarProvider>
             </StoreProvider>
           </TrpcProvider>
         </TRPCApiErrorProvider>
