@@ -1,21 +1,28 @@
 version: "3.8"
 
 services:
-  backend:
+  processor:
     build:
-      target: development
-      context: ./apps/backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/processor/Dockerfile
     ports:
       - "4000:4000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/postgres
+    depends_on:
+      - database
   frontend:
     build:
-      target: development
-      context: ./apps/frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/frontend/Dockerfile
     ports:
       - "3000:3000"
-  postgres-db:
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/postgres
+      NEXT_PUBLIC_PROCESSOR_API_URL: http://localhost:4000
+    depends_on:
+      - database
+  database:
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
@@ -26,28 +33,5 @@ services:
       - postgres-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-  markets-db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - markets-db:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
-  redis:
-    image: redis:alpine
-    command: redis-server
-    volumes:
-      - redis-data:/data
-      - redis-conf:/usr/local/etc/redis/redis.conf
-    ports:
-      - "6379:6379"
 volumes:
   postgres-db:
-  markets-db:
-  redis-data:
-  redis-conf:
-
