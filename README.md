@@ -26,7 +26,7 @@ To solve this some apps/packages may contain a symlink to the root `.env`.
 $ cp .env.example .env
 ```
 
-2. Replace the `POSTGRES_URL` if your URL is different from the actual one.
+2. Replace the `DATABASE_URL` if your URL is different from the actual one.
 
 > 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d postgres-db`. See details below.
 
@@ -35,8 +35,8 @@ $ cp .env.example .env
 1. If you want to use PostgreSQL within a Docker container use the following commands:
 
 ```bash
-$ docker compose up -d postgres-db # start service
-$ docker compose -p opentrader stop postgres-db # stop service
+$ docker compose up -d database # start service
+$ docker compose stop database # stop service
 ```
 
 2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
