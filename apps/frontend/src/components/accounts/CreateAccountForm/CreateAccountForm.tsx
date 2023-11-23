@@ -1,25 +1,26 @@
 import Box from "@mui/joy/Box";
 import Divider from "@mui/joy/Divider";
-import React, { FC, useEffect } from "react";
+import type { FC } from "react";
+import React, { useEffect } from "react";
 import { ExchangeCode } from "@opentrader/types";
+import { Form } from "react-final-form";
+import type { FormApi } from "final-form";
+import Grid from "@mui/joy/Grid";
+import Button from "@mui/joy/Button";
 import { trpcApi } from "src/lib/trpc/endpoints";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
-import { CreateExchangeAccountFormValues } from "./types";
+import type { CreateExchangeAccountFormValues } from "./types";
 import { ExchangeCodeField } from "./fields/ExchangeCodeField";
-import { Form } from "react-final-form";
-import type { FormApi } from "final-form";
 import { IsDemoAccountField } from "./fields/IsDemoAccountField";
 import { PassphraseField } from "./fields/PassphraseField";
 import { SecretKeyField } from "./fields/SecretKeyField";
-import Grid from "@mui/joy/Grid";
-import Button from "@mui/joy/Button";
 
-type CreateAccountFormProps = {
+interface CreateAccountFormProps {
   onCreated: () => void;
   onError: (error?: unknown) => void;
   debug?: boolean;
-};
+}
 
 export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const { onCreated, onError, debug } = props;
@@ -81,18 +82,15 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
     if (!values.secretKey) {
       return { secretKey: "Required" };
     }
-
-    return;
   };
 
   return (
     <Box>
       <Form<CreateExchangeAccountFormValues>
-        onSubmit={handleSubmit}
-        validate={validate}
         initialValues={initialValues}
+        onSubmit={handleSubmit}
         render={({ handleSubmit, submitting, values, hasValidationErrors }) => (
-          <form onSubmit={handleSubmit} noValidate>
+          <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid xs={12}>
                 <ExchangeCodeField />
@@ -120,14 +118,14 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
                 <IsDemoAccountField />
               </Grid>
 
-              <Grid container xs={12} spacing={2}>
+              <Grid container spacing={2} xs={12}>
                 <Grid xs={12}>
                   <Button
-                    variant="soft"
                     color="primary"
-                    type="submit"
                     disabled={submitting || hasValidationErrors || isLoading}
                     loading={isLoading}
+                    type="submit"
+                    variant="soft"
                   >
                     Create
                   </Button>
@@ -138,6 +136,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
             {debug ? <pre>{JSON.stringify(values, null, 2)}</pre> : null}
           </form>
         )}
+        validate={validate}
       />
     </Box>
   );
