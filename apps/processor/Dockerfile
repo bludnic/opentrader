@@ -47,7 +47,7 @@ COPY turbo.json turbo.json
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN turbo run prisma:migrate:prod --filter=packages/prisma
+RUN turbo run prisma:deploy
 RUN turbo run build --filter=processor
 
 FROM base AS runner

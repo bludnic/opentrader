@@ -7,6 +7,9 @@
     },
     "lint": {},
     "dev": {},
-    "start": {}
+    "start": {},
+    "prisma:migrate": {},
+    "prisma:deploy": {},
+    "prisma:seed": {}
   }
 }

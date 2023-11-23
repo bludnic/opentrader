@@ -48,14 +48,14 @@ The `apps/processor` is a separate NodeJS app that synchronizes orders with the 
 
 Features:
 
-- Sync orders statuses with the Exchange by using WebSocket
+- Sync orders statuses with the Exchange by using WebSockets
 - Fallback to REST API by polling every 60s
 - Runs the bot template if any order was filled
 - Place pending orders on the Exchange
 - Async queue (in case two or more orders were filled at the same time)
 
 The package is optional. If you decide to use it, don't forget to disable the sync orders statuses in the `frontend` app.
-Otherwise, it may end up in an inconsistent bot state, when two synchronizers running at the same time.
+Otherwise, it may end up in an inconsistent bot state when two synchronizers running at the same time.
 For development it's enough to run the `frontend` app.
 
 # Installation
@@ -66,16 +66,22 @@ For development it's enough to run the `frontend` app.
 $ pnpm install
 ```
 
-2. Run prisma migrations
-
-```
-turbo run prisma:migrate:prod --filter=packages/prisma
-```
-
-3. Build `/apps` and local `/packages`
+2. Build `/packages/**`
 
 ```bash
-$ turbo run build
+$ turbo run build --filter='./packages/*'
+```
+
+3. Run db migrations
+
+```bash
+$ turbo run prisma:migrate
+```
+
+4. Seed the database
+
+```bash
+$ turbo run prisma:seed
 ```
 
 
