@@ -6,10 +6,11 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "prisma:schema:migrate": "prisma migrate dev",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:prod": "prisma migrate deploy",
     "prisma:schema:generate": "prisma generate",
     "prisma:db:seed": "prisma db seed",
-    "postinstall": "pnpm run prisma:schema:generate"
+    "postinstall": "prisma generate"
   },
   "author": "",
   "license": "ISC",

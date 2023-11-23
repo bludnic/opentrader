@@ -1,4 +1,4 @@
-import { PrismaClient } from "./src/client";
+import { PrismaClient } from "@prisma/client";
 import { calcGridLines } from "@opentrader/tools";
 
 const prisma = new PrismaClient();

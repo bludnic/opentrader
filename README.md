@@ -60,13 +60,19 @@ For development it's enough to run the `frontend` app.
 
 # Installation
 
-1. Install npm dependencies and run Prisma migrations.
+1. Install dependencies
 
 ```bash
 $ pnpm install
 ```
 
-2. Build `/apps` and local `/packages`
+2. Run prisma migrations
+
+```
+turbo run prisma:migrate:prod --filter=packages/prisma
+```
+
+3. Build `/apps` and local `/packages`
 
 ```bash
 $ turbo run build
