@@ -62,6 +62,14 @@ export const Chart: FC<ChartProps> = ({
   });
   useEffect(() => {
     chart.series.current?.setData(candlesticks.map(normalizeCandle));
+
+    const symbolChanged = candlesticks.length === 0;
+    if (symbolChanged) {
+      chart.api.current?.timeScale().resetTimeScale();
+      chart.api.current?.priceScale("right").applyOptions({
+        autoScale: true,
+      });
+    }
   }, [candlesticks]);
   useEffect(() => {
     if (!chart.series.current || !priceLines) return;
