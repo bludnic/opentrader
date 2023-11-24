@@ -3,7 +3,7 @@
 import type { FC, ReactNode } from "react";
 import React, { useState } from "react";
 import type { ExchangeCode } from "@opentrader/types";
-import Autocomplete from "@mui/joy/Autocomplete";
+import Autocomplete, { createFilterOptions } from "@mui/joy/Autocomplete";
 import { tClient } from "src/lib/trpc/client";
 import type { TExchangeCode, TSymbol } from "src/types/trpc";
 import { ListboxComponent } from "./LisboxComponent";
@@ -17,6 +17,11 @@ export type CryptoCoinSelectProps = {
 };
 
 const getOptionLabel = (symbol: TSymbol) => symbol.currencyPair;
+
+const filterOptions = createFilterOptions<TSymbol>({
+  matchFrom: "start",
+  stringify: (option) => option.currencyPair.replace("/", ""),
+});
 
 export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
   exchangeCode,
@@ -35,6 +40,7 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
   return (
     <Autocomplete
       disableListWrap
+      filterOptions={filterOptions}
       getOptionLabel={getOptionLabel}
       inputValue={inputValue}
       onChange={(_e, value) => onChange(value)}
