@@ -12,8 +12,8 @@ export const lightTheme: ChartTheme = {
       horzLines: { color: "#DDD" },
     },
     timeScale: {
-      timeVisible: true
-    }
+      timeVisible: true,
+    },
   },
   candlestickSeriesOptions: {
     upColor: "#26a69a",
