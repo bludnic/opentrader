@@ -25,6 +25,7 @@ module.exports = {
   "no-promise-executor-return": "off",
   "@typescript-eslint/no-extraneous-class": "off",
   "@typescript-eslint/naming-convention": "off",
+  "@typescript-eslint/no-unnecessary-condition": "off",
   camelcase: "off",
   "import/no-cycle": "off", // @todo investigate and enable the rule
 
