@@ -4,6 +4,8 @@ import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
 import type { OHLCV } from "ccxt";
 import type {
+  SeriesMarker,
+  Time,
   CreatePriceLineOptions,
   IPriceLine,
   UTCTimestamp,
@@ -37,6 +39,8 @@ type ChartProps = {
    */
   children?: ReactNode;
   priceLines?: CreatePriceLineOptions[];
+  markers?: SeriesMarker<Time>[];
+  showMarkers?: boolean;
   dimmed?: boolean;
   showPriceLines?: boolean;
 };
@@ -48,6 +52,8 @@ export const Chart: FC<ChartProps> = ({
   priceLines,
   dimmed,
   showPriceLines,
+  markers,
+  showMarkers,
 }) => {
   const [symbol] = tClient.symbol.getOne.useSuspenseQuery({ symbolId });
 
@@ -73,6 +79,8 @@ export const Chart: FC<ChartProps> = ({
       });
     }
   }, [candlesticks]);
+
+  // Price lines
   useEffect(() => {
     if (!chart.series.current || !priceLines) return;
     if (!showPriceLines) return;
@@ -90,6 +98,20 @@ export const Chart: FC<ChartProps> = ({
       });
     };
   }, [priceLines, showPriceLines]);
+
+  // Price markers
+  useEffect(() => {
+    if (!chart.series.current || !markers) return;
+    if (!showMarkers) return;
+
+    const series = chart.series.current;
+
+    series.setMarkers(markers);
+
+    return () => {
+      series.setMarkers([]);
+    };
+  }, [markers, showMarkers]);
 
   const [containerRef, { width, height }] = useElementSize();
   useEffect(() => {

@@ -14,7 +14,8 @@ import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
 import type { TBarSize } from "src/types/literals";
-import { computePriceLines } from "./utils";
+import { computePriceLines } from "./utils/computePriceLines";
+import { computeTradeMarkers } from "./utils/computeTradeMarkers";
 
 const timeframes = ["1d", "4h", "1h", "5m"] as const;
 export type ChartBarSize = Extract<TBarSize, (typeof timeframes)[number]>;
@@ -37,17 +38,28 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
       bot.quoteCurrency,
     ),
   });
-  const [smartTrades] = tClient.gridBot.activeSmartTrades.useSuspenseQuery({
-    botId,
-  });
+  const [activeSmartTrades] =
+    tClient.gridBot.activeSmartTrades.useSuspenseQuery({
+      botId,
+    });
+  const [completedSmartTrades] =
+    tClient.gridBot.completedSmartTrades.useSuspenseQuery({
+      botId,
+    });
 
   const priceLines = useMemo(
-    () => computePriceLines(smartTrades),
-    [smartTrades],
+    () => computePriceLines(activeSmartTrades),
+    [activeSmartTrades],
   );
 
   const [barSize, setBarSize] = useState<ChartBarSize>("1h");
   const [showPriceLines, setShowPriceLines] = useState(true);
+
+  const tradeMarkers = useMemo(
+    () => computeTradeMarkers(completedSmartTrades, barSize),
+    [completedSmartTrades, barSize],
+  );
+  const [showTradeMarkers, setShowTradeMarkers] = useState(false);
 
   return (
     <Suspense
@@ -62,7 +74,9 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
     >
       <Chart
         barSize={barSize}
+        markers={tradeMarkers}
         priceLines={priceLines}
+        showMarkers={showTradeMarkers}
         showPriceLines={showPriceLines}
         symbolId={symbol.symbolId}
       >
@@ -91,6 +105,16 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
               label="Grid"
               onChange={(e) => setShowPriceLines(e.target.checked)}
               size="md"
+            />
+
+            <Checkbox
+              checked={showTradeMarkers}
+              label="Trades"
+              onChange={(e) => setShowTradeMarkers(e.target.checked)}
+              size="md"
+              sx={{
+                ml: 2,
+              }}
             />
           </Box>
         </ChartAppBar>
