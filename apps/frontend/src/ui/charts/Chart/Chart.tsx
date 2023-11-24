@@ -38,6 +38,7 @@ type ChartProps = {
   children?: ReactNode;
   priceLines?: CreatePriceLineOptions[];
   dimmed?: boolean;
+  showPriceLines?: boolean;
 };
 
 export const Chart: FC<ChartProps> = ({
@@ -46,6 +47,7 @@ export const Chart: FC<ChartProps> = ({
   children,
   priceLines,
   dimmed,
+  showPriceLines,
 }) => {
   const [symbol] = tClient.symbol.getOne.useSuspenseQuery({ symbolId });
 
@@ -73,6 +75,7 @@ export const Chart: FC<ChartProps> = ({
   }, [candlesticks]);
   useEffect(() => {
     if (!chart.series.current || !priceLines) return;
+    if (!showPriceLines) return;
 
     const series = chart.series.current;
 
@@ -86,7 +89,7 @@ export const Chart: FC<ChartProps> = ({
         series.removePriceLine(priceLine);
       });
     };
-  }, [priceLines]);
+  }, [priceLines, showPriceLines]);
 
   const [containerRef, { width, height }] = useElementSize();
   useEffect(() => {

@@ -1,5 +1,7 @@
 "use client";
 
+import Box from "@mui/joy/Box";
+import Checkbox from "@mui/joy/Checkbox";
 import Skeleton from "@mui/joy/Skeleton";
 import { composeSymbolId } from "@opentrader/tools";
 import type { ExchangeCode } from "@opentrader/types";
@@ -7,6 +9,7 @@ import type { FC } from "react";
 import React, { Suspense, useMemo, useState } from "react";
 import { tClient } from "src/lib/trpc/client";
 import { Chart, ChartAppBar, CHART_HEIGHT } from "src/ui/charts/Chart";
+import { FlexSpacer } from "src/ui/FlexSpacer";
 import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
@@ -44,6 +47,7 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
   );
 
   const [barSize, setBarSize] = useState<ChartBarSize>("1h");
+  const [showPriceLines, setShowPriceLines] = useState(true);
 
   return (
     <Suspense
@@ -59,6 +63,7 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
       <Chart
         barSize={barSize}
         priceLines={priceLines}
+        showPriceLines={showPriceLines}
         symbolId={symbol.symbolId}
       >
         <ChartAppBar>
@@ -77,6 +82,17 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
             value={barSize}
             whitelist={timeframes}
           />
+
+          <FlexSpacer />
+
+          <Box display="flex">
+            <Checkbox
+              checked={showPriceLines}
+              label="Grid"
+              onChange={(e) => setShowPriceLines(e.target.checked)}
+              size="md"
+            />
+          </Box>
         </ChartAppBar>
       </Chart>
     </Suspense>
