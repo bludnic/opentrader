@@ -15,6 +15,7 @@
   },
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "front": "turbo run dev --filter=frontend"
   }
 }
