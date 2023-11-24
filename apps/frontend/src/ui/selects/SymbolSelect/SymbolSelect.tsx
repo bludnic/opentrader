@@ -39,8 +39,9 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
 
   return (
     <Autocomplete
-      disableListWrap
+      autoHighlight
       disableClearable
+      disableListWrap
       filterOptions={filterOptions}
       getOptionLabel={getOptionLabel}
       inputValue={inputValue}
