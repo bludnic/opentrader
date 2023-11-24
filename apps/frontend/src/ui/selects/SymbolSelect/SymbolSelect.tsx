@@ -40,6 +40,7 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
   return (
     <Autocomplete
       disableListWrap
+      disableClearable
       filterOptions={filterOptions}
       getOptionLabel={getOptionLabel}
       inputValue={inputValue}
@@ -54,7 +55,7 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
       // with: option's `HTMLElement`, option data, `state` and `ownerState`.
       // Check `renderOption()` params for more details.
       // To make TS happy the return type will be marked as ReactNode.
-      value={value}
+      value={value || undefined} // @todo add `required` prop
     />
   );
 };
