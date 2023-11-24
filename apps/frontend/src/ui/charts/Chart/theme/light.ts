@@ -20,8 +20,8 @@ export const lightTheme: ChartTheme = {
     wickDownColor: "#ef5350",
 
     // PriceLine options
-    priceLineColor: "#A1E8A1",
+    priceLineColor: "#000",
     priceLineWidth: 1,
-    priceLineStyle: LineStyle.Solid,
+    priceLineStyle: LineStyle.Dashed,
   },
 };

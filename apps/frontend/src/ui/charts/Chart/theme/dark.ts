@@ -22,6 +22,6 @@ export const darkTheme: ChartTheme = {
     // PriceLine options
     priceLineColor: "#FFF",
     priceLineWidth: 1,
-    priceLineStyle: LineStyle.Solid,
+    priceLineStyle: LineStyle.Dashed,
   },
 };
