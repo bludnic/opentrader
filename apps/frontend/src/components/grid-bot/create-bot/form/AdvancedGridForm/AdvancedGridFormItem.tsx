@@ -1,6 +1,7 @@
 import Grid from "@mui/joy/Grid";
 import Skeleton from "@mui/joy/Skeleton";
-import React, { FC, Suspense } from "react";
+import type { FC } from "react";
+import React, { Suspense } from "react";
 import { selectGridLines } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 import { RemoveGridLineButton } from "./RemoveGridLineButton";
@@ -21,10 +22,10 @@ export const AdvancedGridFormItem: FC<AdvancedGridFormItemProps> = (props) => {
   const isDisabled = gridLineIndex === gridLines.length - 1;
 
   return (
-    <Grid container spacing={2} alignItems="flex-end">
+    <Grid alignItems="flex-end" container spacing={2}>
       <Grid xs>
         <Suspense
-          fallback={<Skeleton variant="rectangular" width={200} height={36} />}
+          fallback={<Skeleton height={36} variant="rectangular" width={200} />}
         >
           <GridLinePriceField gridLineIndex={gridLineIndex} />
         </Suspense>
@@ -32,11 +33,11 @@ export const AdvancedGridFormItem: FC<AdvancedGridFormItemProps> = (props) => {
 
       <Grid xs>
         <Suspense
-          fallback={<Skeleton variant="rectangular" width={200} height={36} />}
+          fallback={<Skeleton height={36} variant="rectangular" width={200} />}
         >
           <GridLineQuantityField
-            gridLineIndex={gridLineIndex}
             disabled={isDisabled}
+            gridLineIndex={gridLineIndex}
           />
         </Suspense>
       </Grid>

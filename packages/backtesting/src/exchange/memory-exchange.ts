@@ -1,5 +1,5 @@
 import type { IExchange } from "@opentrader/exchanges";
-import {
+import type {
   IAccountAsset,
   IGetTradingFeeRatesRequest,
   IGetTradingFeeRatesResponse,
@@ -16,13 +16,14 @@ import {
   IPlaceLimitOrderResponse,
   IGetSymbolInfoRequest,
   ISymbolInfo,
-  ExchangeCode,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
-import { MarketSimulator } from "../market-simulator";
+import { ExchangeCode } from "@opentrader/types";
+import type { MarketSimulator } from "../market-simulator";
 
 export class MemoryExchange implements IExchange {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, , @typescript-eslint/no-unsafe-assignment -- for simplicity
   ccxt = {} as any;
   /**
    * @internal
@@ -38,7 +39,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async getLimitOrder(
-    body: IGetLimitOrderRequest,
+    _body: IGetLimitOrderRequest,
   ): Promise<IGetLimitOrderResponse> {
     return {
       exchangeOrderId: "",
@@ -55,7 +56,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async placeLimitOrder(
-    body: IPlaceLimitOrderRequest,
+    _body: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
     return {
       orderId: "",
@@ -64,7 +65,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async cancelLimitOrder(
-    body: ICancelLimitOrderRequest,
+    _body: ICancelLimitOrderRequest,
   ): Promise<ICancelLimitOrderResponse> {
     return {
       orderId: "",
@@ -86,13 +87,13 @@ export class MemoryExchange implements IExchange {
   }
 
   async getCandlesticks(
-    params: IGetCandlesticksRequest,
+    _params: IGetCandlesticksRequest,
   ): Promise<ICandlestick[]> {
     return [];
   }
 
   async getTradingFeeRates(
-    params: IGetTradingFeeRatesRequest,
+    _params: IGetTradingFeeRatesRequest,
   ): Promise<IGetTradingFeeRatesResponse> {
     return {
       makerFee: 0,
@@ -100,7 +101,7 @@ export class MemoryExchange implements IExchange {
     };
   }
 
-  async getSymbol(params: IGetSymbolInfoRequest): Promise<ISymbolInfo> {
+  async getSymbol(_params: IGetSymbolInfoRequest): Promise<ISymbolInfo> {
     return {
       symbolId: `${ExchangeCode.OKX}:ADA/USDT`,
       currencyPair: "ADA/USDT",
@@ -136,7 +137,7 @@ export class MemoryExchange implements IExchange {
   }
 
   async watchOrders(
-    params?: IWatchOrdersRequest,
+    _params?: IWatchOrdersRequest,
   ): Promise<IWatchOrdersResponse> {
     throw new Error(
       "Not implemented. Backtesting doesn't require this method.",

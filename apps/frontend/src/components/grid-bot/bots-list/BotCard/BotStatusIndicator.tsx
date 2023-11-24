@@ -1,16 +1,17 @@
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { SxProps } from "@mui/joy/styles/types";
-import React, { FC } from "react";
+import type { SxProps } from "@mui/joy/styles/types";
+import type { FC } from "react";
+import React from "react";
 import clsx from "clsx";
 import Chip from "@mui/joy/Chip";
 import { styled } from "@mui/joy/styles";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 
 const componentName = "BotStatusIndicator";
 const classes = {
   root: `${componentName}-root`,
 };
-const StyledChip = styled(Chip)(({ theme }) => ({
+const StyledChip = styled(Chip)(() => ({
   /* Styles applied to the root element. */
   [`&.${classes.root}`]: {},
 }));
@@ -28,10 +29,10 @@ export const BotStatusIndicator: FC<BotStatusIndicatorProps> = (props) => {
     return (
       <StyledChip
         className={clsx(classes.root, className)}
-        startDecorator={<FiberManualRecordIcon />}
-        variant="soft"
         color="success"
+        startDecorator={<FiberManualRecordIcon />}
         sx={sx}
+        variant="soft"
       >
         Running
       </StyledChip>
@@ -41,10 +42,10 @@ export const BotStatusIndicator: FC<BotStatusIndicatorProps> = (props) => {
   return (
     <StyledChip
       className={clsx(classes.root, className)}
-      startDecorator={<FiberManualRecordIcon />}
-      variant="soft"
       color="danger"
+      startDecorator={<FiberManualRecordIcon />}
       sx={sx}
+      variant="soft"
     >
       Disabled
     </StyledChip>

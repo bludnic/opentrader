@@ -1,4 +1,4 @@
-import { CancelSmartTradeEffect } from "./common/types/cancel-smart-trade-effect";
+import type { CancelSmartTradeEffect } from "./common/types/cancel-smart-trade-effect";
 import { CANCEL_SMART_TRADE } from "./common/types/effect-types";
 import { makeEffect } from "./utils/make-effect";
 

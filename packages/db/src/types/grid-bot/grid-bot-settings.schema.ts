@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { ZGridLineSchema } from "./grid-line.schema";
 
 export const ZGridBotSettings = z.object({

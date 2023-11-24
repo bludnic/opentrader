@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import IconButton from "@mui/joy/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";

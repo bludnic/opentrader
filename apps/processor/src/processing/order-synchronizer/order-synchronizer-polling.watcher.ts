@@ -3,7 +3,6 @@ import { subHours } from "date-fns";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { ExchangeAccountProcessor } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
-
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
 
 /**

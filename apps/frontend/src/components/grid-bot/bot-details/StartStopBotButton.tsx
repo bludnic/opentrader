@@ -1,10 +1,11 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "StartStopBotButton";
@@ -25,9 +26,9 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
-    tUtils.gridBot.getOne.invalidate(bot.id);
-    tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
-    tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.gridBot.getOne.invalidate(bot.id);
+    void tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
   };
 
   const startBot = tClient.gridBot.start.useMutation({
@@ -50,11 +51,11 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
     return (
       <Button
         className={clsx(classes.root, className)}
+        color={startBot.isLoading ? "success" : "danger"}
         loading
         loadingPosition="start"
-        color={startBot.isLoading ? "success" : "danger"}
-        variant="soft"
         size="lg"
+        variant="soft"
       >
         {startBot.isLoading ? "Starting..." : "Stopping..."}
       </Button>
@@ -64,15 +65,15 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
   if (bot.enabled) {
     return (
       <Button
-        onClick={() =>
+        className={clsx(classes.root, className)}
+        color="danger"
+        onClick={() => {
           stopBot.mutate({
             botId: bot.id,
-          })
-        }
-        className={clsx(classes.root, className)}
-        variant="soft"
-        color="danger"
+          });
+        }}
         size="lg"
+        variant="soft"
       >
         Stop bot
       </Button>
@@ -81,15 +82,15 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
 
   return (
     <Button
-      onClick={() =>
+      className={clsx(classes.root, className)}
+      color="success"
+      onClick={() => {
         startBot.mutate({
           botId: bot.id,
-        })
-      }
-      className={clsx(classes.root, className)}
-      variant="soft"
-      color="success"
+        });
+      }}
       size="lg"
+      variant="soft"
     >
       Start bot
     </Button>

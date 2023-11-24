@@ -9,7 +9,6 @@ import Link from "@mui/joy/Link";
 export function LoginForm() {
   return (
     <Sheet
-      variant="outlined"
       sx={{
         width: 300,
         mx: "auto",
@@ -21,8 +20,9 @@ export function LoginForm() {
         borderRadius: "sm",
         boxShadow: "md",
       }}
+      variant="outlined"
     >
-      <Typography level="h4" component="h1">
+      <Typography component="h1" level="h4">
         Welcome!
       </Typography>
       <Typography level="body-sm">Sign in to continue.</Typography>
@@ -30,13 +30,13 @@ export function LoginForm() {
       <FormControl>
         <FormLabel>Email</FormLabel>
 
-        <Input name="email" type="email" placeholder="victor@vlas.pro" />
+        <Input name="email" placeholder="victor@vlas.pro" type="email" />
       </FormControl>
 
       <FormControl>
         <FormLabel>Password</FormLabel>
 
-        <Input name="password" type="password" placeholder="password" />
+        <Input name="password" placeholder="password" type="password" />
       </FormControl>
 
       <Button
@@ -51,10 +51,9 @@ export function LoginForm() {
       <Button color="success">Success</Button>
       <Button color="danger">Danger</Button>
       <Button color="warning">Warning</Button>
-      <Button variant="soft" color="neutral">
+      <Button color="neutral" variant="soft">
         Light
       </Button>
-
 
       <Typography
         endDecorator={<Link href="/sign-up">Sign up</Link>}

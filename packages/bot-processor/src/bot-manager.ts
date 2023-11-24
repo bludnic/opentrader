@@ -1,8 +1,8 @@
 import type { IExchange } from "@opentrader/exchanges";
-import { TBotContext } from "#bot-processor/types/bot/bot-context.type";
+import type { TBotContext } from "#bot-processor/types/bot/bot-context.type";
 import { createContext } from "./utils/createContext";
 import { SmartTradeService } from "./smart-trade.service";
-import { IBotConfiguration, BotTemplate, IBotControl } from "./types";
+import type { IBotConfiguration, BotTemplate, IBotControl } from "./types";
 import { isReplaceSmartTradeEffect } from "./effects/utils/isReplaceSmartTradeEffect";
 import { isUseExchangeEffect } from "./effects/utils/isUseExchangeEffect";
 import { isUseSmartTradeEffect } from "./effects/utils/isUseSmartTradeEffect";
@@ -41,6 +41,7 @@ export class BotManager<T extends IBotConfiguration> {
 
     for (; !item.done; ) {
       if (item.value instanceof Promise) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- will be typed later
         const result = await item.value;
 
         item = generator.next(result);

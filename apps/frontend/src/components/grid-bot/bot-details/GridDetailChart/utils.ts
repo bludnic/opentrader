@@ -1,5 +1,5 @@
-import { CreatePriceLineOptions } from "lightweight-charts";
-import { TActiveSmartTrade } from "src/types/trpc";
+import type { CreatePriceLineOptions } from "lightweight-charts";
+import type { TActiveSmartTrade } from "src/types/trpc";
 import { computePriceLine } from "src/utils/charts";
 import { getWaitingGridLinePrice } from "src/utils/grid-bot/getWaitingGridLinePrice";
 
@@ -21,7 +21,9 @@ export function computePriceLines(
     return smartTrade.entryOrder.price!;
   });
 
-  const priceLines = [...otherPriceLines, waitingPriceLine].sort();
+  const priceLines = [...otherPriceLines, waitingPriceLine].sort(
+    (left, right) => left - right,
+  );
 
   return priceLines.map((priceLine) =>
     computePriceLine(priceLine, priceLines, waitingPriceLine),

@@ -1,3 +1,3 @@
 export enum ExchangeCode {
-  OKX = 'OKX',
+  OKX = "OKX",
 }

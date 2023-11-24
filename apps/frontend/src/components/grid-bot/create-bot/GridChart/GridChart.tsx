@@ -1,15 +1,16 @@
 "use client";
 
 import Skeleton from "@mui/joy/Skeleton";
-import { IGridLine } from "@opentrader/types";
-import React, { FC, Suspense, useDeferredValue, useMemo } from "react";
+import type { IGridLine } from "@opentrader/types";
+import type { FC } from "react";
+import React, { Suspense, useDeferredValue, useMemo } from "react";
 import { Chart, ChartAppBar } from "src/ui/charts/Chart";
 import { CHART_HEIGHT } from "src/ui/charts/Chart/constants";
 import { ExchangeAccountField } from "src/components/grid-bot/create-bot/form/fields/ExchangeAccountField";
 import { PairField } from "src/components/grid-bot/create-bot/form/fields/PairField";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
 import { InputSkeleton } from "src/ui/InputSkeleton";
-import { TBarSize } from "src/types/literals";
+import type { TBarSize } from "src/types/literals";
 import { computePriceLines } from "./utils";
 
 const timeframes = ["1d", "4h", "1h", "5m"] as const;
@@ -42,18 +43,18 @@ export const GridChart: FC<GridChartProps> = ({
     <Suspense
       fallback={
         <Skeleton
-          variant="rectangular"
           animation="wave"
-          width="100%"
           height={CHART_HEIGHT}
+          variant="rectangular"
+          width="100%"
         />
       }
     >
       <Chart
-        symbolId={deferredSymbolId}
         barSize={barSize}
-        priceLines={priceLines}
         dimmed={isStale}
+        priceLines={priceLines}
+        symbolId={deferredSymbolId}
       >
         <ChartAppBar>
           <Suspense fallback={<InputSkeleton width={232} />}>
@@ -65,12 +66,12 @@ export const GridChart: FC<GridChartProps> = ({
           </Suspense>
 
           <BarSizeSelect
-            value={barSize}
             onChange={(value) => {
               if (onBarSizeChange) {
                 onBarSizeChange(value);
               }
             }}
+            value={barSize}
             whitelist={timeframes}
           />
         </ChartAppBar>

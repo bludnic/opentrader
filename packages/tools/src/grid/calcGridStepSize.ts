@@ -1,4 +1,4 @@
-import big from 'big.js';
+import big from "big.js";
 
 // Note: Use this function only for tests purposes to avoid boilerplate
 export function calcGridStepSize(

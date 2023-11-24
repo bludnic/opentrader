@@ -1,2 +1,2 @@
-export * from './exchange.interface'
-export * from './exchange-credentials.interface'
+export * from "./exchange.interface";
+export * from "./exchange-credentials.interface";

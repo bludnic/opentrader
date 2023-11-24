@@ -1,5 +1,5 @@
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
+import type { Context } from "#trpc/utils/context";
 
 type Options = {
   ctx: {

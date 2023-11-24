@@ -1,5 +1,5 @@
-import { IBotConfiguration, IBotControl } from "../types";
-import { TBotContext } from "../types/bot/bot-context.type";
+import type { IBotConfiguration, IBotControl } from "../types";
+import type { TBotContext } from "../types/bot/bot-context.type";
 
 export function createContext<T extends IBotConfiguration>(
   control: IBotControl<T>,

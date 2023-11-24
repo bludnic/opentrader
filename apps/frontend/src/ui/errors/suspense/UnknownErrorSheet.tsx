@@ -2,7 +2,7 @@
 
 import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
-import { FC } from "react";
+import type { FC } from "react";
 
 type UnknownErrorSheetProps = {
   error: unknown;

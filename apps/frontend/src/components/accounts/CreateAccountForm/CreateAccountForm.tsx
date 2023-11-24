@@ -7,7 +7,7 @@ import { Form } from "react-final-form";
 import type { FormApi } from "final-form";
 import Grid from "@mui/joy/Grid";
 import Button from "@mui/joy/Button";
-import { trpcApi } from "src/lib/trpc/endpoints";
+import { tClient } from "src/lib/trpc/client";
 import { AccountNameField } from "./fields/AccountNameField";
 import { ApiKeyField } from "./fields/ApiKeyField";
 import type { CreateExchangeAccountFormValues } from "./types";
@@ -16,17 +16,17 @@ import { IsDemoAccountField } from "./fields/IsDemoAccountField";
 import { PassphraseField } from "./fields/PassphraseField";
 import { SecretKeyField } from "./fields/SecretKeyField";
 
-interface CreateAccountFormProps {
+type CreateAccountFormProps = {
   onCreated: () => void;
   onError: (error?: unknown) => void;
   debug?: boolean;
-}
+};
 
 export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   const { onCreated, onError, debug } = props;
 
   const { mutateAsync, isLoading, isSuccess, isError, error } =
-    trpcApi.exchangeAccount.create.useMutation();
+    tClient.exchangeAccount.create.useMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -67,6 +67,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
   ):
     | Partial<Record<keyof CreateExchangeAccountFormValues, string>>
     | undefined => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- it can be an empty string
     if (!values.exchangeCode) {
       return { exchangeCode: "Required" };
     }
@@ -90,7 +91,7 @@ export const CreateAccountForm: FC<CreateAccountFormProps> = (props) => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         render={({ handleSubmit, submitting, values, hasValidationErrors }) => (
-          <form noValidate onSubmit={handleSubmit}>
+          <form noValidate onSubmit={() => void handleSubmit()}>
             <Grid container spacing={2}>
               <Grid xs={12}>
                 <ExchangeCodeField />

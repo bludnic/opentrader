@@ -1,7 +1,7 @@
-import { $Enums, Order as OrderModel } from "@prisma/client";
-
-import { OrderEntity, toOrderEntity } from "./order.entity";
-import { SmartTradeWithOrders } from "#db/types/smart-trade";
+import type { $Enums } from "@prisma/client";
+import type { SmartTradeWithOrders } from "#db/types/smart-trade";
+import type { OrderEntity } from "./order.entity";
+import { toOrderEntity } from "./order.entity";
 
 export type SmartTradeEntityBuilder<
   EntryType extends $Enums.EntryType,
@@ -16,19 +16,19 @@ export type SmartTradeEntityBuilder<
 type EntryOrderBuilder<EntryType extends $Enums.EntryType> =
   EntryType extends "Order"
     ? {
-        entryOrder: OrderEntity<OrderModel>;
+        entryOrder: OrderEntity;
       }
     : {
-        entryOrders: OrderEntity<OrderModel>[];
+        entryOrders: OrderEntity[];
       };
 
 type TakeProfitOrderBuilder<TakeProfitType extends $Enums.TakeProfitType> =
   TakeProfitType extends "Order"
     ? {
-        takeProfitOrder: OrderEntity<OrderModel>;
+        takeProfitOrder: OrderEntity;
       }
     : {
-        takeProfitOrders: OrderEntity<OrderModel>[];
+        takeProfitOrders: OrderEntity[];
       };
 
 export type SmartTradeEntity_Order_Order = SmartTradeEntityBuilder<
@@ -63,7 +63,7 @@ export function toSmartTradeEntity(
     throw new Error("Unsupported type DCA");
   }
 
-  const findSingleEntryOrder = (): OrderEntity<OrderModel> => {
+  const findSingleEntryOrder = (): OrderEntity => {
     const entryOrder = orders.find(
       (order) => order.entityType === "EntryOrder",
     );
@@ -72,7 +72,7 @@ export function toSmartTradeEntity(
     return toOrderEntity(entryOrder);
   };
 
-  const findSingleTakeProfitOrder = (): OrderEntity<OrderModel> => {
+  const findSingleTakeProfitOrder = (): OrderEntity => {
     const takeProfitOrder = orders.find(
       (order) => order.entityType === "TakeProfitOrder",
     );
@@ -81,12 +81,12 @@ export function toSmartTradeEntity(
     return toOrderEntity(takeProfitOrder);
   };
 
-  const findMultipleEntryOrders = (): OrderEntity<OrderModel>[] => {
+  const findMultipleEntryOrders = (): OrderEntity[] => {
     return orders
       .filter((order) => order.entityType === "EntryOrder")
       .map(toOrderEntity);
   };
-  const findMultipleTakeProfitOrders = (): OrderEntity<OrderModel>[] => {
+  const findMultipleTakeProfitOrders = (): OrderEntity[] => {
     return orders
       .filter((order) => order.entityType === "TakeProfitOrder")
       .map(toOrderEntity);

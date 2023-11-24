@@ -1,4 +1,4 @@
-import { ISymbolFilter } from "@opentrader/types";
+import type { ISymbolFilter } from "@opentrader/types";
 import Big from "big.js";
 import { countDecimalPlaces } from "./common/countDecimalPlaces";
 import { getExponentAbs } from "./common/getExponentAbs";
@@ -6,12 +6,12 @@ import { getExponentAbs } from "./common/getExponentAbs";
 /**
  * Filters order price (quote currency)
  *
- * @param number
- * @param filter
+ * @param number - Price
+ * @param filter - Symbol filter
  */
 export function filterPrice(
   number: string | number,
-  filter: ISymbolFilter
+  filter: ISymbolFilter,
 ): string {
   const maxAllowedDecimals = getExponentAbs(filter.price.tickSize);
   const priceDecimals = countDecimalPlaces(number, {

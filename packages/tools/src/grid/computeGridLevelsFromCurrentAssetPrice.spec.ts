@@ -1,4 +1,4 @@
-import { IGridBotLevel } from "@opentrader/types";
+import type { IGridBotLevel } from "@opentrader/types";
 import {
   CURRENT_ASSET_PRICE,
   GRID_LINES,

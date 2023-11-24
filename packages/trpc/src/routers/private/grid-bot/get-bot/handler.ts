@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetGridBotInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TGetGridBotInputSchema } from "./schema";
 
 type Options = {
   ctx: {

@@ -1,20 +1,22 @@
 "use client";
 
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { SxProps } from "@mui/joy/styles/types";
-import React, { FC } from "react";
+import type { SxProps } from "@mui/joy/styles/types";
+import type { FC } from "react";
+import React from "react";
 import clsx from "clsx";
-import Chip, { ChipProps } from "@mui/joy/Chip";
+import type { ChipProps } from "@mui/joy/Chip";
+import Chip from "@mui/joy/Chip";
 import { styled } from "@mui/joy/styles";
 import { tClient } from "src/lib/trpc/client";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "BotStatusChip";
 const classes = {
   root: `${componentName}-root`,
 };
-const StyledChip = styled(Chip)(({ theme }) => ({
+const StyledChip = styled(Chip)(() => ({
   /* Styles applied to the root element. */
   [`&.${classes.root}`]: {},
 }));
@@ -32,9 +34,9 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
-    tUtils.gridBot.getOne.invalidate(bot.id);
-    tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
-    tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.gridBot.getOne.invalidate(bot.id);
+    void tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
   };
 
   const startBot = tClient.gridBot.start.useMutation({
@@ -57,11 +59,11 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     return (
       <StyledChip
         className={clsx(classes.root, className)}
-        startDecorator={<FiberManualRecordIcon />}
-        variant="outlined"
         disabled
-        sx={sx}
         size={size}
+        startDecorator={<FiberManualRecordIcon />}
+        sx={sx}
+        variant="outlined"
       >
         {startBot.isLoading ? "Starting..." : "Stopping..."}
       </StyledChip>
@@ -72,16 +74,16 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     return (
       <StyledChip
         className={clsx(classes.root, className)}
-        startDecorator={<FiberManualRecordIcon />}
-        variant="outlined"
         color="success"
-        sx={sx}
-        size={size}
-        onClick={() =>
+        onClick={() => {
           stopBot.mutate({
             botId: bot.id,
-          })
-        }
+          });
+        }}
+        size={size}
+        startDecorator={<FiberManualRecordIcon />}
+        sx={sx}
+        variant="outlined"
       >
         Running
       </StyledChip>
@@ -91,16 +93,16 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
   return (
     <StyledChip
       className={clsx(classes.root, className)}
-      startDecorator={<FiberManualRecordIcon />}
-      variant="outlined"
       color="danger"
-      sx={sx}
-      size={size}
-      onClick={() =>
+      onClick={() => {
         startBot.mutate({
           botId: bot.id,
-        })
-      }
+        });
+      }}
+      size={size}
+      startDecorator={<FiberManualRecordIcon />}
+      sx={sx}
+      variant="outlined"
     >
       Disabled
     </StyledChip>

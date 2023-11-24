@@ -7,25 +7,25 @@ export default function Loading() {
     <Grid container spacing={2}>
       <Grid md={9}>
         <Skeleton
-          variant="rectangular"
           animation="wave"
-          width="100%"
           height={420}
           sx={{
             borderRadius: 8,
           }}
+          variant="rectangular"
+          width="100%"
         />
       </Grid>
 
       <Grid md={3}>
         <Skeleton
-          variant="rectangular"
           animation="wave"
-          width="100%"
           height={232}
           sx={{
             borderRadius: 8,
           }}
+          variant="rectangular"
+          width="100%"
         />
       </Grid>
     </Grid>

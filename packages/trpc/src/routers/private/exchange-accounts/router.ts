@@ -1,14 +1,10 @@
 import { authorizedProcedure } from "#trpc/procedures";
 import { router } from "#trpc/trpc";
-
 import { getExchangeAccounts } from "./get-accounts/handler";
-
 import { getExchangeAccount } from "./get-account/handler";
 import { ZGetExchangeAccountInputSchema } from "./get-account/schema";
-
 import { createExchangeAccount } from "./create-account/handler";
 import { ZCreateExchangeAccountInputSchema } from "./create-account/schema";
-
 import { updateExchangeAccount } from "./update-account/handler";
 import { ZUpdateExchangeAccountInputSchema } from "./update-account/schema";
 

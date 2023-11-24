@@ -12,5 +12,9 @@
   "devDependencies": {
     "prettier": "^3.0.3",
     "turbo": "^1.10.16"
+  },
+  "scripts": {
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint"
   }
 }

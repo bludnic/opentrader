@@ -1,4 +1,4 @@
-import { BarSize } from "src/common";
+import type { BarSize } from "src/common";
 
 export interface IGetCandlesticksRequest {
   /**

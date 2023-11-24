@@ -1,5 +1,5 @@
-import { ExchangeCode } from "src/common";
-import { ISymbolFilter } from "./symbol-filter.interface";
+import type { ExchangeCode } from "src/common";
+import type { ISymbolFilter } from "./symbol-filter.interface";
 
 export interface ISymbolInfo {
   /**

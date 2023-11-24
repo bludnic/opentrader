@@ -5,21 +5,21 @@ export function TopNavigation() {
   return (
     <>
       <Button
-        variant="plain"
-        size="lg"
         color="neutral"
         component={NextLink}
         href="/dashboard/grid-bot"
+        size="lg"
+        variant="plain"
       >
         Bots
       </Button>
 
       <Button
-        variant="plain"
-        size="lg"
         color="neutral"
         component={NextLink}
         href="/dashboard/accounts"
+        size="lg"
+        variant="plain"
       >
         Exchange Accounts
       </Button>

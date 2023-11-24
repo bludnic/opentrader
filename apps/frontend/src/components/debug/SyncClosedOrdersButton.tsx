@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect } from "react";
+import type { FC } from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
@@ -33,7 +34,9 @@ export const SyncClosedOrdersButton: FC<SyncClosedOrdersButtonProps> = (
     if (!polling) return;
 
     const timer = setInterval(() => {
-      mutateAsync().then((data) => console.log("response", data));
+      void mutateAsync().then((data) => {
+        console.log("response", data);
+      });
     }, 15000);
 
     return () => {
@@ -43,13 +46,15 @@ export const SyncClosedOrdersButton: FC<SyncClosedOrdersButtonProps> = (
 
   return (
     <Button
-      onClick={() => mutate()}
       className={clsx(classes.root, className)}
-      variant="soft"
-      size="lg"
       color="warning"
       loading={isLoading}
       loadingPosition="start"
+      onClick={() => {
+        mutate();
+      }}
+      size="lg"
+      variant="soft"
     >
       Sync closed orders
     </Button>

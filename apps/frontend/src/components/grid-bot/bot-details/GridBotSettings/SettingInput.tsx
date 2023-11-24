@@ -3,7 +3,8 @@
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 
 type SettingInputProps = {
   label: string;
@@ -14,6 +15,6 @@ export const SettingInput: FC<SettingInputProps> = ({ value, label }) => (
   <FormControl>
     <FormLabel>{label}</FormLabel>
 
-    <Input value={value} readOnly />
+    <Input readOnly value={value} />
   </FormControl>
 );

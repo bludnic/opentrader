@@ -10,6 +10,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "prisma:seed": "prisma db seed",
+    "prisma:format": "prisma format",
     "postinstall": "prisma generate"
   },
   "author": "",

@@ -1,11 +1,8 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import { CancelSmartTradeEffect } from "./effects/common/types/cancel-smart-trade-effect";
-import {
-  cancelSmartTrade,
-  replaceSmartTrade,
-  ReplaceSmartTradeEffect,
-} from "./effects";
-import { SmartTrade } from "./types";
+import type { CancelSmartTradeEffect } from "./effects/common/types/cancel-smart-trade-effect";
+import type { ReplaceSmartTradeEffect } from "./effects";
+import { cancelSmartTrade, replaceSmartTrade } from "./effects";
+import type { SmartTrade } from "./types";
 
 export class SmartTradeService {
   buy: SmartTrade["buy"];

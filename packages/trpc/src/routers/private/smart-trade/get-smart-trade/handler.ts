@@ -1,10 +1,7 @@
-import {
-  xprisma,
-  toSmartTradeEntity,
-  SmartTradeEntity_Order_Order,
-} from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetSmartTradeInputSchema } from "./schema";
+import type { SmartTradeEntity_Order_Order } from "@opentrader/db";
+import { xprisma, toSmartTradeEntity } from "@opentrader/db";
+import type { Context } from "#trpc/utils/context";
+import type { TGetSmartTradeInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -13,7 +10,7 @@ type Options = {
   input: TGetSmartTradeInputSchema;
 };
 
-export async function getSmartTrade({ ctx, input: id }: Options) {
+export async function getSmartTrade({ input: id }: Options) {
   const smartTrade = await xprisma.smartTrade.findUniqueOrThrow({
     where: {
       id,

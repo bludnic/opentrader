@@ -21,10 +21,10 @@ export function ThemeSwitcher() {
 
   return (
     <IconButton
-      variant="outlined"
       onClick={() => {
         setMode(mode === "light" ? "dark" : "light");
       }}
+      variant="outlined"
     >
       {mode === "light" ? <BedtimeOutlinedIcon /> : <LightModeOutlinedIcon />}
     </IconButton>

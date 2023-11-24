@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import type { FC } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import ModalDialog from "@mui/joy/ModalDialog";
@@ -24,8 +24,8 @@ export const TRPCApiErrorModal: FC = () => {
   const code = getTRPCErrorValue(error.data, "code");
 
   return (
-    <Modal open={opened} onClose={close}>
-      <ModalDialog color="danger" variant="plain" maxWidth={1400}>
+    <Modal onClose={close} open={opened}>
+      <ModalDialog color="danger" maxWidth={1400} variant="plain">
         <ModalClose />
 
         <Typography level="h2">{code}</Typography>

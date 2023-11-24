@@ -1,8 +1,7 @@
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
-import { ExchangeCode } from "@opentrader/types";
-
+import type { ExchangeCode } from "@opentrader/types";
 import { exchanges } from "./exchanges";
-import { IExchange } from "./types";
+import type { IExchange } from "./types";
 
 type ExchangeAccountId = number;
 
@@ -16,7 +15,7 @@ export class ExchangeProvider {
   /**
    * Private exchanges that requires credentials.
    */
-  private privateExchanges: Record<ExchangeAccountId, IExchange> = {};
+  private privateExchanges: Partial<Record<ExchangeAccountId, IExchange>> = {};
   /**
    * Public exchanges. Allowed to access only public endpoints.
    */

@@ -1,5 +1,5 @@
 import { LineStyle } from "lightweight-charts";
-import { ChartTheme } from "./types";
+import type { ChartTheme } from "./types";
 
 export const darkTheme: ChartTheme = {
   chartOptions: {

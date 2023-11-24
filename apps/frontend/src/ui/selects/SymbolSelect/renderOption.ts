@@ -1,4 +1,4 @@
-import { TypedAutocompleteProps } from "./types";
+import type { TypedAutocompleteProps } from "./types";
 
 export type RenderOptionParams = Parameters<
   NonNullable<TypedAutocompleteProps["renderOption"]>

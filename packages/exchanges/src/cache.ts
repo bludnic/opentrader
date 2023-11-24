@@ -1,4 +1,4 @@
-import { ICacheProvider } from "./types/cache/cache-provider.interface";
+import type { ICacheProvider } from "./types/cache/cache-provider.interface";
 import { MemoryCacheProvider } from "./client/cache/providers/memory-cache.provider";
 
 type Cache = {

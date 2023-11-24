@@ -1,6 +1,6 @@
 import Link from "@mui/joy/Link";
-import { SvgIconProps } from "@mui/joy/SvgIcon";
-import { FC } from "react";
+import type { SvgIconProps } from "@mui/joy/SvgIcon";
+import type { FC } from "react";
 import { GITHUB_REPOSITORY_URL } from "src/ui/constants";
 import { GithubIcon } from "src/ui/icons/GithubIcon";
 

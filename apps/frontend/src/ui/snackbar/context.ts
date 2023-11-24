@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext } from "react";
-import { SnackbarProps } from "@mui/joy/Snackbar";
-import { AlertProps } from "@mui/joy/Alert";
+import type { SnackbarProps } from "@mui/joy/Snackbar";
+import type { AlertProps } from "@mui/joy/Alert";
 
 export type SnackbarOptions = {
   /**

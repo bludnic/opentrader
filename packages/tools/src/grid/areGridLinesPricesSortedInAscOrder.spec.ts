@@ -7,7 +7,7 @@ describe("areGridLinesPricesSortedInAscOrder", () => {
 
   it("should return `true` when only one grid line is preset", () => {
     expect(
-      areGridLinesPricesSortedInAscOrder([{ price: 10, quantity: 1 }])
+      areGridLinesPricesSortedInAscOrder([{ price: 10, quantity: 1 }]),
     ).toBe(true);
   });
 
@@ -17,7 +17,7 @@ describe("areGridLinesPricesSortedInAscOrder", () => {
         { price: 1, quantity: 1 },
         { price: 3, quantity: 1 },
         { price: 2, quantity: 1 },
-      ])
+      ]),
     ).toBe(false);
   });
 
@@ -27,7 +27,7 @@ describe("areGridLinesPricesSortedInAscOrder", () => {
         { price: 1, quantity: 1 },
         { price: 2, quantity: 1 },
         { price: 3, quantity: 1 },
-      ])
+      ]),
     ).toBe(true);
   });
 
@@ -38,7 +38,7 @@ describe("areGridLinesPricesSortedInAscOrder", () => {
         { price: 2, quantity: 1 },
         { price: 2, quantity: 1 },
         { price: 3, quantity: 1 },
-      ])
+      ]),
     ).toBe(true);
   });
 });

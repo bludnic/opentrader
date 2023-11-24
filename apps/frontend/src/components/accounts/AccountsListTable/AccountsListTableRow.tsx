@@ -1,18 +1,19 @@
 import Typography from "@mui/joy/Typography";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import Checkbox from "@mui/joy/Checkbox";
 import Chip from "@mui/joy/Chip";
-import { TExchangeAccount } from "src/types/trpc";
-import { ExchangeIcon } from "src/ui/icons/ExchangeIcon";
 import Box from "@mui/joy/Box";
 import Tooltip from "@mui/joy/Tooltip";
+import type { TExchangeAccount } from "src/types/trpc";
+import { ExchangeIcon } from "src/ui/icons/ExchangeIcon";
 import { formatDateTime } from "src/utils/date/formatDateTime";
 
 type AccountsListTableRowProps = {
   account: TExchangeAccount;
   selected: boolean;
   onClick: (
-    e: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
+    e: React.MouseEvent<HTMLTableCellElement>,
     accountId: number,
   ) => void;
 };
@@ -22,10 +23,14 @@ export const AccountsListTableRow: FC<AccountsListTableRowProps> = (props) => {
 
   return (
     <tr>
-      <td onClick={(e) => onClick(e, account.id)} scope="row">
+      <td
+        onClick={(e) => {
+          onClick(e, account.id);
+        }}
+      >
         <Checkbox
-          color="primary"
           checked={selected}
+          color="primary"
           sx={{ verticalAlign: "sub" }}
         />
       </td>
@@ -41,8 +46,8 @@ export const AccountsListTableRow: FC<AccountsListTableRowProps> = (props) => {
         >
           <ExchangeIcon
             exchangeCode={account.exchangeCode}
-            width={24}
             height={24}
+            width={24}
           />
 
           <Typography
@@ -54,20 +59,20 @@ export const AccountsListTableRow: FC<AccountsListTableRowProps> = (props) => {
           </Typography>
 
           <Tooltip
+            color="neutral"
             title={
               account.credentials.isDemoAccount
                 ? "Demo trading account"
                 : "Real trading account"
             }
             variant="outlined"
-            color="neutral"
           >
             <Chip
               color={account.credentials.isDemoAccount ? "neutral" : "primary"}
-              variant={account.credentials.isDemoAccount ? "outlined" : "solid"}
               sx={{
                 ml: 1,
               }}
+              variant={account.credentials.isDemoAccount ? "outlined" : "solid"}
             >
               {account.credentials.isDemoAccount ? "Demo" : "Real"}
             </Chip>

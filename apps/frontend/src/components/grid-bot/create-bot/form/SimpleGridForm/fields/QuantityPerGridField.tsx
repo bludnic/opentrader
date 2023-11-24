@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 import { tClient } from "src/lib/trpc/client";
 import { changeQuantityPerGrid } from "src/store/bot-form";
 import {
@@ -43,15 +44,15 @@ export const QuantityPerGridField: FC<QuantityPerGridFieldProps> = (props) => {
 
   return (
     <QuantityInput
-      value={value}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      label="Quantity per grid"
-      required
-      fullWidth
-      filter={symbol.filters}
       disabled={disabled}
+      filter={symbol.filters}
+      fullWidth
+      label="Quantity per grid"
+      onBlur={handleBlur}
+      onChange={handleChange}
       readOnly={readOnly}
+      required
+      value={value}
     />
   );
 };

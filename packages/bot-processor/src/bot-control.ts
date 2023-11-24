@@ -1,9 +1,9 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import { UseSmartTradePayload } from "./effects/common/types/use-smart-trade-effect";
-import { IBotConfiguration } from "./types/bot/bot-configuration.interface";
-import { IBotControl } from "./types/bot/bot-control.interface";
-import { SmartTrade } from "./types/smart-trade/smart-trade.type";
-import { IStore } from "./types/store/store.interface";
+import type { UseSmartTradePayload } from "./effects/common/types/use-smart-trade-effect";
+import type { IBotConfiguration } from "./types/bot/bot-configuration.interface";
+import type { IBotControl } from "./types/bot/bot-control.interface";
+import type { SmartTrade } from "./types/smart-trade/smart-trade.type";
+import type { IStore } from "./types/store/store.interface";
 
 export class BotControl<T extends IBotConfiguration> implements IBotControl<T> {
   constructor(

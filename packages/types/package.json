@@ -5,12 +5,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --quiet"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
+    "eslint": "8.54.0",
     "typescript": "^5.2.2"
   }
 }

@@ -7,4 +7,4 @@ export type ICancelLimitOrderRequest = {
    * Order ID provided by the exchange
    */
   orderId: string;
-}
+};

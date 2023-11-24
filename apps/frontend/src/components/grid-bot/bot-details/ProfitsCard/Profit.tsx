@@ -1,5 +1,5 @@
 import Typography from "@mui/joy/Typography";
-import { FC } from "react";
+import type { FC } from "react";
 
 type ProfitProps = {
   size?: "sm" | "md" | "lg";

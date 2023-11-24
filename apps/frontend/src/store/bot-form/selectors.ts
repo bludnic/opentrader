@@ -1,18 +1,10 @@
-import {
-  calculateInvestment,
-  computeGridLevelsFromCurrentAssetPrice,
-  decomposeSymbolId,
-  filterPrice,
-  filterQuantity,
-} from "@opentrader/tools";
-import { BarSize, ExchangeCode, IGridLine } from "@opentrader/types";
-import { Selector } from "@reduxjs/toolkit";
-import { trpcApi } from "src/lib/trpc/endpoints";
-import { GridBotFormState } from "./state";
-import { RootState } from "src/store";
-import { selectSymbolById } from "src/store/rtk/getSymbols/selectors";
-import { TExchangeAccount } from "src/types/trpc";
-import { GridBotFormType } from "./types";
+import { decomposeSymbolId } from "@opentrader/tools";
+import type { BarSize, ExchangeCode, IGridLine } from "@opentrader/types";
+import type { Selector } from "@reduxjs/toolkit";
+import type { RootState } from "src/store";
+import type { TExchangeAccount } from "src/types/trpc";
+import type { GridBotFormState } from "./state";
+import type { GridBotFormType } from "./types";
 
 export const selectBotFormState: Selector<RootState, GridBotFormState> = (
   rootState,
@@ -56,55 +48,6 @@ export const selectQuantityPerGrid: Selector<RootState, string> = (rootState) =>
 
 export const selectBotName: Selector<RootState, string> = (rootState) =>
   rootState.gridBotForm.botName;
-
-export const computeInvestmentAmount: Selector<
-  RootState,
-  {
-    baseCurrencyAmount: string;
-    quoteCurrencyAmount: string;
-    totalInQuoteCurrency: string;
-  }
-> = (rootState) => {
-  const symbolId = selectSymbolId(rootState);
-  const currentAssetPriceState = trpcApi.symbol.price.select({
-    symbolId,
-  });
-
-  const symbol = selectSymbolById(symbolId);
-
-  const statsIsReady = !!symbol && currentAssetPriceState;
-
-  if (!statsIsReady) {
-    // @todo review this approach
-    return {
-      baseCurrencyAmount: "0",
-      quoteCurrencyAmount: "0",
-      totalInQuoteCurrency: "0",
-    };
-  }
-
-  const { price: currentAssetPrice } = currentAssetPriceState;
-
-  const gridLines = selectGridLines(rootState);
-
-  const gridLevels = computeGridLevelsFromCurrentAssetPrice(
-    gridLines,
-    currentAssetPrice,
-  );
-
-  const { baseCurrencyAmount, quoteCurrencyAmount } =
-    calculateInvestment(gridLevels);
-
-  // @todo make a helper in @opentrader/tools
-  const totalInQuoteCurrency =
-    quoteCurrencyAmount + baseCurrencyAmount * currentAssetPrice; // I assume that the user bought base currency for placing sell orders at a market price
-
-  return {
-    baseCurrencyAmount: filterQuantity(baseCurrencyAmount, symbol.filters),
-    quoteCurrencyAmount: filterPrice(quoteCurrencyAmount, symbol.filters),
-    totalInQuoteCurrency: filterPrice(totalInQuoteCurrency, symbol.filters),
-  };
-};
 
 export const selectGridLines: Selector<RootState, IGridLine[]> = (rootState) =>
   rootState.gridBotForm.gridLines;

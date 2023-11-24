@@ -1,10 +1,8 @@
-import { SmartTrade } from "@opentrader/bot-processor";
+import type { SmartTrade } from "@opentrader/bot-processor";
 import { OrderSideEnum } from "@opentrader/types";
-import { SellTransaction } from "../types";
+import type { SellTransaction } from "../types";
 
-export function sellTransaction(
-  smartTrade: SmartTrade
-): SellTransaction {
+export function sellTransaction(smartTrade: SmartTrade): SellTransaction {
   const { buy, sell, quantity, id } = smartTrade;
 
   return {

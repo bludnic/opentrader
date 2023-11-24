@@ -1,6 +1,6 @@
-import { OrderStatusEnum } from "@opentrader/types";
-import { BaseEffect } from "./base-effect";
-import { USE_SMART_TRADE } from "./effect-types";
+import type { OrderStatusEnum } from "@opentrader/types";
+import type { BaseEffect } from "./base-effect";
+import type { USE_SMART_TRADE } from "./effect-types";
 
 type SmartTradePayload = {
   buy: {

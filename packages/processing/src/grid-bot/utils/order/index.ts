@@ -1,1 +1,1 @@
-export * from './toPrismaOrder';
+export * from "./toPrismaOrder";

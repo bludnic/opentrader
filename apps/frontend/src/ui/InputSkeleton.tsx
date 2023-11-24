@@ -1,5 +1,5 @@
 import Skeleton from "@mui/joy/Skeleton";
-import { FC } from "react";
+import type { FC } from "react";
 
 const inputHeight = 36;
 
@@ -14,10 +14,10 @@ export const InputSkeleton: FC<InputSkeletonProps> = ({
 }) => {
   const inputSkeleton = (
     <Skeleton
-      variant="rectangular"
       animation="wave"
-      width={width}
       height={inputHeight}
+      variant="rectangular"
+      width={width}
     />
   );
 
@@ -25,13 +25,13 @@ export const InputSkeleton: FC<InputSkeletonProps> = ({
     return (
       <>
         <Skeleton
-          variant="text"
           animation="wave"
-          width={72}
           height={20}
           sx={{
-            mb: '6px',
+            mb: "6px",
           }}
+          variant="text"
+          width={72}
         />
 
         {inputSkeleton}

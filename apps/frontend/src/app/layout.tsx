@@ -1,10 +1,9 @@
+import { cache } from "@opentrader/exchanges";
+import { PrismaCacheProvider } from "@opentrader/exchanges/server";
 import { ThemeProvider } from "src/providers/ThemeProvider";
 import { StoreProvider } from "src/providers/StoreProvider";
 import { TrpcProvider } from "src/providers/TrpcProvider";
 import { TRPCApiErrorProvider } from "src/ui/errors/api";
-
-import { cache } from "@opentrader/exchanges";
-import { PrismaCacheProvider } from "@opentrader/exchanges/server";
 import { SnackbarProvider } from "src/ui/snackbar";
 
 cache.setCacheProvider(new PrismaCacheProvider());

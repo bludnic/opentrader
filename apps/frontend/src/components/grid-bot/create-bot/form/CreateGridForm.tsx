@@ -4,11 +4,10 @@ import Box from "@mui/joy/Box";
 import Divider from "@mui/joy/Divider";
 import Skeleton from "@mui/joy/Skeleton";
 import { calcGridLinesWithPriceFilter } from "@opentrader/tools";
-import React, { FC, Suspense } from "react";
+import type { FC } from "react";
+import React, { Suspense } from "react";
 import Grid from "@mui/joy/Grid";
 import Card from "@mui/joy/Card";
-import { BotNameField } from "./fields/BotNameField";
-import { FormTypeTabs } from "./FormTypeTabs";
 import { InputSkeleton } from "src/ui/InputSkeleton";
 import { useIsStale } from "src/hooks/useIsStale";
 import { tClient } from "src/lib/trpc/client";
@@ -18,7 +17,6 @@ import {
   setQuantityPerGrid,
   updateGridLines,
 } from "src/store/bot-form";
-import { SubmitButton } from "./SubmitButton";
 import {
   selectGridLinesNumber,
   selectHighPrice,
@@ -27,6 +25,9 @@ import {
   selectSymbolId,
 } from "src/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { SubmitButton } from "./SubmitButton";
+import { FormTypeTabs } from "./FormTypeTabs";
+import { BotNameField } from "./fields/BotNameField";
 import { AdvancedGridForm } from "./AdvancedGridForm";
 import { InvestmentField } from "./fields/InvestmentField";
 import { SimpleGridForm } from "./SimpleGridForm";
@@ -97,16 +98,16 @@ export const CreateGridBotForm: FC = () => {
       }}
     >
       <FormTypeTabs
-        simpleForm={<SimpleGridForm />}
         advancedForm={
           <Suspense
             fallback={
-              <Skeleton variant="rectangular" width="100%" height={60} />
+              <Skeleton height={60} variant="rectangular" width="100%" />
             }
           >
             <AdvancedGridForm />
           </Suspense>
         }
+        simpleForm={<SimpleGridForm />}
       />
 
       <Divider />

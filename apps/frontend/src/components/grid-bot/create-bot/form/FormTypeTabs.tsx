@@ -2,8 +2,10 @@ import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabList from "@mui/joy/TabList";
 import Tabs from "@mui/joy/Tabs";
 import TabPanel from "@mui/joy/TabPanel";
-import React, { FC, ReactNode } from "react";
-import { changeFormType, GridBotFormType } from "src/store/bot-form";
+import type { FC, ReactNode } from "react";
+import React from "react";
+import type { GridBotFormType } from "src/store/bot-form";
+import { changeFormType } from "src/store/bot-form";
 import { selectFormType } from "src/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 
@@ -25,7 +27,7 @@ export const FormTypeTabs: FC<FormTypeTabsProps> = ({
   const dispatch = useAppDispatch();
 
   const handleChange = (
-    event: React.SyntheticEvent<Element, Event> | null,
+    event: React.SyntheticEvent | null,
     newValue: GridBotFormType | null,
   ) => {
     // disallow un-toggling current button
@@ -36,19 +38,18 @@ export const FormTypeTabs: FC<FormTypeTabsProps> = ({
 
   return (
     <Tabs
-      value={formType}
-      onChange={(event, newValue) =>
-        handleChange(event, newValue as GridBotFormType)
-      }
       defaultValue={FormTypes.simple}
+      onChange={(event, newValue) => {
+        handleChange(event, newValue as GridBotFormType);
+      }}
       sx={{
         borderRadius: "md",
         overflow: "auto",
         boxShadow: "sm",
       }}
+      value={formType}
     >
       <TabList
-        tabFlex="auto"
         disableUnderline
         sx={{
           [`& .${tabClasses.root}`]: {
@@ -65,11 +66,12 @@ export const FormTypeTabs: FC<FormTypeTabsProps> = ({
             // },
           },
         }}
+        tabFlex="auto"
       >
-        <Tab value={FormTypes.simple} disableIndicator>
+        <Tab disableIndicator value={FormTypes.simple}>
           Easy form
         </Tab>
-        <Tab value={FormTypes.advanced} disableIndicator>
+        <Tab disableIndicator value={FormTypes.advanced}>
           Advanced form
         </Tab>
       </TabList>

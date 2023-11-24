@@ -1,4 +1,5 @@
-import { xprisma, TGridBot } from "@opentrader/db";
+import type { TGridBot } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
 import { TRPCError } from "@trpc/server";
 
 export class GridBotService {

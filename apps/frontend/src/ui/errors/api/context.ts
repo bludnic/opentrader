@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext } from "react";
-import { TRPCApiError } from "src/ui/errors/types";
+import type { TRPCApiError } from "src/ui/errors/types";
 
 export type State = {
   error: TRPCApiError | null;

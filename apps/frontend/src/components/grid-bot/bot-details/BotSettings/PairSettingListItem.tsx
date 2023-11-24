@@ -4,9 +4,9 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import Typography from "@mui/joy/Typography";
-import { FC } from "react";
+import type { FC } from "react";
 import { CryptoIcon } from "src/ui/icons/CryptoIcon";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 
 type PairSettingListItemProps = {
   bot: TGridBot;
@@ -20,9 +20,9 @@ export const PairSettingListItem: FC<PairSettingListItemProps> = ({ bot }) => {
       </ListItemDecorator>
       <ListItemContent>Pair</ListItemContent>
 
-      <Box display="flex" alignItems="center">
-        <CryptoIcon symbol={bot.baseCurrency} size={20} />
-        <Typography textColor="text.tertiary" sx={{ ml: 1 }}>
+      <Box alignItems="center" display="flex">
+        <CryptoIcon size={20} symbol={bot.baseCurrency} />
+        <Typography sx={{ ml: 1 }} textColor="text.tertiary">
           {bot.baseCurrency}/{bot.quoteCurrency}
         </Typography>
       </Box>

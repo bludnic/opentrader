@@ -1,9 +1,9 @@
 import big from "big.js";
-import { IGridLine } from "@opentrader/types";
+import type { IGridLine } from "@opentrader/types";
 
 /**
  * Calculates average quantityPerGrid in Base Currency
- * @param gridLines
+ * @param gridLines - Grid lines
  */
 export function calcAverageQuantityPerGrid(gridLines: IGridLine[]): number {
   const quantitySum = gridLines.reduce((acc, curr) => {

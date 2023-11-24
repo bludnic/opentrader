@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TCreateGridBotInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TCreateGridBotInputSchema } from "./schema";
 
 type Options = {
   ctx: {

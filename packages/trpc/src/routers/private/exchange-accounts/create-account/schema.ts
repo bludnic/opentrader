@@ -1,5 +1,5 @@
 import { zt } from "@opentrader/prisma";
-import { z } from "zod";
+import type { z } from "zod";
 
 export const ZCreateExchangeAccountInputSchema = zt.ExchangeAccountSchema.pick({
   exchangeCode: true,

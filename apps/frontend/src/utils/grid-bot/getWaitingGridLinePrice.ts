@@ -1,4 +1,4 @@
-import { TActiveSmartTrade } from "src/types/trpc";
+import type { TActiveSmartTrade } from "src/types/trpc";
 
 export function getWaitingGridLinePrice(
   smartTrades: TActiveSmartTrade[],

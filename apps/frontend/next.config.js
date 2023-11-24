@@ -10,7 +10,7 @@ envValidationSchema.parse(process.env); // validate ENV schema
 module.exports = {
   output: 'standalone',
   reactStrictMode: true,
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     // Solves: Module not found: `bufferutil` and `utf-8-validate`
     // when importing `ccxt` in a Server Component (#57)
     config.externals.push({

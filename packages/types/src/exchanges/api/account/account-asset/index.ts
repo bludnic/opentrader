@@ -1,1 +1,1 @@
-export * from './account-asset.interface';
+export * from "./account-asset.interface";

@@ -1,7 +1,7 @@
 import { xprisma } from "#db/xprimsa";
 import { SmartTradeProcessor } from "@opentrader/processing";
-import { Context } from "#trpc/utils/context";
-import { TCronPlacePendingOrdersInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TCronPlacePendingOrdersInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -10,7 +10,7 @@ type Options = {
   input: TCronPlacePendingOrdersInputSchema;
 };
 
-export async function cronPlacePendingOrders({ ctx, input }: Options) {
+export async function cronPlacePendingOrders({ input }: Options) {
   const { botId } = input;
 
   const smartTrades = await xprisma.smartTrade.findMany({

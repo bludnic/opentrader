@@ -1,12 +1,13 @@
-import { BarSize, IGridLine } from "@opentrader/types";
-import { TExchangeCode } from "src/types/trpc";
+import type { IGridLine } from "@opentrader/types";
+import { BarSize } from "@opentrader/types";
+import type { TExchangeCode } from "src/types/trpc";
 import {
   DEFAULT_GRID_LINES_NUMBER,
   DEFAULT_QUANTITY_PER_GRID,
 } from "./constants";
-import { GridBotFormType } from "./types";
+import type { GridBotFormType } from "./types";
 
-export interface GridBotFormState {
+export type GridBotFormState = {
   type: GridBotFormType;
 
   // Common options
@@ -25,13 +26,13 @@ export interface GridBotFormState {
   gridLines: IGridLine[];
 
   barSize: BarSize;
-}
+};
 
 export const initialState: GridBotFormState = {
   type: "simple",
 
   // @todo rehardcore default values
-  botName: '',
+  botName: "",
   exchangeAccountId: 0,
   exchangeCode: "OKX",
   symbolId: "OKX:BTC/USDT",

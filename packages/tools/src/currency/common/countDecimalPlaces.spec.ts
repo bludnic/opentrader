@@ -9,7 +9,7 @@ describe(countDecimalPlaces.name, () => {
     expect(
       countDecimalPlaces("0.06900", {
         ignoreTrailingZeros: true,
-      })
+      }),
     ).toBe(3);
   });
 

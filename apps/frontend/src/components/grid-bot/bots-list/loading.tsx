@@ -9,9 +9,9 @@ export default function Loading() {
     <Grid container spacing={4}>
       <Grid xs={12}>
         <Button
-          size="lg"
           component={NextLink}
           href="/dashboard/grid-bot/create"
+          size="lg"
         >
           Create new bot
         </Button>

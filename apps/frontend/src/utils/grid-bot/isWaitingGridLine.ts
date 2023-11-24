@@ -1,9 +1,9 @@
-import { TActiveSmartTrade } from "src/types/trpc";
+import type { TActiveSmartTrade } from "src/types/trpc";
 import { getWaitingGridLinePrice } from "src/utils/grid-bot/getWaitingGridLinePrice";
 
 /**
- * @param price SmartTrade price
- * @param smartTrades Array of SmartTrades
+ * @param price - SmartTrade price
+ * @param smartTrades - Array of SmartTrades
  */
 export function isWaitingGridLine(
   price: number,

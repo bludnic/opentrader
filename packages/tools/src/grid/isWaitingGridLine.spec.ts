@@ -1,5 +1,5 @@
-import { isWaitingGridLine } from './isWaitingGridLine';
-import { IGridLine } from '@opentrader/types';
+import type { IGridLine } from "@opentrader/types";
+import { isWaitingGridLine } from "./isWaitingGridLine";
 
 const gridLines: IGridLine[] = [
   {
@@ -24,8 +24,8 @@ const gridLines: IGridLine[] = [
   },
 ];
 
-describe('isWaitingGridLine', () => {
-  it('should throw an error when `gridLines` does not contain provided `gridLine`', () => {
+describe("isWaitingGridLine", () => {
+  it("should throw an error when `gridLines` does not contain provided `gridLine`", () => {
     expect(() =>
       isWaitingGridLine(
         {
@@ -38,7 +38,7 @@ describe('isWaitingGridLine', () => {
     ).toThrow(Error);
   });
 
-  it('with exact price', () => {
+  it("with exact price", () => {
     expect(
       isWaitingGridLine(
         {
@@ -51,7 +51,7 @@ describe('isWaitingGridLine', () => {
     ).toBe(true);
   });
 
-  it('near the `currentAssetPrice`', () => {
+  it("near the `currentAssetPrice`", () => {
     expect(
       isWaitingGridLine(
         {
@@ -75,7 +75,7 @@ describe('isWaitingGridLine', () => {
     ).toBe(true);
   });
 
-  it('should pick upper `gridLine` when `currentAssetPrice` is at the edge of two grid lines', () => {
+  it("should pick upper `gridLine` when `currentAssetPrice` is at the edge of two grid lines", () => {
     expect(
       isWaitingGridLine(
         {

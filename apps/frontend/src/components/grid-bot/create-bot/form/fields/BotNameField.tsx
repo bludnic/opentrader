@@ -4,7 +4,8 @@ import FormControl from "@mui/joy/FormControl";
 import FormHelperText from "@mui/joy/FormHelperText";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-import React, { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 import { changeBotName } from "src/store/bot-form";
 import { selectBotName } from "src/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
@@ -36,7 +37,7 @@ export const BotNameField: FC = () => {
     <FormControl error={!!errorMessage}>
       <FormLabel>Bot name</FormLabel>
 
-      <Input value={value} onChange={handleChange} onBlur={handleBlur} />
+      <Input onBlur={handleBlur} onChange={handleChange} value={value} />
 
       {errorMessage ? <FormHelperText>{errorMessage}</FormHelperText> : null}
     </FormControl>

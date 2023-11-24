@@ -1,5 +1,5 @@
-import { AutocompleteProps } from "@mui/joy/Autocomplete";
-import { TSymbol } from "src/types/trpc";
+import type { AutocompleteProps } from "@mui/joy/Autocomplete";
+import type { TSymbol } from "src/types/trpc";
 
 export type TypedAutocompleteProps = AutocompleteProps<
   TSymbol,

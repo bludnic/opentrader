@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "@opentrader/types";
+import type { OrderStatusEnum } from "@opentrader/types";
 
 export type Order = {
   status: OrderStatusEnum;

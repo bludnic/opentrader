@@ -1,23 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import type { FC, ReactNode } from "react";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import { FC, ReactNode } from "react";
+import { type Theme } from "@mui/joy/styles";
+import type { CSSObject } from "@emotion/react";
 import { APP_BAR_HEIGHT } from "./AppBar";
-import { styled, type Theme } from "@mui/joy/styles";
-import { CSSObject } from "@emotion/react";
 
 type AppDrawerProps = {
   children: ReactNode;
   open: boolean;
-  onChange: (open: boolean) => void;
 };
 
 export const APP_DRAWER_WIDTH = 280;
 export const APP_MINI_DRAWER_WITH = 56;
 
-const openedMixin = (theme: Theme): CSSObject => ({
+const openedMixin = (_theme: Theme): CSSObject => ({
   width: APP_DRAWER_WIDTH,
   overflowX: "hidden",
 });
@@ -29,7 +26,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-export const AppDrawer: FC<AppDrawerProps> = ({ children, open, onChange }) => {
+export const AppDrawer: FC<AppDrawerProps> = ({ children, open }) => {
   return (
     <Box
       sx={(theme) => ({

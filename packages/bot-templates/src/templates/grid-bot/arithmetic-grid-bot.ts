@@ -1,14 +1,16 @@
 import type { IExchange } from "@opentrader/exchanges";
-import {
-  cancelSmartTrade,
+import type {
   IBotConfiguration,
   SmartTradeService,
   TBotContext,
+} from "@opentrader/bot-processor";
+import {
+  cancelSmartTrade,
   useExchange,
   useSmartTrade,
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
-import {
+import type {
   IGetMarketPriceResponse,
   IGridBotLevel,
   IGridLine,
@@ -39,7 +41,7 @@ export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
   );
 
   if (onStop) {
-    for (const [index, grid] of gridLevels.entries()) {
+    for (const [index, _grid] of gridLevels.entries()) {
       yield cancelSmartTrade(`${index}`);
     }
 

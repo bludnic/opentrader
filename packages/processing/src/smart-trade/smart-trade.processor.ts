@@ -1,16 +1,17 @@
 import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
-import {
-  assertHasExchangeOrderId,
-  assertIsOrderBased,
+import type {
   ExchangeAccountWithCredentials,
   OrderEntity,
   SmartTradeEntity_Order_Order,
   SmartTradeWithOrders,
+} from "@opentrader/db";
+import {
+  assertHasExchangeOrderId,
+  assertIsOrderBased,
   toSmartTradeEntity,
   xprisma,
 } from "@opentrader/db";
-import {
-  ExchangeCode,
+import type {
   IGetLimitOrderResponse,
   IPlaceLimitOrderResponse,
 } from "@opentrader/types";
@@ -146,6 +147,7 @@ export class SmartTradeProcessor {
   }
 
   private async cancelOrder(order: OrderEntity) {
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check -- "Canceled" | "Revoked" | "Deleted" doesn't require to be processed
     switch (order.status) {
       case "Idle":
         await xprisma.order.updateStatus("Revoked", order.id);
@@ -176,13 +178,12 @@ export class SmartTradeProcessor {
         return;
       case "Filled":
         await xprisma.order.removeRef(order.id);
-        return;
     }
   }
 
   /**
-   * Sync orders: exchange -> db
-   * - Sync order status Placed -> Filled
+   * Sync orders: `exchange -> db`
+   * - Sync order status `Placed -> Filled`
    * - Save `fee` to DB if order was filled
    */
   async sync(params: SyncParams) {

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { createContext, forwardRef, useContext } from "react";
 import AutocompleteOption from "@mui/joy/AutocompleteOption";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
-import { RenderOptionParams } from "./renderOption";
-import { CryptoIcon } from "src/ui/icons/CryptoIcon";
+import type { ListChildComponentProps } from "react-window";
+import { FixedSizeList } from "react-window";
 import AutocompleteListbox from "@mui/joy/AutocompleteListbox";
 import { Popper } from "@mui/base/Popper";
+import { CryptoIcon } from "src/ui/icons/CryptoIcon";
+import type { RenderOptionParams } from "./renderOption";
 
 const LISTBOX_PADDING = 8; // px
 const LIST_ITEM_HEIGHT = 48; // px
@@ -22,7 +23,7 @@ function renderRow(props: ListChildComponentProps<RenderOptionParams[]>) {
   };
 
   return (
-    <AutocompleteOption {...rowProps} style={inlineStyle} key={symbol.symbolId}>
+    <AutocompleteOption {...rowProps} key={symbol.symbolId} style={inlineStyle}>
       <ListItemDecorator>
         <CryptoIcon symbol={symbol.baseCurrency} />
       </ListItemDecorator>
@@ -33,10 +34,10 @@ function renderRow(props: ListChildComponentProps<RenderOptionParams[]>) {
   );
 }
 
-const OuterElementContext = React.createContext({});
+const OuterElementContext = createContext({});
 
-const OuterElementType = React.forwardRef<HTMLDivElement>((props, ref) => {
-  const outerProps = React.useContext(OuterElementContext);
+const OuterElementType = forwardRef<HTMLDivElement>((props, ref) => {
+  const outerProps = useContext(OuterElementContext);
   return (
     <AutocompleteListbox
       {...props}
@@ -55,6 +56,7 @@ const OuterElementType = React.forwardRef<HTMLDivElement>((props, ref) => {
 });
 OuterElementType.displayName = "OuterElementType";
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-condition -- will be typed later */
 export const ListboxComponent = React.forwardRef<
   HTMLDivElement,
   {
@@ -64,38 +66,38 @@ export const ListboxComponent = React.forwardRef<
   } & React.HTMLAttributes<HTMLElement>
 >(function ListboxComponent(props, ref) {
   const { children, anchorEl, open, modifiers, ...other } = props;
-  const itemData: Array<any> = [];
-  (
-    children as [Array<{ children: Array<React.ReactElement> | undefined }>]
-  )[0].forEach((item) => {
-    if (item) {
-      itemData.push(item);
-      itemData.push(...(item.children || []));
-    }
-  });
+  const itemData: any[] = [];
+  (children as [{ children: React.ReactElement[] | undefined }[]])[0].forEach(
+    (item) => {
+      if (item) {
+        itemData.push(item);
+        itemData.push(...(item.children || []));
+      }
+    },
+  );
 
   const itemCount = itemData.length;
 
   return (
     <Popper
-      ref={ref}
       anchorEl={anchorEl}
-      open={open}
       modifiers={modifiers}
+      open={open}
+      ref={ref}
       style={{
         zIndex: 1000,
       }}
     >
       <OuterElementContext.Provider value={other}>
         <FixedSizeList
-          itemData={itemData}
           height={LIST_ITEM_HEIGHT * VISIBLE_OPTIONS_COUNT}
-          width="100%"
-          outerElementType={OuterElementType}
           innerElementType="ul"
-          itemSize={LIST_ITEM_HEIGHT}
-          overscanCount={5}
           itemCount={itemCount}
+          itemData={itemData}
+          itemSize={LIST_ITEM_HEIGHT}
+          outerElementType={OuterElementType}
+          overscanCount={5}
+          width="100%"
         >
           {renderRow}
         </FixedSizeList>
@@ -103,3 +105,4 @@ export const ListboxComponent = React.forwardRef<
     </Popper>
   );
 });
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-condition -- will be typed later */

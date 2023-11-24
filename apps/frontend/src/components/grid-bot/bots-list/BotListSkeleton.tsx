@@ -1,6 +1,7 @@
 import Grid from "@mui/joy/Grid";
 import Skeleton from "@mui/joy/Skeleton";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 
 const BOTS_LENGTH = 8;
 
@@ -10,16 +11,16 @@ export const BotListSkeleton: FC = () => {
   return (
     <Grid container spacing={2}>
       {bots.map((_, i) => (
-        <Grid key={i} xl={3} md={4} sm={6} xs={12}>
+        <Grid key={i} md={4} sm={6} xl={3} xs={12}>
           <Skeleton
-            key={i}
-            variant="rectangular"
             animation="wave"
-            width="100%"
             height={236}
+            key={i}
             sx={{
               borderRadius: 8,
             }}
+            variant="rectangular"
+            width="100%"
           />
         </Grid>
       ))}

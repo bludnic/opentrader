@@ -1,4 +1,4 @@
-import { TTRPCErrorSchema } from "./trpcErrorSchema";
+import type { TTRPCErrorSchema } from "./trpcErrorSchema";
 
 type ErrorData = TTRPCErrorSchema["shape"]["data"];
 

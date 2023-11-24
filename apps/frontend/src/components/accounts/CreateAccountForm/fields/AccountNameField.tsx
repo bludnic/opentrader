@@ -1,25 +1,26 @@
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-import { CreateExchangeAccountFormValues } from "../types";
 import { Field } from "react-final-form";
+import type { CreateExchangeAccountFormValues } from "../types";
 
 const fieldName: keyof CreateExchangeAccountFormValues = "name";
 
 export const AccountNameField: FC = () => {
   return (
-    <Field name={fieldName}>
+    <Field<string> name={fieldName}>
       {({ input }) => (
         <FormControl>
           <FormLabel>Account name</FormLabel>
 
           <Input
+            autoComplete="off"
             name={input.name}
-            value={input.value}
             onChange={input.onChange}
             required
-            autoComplete="off"
+            value={input.value}
           />
         </FormControl>
       )}

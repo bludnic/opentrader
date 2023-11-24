@@ -1,1 +1,1 @@
-export * from './candlestick.interface';
+export * from "./candlestick.interface";

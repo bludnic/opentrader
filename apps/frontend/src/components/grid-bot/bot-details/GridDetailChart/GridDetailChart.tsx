@@ -2,14 +2,15 @@
 
 import Skeleton from "@mui/joy/Skeleton";
 import { composeSymbolId } from "@opentrader/tools";
-import { ExchangeCode } from "@opentrader/types";
-import React, { FC, Suspense, useMemo, useState } from "react";
+import type { ExchangeCode } from "@opentrader/types";
+import type { FC } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 import { tClient } from "src/lib/trpc/client";
 import { Chart, ChartAppBar, CHART_HEIGHT } from "src/ui/charts/Chart";
 import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
-import { TBarSize } from "src/types/literals";
+import type { TBarSize } from "src/types/literals";
 import { computePriceLines } from "./utils";
 
 const timeframes = ["1d", "4h", "1h", "5m"] as const;
@@ -19,7 +20,7 @@ type GridChartProps = {
   botId: number;
 };
 
-const NOOP = () => {};
+const NOOP = () => void 0;
 
 export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
   const [bot] = tClient.gridBot.getOne.useSuspenseQuery(botId);
@@ -48,30 +49,32 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
     <Suspense
       fallback={
         <Skeleton
-          variant="rectangular"
           animation="wave"
-          width="100%"
           height={CHART_HEIGHT}
+          variant="rectangular"
+          width="100%"
         />
       }
     >
       <Chart
-        symbolId={symbol.symbolId}
         barSize={barSize}
         priceLines={priceLines}
+        symbolId={symbol.symbolId}
       >
         <ChartAppBar>
-          <ExchangeAccountSelect value={exchangeAccount} onChange={NOOP} />
+          <ExchangeAccountSelect onChange={NOOP} value={exchangeAccount} />
 
           <SymbolSelect
             exchangeCode={exchangeAccount.exchangeCode}
-            value={symbol}
             onChange={NOOP}
+            value={symbol}
           />
 
           <BarSizeSelect
+            onChange={(value) => {
+              setBarSize(value);
+            }}
             value={barSize}
-            onChange={(value) => setBarSize(value)}
             whitelist={timeframes}
           />
         </ChartAppBar>

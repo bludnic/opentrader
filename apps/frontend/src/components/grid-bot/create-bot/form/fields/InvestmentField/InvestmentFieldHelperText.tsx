@@ -1,6 +1,6 @@
 import { decomposeSymbolId } from "@opentrader/tools";
 import FormHelperText from "@mui/joy/FormHelperText";
-import { FC } from "react";
+import type { FC } from "react";
 import { selectSymbolId } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 

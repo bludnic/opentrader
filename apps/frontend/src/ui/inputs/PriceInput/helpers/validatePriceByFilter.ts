@@ -1,10 +1,10 @@
 import Big from "big.js";
-import { ISymbolFilter } from "@opentrader/types";
+import type { ISymbolFilter } from "@opentrader/types";
 
 /**
  * Return error message or `null` if there are no validation errors.
- * @param numStr
- * @param filter
+ * @param numStr - Price
+ * @param filter - Symbol filter
  */
 export function validatePriceByFilter(
   numStr: string,

@@ -1,10 +1,11 @@
-import { exchangeProvider, IExchange } from "@opentrader/exchanges";
-import { ExchangeAccountWithCredentials } from "@opentrader/db";
+import type { IExchange } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
+import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import type { Subscription, Event } from "./types";
 
 export abstract class OrderSynchronizerWatcher {
   private consumers: Subscription[] = [];
-  protected enabled: boolean = false;
+  protected enabled = false;
 
   protected exchange: ExchangeAccountWithCredentials;
   protected exchangeService: IExchange;
@@ -23,7 +24,7 @@ export abstract class OrderSynchronizerWatcher {
     );
 
     this.enabled = true;
-    void this.watchOrders(); // await was omitted intentionally
+    this.watchOrders(); // await was omitted intentionally
   }
 
   async disable() {

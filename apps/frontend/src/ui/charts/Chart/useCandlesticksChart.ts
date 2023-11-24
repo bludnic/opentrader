@@ -1,11 +1,10 @@
 import { useEffect, useRef } from "react";
-import {
-  createChart,
+import type {
   IChartApi,
   ISeriesApi,
   LogicalRangeChangeEventHandler,
 } from "lightweight-charts";
-
+import { createChart } from "lightweight-charts";
 import { useChartTheme } from "./theme/useChartTheme";
 
 type UseCandlesticksChartParams = {
@@ -25,7 +24,7 @@ export function useCandlesticksChart(params: UseCandlesticksChartParams) {
     chart.current = createChart(chartContainer.current!);
     series.current = chart.current.addCandlestickSeries();
 
-    chart.current!.timeScale().fitContent();
+    chart.current.timeScale().fitContent();
 
     return () => {
       chart.current?.remove();

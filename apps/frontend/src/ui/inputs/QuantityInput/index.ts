@@ -1,1 +1,1 @@
-export * from './QuantityInput';
+export * from "./QuantityInput";

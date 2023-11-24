@@ -1,10 +1,7 @@
-import {
-  SmartTradeEntity_Order_Order,
-  toSmartTradeEntity,
-  xprisma,
-} from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetPendingSmartTradesInputSchema } from "./schema";
+import type { SmartTradeEntity_Order_Order } from "@opentrader/db";
+import { toSmartTradeEntity, xprisma } from "@opentrader/db";
+import type { Context } from "#trpc/utils/context";
+import type { TGetPendingSmartTradesInputSchema } from "./schema";
 
 type Options = {
   ctx: {

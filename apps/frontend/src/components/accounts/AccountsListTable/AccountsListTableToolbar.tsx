@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import Typography from "@mui/joy/Typography";
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Box from "@mui/joy/Box";
 import Tooltip from "@mui/joy/Tooltip";
@@ -35,15 +36,11 @@ export const AccountsListTableToolbar: FC<AccountsListTableToolbarProps> = (
       }}
     >
       {numSelected > 0 ? (
-        <Typography sx={{ flex: "1 1 100%" }} component="div">
+        <Typography component="div" sx={{ flex: "1 1 100%" }}>
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography
-          level="body-lg"
-          sx={{ flex: "1 1 100%" }}
-          component="div"
-        >
+        <Typography component="div" level="body-lg" sx={{ flex: "1 1 100%" }}>
           {title}
         </Typography>
       )}
@@ -52,11 +49,11 @@ export const AccountsListTableToolbar: FC<AccountsListTableToolbarProps> = (
         {numSelected > 0 ? (
           <Tooltip title="Edit exchange">
             <IconButton
-              variant="outlined"
-              size="md"
               color="neutral"
               disabled={numSelected !== 1}
               onClick={onEditAccountClick}
+              size="md"
+              variant="outlined"
             >
               <EditOutlinedIcon />
             </IconButton>
@@ -64,10 +61,12 @@ export const AccountsListTableToolbar: FC<AccountsListTableToolbarProps> = (
         ) : (
           <Tooltip title="Add new exchange">
             <IconButton
-              variant="outlined"
-              size="md"
               color="neutral"
-              onClick={() => onCreateAccountClick()}
+              onClick={() => {
+                onCreateAccountClick();
+              }}
+              size="md"
+              variant="outlined"
             >
               <AddOutlinedIcon />
             </IconButton>

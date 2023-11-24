@@ -1,6 +1,7 @@
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "#db/prisma";
-import { TGridBotSettings, ZGridBotSettings } from "#db/types/grid-bot";
+import type { TGridBotSettings } from "#db/types/grid-bot";
+import { ZGridBotSettings } from "#db/types/grid-bot";
 
 export const gridBotModel = {
   async findUnique<T extends Prisma.BotFindUniqueArgs>(
@@ -16,7 +17,7 @@ export const gridBotModel = {
 
     if (!bot) return null;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
     const { settings, ...rest } = bot;
 
     return {
@@ -35,7 +36,7 @@ export const gridBotModel = {
       },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
     const { settings, ...rest } = bot;
 
     return {
@@ -54,7 +55,7 @@ export const gridBotModel = {
       },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
     const { settings, ...rest } = bot;
 
     return {
@@ -74,7 +75,7 @@ export const gridBotModel = {
     });
 
     return bots.map((bot) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
       const { settings, ...rest } = bot;
 
       return {
@@ -98,7 +99,7 @@ export const gridBotModel = {
       },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
     const { settings, ...rest } = bot;
 
     return {
@@ -124,7 +125,7 @@ export const gridBotModel = {
       },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
     const { settings, ...rest } = bot;
 
     return {

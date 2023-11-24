@@ -1,12 +1,13 @@
-import { OrderStatusEnum, IGridBotLevel, IGridLine } from "@opentrader/types";
+import type { IGridBotLevel, IGridLine } from "@opentrader/types";
+import { OrderStatusEnum } from "@opentrader/types";
 import { isWaitingGridLine } from "./isWaitingGridLine";
 import { nextGridLinePrice } from "./nextGridLinePrice";
 
 /**
  * Computes initial grid levels based on current asset price.
  *
- * @param gridLines
- * @param currentAssetPrice
+ * @param gridLines - Grid lines
+ * @param currentAssetPrice - Current asset price
  * @returns
  */
 export function computeGridLevelsFromCurrentAssetPrice(
@@ -39,23 +40,22 @@ export function computeGridLevelsFromCurrentAssetPrice(
       };
 
       return [gridLevel];
-    } else {
-      // gridLevel < currentAssetPrice
-
-      const gridLevel: IGridBotLevel = {
-        buy: {
-          price: gridLine.price,
-          quantity: gridLine.quantity,
-          status: OrderStatusEnum.Idle,
-        },
-        sell: {
-          price: sellOrderPrice,
-          quantity: gridLine.quantity,
-          status: OrderStatusEnum.Idle,
-        },
-      };
-
-      return [gridLevel];
     }
+    // gridLevel < currentAssetPrice
+
+    const gridLevel: IGridBotLevel = {
+      buy: {
+        price: gridLine.price,
+        quantity: gridLine.quantity,
+        status: OrderStatusEnum.Idle,
+      },
+      sell: {
+        price: sellOrderPrice,
+        quantity: gridLine.quantity,
+        status: OrderStatusEnum.Idle,
+      },
+    };
+
+    return [gridLevel];
   });
 }

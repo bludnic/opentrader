@@ -1,7 +1,5 @@
 "use client";
 
-import { useTRPCErrorModal } from "src/ui/errors/api";
-import { isTRPCError } from "src/ui/errors/utils";
 import superjson from "superjson";
 import {
   MutationCache,
@@ -11,6 +9,8 @@ import {
 } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
+import { isTRPCError } from "src/ui/errors/utils";
+import { useTRPCErrorModal } from "src/ui/errors/api";
 import { tClient } from "src/lib/trpc/client";
 import { getBaseUrl } from "src/lib/trpc/getBaseUrl";
 

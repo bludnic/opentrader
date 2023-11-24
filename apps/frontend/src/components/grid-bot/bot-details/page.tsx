@@ -20,13 +20,13 @@ export default function BotDetailsPage(props: Props) {
         <Suspense
           fallback={
             <Skeleton
-              variant="rectangular"
               animation="wave"
-              width="100%"
+              height={CHART_HEIGHT}
               sx={{
                 borderRadius: 8,
               }}
-              height={CHART_HEIGHT}
+              variant="rectangular"
+              width="100%"
             />
           }
         >
@@ -38,13 +38,13 @@ export default function BotDetailsPage(props: Props) {
         <Suspense
           fallback={
             <Skeleton
-              variant="rectangular"
               animation="wave"
-              width="100%"
+              height={CHART_HEIGHT}
               sx={{
                 borderRadius: 8,
               }}
-              height={CHART_HEIGHT}
+              variant="rectangular"
+              width="100%"
             />
           }
         >
@@ -56,13 +56,13 @@ export default function BotDetailsPage(props: Props) {
         <Suspense
           fallback={
             <Skeleton
-              variant="rectangular"
               animation="wave"
-              width="100%"
+              height={250}
               sx={{
                 borderRadius: 8,
               }}
-              height={250}
+              variant="rectangular"
+              width="100%"
             />
           }
         >
@@ -74,13 +74,13 @@ export default function BotDetailsPage(props: Props) {
         <Suspense
           fallback={
             <Skeleton
-              variant="rectangular"
               animation="wave"
-              width="100%"
+              height={250}
               sx={{
                 borderRadius: 8,
               }}
-              height={250}
+              variant="rectangular"
+              width="100%"
             />
           }
         >

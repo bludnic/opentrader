@@ -2,9 +2,9 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import CircleIcon from "@mui/icons-material/Circle";
-import { FC } from "react";
+import type { FC } from "react";
 import { BotStatusSwitcher } from "src/components/grid-bot/bot-details/BotStatusSwitcher";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 
 type StatusSettingsListItemProps = {
   bot: TGridBot;

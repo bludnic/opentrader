@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export function useIsStale<T>(value: T) {
-  const [preValue, setPrevValue] = useState(value);
-  if (value !== preValue) {
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
     setPrevValue(value);
 
     return true;

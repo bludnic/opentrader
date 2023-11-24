@@ -1,5 +1,5 @@
-import big from 'big.js';
-import { IGridLine } from '@opentrader/types';
+import big from "big.js";
+import type { IGridLine } from "@opentrader/types";
 
 export function isWaitingGridLine(
   gridLine: IGridLine,
@@ -12,10 +12,11 @@ export function isWaitingGridLine(
       gridLineItem.quantity === gridLine.quantity,
   );
 
-  if (gridLineIndex === -1)
+  if (gridLineIndex === -1) {
     throw new Error(
       `Cannot find grid line index of { price: ${gridLine.price}, quantity: ${gridLine.quantity} }`,
     );
+  }
 
   const targetGridLine = gridLines[gridLineIndex];
   const prevGridLine: IGridLine | undefined = gridLines[gridLineIndex - 1];
@@ -25,6 +26,7 @@ export function isWaitingGridLine(
     .minus(targetGridLine.price)
     .abs();
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   if (prevGridLine) {
     const prevGridLinePriceDiff = big(currentAssetPrice)
       .minus(prevGridLine.price)
@@ -36,6 +38,7 @@ export function isWaitingGridLine(
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   if (nextGridLine) {
     const nextGridLinePriceDiff = big(currentAssetPrice)
       .minus(nextGridLine.price)

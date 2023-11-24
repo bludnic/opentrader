@@ -1,4 +1,4 @@
-import { ExchangeAccountWithCredentials } from "@opentrader/db";
+import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import { OrderSynchronizerPollingWatcher } from "./order-synchronizer-polling.watcher";
 import { OrderSynchronizerWsWatcher } from "./order-synchronizer-ws.watcher";
 import type { Event, Subscription } from "./types";

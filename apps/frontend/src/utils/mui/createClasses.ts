@@ -11,16 +11,6 @@ type ClassesBuilder<
   Elements extends ElementsParam<Elements>,
 > = {
   [ElementKey in keyof Elements]: {
-    // classes.element()
-    (): ElementKey extends string
-      ? BuildElementName<ComponentName, ElementKey>
-      : never;
-
-    // classes.element.toString()
-    toString(): ElementKey extends string
-      ? `${ComponentName}-${CamelToKebabCase<ElementKey>}`
-      : never;
-
     // classes.element("modifierName")
     <ModifierKey extends keyof Elements[ElementKey]>(
       modifier: ModifierKey,
@@ -30,6 +20,16 @@ type ClassesBuilder<
           ElementKey,
           Elements[ElementKey]
         >[ModifierKey]
+      : never;
+
+    // classes.element()
+    (): ElementKey extends string
+      ? BuildElementName<ComponentName, ElementKey>
+      : never;
+
+    // classes.element.toString()
+    toString: () => ElementKey extends string
+      ? `${ComponentName}-${CamelToKebabCase<ElementKey>}`
       : never;
   };
 };
@@ -60,13 +60,14 @@ export function createClasses<C extends string, E extends ElementsParam<E>>(
   elements: E,
 ): ClassesBuilder<C, E> {
   const result = {} as ClassesBuilder<C, E>;
-  const elementsKeys = Object.keys(elements) as Array<keyof E>;
+  const elementsKeys = Object.keys(elements) as (keyof E)[];
 
   for (const elementKey of elementsKeys) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- it may be typed better, but it will require much more TS code that will affect the readability
     result[elementKey] = buildElement(
       componentName,
       elementKey as string,
-    ) as any; // it may be typed better, but it will require much more TS code that will affect the readability
+    ) as any; // eslint-disable-line @typescript-eslint/no-explicit-any -- see comment above
   }
 
   return result;

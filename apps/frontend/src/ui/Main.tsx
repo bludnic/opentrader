@@ -1,7 +1,7 @@
 "use client";
 
 import { styled } from "@mui/joy/styles";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import {
   APP_DRAWER_WIDTH,
   APP_MINI_DRAWER_WITH,

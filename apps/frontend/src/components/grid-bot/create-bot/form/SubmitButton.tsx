@@ -3,16 +3,15 @@
 import CircularProgress from "@mui/joy/CircularProgress";
 import Button from "@mui/joy/Button";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import { tClient } from "src/lib/trpc/client";
-import { mapFormToDto } from "./helpers/mapFormToDto";
 import { selectBotFormState } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 import { useSnackbar } from "src/ui/snackbar";
+import { mapFormToDto } from "./helpers/mapFormToDto";
 
-type SubmitButtonProps = {};
-
-export const SubmitButton: FC<SubmitButtonProps> = (props) => {
+export const SubmitButton: FC = () => {
   const { showSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -36,12 +35,12 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
 
   return (
     <Button
-      variant="outlined"
       color="primary"
-      type="submit"
       disabled={isLoading}
-      startDecorator={isLoading ? <CircularProgress size="md" /> : null}
       onClick={handleSubmit}
+      startDecorator={isLoading ? <CircularProgress size="md" /> : null}
+      type="submit"
+      variant="outlined"
     >
       Create
     </Button>

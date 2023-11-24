@@ -1,20 +1,21 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import Grid from "@mui/joy/Grid";
 import Divider from "@mui/joy/Divider";
-import { TGridBot, TSymbol } from "src/types/trpc";
-import { SettingInput } from "./SettingInput";
+import type { TGridBot, TSymbol } from "src/types/trpc";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
+import { SettingInput } from "./SettingInput";
 
 type SimpleGridFormProps = {
   bot: TGridBot;
   symbol: TSymbol;
 };
 
-export const GridBotSettings: FC<SimpleGridFormProps> = ({ bot, symbol }) => {
+export const GridBotSettings: FC<SimpleGridFormProps> = ({ bot }) => {
   const highPrice = findHighestGridLinePrice(bot.settings.gridLines);
   const lowPrice = findLowestGridLinePrice(bot.settings.gridLines);
   const averageQuantityPerGrid = calcAverageQuantityPerGrid(
@@ -27,7 +28,7 @@ export const GridBotSettings: FC<SimpleGridFormProps> = ({ bot, symbol }) => {
         <Divider>Bot settings</Divider>
       </Grid>
 
-      <Grid container xs={12} spacing={2}>
+      <Grid container spacing={2} xs={12}>
         <Grid md={6} xs={12}>
           <SettingInput label="High price" value={highPrice} />
         </Grid>

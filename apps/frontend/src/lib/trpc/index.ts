@@ -1,4 +1,4 @@
-import superjson from 'superjson'
+import superjson from "superjson";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "@opentrader/trpc";
 import { getBaseUrl } from "src/lib/trpc/getBaseUrl";

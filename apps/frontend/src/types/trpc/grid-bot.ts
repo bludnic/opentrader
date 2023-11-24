@@ -1,4 +1,4 @@
-import { RouterInput, RouterOutput } from "src/lib/trpc/types";
+import type { RouterInput, RouterOutput } from "src/lib/trpc/types";
 
 export type TGridBot = RouterOutput["gridBot"]["getOne"];
 export type TActiveSmartTrade =

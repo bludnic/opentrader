@@ -1,11 +1,11 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import { computeInvestmentAmount, decomposeSymbolId } from "@opentrader/tools";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-
 import { tClient } from "src/lib/trpc/client";
 import { selectGridLines, selectSymbolId } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
@@ -41,11 +41,11 @@ export const InvestmentField: FC<InvestmentFieldProps> = (props) => {
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
 
       <Input
-        id={inputId}
-        endDecorator={<>{quoteCurrency}</>}
-        value={totalInQuoteCurrency}
-        type="number"
         disabled
+        endDecorator={<>{quoteCurrency}</>}
+        id={inputId}
+        type="number"
+        value={totalInQuoteCurrency}
       />
 
       <InvestmentFieldHelperText

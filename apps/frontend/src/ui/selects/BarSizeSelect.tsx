@@ -3,8 +3,8 @@
 import React from "react";
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
-import { TBarSize } from "src/types/literals";
 import { BarSize } from "@opentrader/types";
+import type { TBarSize } from "src/types/literals";
 
 type BarSizeSelectProps<W extends TBarSize = TBarSize> = {
   value: W;
@@ -21,12 +21,14 @@ export function BarSizeSelect<T extends TBarSize = TBarSize>({
 
   return (
     <Select
-      value={value}
-      onChange={(e, value) => onChange(value as T)}
+      onChange={(e, value) => {
+        onChange(value!);
+      }}
       required
+      value={value}
     >
       {list.map((item) => (
-        <Option value={item} key={item}>
+        <Option key={item} value={item}>
           {item}
         </Option>
       ))}

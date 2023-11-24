@@ -1,12 +1,9 @@
 import { router } from "#trpc/trpc";
 import { authorizedProcedure } from "#trpc/procedures";
-
 import { getSymbols } from "./get-symbols/handler";
 import { ZGetSymbolsInputSchema } from "./get-symbols/schema";
-
 import { getSymbol } from "./get-symbol/handler";
 import { ZGetSymbolInputSchema } from "./get-symbol/schema";
-
 import { getSymbolPrice } from "./get-symbol-price/handler";
 import { ZGetSymbolPriceInputSchema } from "./get-symbol-price/schema";
 

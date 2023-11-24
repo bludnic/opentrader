@@ -1,5 +1,5 @@
 import big from "big.js";
-import { TCompletedSmartTrade } from "src/types/trpc";
+import type { TCompletedSmartTrade } from "src/types/trpc";
 
 // Buy order fee is paid in Base currency
 // Sell order fee is paid in Quote currency

@@ -2,7 +2,7 @@
 
 import MuiSnackbar from "@mui/joy/Snackbar";
 import Alert from "@mui/joy/Alert";
-import { FC } from "react";
+import type { FC } from "react";
 import { useSnackbar } from "src/ui/snackbar/useSnackbar";
 
 export const Snackbar: FC = () => {
@@ -18,15 +18,15 @@ export const Snackbar: FC = () => {
 
   return (
     <MuiSnackbar
-      open={open}
-      onClose={handleClose}
-      autoHideDuration={autoHideDuration}
       anchorOrigin={anchorOrigin}
+      autoHideDuration={autoHideDuration}
+      onClose={handleClose}
+      open={open}
       sx={{
         padding: 0,
       }}
     >
-      <Alert color={color} variant={variant} sx={{ width: "100%" }}>
+      <Alert color={color} sx={{ width: "100%" }} variant={variant}>
         {message}
       </Alert>
     </MuiSnackbar>

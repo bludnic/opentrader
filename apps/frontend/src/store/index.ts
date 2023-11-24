@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { gridBotFormSlice, GridBotFormState } from "./bot-form";
+import type { GridBotFormState } from "./bot-form";
+import { gridBotFormSlice } from "./bot-form";
 
 export type RootState = {
   gridBotForm: GridBotFormState;

@@ -1,9 +1,10 @@
-import { SmartTradeProcessor } from "#processing/smart-trade";
 import { BotProcessor } from "@opentrader/bot-processor";
-import { arithmeticGridBot, GridBotConfig } from "@opentrader/bot-templates";
+import type { GridBotConfig } from "@opentrader/bot-templates";
+import { arithmeticGridBot } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
-import { xprisma, TGridBot } from "@opentrader/db";
-
+import type { TGridBot } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
+import { SmartTradeProcessor } from "#processing/smart-trade";
 import { GridBotStoreAdapter } from "./grid-bot-store-adapter";
 
 export class GridBotProcessor {
@@ -85,6 +86,7 @@ export class GridBotProcessor {
         await processor.start();
       } else if (command === "stop") {
         await processor.stop();
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- @todo switch/case
       } else if (command === "process") {
         await processor.process();
       }
@@ -144,7 +146,7 @@ export class GridBotProcessor {
 
     const processor = BotProcessor.create({
       store: storeAdapter,
-      exchange: exchange,
+      exchange,
       botConfig: configuration,
       botTemplate: arithmeticGridBot,
     });

@@ -56,7 +56,7 @@ async function main() {
       type: "GridBot",
 
       settings: {
-        gridLines: gridLines as any
+        gridLines: gridLines as any,
       },
 
       exchangeAccount: {
@@ -71,12 +71,10 @@ async function main() {
       },
     },
   });
-  console.log(
-    `🤖 Created Grid Bot "${gridBot.name}" with gridLines:`,
-  );
-  gridLines.forEach(gridLine => {
-    console.log(`  ${JSON.stringify(gridLine)}`)
-  })
+  console.log(`🤖 Created Grid Bot "${gridBot.name}" with gridLines:`);
+  gridLines.forEach((gridLine) => {
+    console.log(`  ${JSON.stringify(gridLine)}`);
+  });
 }
 
 main()

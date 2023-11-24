@@ -1,1 +1,1 @@
-export type OrderSide = 'buy' | 'sell';
+export type OrderSide = "buy" | "sell";

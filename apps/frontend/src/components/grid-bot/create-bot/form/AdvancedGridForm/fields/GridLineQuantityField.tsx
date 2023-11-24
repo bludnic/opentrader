@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 import { QuantityInput } from "src/ui/inputs/QuantityInput";
 import { tClient } from "src/lib/trpc/client";
 import { updateGridLineQuantity } from "src/store/bot-form";
@@ -52,15 +53,15 @@ export const GridLineQuantityField: FC<GridLineQuantityFieldProps> = (
 
   return (
     <QuantityInput
-      value={value}
-      onChange={handleChange}
-      onBlur={handleBlur}
       className={className}
-      label="Quantity"
-      fullWidth
       disabled={disabled}
-      size="sm"
       filter={symbol.filters}
+      fullWidth
+      label="Quantity"
+      onBlur={handleBlur}
+      onChange={handleChange}
+      size="sm"
+      value={value}
     />
   );
 };

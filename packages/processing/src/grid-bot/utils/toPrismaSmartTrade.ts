@@ -1,5 +1,6 @@
-import { UseSmartTradePayload } from "@opentrader/bot-processor";
-import { $Enums, Prisma } from "@opentrader/db";
+import type { UseSmartTradePayload } from "@opentrader/bot-processor";
+import type { Prisma } from "@opentrader/db";
+import { $Enums } from "@opentrader/db";
 import { toPrismaOrder } from "./order";
 
 /**

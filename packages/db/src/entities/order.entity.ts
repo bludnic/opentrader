@@ -1,4 +1,4 @@
-import { $Enums, Order as OrderModel } from "@prisma/client";
+import type { $Enums, Order as OrderModel } from "@prisma/client";
 
 type GenericOrderProps =
   | "type"
@@ -168,7 +168,11 @@ export function toOrderEntity<T extends OrderModel>(order: T): OrderEntity<T> {
           filledAt: null,
           placedAt: null,
         };
+      case "Deleted": {
+        throw new Error('Not implemented yet: "Deleted" case');
+      }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   } else if (type === "Market") {
     switch (status) {
       case "Idle":
@@ -226,6 +230,9 @@ export function toOrderEntity<T extends OrderModel>(order: T): OrderEntity<T> {
           filledAt: null,
           placedAt: null,
         };
+      case "Deleted": {
+        throw new Error('Not implemented yet: "Deleted" case');
+      }
     }
   }
 

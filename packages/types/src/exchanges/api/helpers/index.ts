@@ -1,1 +1,1 @@
-export * from './trading-pair-symbol';
+export * from "./trading-pair-symbol";

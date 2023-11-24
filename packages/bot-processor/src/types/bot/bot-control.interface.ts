@@ -1,7 +1,7 @@
-import { UseSmartTradePayload } from "../../effects/common/types/use-smart-trade-effect";
-import { IBotConfiguration } from "../bot/bot-configuration.interface";
-import { IStore } from "../store/store.interface";
-import { SmartTrade } from "../smart-trade/smart-trade.type";
+import type { UseSmartTradePayload } from "../../effects/common/types/use-smart-trade-effect";
+import type { IStore } from "../store/store.interface";
+import type { SmartTrade } from "../smart-trade/smart-trade.type";
+import type { IBotConfiguration } from "./bot-configuration.interface";
 
 export interface IBotControl<T extends IBotConfiguration> {
   store: IStore;
@@ -10,21 +10,21 @@ export interface IBotControl<T extends IBotConfiguration> {
   /**
    * Stop bot
    */
-  stop(): Promise<void>;
+  stop: () => Promise<void>;
 
-  getSmartTrade(ref: string): Promise<SmartTrade | null>;
+  getSmartTrade: (ref: string) => Promise<SmartTrade | null>;
 
-  createSmartTrade(
+  createSmartTrade: (
     ref: string,
     payload: UseSmartTradePayload,
-  ): Promise<SmartTrade>;
+  ) => Promise<SmartTrade>;
 
-  getOrCreateSmartTrade(
+  getOrCreateSmartTrade: (
     ref: string,
     payload: UseSmartTradePayload,
-  ): Promise<SmartTrade>;
+  ) => Promise<SmartTrade>;
 
-  replaceSmartTrade(ref: string, payload: SmartTrade): Promise<SmartTrade>;
+  replaceSmartTrade: (ref: string, payload: SmartTrade) => Promise<SmartTrade>;
 
-  cancelSmartTrade(ref: string): Promise<boolean>;
+  cancelSmartTrade: (ref: string) => Promise<boolean>;
 }

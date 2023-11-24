@@ -1,4 +1,4 @@
-import { ISymbolFilter } from '@opentrader/types';
+import type { ISymbolFilter } from "@opentrader/types";
 
 export const ETH_SYMBOL_FILTER: ISymbolFilter = {
   // OKX:ETH/USDT

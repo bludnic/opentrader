@@ -1,6 +1,6 @@
-import {  SmartTrade } from "@opentrader/bot-processor";
+import type { SmartTrade } from "@opentrader/bot-processor";
 import { OrderSideEnum } from "@opentrader/types";
-import { BuyTransaction } from "#backtesting/types";
+import type { BuyTransaction } from "#backtesting/types";
 
 export function buyTransaction(smartTrade: SmartTrade): BuyTransaction {
   const { buy, sell, quantity, id } = smartTrade;
@@ -14,6 +14,7 @@ export function buyTransaction(smartTrade: SmartTrade): BuyTransaction {
       fee: 0, // @todo fee
       updatedAt: buy.updatedAt,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- it may not, need to investigate
     sell: sell
       ? {
           price: sell.price,

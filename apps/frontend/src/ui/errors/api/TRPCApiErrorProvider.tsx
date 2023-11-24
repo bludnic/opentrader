@@ -1,9 +1,11 @@
 "use client";
 
-import { FC, ReactNode, useState } from "react";
-import { TRPCApiError } from "src/ui/errors/types";
-import { TRPCApiContext, State } from "./context";
+import type { FC, ReactNode } from "react";
+import { useState } from "react";
+import type { TRPCApiError } from "src/ui/errors/types";
 import { TRPCApiErrorModal } from "src/ui/errors/api/TRPCApiErrorModal";
+import type { State } from "./context";
+import { TRPCApiContext } from "./context";
 
 type TRPCApiErrorProviderProps = {
   children: ReactNode;

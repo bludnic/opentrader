@@ -1,9 +1,11 @@
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
-import Input, { InputProps } from "@mui/joy/Input";
-import React, { FC } from "react";
-import { ISymbolFilter } from "@opentrader/types";
+import type { InputProps } from "@mui/joy/Input";
+import Input from "@mui/joy/Input";
+import type { FC } from "react";
+import React from "react";
+import type { ISymbolFilter } from "@opentrader/types";
 import { NumericInput } from "src/ui/inputs/NumericInput";
 import { mapQuantityFilterToNumericFormatProps } from "./helpers/mapQuantityFilterToNumericFormatProps";
 import { validateQuantityByFilter } from "./helpers/validateQuantityByFilter";
@@ -29,7 +31,6 @@ export const QuantityInput: FC<QuantityInputProps> = (props) => {
       <FormLabel>{label}</FormLabel>
 
       <Input
-        value={value}
         onChange={onChange}
         slotProps={{
           input: {
@@ -37,6 +38,7 @@ export const QuantityInput: FC<QuantityInputProps> = (props) => {
             NumericFormatProps: formatProps,
           },
         }}
+        value={value}
         {...InputProps}
       />
 

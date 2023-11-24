@@ -1,8 +1,9 @@
 import { GridBotProcessor, SmartTradeProcessor } from "@opentrader/processing";
-import { OrderEntity, xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { IGetLimitOrderResponse } from "@opentrader/types";
-import { TSyncGridBotOrdersInputSchema } from "./schema";
+import type { OrderEntity } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
+import type { IGetLimitOrderResponse } from "@opentrader/types";
+import type { Context } from "#trpc/utils/context";
+import type { TSyncGridBotOrdersInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -12,14 +13,14 @@ type Options = {
 };
 
 /**
- * 1.a. Sync orders statuses: exchange -> db
+ * 1.a. Sync orders statuses: `exchange -> db`
  * 1.b. Run bot template if any order status changed
  * 2. Place pending SmartTrades
- * @param ctx
- * @param input
+ * @param ctx - Context
+ * @param input - Input
  */
 // @todo rename to process?
-export async function syncOrders({ input, ctx }: Options) {
+export async function syncOrders({ input }: Options) {
   const { botId } = input;
 
   // 1.a. Sync order statuses: exchange -> db
@@ -45,15 +46,15 @@ export async function syncOrders({ input, ctx }: Options) {
 
   const onFilled = async (
     order: OrderEntity,
-    exchangeOrder: IGetLimitOrderResponse,
+    _exchangeOrder: IGetLimitOrderResponse,
   ) => {
     const bot = await GridBotProcessor.fromSmartTradeId(order.smartTradeId);
     await bot.process();
   };
 
   const onCanceled = async (
-    order: OrderEntity,
-    exchangeOrder: IGetLimitOrderResponse,
+    _order: OrderEntity,
+    _exchangeOrder: IGetLimitOrderResponse,
   ) => {
     // NOOP
   };

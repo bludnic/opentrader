@@ -2,7 +2,7 @@
 
 import Sheet from "@mui/joy/Sheet";
 import Table from "@mui/joy/Table";
-import { FC } from "react";
+import type { FC } from "react";
 import { tClient } from "src/lib/trpc/client";
 import { SmartTradesTableHead } from "./SmartTradesTableHead";
 import { SmartTradesTableItem } from "./SmartTradesTableItem";
@@ -19,8 +19,8 @@ export const SmartTradesTable: FC<SmartTradesTableProps> = ({ botId }) => {
 
   return (
     <Sheet
-      variant="outlined"
       sx={{ width: "100%", boxShadow: "sm", borderRadius: "sm" }}
+      variant="outlined"
     >
       <Table
         hoverRow
@@ -43,8 +43,8 @@ export const SmartTradesTable: FC<SmartTradesTableProps> = ({ botId }) => {
           <tbody>
             {smartTrades.map((smartTrade) => (
               <SmartTradesTableItem
-                smartTrade={smartTrade}
                 key={smartTrade.id}
+                smartTrade={smartTrade}
               />
             ))}
           </tbody>

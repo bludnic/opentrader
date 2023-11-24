@@ -1,4 +1,4 @@
-import { OrderSideEnum } from "@opentrader/types";
+import type { OrderSideEnum } from "@opentrader/types";
 
 export type ActiveOrder = {
   side: OrderSideEnum;

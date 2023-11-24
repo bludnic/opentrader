@@ -1,14 +1,15 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import type { FC } from "react";
+import React, { useState } from "react";
 import Typography from "@mui/joy/Typography";
 import Autocomplete from "@mui/joy/Autocomplete";
 import AutocompleteOption from "@mui/joy/AutocompleteOption";
-import { ExchangeIcon } from "src/ui/icons/ExchangeIcon";
-import { tClient } from "src/lib/trpc/client";
-import { TExchangeAccount } from "src/types/trpc";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListItemContent from "@mui/joy/ListItemContent";
+import { ExchangeIcon } from "src/ui/icons/ExchangeIcon";
+import { tClient } from "src/lib/trpc/client";
+import type { TExchangeAccount } from "src/types/trpc";
 
 export type ExchangeAccountSelectProps = {
   value: TExchangeAccount | null;
@@ -34,25 +35,28 @@ export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
 
   return (
     <Autocomplete
-      inputValue={inputValue}
-      onInputChange={(_e, value) => setInputValue(value)}
-      value={value || undefined}
-      onChange={(e, value) => onChange(value)}
-      options={data}
       autoHighlight
-      getOptionLabel={getOptionLabel}
       disableClearable
+      getOptionLabel={getOptionLabel}
+      inputValue={inputValue}
       isOptionEqualToValue={(option) =>
         value ? value.id === option.id : false
       }
+      onChange={(e, value) => {
+        onChange(value);
+      }}
+      onInputChange={(_e, value) => {
+        setInputValue(value);
+      }}
+      options={data}
       renderOption={(props, option) => (
         <AutocompleteOption {...props} key={option.id}>
           <ListItemDecorator>
             <ExchangeIcon
-              size={64}
               exchangeCode={option.exchangeCode}
-              width={20}
               height={20}
+              size={64}
+              width={20}
             />
           </ListItemDecorator>
           <ListItemContent sx={{ fontSize: "sm" }}>
@@ -61,6 +65,7 @@ export const ExchangeAccountSelect: FC<ExchangeAccountSelectProps> = ({
           </ListItemContent>
         </AutocompleteOption>
       )}
+      value={value || undefined}
     />
   );
 };

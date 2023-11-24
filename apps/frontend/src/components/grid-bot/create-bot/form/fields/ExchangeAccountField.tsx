@@ -1,18 +1,15 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { tClient } from "src/lib/trpc/client";
-
 import { setExchangeAccountId, setExchangeCode } from "src/store/bot-form";
 import { selectExchangeAccountId } from "src/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { TExchangeAccount } from "src/types/trpc";
+import type { TExchangeAccount } from "src/types/trpc";
 
 export const ExchangeAccountField: FC = () => {
-  const labelText = "Exchange";
-  const labelId = "exchange-id";
-
   const dispatch = useAppDispatch();
   const [exchangeAccounts] = tClient.exchangeAccount.list.useSuspenseQuery();
 
@@ -28,7 +25,14 @@ export const ExchangeAccountField: FC = () => {
     dispatch(setExchangeCode(exchange.exchangeCode));
   };
 
-  const exchange = exchangeAccounts.find((exchange) => exchange.id === id);
+  const selectedExchange = exchangeAccounts.find(
+    (exchange) => exchange.id === id,
+  );
 
-  return <ExchangeAccountSelect value={exchange!} onChange={handleIdChange} />;
+  return (
+    <ExchangeAccountSelect
+      onChange={handleIdChange}
+      value={selectedExchange!}
+    />
+  );
 };

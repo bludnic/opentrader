@@ -1,4 +1,4 @@
-import {
+import type {
   IAccountAsset,
   ICancelLimitOrderRequest,
   ICancelLimitOrderResponse,
@@ -19,7 +19,7 @@ import {
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
-import {
+import type {
   Balances,
   Exchange,
   Order,

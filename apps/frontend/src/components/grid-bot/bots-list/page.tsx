@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import NextLink from "next/link";
 import Button from "@mui/joy/Button";
@@ -12,9 +12,9 @@ export default function BotPage() {
     <Grid container spacing={4}>
       <Grid xs={12}>
         <Button
-          size="lg"
           component={NextLink}
           href="/dashboard/grid-bot/create"
+          size="lg"
         >
           Create new bot
         </Button>

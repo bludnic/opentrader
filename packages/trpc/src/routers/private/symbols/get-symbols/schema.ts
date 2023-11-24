@@ -1,5 +1,5 @@
-import { ExchangeCode } from '@opentrader/types';
-import { z } from 'zod';
+import { ExchangeCode } from "@opentrader/types";
+import { z } from "zod";
 
 export const ZGetSymbolsInputSchema = z.nativeEnum(ExchangeCode);
 

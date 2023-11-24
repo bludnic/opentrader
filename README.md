@@ -41,7 +41,6 @@ $ docker compose stop database # stop service
 
 2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
 
-
 # Processing app (optional)
 
 The `apps/processor` is a separate NodeJS app that synchronizes orders with the Exchange faster by using WebSockets.
@@ -84,11 +83,9 @@ $ turbo run prisma:migrate
 $ turbo run prisma:seed
 ```
 
-
 > ⚠️ **Note**: Due to that fact that packages doesn't have a `dev` server itself, the `build` command is mandatory on first run.
 >
 > If you made changes inside a package, don't forget to run `build` command again.
-
 
 # Development
 
@@ -108,6 +105,7 @@ $ pnpm run dev
 ```
 
 Second Terminal
+
 ```bash
 $ cd apps/processor
 $ pnpm run dev

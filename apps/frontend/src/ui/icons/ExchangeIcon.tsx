@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Image from "next/image";
-import { TExchangeCode } from "src/types/trpc";
+import type { TExchangeCode } from "src/types/trpc";
 
 const componentName = "ExchangeIcon" as const;
 
@@ -24,11 +24,11 @@ export const ExchangeIcon: FC<Props> = ({
 
   return (
     <Image
-      src={logoUrl}
-      width={width}
+      alt={exchangeCode}
       height={height}
       loading="lazy"
-      alt={exchangeCode}
+      src={logoUrl}
+      width={width}
     />
   );
 };

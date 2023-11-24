@@ -1,9 +1,9 @@
 import type { IExchange } from "@opentrader/exchanges";
 import { BotControl } from "./bot-control";
 import { BotManager } from "./bot-manager";
-import { IBotConfiguration } from "./types/bot/bot-configuration.interface";
-import { BotTemplate } from "./types/bot/bot-template.type";
-import { IStore } from "./types/store/store.interface";
+import type { IBotConfiguration } from "./types/bot/bot-configuration.interface";
+import type { BotTemplate } from "./types/bot/bot-template.type";
+import type { IStore } from "./types/store/store.interface";
 
 export class BotProcessor {
   static create<T extends IBotConfiguration>(options: {

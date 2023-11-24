@@ -1,13 +1,13 @@
-import { ICandlestick } from "@opentrader/types";
+import type { ICandlestick } from "@opentrader/types";
 
 /**
  * Returns highest candlestick by price
- * @param byKey `open | close | high | low`
- * @param candlesticks
+ * @param byKey - Values: `open | close | high | low`
+ * @param candlesticks - OHLC data
  */
 export function findHighestCandlestickBy(
   byKey: Exclude<keyof ICandlestick, "timestamp">,
-  candlesticks: ICandlestick[]
+  candlesticks: ICandlestick[],
 ): ICandlestick {
   const highestCandlestick = candlesticks.reduce((acc, curr) => {
     if (curr[byKey] > acc[byKey]) {

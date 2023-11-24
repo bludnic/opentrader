@@ -1,7 +1,7 @@
-import { BarSize, IGridLine } from "@opentrader/types";
+import type { BarSize, IGridLine } from "@opentrader/types";
 import { createAction } from "@reduxjs/toolkit";
-import { TExchangeAccount } from "src/types/trpc";
-import { GridBotFormType } from "./types";
+import type { TExchangeAccount } from "src/types/trpc";
+import type { GridBotFormType } from "./types";
 
 const CHANGE_FORM_TYPE = "changeFormType";
 export type ChangeFormTypePayload = GridBotFormType;

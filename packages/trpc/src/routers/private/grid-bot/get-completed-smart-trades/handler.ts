@@ -1,10 +1,7 @@
-import {
-  SmartTradeEntity_Order_Order,
-  toSmartTradeEntity,
-  xprisma,
-} from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetCompletedSmartTradesInputSchema } from "./schema";
+import type { SmartTradeEntity_Order_Order } from "@opentrader/db";
+import { toSmartTradeEntity, xprisma } from "@opentrader/db";
+import type { Context } from "#trpc/utils/context";
+import type { TGetCompletedSmartTradesInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -34,8 +31,8 @@ export async function getCompletedSmartTrades({ ctx, input }: Options) {
       exchangeAccount: true,
     },
     orderBy: {
-      updatedAt: 'desc'
-    }
+      updatedAt: "desc",
+    },
   });
 
   const smartTradesDto = smartTrades.map(

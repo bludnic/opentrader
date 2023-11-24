@@ -1,13 +1,13 @@
-import React, { FC } from "react";
-import { TExchangeAccount } from "src/types/trpc";
-import { UpdateAccountForm } from "../CreateAccountForm/UpdateAccountForm";
+import type { FC } from "react";
+import React from "react";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
+import type { TExchangeAccount } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
+import { UpdateAccountForm } from "../CreateAccountForm/UpdateAccountForm";
 
 type UpdateAccountDialogProps = {
-  className?: string;
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
@@ -15,27 +15,27 @@ type UpdateAccountDialogProps = {
 };
 
 export const UpdateAccountDialog: FC<UpdateAccountDialogProps> = (props) => {
-  const { className, open, onClose, onCreated, account } = props;
+  const { open, onClose, onCreated, account } = props;
   const { showSnackbar } = useSnackbar();
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal onClose={onClose} open={open}>
       <ModalDialog maxWidth={500}>
         <DialogTitle>Edit exchange account</DialogTitle>
 
         <UpdateAccountForm
           account={account}
-          onUpdated={() => {
-            onCreated();
-            onClose();
-
-            showSnackbar("Account updated");
-          }}
           onError={(error) => {
             showSnackbar(JSON.stringify(error), {
               color: "danger",
             });
             console.log(error);
+          }}
+          onUpdated={() => {
+            onCreated();
+            onClose();
+
+            showSnackbar("Account updated");
           }}
         />
       </ModalDialog>

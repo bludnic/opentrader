@@ -124,5 +124,4 @@ export default async function Page() {
 
   return <div>{JSON.stringify(data)}</div>;
 }
-
 ```

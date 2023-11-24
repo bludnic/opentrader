@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import Box from "@mui/joy/Box";
 
 type AppBarProps = {

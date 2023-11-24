@@ -1,4 +1,4 @@
-import { InternalAxiosRequestConfig } from "axios";
+import type { InternalAxiosRequestConfig } from "axios";
 import { getAuthToken } from "src/utils/auth/getAuthToken";
 
 export const authInterceptor = (

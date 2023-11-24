@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, FC } from "react";
+import type { ReactNode, FC } from "react";
 import ListItemButton from "@mui/joy/ListItemButton";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";

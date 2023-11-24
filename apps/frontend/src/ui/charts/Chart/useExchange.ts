@@ -1,7 +1,6 @@
-import { ExchangeCode } from "@opentrader/types";
+import type { ExchangeCode } from "@opentrader/types";
 import type { Exchange } from "ccxt";
 import { useEffect, useRef } from "react";
-
 import { ccxtInstanceFromExchangeCode } from "./utils";
 
 export function useExchange(exchangeCode: ExchangeCode) {

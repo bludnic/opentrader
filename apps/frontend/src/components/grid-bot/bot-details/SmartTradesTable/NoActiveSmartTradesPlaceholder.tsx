@@ -6,12 +6,12 @@ export function NoActiveSmartTradesPlaceholder() {
       <tr>
         <td colSpan={8}>
           <Typography
-            level="h4"
-            textAlign="center"
             fontWeight="400"
+            level="h4"
             sx={{
               py: 2,
             }}
+            textAlign="center"
           >
             No active SmartTrades. Please start the bot.
           </Typography>

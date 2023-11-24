@@ -1,4 +1,7 @@
-import { OrderStatus, OrderSide } from "src/exchanges/api/trade/common/types";
+import type {
+  OrderStatus,
+  OrderSide,
+} from "src/exchanges/api/trade/common/types";
 
 export interface IOpenOrder {
   /**

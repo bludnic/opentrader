@@ -1,4 +1,4 @@
-import { $Enums, Prisma } from "@opentrader/db";
+import type { $Enums, Prisma } from "@opentrader/db";
 import { OrderStatusEnum } from "@opentrader/types";
 import { toPrismaOrderStatus } from "../order-status";
 

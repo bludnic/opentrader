@@ -1,10 +1,11 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
-import { TGridBot } from "src/types/trpc";
+import type { TGridBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "RunBotTemplateButton";
@@ -29,17 +30,17 @@ export const RunBotTemplateButton: FC<RunBotTemplateButtonProps> = (props) => {
 
   return (
     <Button
-      onClick={() =>
-        mutate({
-          botId: bot.id,
-        })
-      }
       className={clsx(classes.root, className)}
-      variant="soft"
-      size="lg"
       color="primary"
       loading={isLoading}
       loadingPosition="start"
+      onClick={() => {
+        mutate({
+          botId: bot.id,
+        });
+      }}
+      size="lg"
+      variant="soft"
     >
       Run template
     </Button>

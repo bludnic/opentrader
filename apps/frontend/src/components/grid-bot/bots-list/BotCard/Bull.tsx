@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Box from "@mui/joy/Box";
 
 export const Bull: FC = () => {

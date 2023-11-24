@@ -1,4 +1,4 @@
-import { OrderSide } from 'src/exchanges/api/trade/common/types';
+import type { OrderSide } from "src/exchanges/api/trade/common/types";
 
 export interface IPlaceLimitOrderRequest {
   /**

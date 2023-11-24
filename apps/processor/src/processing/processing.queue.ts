@@ -1,4 +1,4 @@
-import { OrderWithSmartTrade } from "#db/types";
+import type { OrderWithSmartTrade } from "#db/types";
 import { GridBotProcessor } from "#processing/grid-bot";
 import { cargoQueue } from "async";
 

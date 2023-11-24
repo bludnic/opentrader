@@ -3,7 +3,7 @@ import {
   GridBotProcessor,
 } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
+import type { Context } from "#trpc/utils/context";
 
 type Options = {
   ctx: {
@@ -12,11 +12,11 @@ type Options = {
 };
 
 /**
- * 1. Sync orders statuses: exchange -> db
+ * 1. Sync orders statuses: `exchange -> db`
  * 2. Run bot template if any order status changed
  * 2. Place pending orders
  */
-export async function syncClosedOrders({ ctx }: Options) {
+export async function syncClosedOrders({ ctx: _ }: Options) {
   const exchangeAccounts = await xprisma.exchangeAccount.findMany();
 
   for (const exchangeAccount of exchangeAccounts) {

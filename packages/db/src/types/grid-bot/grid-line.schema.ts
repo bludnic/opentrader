@@ -5,4 +5,4 @@ export const ZGridLineSchema = z.object({
   quantity: z.number(),
 });
 
-export type ZGridLineSchema = z.infer<typeof ZGridLineSchema>;
+export type TGridLineSchema = z.infer<typeof ZGridLineSchema>;

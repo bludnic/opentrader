@@ -9,9 +9,9 @@ import type {
 } from "@emotion/cache";
 
 export type NextAppDirEmotionCacheProviderProps = {
-  /** This is the options passed to createCache() from 'import createCache from "@emotion/cache"' */
+  // This is the options passed to createCache() from 'import createCache from "@emotion/cache"'
   options: Omit<OptionsOfCreateCache, "insertionPoint">;
-  /** By default <CacheProvider /> from 'import { CacheProvider } from "@emotion/react"' */
+  // Default: 'import { CacheProvider } from "@emotion/react"'
   CacheProvider?: (props: {
     value: EmotionCache;
     children: React.ReactNode;
@@ -28,10 +28,12 @@ export default function NextAppDirEmotionCacheProvider(
   const [registry] = React.useState(() => {
     const cache = createCache(options);
     cache.compat = true;
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- need better typing
     const prevInsert = cache.insert;
     let inserted: { name: string; isGlobal: boolean }[] = [];
     cache.insert = (...args) => {
       const [selector, serialized] = args;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need better typing
       if (cache.inserted[serialized.name] === undefined) {
         inserted.push({
           name: serialized.name,
@@ -75,23 +77,21 @@ export default function NextAppDirEmotionCacheProvider(
     });
 
     return (
-      <React.Fragment>
+      <>
         {globals.map(({ name, style }) => (
           <style
-            key={name}
-            data-emotion={`${registry.cache.key}-global ${name}`}
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: style }}
+            data-emotion={`${registry.cache.key}-global ${name}`}
+            key={name}
           />
         ))}
-        {styles && (
+        {styles ? (
           <style
-            data-emotion={dataEmotionAttribute}
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: styles }}
+            data-emotion={dataEmotionAttribute}
           />
-        )}
-      </React.Fragment>
+        ) : null}
+      </>
     );
   });
 

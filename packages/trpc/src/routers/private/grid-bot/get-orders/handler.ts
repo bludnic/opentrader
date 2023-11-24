@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetGridBotOrdersInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TGetGridBotOrdersInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -35,8 +35,9 @@ export async function getGridBotOrders({ ctx, input }: Options) {
     .map((order) => {
       const { filledAt, ...rest } = order;
 
-      if (filledAt === null)
+      if (filledAt === null) {
         throw new Error(`The order ${order.id} is missing \`filledAt\``);
+      }
 
       return {
         ...rest,

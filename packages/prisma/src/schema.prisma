@@ -2,19 +2,19 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 generator zod {
-  provider       = "zod-prisma-types"
-  output = "./zod"
+  provider         = "zod-prisma-types"
+  output           = "./zod"
   useMultipleFiles = true
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL") // uses connection pooling
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // uses connection pooling
 }
 
 enum ExchangeCode {
@@ -59,6 +59,7 @@ enum EntryType {
   Order
   Ladder
 }
+
 enum TakeProfitType {
   Order
   Ladder
@@ -72,57 +73,57 @@ enum EntityType {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  displayName  String?
-  role UserRole @default(User)
-  password String
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  displayName String?
+  role        UserRole @default(User)
+  password    String
 
   exchangeAccounts ExchangeAccount[]
-  smartTrades SmartTrade[]
-  bots Bot[]
+  smartTrades      SmartTrade[]
+  bots             Bot[]
 }
 
 model ExchangeAccount {
-  id Int @id @default(autoincrement())
-  name String
+  id           Int          @id @default(autoincrement())
+  name         String
   exchangeCode ExchangeCode // ExchangeCode
 
   // Credentials
-  apiKey String
-  secretKey String
-  password String?
+  apiKey        String
+  secretKey     String
+  password      String?
   isDemoAccount Boolean @default(false)
 
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
   createdAt DateTime @default(now())
 
   smartTrades SmartTrade[]
-  bots Bot[]
+  bots        Bot[]
 }
 
 model SmartTrade {
   id Int @id @default(autoincrement())
 
-  type SmartTradeType
-  entryType EntryType
+  type           SmartTradeType
+  entryType      EntryType
   takeProfitType TakeProfitType
 
-  baseCurrency String
-  quoteCurrency String
+  baseCurrency     String
+  quoteCurrency    String
   exchangeSymbolId String // BTC/USDT, for future usage with Margin/Futures the symbolId may differ from patter `baseCurrency/quoteCurrency`
-  orders Order[]
+  orders           Order[]
 
   ref String? // user provided reference value
 
-  exchangeAccount ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
+  exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
   exchangeAccountId Int
 
-  bot Bot? @relation(fields: [botId], references: [id])
+  bot   Bot? @relation(fields: [botId], references: [id])
   botId Int?
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
 
   createdAt DateTime @default(now())
@@ -130,36 +131,36 @@ model SmartTrade {
 }
 
 model Order {
-  id Int @id @default(autoincrement())
-  status OrderStatus @default(Idle)
-  type OrderType
-  entityType EntityType
-  side OrderSide
-  price Float? // Market orders doesn't require price to be specified
+  id          Int         @id @default(autoincrement())
+  status      OrderStatus @default(Idle)
+  type        OrderType
+  entityType  EntityType
+  side        OrderSide
+  price       Float? // Market orders doesn't require price to be specified
   filledPrice Float?
-  fee Float?
+  fee         Float?
 
   exchangeOrderId String?
 
-  quantity Float
-  smartTrade SmartTrade @relation(fields: [smartTradeId], references: [id], onDelete: Cascade)
+  quantity     Float
+  smartTrade   SmartTrade @relation(fields: [smartTradeId], references: [id], onDelete: Cascade)
   smartTradeId Int
 
-  createdAt DateTime @default(now())
-  placedAt DateTime?
-  syncedAt DateTime? @default(now()) // Last time the exchange Order status was synced with the DB
-  filledAt DateTime?
+  createdAt DateTime  @default(now())
+  placedAt  DateTime?
+  syncedAt  DateTime? @default(now()) // Last time the exchange Order status was synced with the DB
+  filledAt  DateTime?
 
   updatedAt DateTime @updatedAt
 }
 
 model Bot {
-  id Int @id @default(autoincrement())
-  type BotType
-  name String
-  baseCurrency String
+  id            Int     @id @default(autoincrement())
+  type          BotType
+  name          String
+  baseCurrency  String
   quoteCurrency String
-  enabled Boolean @default(false)
+  enabled       Boolean @default(false)
 
   // Means that the bot template is being processed right now.
   // This must guarantee that the bot template will not be processed
@@ -173,10 +174,10 @@ model Bot {
 
   smartTrades SmartTrade[]
 
-  exchangeAccount ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
+  exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
   exchangeAccountId Int
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
 
   // @todo initialInvestment
@@ -184,8 +185,8 @@ model Bot {
 
 model Markets {
   exchangeCode ExchangeCode @id
-  markets Json
-  updatedAt DateTime @updatedAt
+  markets      Json
+  updatedAt    DateTime     @updatedAt
 }
 
 // model BotState {

@@ -1,5 +1,5 @@
-import { IGridLine } from "@opentrader/types";
-import { CreatePriceLineOptions } from "lightweight-charts";
+import type { IGridLine } from "@opentrader/types";
+import type { CreatePriceLineOptions } from "lightweight-charts";
 import { computePriceLine } from "src/utils/charts";
 import { waitingPriceFromCurrentAssetPrice } from "src/utils/grid-bot/waitingPriceFromCurrentAssetPrice";
 
@@ -13,7 +13,5 @@ export function computePriceLines(
     currentAssetPrice,
   );
 
-  return prices.map(
-    (price) => computePriceLine(price, prices, waitingPrice)
-  );
+  return prices.map((price) => computePriceLine(price, prices, waitingPrice));
 }

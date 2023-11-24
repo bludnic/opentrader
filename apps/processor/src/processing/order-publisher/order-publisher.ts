@@ -25,7 +25,9 @@ export class OrderPublisher {
     }
 
     const startSyncTime = new Date().toISOString();
-    console.debug(`[OrderPublisher] Checking for pending orders: ${startSyncTime}`);
+    console.debug(
+      `[OrderPublisher] Checking for pending orders: ${startSyncTime}`,
+    );
 
     const smartTrades = await xprisma.smartTrade.findMany({
       where: {
@@ -49,8 +51,7 @@ export class OrderPublisher {
         }s`,
       );
       setTimeout(() => {
-        // job.start();
-        this.runJob();
+        void this.runJob();
       }, ORDER_PUBLISHER_TIMEOUT_IF_NO_ORDERS);
       return;
     }

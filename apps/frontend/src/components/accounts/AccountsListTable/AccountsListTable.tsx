@@ -1,10 +1,10 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import type { FC } from "react";
+import React, { useState } from "react";
 import Table from "@mui/joy/Table";
 import Sheet from "@mui/joy/Sheet";
-
-import { TExchangeAccount } from "src/types/trpc";
+import type { TExchangeAccount } from "src/types/trpc";
 import { AccountsListTableRow } from "./AccountsListTableRow";
 import { AccountsListTableToolbar } from "./AccountsListTableToolbar";
 import { AccountsListTableHead } from "./AccountsListTableHead";
@@ -16,12 +16,11 @@ type AccountsListTableProps = {
 };
 
 export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
-  const { accounts, onCreateAccountClick, onEditAccountClick } =
-    props;
+  const { accounts, onCreateAccountClick, onEditAccountClick } = props;
 
   const [selected, setSelected] = useState<readonly number[]>([]);
 
-  const isSelected = (accountId: number) => selected.indexOf(accountId) !== -1;
+  const isSelected = (accountId: number) => selected.includes(accountId);
 
   const handleClick = (event: React.MouseEvent<unknown>, accountId: number) => {
     const selectedIndex = selected.indexOf(accountId);
@@ -54,11 +53,10 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
 
   return (
     <Sheet
-      variant="outlined"
       sx={{ maxWidth: "1200px", boxShadow: "sm", borderRadius: "sm" }}
+      variant="outlined"
     >
       <AccountsListTableToolbar
-        title="Exchange Accounts"
         numSelected={selected.length}
         onCreateAccountClick={onCreateAccountClick}
         onEditAccountClick={() => {
@@ -72,6 +70,7 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
             console.log(`AccountsListTable: Account ${selected[0]} not found`);
           }
         }}
+        title="Exchange Accounts"
       />
 
       <Table
@@ -95,9 +94,9 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
         }}
       >
         <AccountsListTableHead
+          numSelected={selected.length}
           onSelectAllClick={handleSelectAllClick}
           rowCount={accounts.length}
-          numSelected={selected.length}
         />
 
         <tbody>
@@ -106,10 +105,12 @@ export const AccountsListTable: FC<AccountsListTableProps> = (props) => {
 
             return (
               <AccountsListTableRow
-                key={account.id}
                 account={account}
+                key={account.id}
+                onClick={(e, accountId) => {
+                  handleClick(e, accountId);
+                }}
                 selected={isItemSelected}
-                onClick={(e, accountId) => handleClick(e, accountId)}
               />
             );
           })}

@@ -1,12 +1,11 @@
 import { Inter } from "next/font/google";
+import { extendTheme } from "@mui/joy/styles";
 
 const inter = Inter({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
 });
-
-import { extendTheme } from "@mui/joy/styles";
 
 const palette = {
   primary: {

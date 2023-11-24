@@ -1,6 +1,6 @@
 import { decomposeSymbolId } from "@opentrader/tools";
-import { GridBotFormState } from "src/store/bot-form";
-import { TGridBotCreateInput } from "src/types/trpc";
+import type { GridBotFormState } from "src/store/bot-form";
+import type { TGridBotCreateInput } from "src/types/trpc";
 
 export function mapFormToDto(state: GridBotFormState): TGridBotCreateInput {
   const { gridLines, symbolId, exchangeAccountId, botName } = state;

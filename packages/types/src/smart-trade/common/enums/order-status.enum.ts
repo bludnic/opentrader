@@ -4,7 +4,7 @@
  * filled - лимит ордер заполнен
  */
 export enum OrderStatusEnum {
-  Idle = 'idle',
-  Placed = 'placed',
-  Filled = 'filled',
+  Idle = "idle",
+  Placed = "placed",
+  Filled = "filled",
 }

@@ -2,7 +2,7 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import Typography from "@mui/joy/Typography";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 type SettingListItemProps = {
   icon: ReactNode;

@@ -1,9 +1,9 @@
-import Big from 'big.js';
+import Big from "big.js";
 
 /**
  * Extract the exponent of the number.
  *
- * @param numberLike e.g. "0.01000000" will return 2
+ * @param numberLike - e.g. "0.01000000" will return 2
  */
 export function getExponentAbs(numberLike: string): number {
   const number = new Big(numberLike);

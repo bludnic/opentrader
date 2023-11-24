@@ -1,10 +1,10 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Box from "@mui/joy/Box";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import Typography from "@mui/joy/Typography";
-import { TCompletedSmartTrade } from "src/types/trpc";
+import type { TCompletedSmartTrade } from "src/types/trpc";
 import { calcProfitFromSmartTrade } from "src/utils/grid-bot/calcProfitFromSmartTrade";
 
 type ProfitDetailsProps = {

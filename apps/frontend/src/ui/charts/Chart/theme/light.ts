@@ -1,5 +1,5 @@
 import { LineStyle } from "lightweight-charts";
-import { ChartTheme } from "./types";
+import type { ChartTheme } from "./types";
 
 export const lightTheme: ChartTheme = {
   chartOptions: {
@@ -20,7 +20,7 @@ export const lightTheme: ChartTheme = {
     wickDownColor: "#ef5350",
 
     // PriceLine options
-    priceLineColor: '#A1E8A1',
+    priceLineColor: "#A1E8A1",
     priceLineWidth: 1,
     priceLineStyle: LineStyle.Solid,
   },

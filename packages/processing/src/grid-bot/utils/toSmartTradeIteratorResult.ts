@@ -1,6 +1,6 @@
-import { SmartTrade as ProcessorSmartTrade } from "@opentrader/bot-processor";
+import type { SmartTrade as ProcessorSmartTrade } from "@opentrader/bot-processor";
+import type { SmartTradeEntity } from "@opentrader/db";
 import { toProcessorOrderStatus } from "./order-status";
-import { SmartTradeEntity } from "@opentrader/db";
 
 /**
  * Convert `ISmartTrade` entity into `SmartTrade` iterator result
@@ -36,10 +36,12 @@ export function toSmartTradeIteratorResult(
 
   const { entryOrder, takeProfitOrder } = smartTrade;
 
-  if (entryOrder.type === "Market")
+  if (entryOrder.type === "Market") {
     throw new Error("Order type Market is not supported yet");
-  if (takeProfitOrder.type === "Market")
+  }
+  if (takeProfitOrder.type === "Market") {
     throw new Error("Order type Market is not supported yet");
+  }
 
   return {
     id,

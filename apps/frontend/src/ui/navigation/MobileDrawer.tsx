@@ -1,6 +1,5 @@
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import Drawer from "@mui/joy/Drawer";
-import Button from "@mui/joy/Button";
 
 type MobileDrawerProps = {
   open: boolean;
@@ -15,8 +14,8 @@ export const MobileDrawer: FC<MobileDrawerProps> = ({
 }) => {
   return (
     <Drawer
-      open={open}
       onClose={onClose}
+      open={open}
       size="sm"
       sx={(theme) => ({
         [theme.breakpoints.up("sm")]: {

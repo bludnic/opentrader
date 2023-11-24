@@ -2,17 +2,17 @@
 
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
-import { OHLCV } from "ccxt";
-import {
+import type { OHLCV } from "ccxt";
+import type {
   CreatePriceLineOptions,
   IPriceLine,
   UTCTimestamp,
 } from "lightweight-charts";
-import React, { FC, ReactNode, useEffect } from "react";
-import { tClient } from "src/lib/trpc/client";
-
-import { TBarSize } from "src/types/literals";
+import type { FC, ReactNode } from "react";
+import React, { useEffect } from "react";
 import { useElementSize } from "usehooks-ts";
+import { tClient } from "src/lib/trpc/client";
+import type { TBarSize } from "src/types/literals";
 import { CHART_HEIGHT } from "./constants";
 import { useCandlesticksChart } from "./useCandlesticksChart";
 import { useOHLC } from "./useOHLC";
@@ -56,7 +56,9 @@ export const Chart: FC<ChartProps> = ({
   );
 
   const chart = useCandlesticksChart({
-    onScrollLeft: () => fetchPrev(),
+    onScrollLeft: () => {
+      fetchPrev();
+    },
   });
   useEffect(() => {
     chart.series.current?.setData(candlesticks.map(normalizeCandle));
@@ -67,13 +69,13 @@ export const Chart: FC<ChartProps> = ({
     const series = chart.series.current;
 
     // Setting price lines
-    const savedPriceLines: IPriceLine[] = priceLines.map((priceLine, i) =>
+    const savedPriceLines: IPriceLine[] = priceLines.map((priceLine) =>
       series.createPriceLine(priceLine),
     );
 
     return () => {
       savedPriceLines.forEach((priceLine) => {
-        series?.removePriceLine(priceLine);
+        series.removePriceLine(priceLine);
       });
     };
   }, [priceLines]);

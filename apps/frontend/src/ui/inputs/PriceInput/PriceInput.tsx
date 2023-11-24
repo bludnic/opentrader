@@ -1,21 +1,23 @@
 import FormControl from "@mui/joy/FormControl";
 import FormHelperText from "@mui/joy/FormHelperText";
 import FormLabel from "@mui/joy/FormLabel";
-import Input, { InputProps } from "@mui/joy/Input";
-import React, { FC } from "react";
-import { ISymbolFilter } from "@opentrader/types";
+import type { InputProps } from "@mui/joy/Input";
+import Input from "@mui/joy/Input";
+import type { FC } from "react";
+import React from "react";
+import type { ISymbolFilter } from "@opentrader/types";
 import { NumericInput } from "src/ui/inputs/NumericInput";
 import { mapPriceFilterToNumericFormatProps } from "./helpers/mapPriceFilterToNumericFormatProps";
 import { validatePriceByFilter } from "./helpers/validatePriceByFilter";
 
-type PriceInput = Omit<InputProps, "value" | "onChange" | "slotProps"> & {
+type PriceInputProps = Omit<InputProps, "value" | "onChange" | "slotProps"> & {
   filter: ISymbolFilter;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
 };
 
-export const PriceInput: FC<PriceInput> = (props) => {
+export const PriceInput: FC<PriceInputProps> = (props) => {
   const { value, onChange, filter, label, ...InputProps } = props;
 
   const formatProps = mapPriceFilterToNumericFormatProps(filter);
@@ -26,7 +28,6 @@ export const PriceInput: FC<PriceInput> = (props) => {
       <FormLabel>{label}</FormLabel>
 
       <Input
-        value={value}
         onChange={onChange}
         slotProps={{
           input: {
@@ -34,6 +35,7 @@ export const PriceInput: FC<PriceInput> = (props) => {
             NumericFormatProps: formatProps,
           },
         }}
+        value={value}
         {...InputProps}
       />
 

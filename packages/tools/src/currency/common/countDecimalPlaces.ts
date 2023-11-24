@@ -6,18 +6,20 @@ type Options = {
 
 /**
  *
- * @param numberStr e.g. "0.01000000" will return 2
- * @param options
+ * @param number - e.g. "0.01000000" will return 2
+ * @param options - Options
  */
 export function countDecimalPlaces(
   number: string | number,
-  options?: Options
+  options?: Options,
 ): number {
+  // eslint-disable-next-line no-param-reassign -- its ok
   number = String(number);
 
   if (options?.ignoreTrailingZeros) {
     const bigNumber = new Big(number);
 
+    // eslint-disable-next-line no-param-reassign -- its ok
     number = bigNumber.toString();
   }
 

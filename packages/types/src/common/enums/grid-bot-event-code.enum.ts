@@ -1,6 +1,6 @@
 export enum GridBotEventCodeEnum {
-  BotCreated = 'BotCreated',
-  BotStarted = 'BotStarted',
-  BotSynced = 'BotSynced',
-  BotStopped = 'BotStopped',
+  BotCreated = "BotCreated",
+  BotStarted = "BotStarted",
+  BotSynced = "BotSynced",
+  BotStopped = "BotStopped",
 }

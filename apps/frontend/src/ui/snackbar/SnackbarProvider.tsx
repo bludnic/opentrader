@@ -1,13 +1,10 @@
 "use client";
 
-import { FC, ReactNode, useState } from "react";
+import type { FC, ReactNode } from "react";
+import { useState } from "react";
 import { Snackbar } from "./Snackbar";
-import {
-  defaultOptions,
-  SnackbarContext,
-  SnackbarOptions,
-  State,
-} from "./context";
+import type { SnackbarOptions, State } from "./context";
+import { defaultOptions, SnackbarContext } from "./context";
 
 type SnackbarProviderProps = {
   children: ReactNode;

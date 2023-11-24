@@ -1,8 +1,6 @@
 import { ExchangeCode } from "@opentrader/types";
-import {
-  decomposeSymbolId,
-  DecomposeSymbolIdResult,
-} from "./decomposeSymbolId";
+import type { DecomposeSymbolIdResult } from "./decomposeSymbolId";
+import { decomposeSymbolId } from "./decomposeSymbolId";
 
 describe("decomposeSymbolId", () => {
   it("decompose valid symbol", () => {

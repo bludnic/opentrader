@@ -1,13 +1,13 @@
-import { IGridLine } from "@opentrader/types";
+import type { IGridLine } from "@opentrader/types";
 import { arithmeticGridBot } from "@opentrader/bot-templates";
 import { Backtesting } from "@opentrader/backtesting";
-import { IBotConfiguration } from "@opentrader/bot-processor";
-import { calcGridLines } from "@opentrader/tools";
+import type { IBotConfiguration } from "@opentrader/bot-processor";
+// import { calcGridLines } from "@opentrader/tools";
 import axios from "axios";
 
-interface BotConfig extends IBotConfiguration {
+type BotConfig = {
   gridLines: IGridLine[];
-}
+} & IBotConfiguration;
 
 async function run() {
   const config: BotConfig = {
@@ -35,6 +35,7 @@ async function run() {
   });
 
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- no types
     data: { candlesticks },
   } = await axios.get("http://localhost:5000/mapi/candlesticks", {
     params: {
@@ -45,10 +46,11 @@ async function run() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- no types
   console.log(`Fetched ${candlesticks.length} candlesticks`);
   const report = await backtesting.run(candlesticks);
 
   console.log(report);
 }
 
-run();
+void run();

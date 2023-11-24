@@ -1,7 +1,7 @@
 import { GridBotProcessor } from "@opentrader/processing";
 import { GridBotService } from "#trpc/services/grid-bot.service";
-import { Context } from "#trpc/utils/context";
-import { TStopGridBotInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TStopGridBotInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -10,7 +10,7 @@ type Options = {
   input: TStopGridBotInputSchema;
 };
 
-export async function stopGridBot({ ctx, input }: Options) {
+export async function stopGridBot({ input }: Options) {
   const { botId } = input;
 
   const botService = await GridBotService.fromId(botId);

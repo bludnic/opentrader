@@ -1,1 +1,1 @@
-export * from './trading-pair-symbol-request.interface';
+export * from "./trading-pair-symbol-request.interface";

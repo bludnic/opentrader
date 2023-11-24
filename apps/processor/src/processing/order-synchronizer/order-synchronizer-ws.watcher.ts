@@ -62,7 +62,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
         console.log(err);
 
         if (err instanceof NetworkError) {
-          console.log('❗ NetworkError occurred. Possible WS connection lost.')
+          console.log("❗ NetworkError occurred. Possible WS connection lost.");
           // https://github.com/ccxt/ccxt/issues/7951
           // if the connection is dropped, you should catch the NetworkError exception
           // and your next call should reconnect in the background

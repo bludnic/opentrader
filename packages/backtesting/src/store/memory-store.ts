@@ -1,11 +1,11 @@
-import {
+import type {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
 import { OrderStatusEnum } from "@opentrader/types";
-import { uniqueId } from "lodash";
-import { MarketSimulator } from "../market-simulator";
+import uniqueId from "lodash/uniqueId";
+import type { MarketSimulator } from "../market-simulator";
 
 export class MemoryStore implements IStore {
   /**
@@ -33,7 +33,7 @@ export class MemoryStore implements IStore {
     return Promise.resolve();
   }
 
-  async getSmartTrade(ref: string, botId: number): Promise<SmartTrade | null> {
+  async getSmartTrade(ref: string, _botId: number): Promise<SmartTrade | null> {
     const smartTrade = this.marketSimulator.smartTrades.find(
       (smartTrade) => smartTrade.ref === ref,
     );
@@ -44,7 +44,7 @@ export class MemoryStore implements IStore {
   async createSmartTrade(
     ref: string,
     payload: UseSmartTradePayload,
-    botId: number,
+    _botId: number,
   ): Promise<SmartTrade> {
     const candlestick = this.marketSimulator.currentCandle;
 
@@ -75,9 +75,7 @@ export class MemoryStore implements IStore {
     return smartTrade;
   }
 
-  async cancelSmartTrade(ref: string, botId: number) {
+  async cancelSmartTrade(_ref: string, _botId: number): Promise<boolean> {
     throw new Error("Not implemented yet.");
-
-    return false;
   }
 }

@@ -1,8 +1,8 @@
-import { Order } from "ccxt";
-import { OrderStatus } from "@opentrader/types";
+import type { Order } from "ccxt";
+import type { OrderStatus } from "@opentrader/types";
 
 export function normalizeOrderStatus(
-  order: Pick<Order, "filled" | "amount" | "status">
+  order: Pick<Order, "filled" | "amount" | "status">,
 ): OrderStatus {
   if (order.status === "open") {
     return "open";

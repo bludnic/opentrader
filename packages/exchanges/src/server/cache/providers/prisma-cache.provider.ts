@@ -1,7 +1,8 @@
-import { Dictionary, Exchange, Market } from "ccxt";
-import { ExchangeCode } from "@opentrader/types";
-import { Prisma, xprisma } from "@opentrader/db";
-import { ICacheProvider } from "#exchanges/types/cache/cache-provider.interface";
+import type { Dictionary, Exchange, Market } from "ccxt";
+import type { ExchangeCode } from "@opentrader/types";
+import type { Prisma } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
+import type { ICacheProvider } from "#exchanges/types/cache/cache-provider.interface";
 
 export class PrismaCacheProvider implements ICacheProvider {
   async getMarkets(exchangeCode: ExchangeCode, ccxtExchange: Exchange) {
@@ -21,7 +22,8 @@ export class PrismaCacheProvider implements ICacheProvider {
         `    getMarkets() from ${exchangeCode} exchange using PrismaCacheProvider`,
       );
       console.log(`    Returned from cache in ${duration}s`);
-      return cachedMarkets.markets as any as Dictionary<Market>; // @todo better types
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- @todo type it properly
+      return cachedMarkets.markets as any as Dictionary<Market>;
     }
 
     // If not cached, loadMarkets and cache to DB
@@ -46,7 +48,8 @@ export class PrismaCacheProvider implements ICacheProvider {
     await xprisma.markets.create({
       data: {
         exchangeCode,
-        markets: markets as any as Prisma.InputJsonValue, // @todo better types
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- @todo type it properly
+        markets: markets as any as Prisma.InputJsonValue,
       },
     });
     return markets;

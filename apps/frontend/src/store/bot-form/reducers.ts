@@ -1,10 +1,15 @@
-import { BarSize, IGridLine } from "@opentrader/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TExchangeAccount, TExchangeCode } from "src/types/trpc";
+import type { BarSize, IGridLine } from "@opentrader/types";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { TExchangeAccount, TExchangeCode } from "src/types/trpc";
+import type {
+  ChangeFormTypePayload,
+  UpdateGridLinePricePayload,
+  UpdateGridLineQuantityPayload,
+} from "./actions";
 import {
   addGridLineAction,
   changeFormTypeAction,
-  ChangeFormTypePayload,
   changeGridLinesNumberAction,
   changeHighPriceAction,
   changeLowPriceAction,
@@ -17,9 +22,7 @@ import {
   setLowPriceAction,
   setQuantityPerGridAction,
   updateGridLinePriceAction,
-  UpdateGridLinePricePayload,
   updateGridLineQuantityAction,
-  UpdateGridLineQuantityPayload,
   updateGridLinesAction,
   setExchangeCodeAction,
   setSymbolIdAction,

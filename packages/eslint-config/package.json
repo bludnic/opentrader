@@ -1,0 +1,14 @@
+{
+  "name": "@opentrader/eslint-config",
+  "description": "ESLint configuration from OpenTrader",
+  "private": true,
+  "files": [
+    "module.js",
+    "next.js"
+  ],
+  "devDependencies": {
+    "@vercel/style-guide": "^5.1.0",
+    "eslint-config-turbo": "^1.10.16",
+    "typescript": "^5.2.2"
+  }
+}

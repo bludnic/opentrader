@@ -1,7 +1,8 @@
 "use client";
 
-import { ISymbolInfo } from "@opentrader/types";
-import React, { FC } from "react";
+import type { ISymbolInfo } from "@opentrader/types";
+import type { FC } from "react";
+import React from "react";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
 import { tClient } from "src/lib/trpc/client";
 import { changeSymbolId } from "src/store/bot-form";
@@ -11,16 +12,7 @@ import {
 } from "src/store/bot-form/selectors";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 
-type PairFieldProps = {
-  className?: string;
-};
-
-export const PairField: FC<PairFieldProps> = (props) => {
-  const { className } = props;
-
-  const labelText = "Pair";
-  const labelId = "pair-symbol";
-
+export const PairField: FC = () => {
   const dispatch = useAppDispatch();
   const exchangeCode = useAppSelector(selectExchangeCode);
   const [symbols] = tClient.symbol.list.useSuspenseQuery(exchangeCode);
@@ -39,8 +31,8 @@ export const PairField: FC<PairFieldProps> = (props) => {
   return (
     <SymbolSelect
       exchangeCode={exchangeCode}
-      value={symbol!}
       onChange={handleSymbolIdChange}
+      value={symbol || null}
     />
   );
 };

@@ -1,6 +1,6 @@
-import { NumericFormatProps } from "react-number-format";
+import type { NumericFormatProps } from "react-number-format";
 import { getExponentAbs } from "@opentrader/tools";
-import { ISymbolFilter } from "@opentrader/types";
+import type { ISymbolFilter } from "@opentrader/types";
 
 export function mapPriceFilterToNumericFormatProps(
   filter: ISymbolFilter,

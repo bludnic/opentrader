@@ -1,9 +1,9 @@
 "use client";
 
-import React, { FC, Suspense } from "react";
+import type { FC } from "react";
+import React, { Suspense } from "react";
 import Grid from "@mui/joy/Grid";
 import { InputSkeleton } from "src/ui/InputSkeleton";
-
 import { QuantityPerGridField } from "./fields/QuantityPerGridField";
 import { GridLevelsField } from "./fields/GridLevelsField";
 import { HighPriceField } from "./fields/HighPriceField";

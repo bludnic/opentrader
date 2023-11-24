@@ -1,5 +1,4 @@
-import {
-  ExchangeCode,
+import type {
   IAccountAsset,
   ICancelLimitOrderRequest,
   ICancelLimitOrderResponse,
@@ -21,9 +20,11 @@ import {
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
-import { Dictionary, Market, okex5, pro } from "ccxt";
-import { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
-import { IExchange } from "#exchanges/types/exchange.interface";
+import { ExchangeCode } from "@opentrader/types";
+import type { Dictionary, Market, okex5 } from "ccxt";
+import { pro } from "ccxt";
+import type { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
+import type { IExchange } from "#exchanges/types/exchange.interface";
 import { cache } from "../../cache";
 import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";

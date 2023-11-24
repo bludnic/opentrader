@@ -1,9 +1,10 @@
-import React, { FC } from "react";
-import { CreateAccountForm } from "../CreateAccountForm/CreateAccountForm";
+import type { FC } from "react";
+import React from "react";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
 import { useSnackbar } from "src/ui/snackbar";
+import { CreateAccountForm } from "../CreateAccountForm/CreateAccountForm";
 
 type NewAccountDialogProps = {
   open: boolean;
@@ -16,7 +17,7 @@ export const CreateAccountDialog: FC<NewAccountDialogProps> = (props) => {
   const { showSnackbar } = useSnackbar();
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal onClose={onClose} open={open}>
       <ModalDialog maxWidth={500}>
         <DialogTitle>New exchange account</DialogTitle>
 

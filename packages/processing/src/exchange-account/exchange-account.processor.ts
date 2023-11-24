@@ -1,12 +1,12 @@
 import { OrderNotFound } from "ccxt";
-import {
+import type {
   ExchangeAccountWithCredentials,
   OrderWithSmartTrade,
-  xprisma,
+  $Enums,
 } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
 import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
-import { IGetLimitOrderResponse } from "@opentrader/types";
-import { $Enums } from "@opentrader/db";
+import type { IGetLimitOrderResponse } from "@opentrader/types";
 import { toDbStatus } from "#processing/utils";
 
 type SymbolId = string;
@@ -26,7 +26,8 @@ export class ExchangeAccountProcessor {
   private exchangeAccount: ExchangeAccountWithCredentials;
   private exchange: IExchange;
 
-  private cachedOrders: Record<SymbolId, IGetLimitOrderResponse[]> = {};
+  private cachedOrders: Partial<Record<SymbolId, IGetLimitOrderResponse[]>> =
+    {};
 
   constructor(exchangeAccount: ExchangeAccountWithCredentials) {
     this.exchangeAccount = exchangeAccount;
@@ -110,9 +111,8 @@ export class ExchangeAccountProcessor {
           exchangeOrder: null,
           newStatus: "Deleted",
         };
-      } else {
-        throw err;
       }
+      throw err;
     }
   }
 
@@ -121,6 +121,7 @@ export class ExchangeAccountProcessor {
     exchangeOrder: IGetLimitOrderResponse,
     status: $Enums.OrderStatus,
   ) {
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check -- "Idle" | "Placed" | "Revoked" doesn't require to be processed
     switch (status) {
       case "Filled":
         await xprisma.order.updateStatusToFilled({
@@ -145,8 +146,6 @@ export class ExchangeAccountProcessor {
         console.log(
           `        Order not found on the exchange. Status updated to "Deleted"`,
         );
-
-        return;
     }
   }
 
@@ -199,8 +198,9 @@ export class ExchangeAccountProcessor {
     console.log(
       `Open Orders: ${openOrders.length}: Closed Orders: ${closedOrders.length}`,
     );
-    this.cachedOrders[symbol] = [...closedOrders, ...openOrders];
+    const orders = [...closedOrders, ...openOrders];
+    this.cachedOrders[symbol] = orders;
 
-    return this.cachedOrders[symbol];
+    return orders;
   }
 }

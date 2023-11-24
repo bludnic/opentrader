@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
-import { Context } from "#trpc/utils/context";
-import { TGetExchangeAccountInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TGetExchangeAccountInputSchema } from "./schema";
 
 type Options = {
   ctx: {

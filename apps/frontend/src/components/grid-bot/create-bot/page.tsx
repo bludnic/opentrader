@@ -2,14 +2,10 @@
 
 import React from "react";
 import Grid from "@mui/joy/Grid";
-import { BarSize } from "@opentrader/types";
-
+import type { BarSize } from "@opentrader/types";
 import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
-import { CreateGridBotForm } from "./form";
-import {
-  ChartBarSize,
-  GridChart,
-} from "src/components/grid-bot/create-bot/GridChart/GridChart";
+import type { ChartBarSize } from "src/components/grid-bot/create-bot/GridChart/GridChart";
+import { GridChart } from "src/components/grid-bot/create-bot/GridChart/GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";
 import {
   changeBarSize,
@@ -20,14 +16,13 @@ import {
   setLowPrice,
   setQuantityPerGrid,
   setSymbolId,
-} from "src/store/bot-form";
-import {
   selectBarSize,
   selectGridLines,
   selectSymbolId,
 } from "src/store/bot-form";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { generateBotName } from "src/utils/grid-bot/generateBotName";
+import { CreateGridBotForm } from "./form";
 import { usePageData } from "./hooks/usePagaData";
 
 export default function CreateGridBotPage() {
@@ -59,11 +54,11 @@ export default function CreateGridBotPage() {
       <TRPCClientErrorBoundary>
         <Grid md={9}>
           <GridChart
-            symbolId={symbolId}
             barSize={barSize}
-            onBarSizeChange={handleBarSizeChange}
-            gridLines={gridLines}
             currentAssetPrice={currentAssetPrice}
+            gridLines={gridLines}
+            onBarSizeChange={handleBarSizeChange}
+            symbolId={symbolId}
           />
         </Grid>
 

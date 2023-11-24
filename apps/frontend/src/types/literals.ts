@@ -1,3 +1,3 @@
-import { BarSize } from "@opentrader/types";
+import type { BarSize } from "@opentrader/types";
 
 export type TBarSize = `${BarSize}`;

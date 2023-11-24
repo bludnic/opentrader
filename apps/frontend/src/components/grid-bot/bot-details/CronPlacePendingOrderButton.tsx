@@ -1,12 +1,13 @@
 "use client";
 
-import { useSnackbar } from "src/ui/snackbar";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
-import { tClient } from "src/lib/trpc/client";
-import { TGridBot, TPendingSmartTrade } from "src/types/trpc";
 import Tooltip from "@mui/joy/Tooltip";
+import { tClient } from "src/lib/trpc/client";
+import type { TGridBot, TPendingSmartTrade } from "src/types/trpc";
+import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "CronPlacePendingOrderButton";
 const classes = {
@@ -62,17 +63,17 @@ export const CronPlacePendingOrderButton: FC<
 
   const buttonNode = (
     <Button
-      onClick={() =>
-        mutate({
-          botId: bot.id,
-        })
-      }
       className={clsx(classes.root, className)}
-      variant="soft"
-      size="lg"
       color="primary"
       loading={isLoading}
       loadingPosition="start"
+      onClick={() => {
+        mutate({
+          botId: bot.id,
+        });
+      }}
+      size="lg"
+      variant="soft"
     >
       Place pending orders
     </Button>
@@ -89,10 +90,10 @@ export const CronPlacePendingOrderButton: FC<
   return (
     <Button
       className={clsx(classes.root, className)}
-      variant="soft"
-      size="lg"
       color="primary"
       disabled
+      size="lg"
+      variant="soft"
     >
       No pending orders
     </Button>

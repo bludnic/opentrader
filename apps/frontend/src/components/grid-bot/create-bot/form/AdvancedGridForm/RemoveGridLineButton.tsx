@@ -1,5 +1,6 @@
 import Button from "@mui/joy/Button";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import { removeGridLine } from "src/store/bot-form";
 import { useAppDispatch } from "src/store/hooks";
 
@@ -20,8 +21,8 @@ export const RemoveGridLineButton: FC<RemoveGridLineButtonProps> = (props) => {
   return (
     <Button
       className={className}
-      onClick={handleRemove}
       color="danger"
+      onClick={handleRemove}
       size="sm"
     >
       Remove

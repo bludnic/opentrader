@@ -1,6 +1,6 @@
 import big from "big.js";
+import type { IGridBotLevel } from "@opentrader/types";
 import { OrderStatusEnum } from "@opentrader/types";
-import { IGridBotLevel } from "@opentrader/types";
 
 export type CalculateInvestmentResult = {
   baseCurrencyAmount: number;
@@ -11,10 +11,10 @@ export type CalculateInvestmentResult = {
  * Calculate Investment in Base and Quote currencies
  * required to place Buy/Sell limit orders on the exchange.
  *
- * @param gridLevels
+ * @param gridLevels - Grid levels
  */
 export function calculateInvestment(
-  gridLevels: IGridBotLevel[]
+  gridLevels: IGridBotLevel[],
 ): CalculateInvestmentResult {
   const baseCurrencyAmount = gridLevels.reduce((amount, gridLevel) => {
     const isSellWaiting =
@@ -35,7 +35,7 @@ export function calculateInvestment(
 
     if (isBuyWaiting) {
       const quoteAmountPerGrid = big(gridLevel.buy.quantity).times(
-        gridLevel.buy.price
+        gridLevel.buy.price,
       );
 
       return big(amount).plus(quoteAmountPerGrid).toNumber();

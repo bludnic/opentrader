@@ -1,6 +1,7 @@
-import { IWatchOrder } from "@opentrader/types";
+import type { IWatchOrder } from "@opentrader/types";
 import { GridBotProcessor } from "@opentrader/processing";
-import { xprisma, OrderWithSmartTrade } from "@opentrader/db";
+import type { OrderWithSmartTrade } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
 import { processingQueue } from "./processing.queue";
 import { OrderSynchronizer } from "./order-synchronizer";
 
@@ -50,7 +51,7 @@ export class ExchangeAccountsWatcher {
       return;
     }
 
-    void processingQueue.push(order.smartTrade.id, () => {
+    processingQueue.push(order.smartTrade.id, () => {
       console.log(`Task processed, ST: ${order.smartTrade.id}`);
     });
   }

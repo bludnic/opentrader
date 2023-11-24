@@ -1,5 +1,5 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import { $Enums } from "@opentrader/db";
+import type { $Enums } from "@opentrader/db";
 
 const map: Record<
   OrderStatusEnum,

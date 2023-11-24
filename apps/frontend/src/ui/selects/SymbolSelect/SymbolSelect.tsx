@@ -1,12 +1,13 @@
 "use client";
 
-import React, { FC, ReactNode, useState } from "react";
-import { ExchangeCode } from "@opentrader/types";
+import type { FC, ReactNode } from "react";
+import React, { useState } from "react";
+import type { ExchangeCode } from "@opentrader/types";
 import Autocomplete from "@mui/joy/Autocomplete";
 import { tClient } from "src/lib/trpc/client";
+import type { TExchangeCode, TSymbol } from "src/types/trpc";
 import { ListboxComponent } from "./LisboxComponent";
 import { renderOption } from "./renderOption";
-import { TExchangeCode, TSymbol } from "src/types/trpc";
 
 export type CryptoCoinSelectProps = {
   exchangeCode: TExchangeCode;
@@ -33,21 +34,21 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
 
   return (
     <Autocomplete
-      inputValue={inputValue}
-      onInputChange={(_e, value) => setInputValue(value)}
-      value={value}
-      onChange={(e, value) => onChange(value)}
       disableListWrap
+      getOptionLabel={getOptionLabel}
+      inputValue={inputValue}
+      onChange={(_e, value) => onChange(value)}
+      onInputChange={(_e, value) => setInputValue(value)}
       options={data}
+      renderOption={(...props) => renderOption(...props) as ReactNode}
       slots={{
         listbox: ListboxComponent,
       }}
-      getOptionLabel={getOptionLabel}
       // Actually it doesn't return ReactNode, but an array
       // with: option's `HTMLElement`, option data, `state` and `ownerState`.
       // Check `renderOption()` params for more details.
       // To make TS happy the return type will be marked as ReactNode.
-      renderOption={(...props) => renderOption(...props) as ReactNode}
+      value={value}
     />
   );
 };

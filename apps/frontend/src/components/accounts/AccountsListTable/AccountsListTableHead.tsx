@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import Checkbox from "@mui/joy/Checkbox";
 
 type AccountsListTableHeadProps = {
@@ -17,16 +18,16 @@ export const AccountsListTableHead: FC<AccountsListTableHeadProps> = (
       <tr>
         <th>
           <Checkbox
+            checked={rowCount > 0 && numSelected === rowCount}
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             slotProps={{
               input: {
-                'aria-label': 'select all accounts',
+                "aria-label": "select all accounts",
               },
             }}
-            sx={{ verticalAlign: 'sub' }}
+            sx={{ verticalAlign: "sub" }}
           />
         </th>
 

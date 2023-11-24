@@ -16,15 +16,15 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import Tooltip from "@mui/joy/Tooltip";
 import Typography from "@mui/joy/Typography";
 import clsx from "clsx";
-import { TGridBot } from "src/types/trpc";
+import type { FC } from "react";
+import { styled } from "@mui/joy/styles";
+import type { SxProps } from "@mui/joy/styles/types";
+import type { TGridBot } from "src/types/trpc";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
 import { BotStatusIndicator } from "./BotStatusIndicator";
 import { Bull } from "./Bull";
-import { FC } from "react";
-import { styled } from "@mui/joy/styles";
-import { SxProps } from "@mui/joy/styles/types";
 
 const componentName = "BotCard";
 const classes = {
@@ -32,7 +32,7 @@ const classes = {
   botTitle: `${componentName}-bot-title`,
 };
 
-const Root = styled(Card)(({ theme }) => ({
+const Root = styled(Card)(() => ({
   /* Styles applied to the root element. */
   [`& .${classes.root}`]: {},
   [`& .${classes.botTitle}`]: {
@@ -46,11 +46,11 @@ const Root = styled(Card)(({ theme }) => ({
   },
 }));
 
-export interface BotCardProps {
+export type BotCardProps = {
   className?: string;
   bot: TGridBot;
   sx?: SxProps;
-}
+};
 
 export const BotCard: FC<BotCardProps> = (props) => {
   const { bot, sx, className } = props;
@@ -73,10 +73,10 @@ export const BotCard: FC<BotCardProps> = (props) => {
       <CardContent>
         <Box display="flex">
           <Link
-            href={`/dashboard/grid-bot/${bot.id}`}
             className={classes.botTitle}
+            href={`/dashboard/grid-bot/${bot.id}`}
           >
-            <Typography level="h3" fontWeight="400">
+            <Typography fontWeight="400" level="h3">
               {bot.name}
             </Typography>
           </Link>

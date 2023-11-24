@@ -1,4 +1,4 @@
-import { IGridLine } from "@opentrader/types";
+import type { IGridLine } from "@opentrader/types";
 
 export function findHighestGridLinePrice(gridLines: IGridLine[]): number {
   const priceArray = gridLines.map((gridLine) => gridLine.price);

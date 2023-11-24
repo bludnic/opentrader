@@ -1,9 +1,11 @@
 import Box from "@mui/joy/Box";
 
-export const FlexSpacer = () => (
-  <Box
-    sx={{
-      flexGrow: 1,
-    }}
-  />
-);
+export function FlexSpacer() {
+  return (
+    <Box
+      sx={{
+        flexGrow: 1,
+      }}
+    />
+  );
+}

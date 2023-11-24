@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 import { PriceInput } from "src/ui/inputs/PriceInput";
 import { tClient } from "src/lib/trpc/client";
 import { changeLowPrice } from "src/store/bot-form";
@@ -40,14 +41,14 @@ export const LowPriceField: FC<LowPriceFieldProps> = (props) => {
 
   return (
     <PriceInput
-      value={value}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      label="Low price"
-      fullWidth
-      filter={symbol.filters}
       disabled={disabled}
+      filter={symbol.filters}
+      fullWidth
+      label="Low price"
+      onBlur={handleBlur}
+      onChange={handleChange}
       readOnly={readOnly}
+      value={value}
     />
   );
 };

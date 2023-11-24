@@ -1,17 +1,16 @@
 import List from "@mui/joy/List";
 import ListDivider from "@mui/joy/ListDivider";
-import { FC } from "react";
-import { PairSettingListItem } from "./PairSettingListItem";
-import { StatusSettingsListItem } from "./StatusSettingListItem";
-import { TGridBot } from "src/types/trpc";
+import type { FC } from "react";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
 import NumbersIcon from "@mui/icons-material/Numbers";
+import type { TGridBot } from "src/types/trpc";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
-
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
+import { StatusSettingsListItem } from "./StatusSettingListItem";
+import { PairSettingListItem } from "./PairSettingListItem";
 import { SettingListItem } from "./SettingListItem";
 
 type BotSettingsProps = {
@@ -35,25 +34,25 @@ export const BotSettings: FC<BotSettingsProps> = ({ bot }) => {
 
       <ListDivider inset="startContent" />
 
-      <SettingListItem name="High price" icon={<ArrowUpwardIcon />}>
+      <SettingListItem icon={<ArrowUpwardIcon />} name="High price">
         {highPrice} {bot.quoteCurrency}
       </SettingListItem>
 
       <ListDivider inset="startContent" />
 
-      <SettingListItem name="Low price" icon={<ArrowDownwardIcon />}>
+      <SettingListItem icon={<ArrowDownwardIcon />} name="Low price">
         {lowPrice} {bot.quoteCurrency}
       </SettingListItem>
 
       <ListDivider inset="startContent" />
 
-      <SettingListItem name="Av. quantity per grid" icon={<NumbersIcon />}>
+      <SettingListItem icon={<NumbersIcon />} name="Av. quantity per grid">
         {averageQuantityPerGrid.toFixed(6)} {bot.baseCurrency}
       </SettingListItem>
 
       <ListDivider inset="startContent" />
 
-      <SettingListItem name="Grid levels" icon={<FormatListNumberedRtlIcon />}>
+      <SettingListItem icon={<FormatListNumberedRtlIcon />} name="Grid levels">
         {bot.settings.gridLines.length}
       </SettingListItem>
     </List>

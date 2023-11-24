@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import Button from "@mui/joy/Button";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { ThemeSwitcher } from "src/ui/navigation/ThemeSwitcher";
 import { AppBar } from "src/ui/navigation/AppBar";
 import { AppVersionInfo } from "src/ui/navigation/AppVersionInfo";
@@ -27,8 +27,10 @@ export default function DashboardLayout({ children }: Props) {
     <div>
       <AppBar>
         <DrawerToggler
+          onClick={() => {
+            setDrawerOpen(!drawerOpen);
+          }}
           open={drawerOpen}
-          onClick={() => setDrawerOpen(!drawerOpen)}
         />
         <Logo />
         <TopNavigation />
@@ -36,7 +38,7 @@ export default function DashboardLayout({ children }: Props) {
         <ThemeSwitcher />
       </AppBar>
 
-      <AppDrawer open={drawerOpen} onChange={setDrawerOpen}>
+      <AppDrawer open={drawerOpen}>
         <LeftNavigation size={size} />
 
         <FlexSpacer />
@@ -44,7 +46,12 @@ export default function DashboardLayout({ children }: Props) {
         <AppVersionInfo size={size} />
       </AppDrawer>
 
-      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <MobileDrawer
+        onClose={() => {
+          setDrawerOpen(false);
+        }}
+        open={drawerOpen}
+      >
         <LeftNavigation size="md" />
 
         <FlexSpacer />

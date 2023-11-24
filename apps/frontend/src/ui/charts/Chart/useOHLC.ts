@@ -1,13 +1,13 @@
-import { ExchangeCode } from "@opentrader/types";
+import type { ExchangeCode } from "@opentrader/types";
 import setMilliseconds from "date-fns/setMilliseconds";
 import setSeconds from "date-fns/setSeconds";
 import setMinutes from "date-fns/setMinutes";
 import { useState, useRef, useEffect } from "react";
 import type { OHLCV } from "ccxt";
 import { useIsStale } from "src/hooks/useIsStale";
+import type { TBarSize } from "src/types/literals";
 import { CANDLES_PER_PAGE } from "./constants";
 import { barSizeToMinutes } from "./utils";
-import { TBarSize } from "src/types/literals";
 import { useExchange } from "./useExchange";
 
 /**
@@ -79,7 +79,7 @@ export function useOHLC(
     let shouldUpdate = true;
 
     loading.current = true;
-    fetchCandlesticks(currencyPair, since, barSize).then((data) => {
+    void fetchCandlesticks(currencyPair, since, barSize).then((data) => {
       if (!shouldUpdate) {
         return;
       }

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
 import { PriceInput } from "src/ui/inputs/PriceInput";
 import { tClient } from "src/lib/trpc/client";
 import { updateGridLinePrice } from "src/store/bot-form";
@@ -47,14 +48,14 @@ export const GridLinePriceField: FC<GridLinePriceFieldProps> = (props) => {
 
   return (
     <PriceInput
-      value={value} // @todo fix type
-      onChange={handleChange}
-      onBlur={handleBlur}
       className={className}
-      label="Price"
-      fullWidth
       filter={symbol.filters}
+      fullWidth
+      label="Price"
+      onBlur={handleBlur}
+      onChange={handleChange}
       size="sm"
+      value={value} // @todo fix type
     />
   );
 };

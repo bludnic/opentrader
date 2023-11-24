@@ -1,3 +1,2 @@
-export * from './fulfilledTable'
-export * from './gridTable'
-
+export * from "./fulfilledTable";
+export * from "./gridTable";

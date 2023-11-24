@@ -1,10 +1,11 @@
-import { SmartTradeProcessor } from "#processing/smart-trade";
-import {
+import type {
   IStore,
   SmartTrade,
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
-import { TGridBot, toSmartTradeEntity, xprisma } from "@opentrader/db";
+import type { TGridBot, xprisma } from "@opentrader/db";
+import { toSmartTradeEntity } from "@opentrader/db";
+import { SmartTradeProcessor } from "#processing/smart-trade";
 import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
 
 export class GridBotStoreAdapter implements IStore {
@@ -52,10 +53,11 @@ export class GridBotStoreAdapter implements IStore {
         id: botId,
       },
     });
-    if (!bot)
+    if (!bot) {
       throw new Error(
         `[GridBotStateManagement] getSmartTrade(): botId ${botId} not found`,
       );
+    }
 
     const exchangeSymbolId = `${bot.baseCurrency}/${bot.quoteCurrency}`;
     const data = toPrismaSmartTrade(payload, {
@@ -102,10 +104,11 @@ export class GridBotStoreAdapter implements IStore {
         id: botId,
       },
     });
-    if (!bot)
+    if (!bot) {
       throw new Error(
         `[GridBotStateManagement] getSmartTrade(): botId ${botId} not found`,
       );
+    }
 
     const smartTrade = await this.prisma.smartTrade.findFirst({
       where: {

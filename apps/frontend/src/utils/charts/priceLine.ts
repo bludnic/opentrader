@@ -1,4 +1,5 @@
-import { CreatePriceLineOptions, LineStyle } from "lightweight-charts";
+import type { CreatePriceLineOptions } from "lightweight-charts";
+import { LineStyle } from "lightweight-charts";
 
 export function computePriceLine(
   price: number,

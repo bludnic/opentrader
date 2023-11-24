@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import type { FC } from "react";
 import List from "@mui/joy/List";
 import Chip from "@mui/joy/Chip";
 import { LeftNavigationItem } from "./LeftNavigationItem";
@@ -12,19 +12,19 @@ type LeftNavigationProps = {
 export const LeftNavigation: FC<LeftNavigationProps> = ({ size }) => {
   return (
     <List size="lg">
-      <LeftNavigationItem icon={"🏛️"} href="/dashboard/accounts" size={size}>
+      <LeftNavigationItem href="/dashboard/accounts" icon="🏛️" size={size}>
         My exchanges
       </LeftNavigationItem>
 
       <LeftNavigationItem
-        icon={"🤖"}
-        href="/dashboard/grid-bot"
-        size={size}
         append={
-          <Chip color="success" variant="outlined" size="sm">
+          <Chip color="success" size="sm" variant="outlined">
             New
           </Chip>
         }
+        href="/dashboard/grid-bot"
+        icon="🤖"
+        size={size}
       >
         Bots
       </LeftNavigationItem>

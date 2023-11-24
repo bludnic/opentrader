@@ -1,4 +1,4 @@
-import { RouterInput } from "src/lib/trpc/types";
+import type { RouterInput } from "src/lib/trpc/types";
 
 export type CreateExchangeAccountFormValues =
   RouterInput["exchangeAccount"]["create"];

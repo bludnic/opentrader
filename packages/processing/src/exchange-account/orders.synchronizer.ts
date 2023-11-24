@@ -1,9 +1,10 @@
-import { exchangeProvider, IExchange } from "@opentrader/exchanges";
-import {
+import type { IExchange } from "@opentrader/exchanges";
+import { exchangeProvider } from "@opentrader/exchanges";
+import type {
   ExchangeAccountWithCredentials,
   OrderWithSmartTrade,
-  xprisma,
 } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
 import type { IClosedOrder, IGetLimitOrderResponse } from "@opentrader/types";
 import { OrderNotFound } from "ccxt";
 
@@ -257,9 +258,8 @@ export class OrdersSynchronizer {
         );
 
         return { exchangeOrder: null, statusChanged: false };
-      } else {
-        throw err;
       }
+      throw err;
     }
 
     return { exchangeOrder: null, statusChanged: false };

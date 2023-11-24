@@ -1,6 +1,6 @@
 import { getExponentAbs } from "./getExponentAbs";
 
-describe('getExponentAbs', () => {
+describe("getExponentAbs", () => {
   it("with trailing zeros", () => {
     expect(getExponentAbs("0.00100000")).toBe(3);
   });

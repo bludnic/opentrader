@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-import Input, { InputProps } from "@mui/joy/Input";
+import Input from "@mui/joy/Input";
 
 type AccountIdFieldProps = {
   disabled?: boolean;
@@ -15,7 +16,7 @@ export const AccountIdField: FC<AccountIdFieldProps> = (props) => {
     <FormControl>
       <FormLabel>Account ID</FormLabel>
 
-      <Input value={value} disabled={disabled} autoComplete="off" />
+      <Input autoComplete="off" disabled={disabled} value={value} />
     </FormControl>
   );
 };

@@ -1,7 +1,7 @@
 import { GridBotProcessor } from "@opentrader/processing";
 import { GridBotService } from "#trpc/services/grid-bot.service";
-import { Context } from "#trpc/utils/context";
-import { TManualProcessGridBotInputSchema } from "./schema";
+import type { Context } from "#trpc/utils/context";
+import type { TManualProcessGridBotInputSchema } from "./schema";
 
 type Options = {
   ctx: {
@@ -10,7 +10,7 @@ type Options = {
   input: TManualProcessGridBotInputSchema;
 };
 
-export async function manualProcessGridBot({ ctx, input }: Options) {
+export async function manualProcessGridBot({ input }: Options) {
   const { botId } = input;
 
   const botService = await GridBotService.fromId(botId);

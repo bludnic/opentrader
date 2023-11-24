@@ -4,8 +4,8 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Divider from "@mui/joy/Divider";
 import Typography from "@mui/joy/Typography";
-import { FC } from "react";
-import { TRPCApiError } from "src/ui/errors/types";
+import type { FC } from "react";
+import type { TRPCApiError } from "src/ui/errors/types";
 import { getTRPCErrorValue } from "src/ui/errors/utils/getTrpcErrorValue";
 
 type TRPCErrorSheetProps = {

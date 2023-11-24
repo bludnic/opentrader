@@ -1,4 +1,4 @@
-import { OrderSide, OrderStatus } from "src/exchanges/api/trade/common";
+import type { OrderSide, OrderStatus } from "src/exchanges/api/trade/common";
 
 export interface IWatchOrder {
   /**

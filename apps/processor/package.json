@@ -7,11 +7,13 @@
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "dev:preview": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "tsx src/index.ts",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint . --quiet"
   },
   "keywords": [],
   "author": "bludnic",
   "devDependencies": {
+    "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.23",
@@ -35,6 +37,7 @@
     "async": "^3.2.5",
     "ccxt": "4.1.48",
     "date-fns": "^2.30.0",
+    "eslint": "8.54.0",
     "express": "^4.18.2"
   }
 }

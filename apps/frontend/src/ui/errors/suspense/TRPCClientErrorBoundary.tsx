@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
+import React from "react";
 import { isTRPCError } from "src/ui/errors/utils/isTrpcError";
 import { TRPCErrorSheet } from "./TRPCErrorSheet";
 import { UnknownErrorSheet } from "./UnknownErrorSheet";
@@ -24,13 +25,12 @@ export class TRPCClientErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, _errorInfo: unknown) {
     console.log(error);
   }
 
   render() {
     const { hasError, error } = this.state;
-    const { children } = this.props;
 
     if (!hasError) {
       return this.props.children;

@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import type { FC } from "react";
+import React, { useState } from "react";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
@@ -37,15 +38,15 @@ export const GridLevelsField: FC<GridLevelsFieldProps> = (props) => {
       <FormLabel>Grid levels</FormLabel>
 
       <Input
-        name={fieldName}
-        value={value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        required
         autoComplete="off"
-        type="number"
         disabled={disabled}
+        name={fieldName}
+        onBlur={handleBlur}
+        onChange={handleChange}
         readOnly={readOnly}
+        required
+        type="number"
+        value={value}
       />
     </FormControl>
   );

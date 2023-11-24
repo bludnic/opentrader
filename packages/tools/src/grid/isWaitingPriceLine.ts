@@ -1,7 +1,7 @@
 /**
- * @param priceLine Element of `priceLines`
- * @param priceLines Array of prices
- * @param currentAssetPrice Current asset market price
+ * @param priceLine - Element of `priceLines`
+ * @param priceLines - Array of prices
+ * @param currentAssetPrice - Current asset market price
  */
 export function isWaitingPriceLine(
   priceLine: number,
@@ -12,6 +12,7 @@ export function isWaitingPriceLine(
   // It just ensures that in case the `currentAssetPrice`
   // is at equal distance between two prices
   // the higher `priceLine` will be picked as a waiting price line
+  // eslint-disable-next-line no-param-reassign -- it's ok
   priceLines = [...priceLines].sort((a, b) => b - a);
 
   if (priceLines.length === 0) {

@@ -7,7 +7,7 @@
 ```tsx
 import { ExchangeCode } from "@opentrader/types";
 import { exchanges, cache } from "@opentrader/exchanges";
-import { PrismaCacheProvider } from '@opentrader/exchanges/server'
+import { PrismaCacheProvider } from "@opentrader/exchanges/server";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 

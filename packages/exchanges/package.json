@@ -11,12 +11,15 @@
     "./dist": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --quiet"
   },
   "author": "bludnic",
   "devDependencies": {
+    "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "eslint": "8.54.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {

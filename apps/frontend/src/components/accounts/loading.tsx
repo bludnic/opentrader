@@ -11,13 +11,13 @@ export default function Loading() {
       }}
     >
       <Skeleton
-        variant="rectangular"
         animation="wave"
-        width="100%"
         height={280}
         style={{
           borderRadius: 6,
         }}
+        variant="rectangular"
+        width="100%"
       />
     </Box>
   );

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -32,16 +33,16 @@ export const ProfitsCard: FC<ProfitsCardProps> = ({ botId }) => {
       }}
     >
       <Box display="flex" justifyContent="space-between">
-        <Typography level="h3" fontSize="xl2" fontWeight="xl">
+        <Typography fontSize="xl2" fontWeight="xl" level="h3">
           Profits
         </Typography>
 
         {smartTrades.length > 0 ? (
           <Tooltip title="Total profit">
-            <Typography level="h3" fontSize="xl2" fontWeight="xl">
+            <Typography fontSize="xl2" fontWeight="xl" level="h3">
               <Profit
-                profit={totalProfit}
                 currency={bot.quoteCurrency}
+                profit={totalProfit}
                 size="lg"
               />
             </Typography>
@@ -54,7 +55,7 @@ export const ProfitsCard: FC<ProfitsCardProps> = ({ botId }) => {
           <List size="sm">
             {smartTrades.map((smartTrade, i) => (
               <React.Fragment key={smartTrade.id}>
-                <ProfitItem smartTrade={smartTrade} key={smartTrade.id} />
+                <ProfitItem key={smartTrade.id} smartTrade={smartTrade} />
                 {i < smartTrades.length - 1 ? <ListDivider /> : null}
               </React.Fragment>
             ))}

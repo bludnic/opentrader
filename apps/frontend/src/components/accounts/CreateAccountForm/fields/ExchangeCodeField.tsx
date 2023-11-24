@@ -2,25 +2,25 @@ import { ExchangeCode } from "@opentrader/types";
 import React from "react";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
-import { CreateExchangeAccountFormValues } from "../types";
 import { Field } from "react-final-form";
+import type { CreateExchangeAccountFormValues } from "../types";
 
 const fieldName: keyof CreateExchangeAccountFormValues = "exchangeCode";
 
-export const ExchangeCodeField = () => {
+export function ExchangeCodeField() {
   return (
-    <Field name={fieldName}>
+    <Field<ExchangeCode> name={fieldName}>
       {({ input }) => (
         <Select
+          defaultValue={ExchangeCode.OKX}
           name={input.name}
-          value={input.value}
           onChange={input.onChange}
           required
-          defaultValue={ExchangeCode.OKX}
+          value={input.value}
         >
           <Option value={ExchangeCode.OKX}>OKx</Option>
         </Select>
       )}
     </Field>
   );
-};
+}

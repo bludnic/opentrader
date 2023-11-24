@@ -1,9 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { ID_COLUMN_MIN_WIDTH } from "./constants";
 
-type SmartTradesTableHeadProps = {};
-
-export const SmartTradesTableHead: FC<SmartTradesTableHeadProps> = () => {
+export const SmartTradesTableHead: FC = () => {
   return (
     <thead>
       <tr>

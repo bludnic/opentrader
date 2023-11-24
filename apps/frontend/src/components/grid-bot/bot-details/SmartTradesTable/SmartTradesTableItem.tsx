@@ -2,8 +2,9 @@ import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import Tooltip from "@mui/joy/Tooltip";
 import Big from "big.js";
-import React, { FC } from "react";
-import { TActiveSmartTrade } from "src/types/trpc";
+import type { FC } from "react";
+import React from "react";
+import type { TActiveSmartTrade } from "src/types/trpc";
 import { formatDateTime } from "src/utils/date/formatDateTime";
 import { SmartTradeStatus } from "./SmartTradeStatus";
 import { ID_COLUMN_MIN_WIDTH } from "./constants";
@@ -36,8 +37,14 @@ export const SmartTradesTableItem: FC<SmartTradeTableItemProps> = ({
         <Tooltip
           title={
             <List size="sm">
-              <ListItem>Entry Order ID: {entryOrder.id}:{entryOrder.exchangeOrderId ?? "null"}</ListItem>
-              <ListItem>TP Order ID: {takeProfitOrder.id}:{takeProfitOrder.exchangeOrderId}</ListItem>
+              <ListItem>
+                Entry Order ID: {entryOrder.id}:
+                {entryOrder.exchangeOrderId ?? "null"}
+              </ListItem>
+              <ListItem>
+                TP Order ID: {takeProfitOrder.id}:
+                {takeProfitOrder.exchangeOrderId}
+              </ListItem>
             </List>
           }
         >

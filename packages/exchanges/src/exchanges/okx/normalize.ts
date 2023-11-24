@@ -1,7 +1,7 @@
 import { ExchangeCode } from "@opentrader/types";
-import { Normalize } from "#exchanges/types/normalize.interface";
-import { normalizeOrderStatus } from "#exchanges/utils/normalizeOrderStatus";
 import { composeSymbolIdFromPair } from "@opentrader/tools";
+import type { Normalize } from "#exchanges/types/normalize.interface";
+import { normalizeOrderStatus } from "#exchanges/utils/normalizeOrderStatus";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>
@@ -118,6 +118,7 @@ const getSymbol: Normalize["getSymbol"] = {
 
     filters: {
       price: {
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
         tickSize: market.info.tickSz,
         minPrice: null, // OKx doesn't provide this info
         maxPrice: null, // OKx doesn't provide this info
@@ -126,6 +127,7 @@ const getSymbol: Normalize["getSymbol"] = {
         stepSize: market.info.lotSz,
         minQuantity: market.info.minSz,
         maxQuantity: market.info.maxLmtSz,
+        /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
       },
     },
   }),
@@ -133,7 +135,7 @@ const getSymbol: Normalize["getSymbol"] = {
 
 const getSymbols: Normalize["getSymbols"] = {
   response: (markets) =>
-    Object.entries(markets).map(([symbol, market]) =>
+    Object.entries(markets).map(([_symbol, market]) =>
       getSymbol.response(market),
     ),
 };
