@@ -28,7 +28,7 @@ $ cp .env.example .env
 
 2. Replace the `DATABASE_URL` if your URL is different from the actual one.
 
-> 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d postgres-db`. See details below.
+> 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d database`. See details below.
 
 # Docker (optional)
 
