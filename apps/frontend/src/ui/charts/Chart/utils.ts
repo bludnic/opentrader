@@ -1,9 +1,8 @@
 import { pro as ccxt } from "ccxt";
-import { ExchangeCode } from "@opentrader/types";
-import type { TBarSize } from "src/types/literals";
+import { BarSize, ExchangeCode } from "@opentrader/types";
 
-export function barSizeToMinutes(barSize: TBarSize): number {
-  const map: Record<TBarSize, number> = {
+export function barSizeToMinutes(barSize: BarSize): number {
+  const map: Record<BarSize, number> = {
     "1m": 1,
     "5m": 5,
     "15m": 15,

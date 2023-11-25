@@ -5,12 +5,12 @@ import React, { useState } from "react";
 import type { ExchangeCode } from "@opentrader/types";
 import Autocomplete, { createFilterOptions } from "@mui/joy/Autocomplete";
 import { tClient } from "src/lib/trpc/client";
-import type { TExchangeCode, TSymbol } from "src/types/trpc";
+import type { TSymbol } from "src/types/trpc";
 import { ListboxComponent } from "./LisboxComponent";
 import { renderOption } from "./renderOption";
 
 export type CryptoCoinSelectProps = {
-  exchangeCode: TExchangeCode;
+  exchangeCode: ExchangeCode;
   value: TSymbol | null;
   onChange: (value: TSymbol | null) => void;
   defaultSymbols?: TSymbol[];
@@ -35,7 +35,7 @@ export const SymbolSelect: FC<CryptoCoinSelectProps> = ({
 
   const [data] = defaultSymbols
     ? [defaultSymbols]
-    : tClient.symbol.list.useSuspenseQuery(exchangeCode as ExchangeCode);
+    : tClient.symbol.list.useSuspenseQuery(exchangeCode);
 
   return (
     <Autocomplete

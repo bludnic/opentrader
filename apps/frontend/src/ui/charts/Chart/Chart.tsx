@@ -14,7 +14,7 @@ import type { FC, ReactNode } from "react";
 import React, { useEffect } from "react";
 import { useElementSize } from "usehooks-ts";
 import { tClient } from "src/lib/trpc/client";
-import type { TBarSize } from "src/types/literals";
+import type { BarSize } from "@opentrader/types";
 import { CHART_HEIGHT } from "./constants";
 import { useCandlesticksChart } from "./useCandlesticksChart";
 import { useOHLC } from "./useOHLC";
@@ -33,7 +33,7 @@ function normalizeCandle(candle: OHLCV) {
 
 type ChartProps = {
   symbolId: string;
-  barSize: TBarSize;
+  barSize: BarSize;
   /**
    * Chart AppBar
    */

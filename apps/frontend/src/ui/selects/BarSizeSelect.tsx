@@ -4,20 +4,19 @@ import React from "react";
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import { BarSize } from "@opentrader/types";
-import type { TBarSize } from "src/types/literals";
 
-type BarSizeSelectProps<W extends TBarSize = TBarSize> = {
+type BarSizeSelectProps<W extends BarSize = BarSize> = {
   value: W;
   onChange: (value: W) => void;
   whitelist?: readonly W[];
 };
 
-export function BarSizeSelect<T extends TBarSize = TBarSize>({
+export function BarSizeSelect<T extends BarSize = BarSize>({
   value,
   onChange,
   whitelist,
 }: BarSizeSelectProps<T>) {
-  const list = whitelist || Object.values<TBarSize>(BarSize);
+  const list = whitelist || Object.values<BarSize>(BarSize);
 
   return (
     <Select

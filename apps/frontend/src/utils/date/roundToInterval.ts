@@ -1,9 +1,9 @@
-import type { TBarSize } from "src/types/literals";
+import type { BarSize } from "@opentrader/types";
 
 const ONE_MINUTE = 60 * 1000;
 const ONE_HOUR = 60 * ONE_MINUTE;
 
-type Timeframe = Extract<TBarSize, "1m" | "5m" | "15m" | "1h" | "4h" | "1d">;
+type Timeframe = Extract<BarSize, "1m" | "5m" | "15m" | "1h" | "4h" | "1d">;
 
 const timeframeTimeMap: Record<Timeframe, number> = {
   "1m": ONE_MINUTE,

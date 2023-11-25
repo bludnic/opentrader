@@ -6,6 +6,8 @@ import Skeleton from "@mui/joy/Skeleton";
 import type { IGridLine } from "@opentrader/types";
 import type { FC } from "react";
 import React, { Suspense, useDeferredValue, useMemo, useState } from "react";
+import { GridBotFormChartBarSize } from "src/store/bot-form";
+import { TIMEFRAMES } from "src/store/bot-form/constants";
 import { Chart, ChartAppBar } from "src/ui/charts/Chart";
 import { CHART_HEIGHT } from "src/ui/charts/Chart/constants";
 import { ExchangeAccountField } from "src/components/grid-bot/create-bot/form/fields/ExchangeAccountField";
@@ -13,16 +15,12 @@ import { PairField } from "src/components/grid-bot/create-bot/form/fields/PairFi
 import { FlexSpacer } from "src/ui/FlexSpacer";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
 import { InputSkeleton } from "src/ui/InputSkeleton";
-import type { TBarSize } from "src/types/literals";
 import { computePriceLines } from "./utils";
-
-const timeframes = ["1d", "4h", "1h", "5m"] as const;
-export type ChartBarSize = Extract<TBarSize, (typeof timeframes)[number]>;
 
 type GridChartProps = {
   symbolId: string;
-  barSize: ChartBarSize;
-  onBarSizeChange?: (value: ChartBarSize) => void;
+  barSize: GridBotFormChartBarSize;
+  onBarSizeChange?: (value: GridBotFormChartBarSize) => void;
   gridLines: IGridLine[];
   currentAssetPrice: number;
 };
@@ -77,7 +75,7 @@ export const GridChart: FC<GridChartProps> = ({
               }
             }}
             value={barSize}
-            whitelist={timeframes}
+            whitelist={TIMEFRAMES}
           />
 
           <FlexSpacer />

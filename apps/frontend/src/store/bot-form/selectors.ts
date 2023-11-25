@@ -1,10 +1,10 @@
 import { decomposeSymbolId } from "@opentrader/tools";
-import type { BarSize, ExchangeCode, IGridLine } from "@opentrader/types";
+import type { ExchangeCode, IGridLine } from "@opentrader/types";
 import type { Selector } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
 import type { TExchangeAccount } from "src/types/trpc";
 import type { GridBotFormState } from "./state";
-import type { GridBotFormType } from "./types";
+import type { GridBotFormChartBarSize, GridBotFormType } from "./types";
 
 export const selectBotFormState: Selector<RootState, GridBotFormState> = (
   rootState,
@@ -21,7 +21,7 @@ export const selectExchangeAccountId: Selector<
 
 export const selectExchangeCode: Selector<RootState, ExchangeCode> = (
   rootState,
-) => rootState.gridBotForm.exchangeCode as ExchangeCode;
+) => rootState.gridBotForm.exchangeCode;
 
 export const selectCurrencyPair: Selector<RootState, string> = (rootState) => {
   const { currencyPairSymbol } = decomposeSymbolId(
@@ -59,6 +59,8 @@ export const selectGridLine = (
     rootState.gridBotForm.gridLines[gridLineIndex];
 };
 
-export const selectBarSize: Selector<RootState, BarSize> = (rootState) => {
+export const selectBarSize: Selector<RootState, GridBotFormChartBarSize> = (
+  rootState,
+) => {
   return rootState.gridBotForm.barSize;
 };

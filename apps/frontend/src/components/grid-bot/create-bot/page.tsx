@@ -2,10 +2,8 @@
 
 import React from "react";
 import Grid from "@mui/joy/Grid";
-import type { BarSize } from "@opentrader/types";
 import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
-import type { ChartBarSize } from "src/components/grid-bot/create-bot/GridChart/GridChart";
-import { GridChart } from "src/components/grid-bot/create-bot/GridChart/GridChart";
+import { GridChart } from "./GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";
 import {
   changeBarSize,
@@ -19,6 +17,7 @@ import {
   selectBarSize,
   selectGridLines,
   selectSymbolId,
+  GridBotFormChartBarSize,
 } from "src/store/bot-form";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { generateBotName } from "src/utils/grid-bot/generateBotName";
@@ -43,9 +42,9 @@ export default function CreateGridBotPage() {
 
   const symbolId = useAppSelector(selectSymbolId);
 
-  const barSize = useAppSelector(selectBarSize) as ChartBarSize; // @todo fix type
-  const handleBarSizeChange = (barSize: ChartBarSize) =>
-    dispatch(changeBarSize(barSize as BarSize)); // @todo fix type
+  const barSize = useAppSelector(selectBarSize);
+  const handleBarSizeChange = (barSize: GridBotFormChartBarSize) =>
+    dispatch(changeBarSize(barSize));
 
   const gridLines = useAppSelector(selectGridLines);
 

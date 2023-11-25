@@ -1,4 +1,3 @@
-import type { ExchangeCode } from "@opentrader/types";
 import { tClient } from "src/lib/trpc/client";
 
 export function usePageData() {
@@ -6,7 +5,7 @@ export function usePageData() {
   const exchangeAccount = exchangeAccounts[0];
 
   const [symbols] = tClient.symbol.list.useSuspenseQuery(
-    exchangeAccount.exchangeCode as ExchangeCode,
+    exchangeAccount.exchangeCode,
   );
 
   // assume that every exchange has a BTC/USDT pair

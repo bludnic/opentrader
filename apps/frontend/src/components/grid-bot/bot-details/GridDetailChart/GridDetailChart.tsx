@@ -4,7 +4,6 @@ import Box from "@mui/joy/Box";
 import Checkbox from "@mui/joy/Checkbox";
 import Skeleton from "@mui/joy/Skeleton";
 import { composeSymbolId } from "@opentrader/tools";
-import type { ExchangeCode } from "@opentrader/types";
 import type { FC } from "react";
 import React, { Suspense, useMemo, useState } from "react";
 import { tClient } from "src/lib/trpc/client";
@@ -13,12 +12,12 @@ import { FlexSpacer } from "src/ui/FlexSpacer";
 import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
 import { BarSizeSelect } from "src/ui/selects/BarSizeSelect";
-import type { TBarSize } from "src/types/literals";
+import type { BarSize } from "@opentrader/types";
 import { computePriceLines } from "./utils/computePriceLines";
 import { computeTradeMarkers } from "./utils/computeTradeMarkers";
 
 const timeframes = ["1d", "4h", "1h", "5m"] as const;
-export type ChartBarSize = Extract<TBarSize, (typeof timeframes)[number]>;
+export type ChartBarSize = Extract<BarSize, (typeof timeframes)[number]>;
 
 type GridChartProps = {
   botId: number;
@@ -33,7 +32,7 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
   );
   const [symbol] = tClient.symbol.getOne.useSuspenseQuery({
     symbolId: composeSymbolId(
-      exchangeAccount.exchangeCode as ExchangeCode,
+      exchangeAccount.exchangeCode,
       bot.baseCurrency,
       bot.quoteCurrency,
     ),

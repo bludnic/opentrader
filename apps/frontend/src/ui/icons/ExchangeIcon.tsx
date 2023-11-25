@@ -1,11 +1,11 @@
 import type { FC } from "react";
 import Image from "next/image";
-import type { TExchangeCode } from "src/types/trpc";
+import type { ExchangeCode } from "@opentrader/types";
 
 const componentName = "ExchangeIcon" as const;
 
 type Props = {
-  exchangeCode: TExchangeCode;
+  exchangeCode: ExchangeCode;
   size?: 64 | 50;
   width?: number;
   height?: number;

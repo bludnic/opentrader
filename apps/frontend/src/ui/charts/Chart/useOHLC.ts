@@ -1,11 +1,10 @@
-import type { ExchangeCode } from "@opentrader/types";
+import type { BarSize, ExchangeCode } from "@opentrader/types";
 import setMilliseconds from "date-fns/setMilliseconds";
 import setSeconds from "date-fns/setSeconds";
 import setMinutes from "date-fns/setMinutes";
 import { useState, useRef, useEffect } from "react";
 import type { OHLCV } from "ccxt";
 import { useIsStale } from "src/hooks/useIsStale";
-import type { TBarSize } from "src/types/literals";
 import { CANDLES_PER_PAGE } from "./constants";
 import { barSizeToMinutes } from "./utils";
 import { useExchange } from "./useExchange";
@@ -23,13 +22,13 @@ function currentHour() {
   return date;
 }
 
-function calcInitialSince(barSize: TBarSize) {
+function calcInitialSince(barSize: BarSize) {
   const date = currentHour();
 
   return calcNextSince(date.getTime(), barSize);
 }
 
-function calcNextSince(since: number, barSize: TBarSize) {
+function calcNextSince(since: number, barSize: BarSize) {
   const timeRange = barSizeToMinutes(barSize) * 60 * 1000; // * seconds * milliseconds
 
   return since - timeRange * CANDLES_PER_PAGE;
@@ -38,13 +37,13 @@ function calcNextSince(since: number, barSize: TBarSize) {
 export function useOHLC(
   exchangeCode: ExchangeCode,
   currencyPair: string,
-  barSize: TBarSize,
+  barSize: BarSize,
 ) {
   const exchange = useExchange(exchangeCode);
   const fetchCandlesticks = async (
     currencyPair: string,
     since: number,
-    barSize: TBarSize,
+    barSize: BarSize,
   ) => {
     const candlesticks = await exchange.current!.fetchOHLCV(
       currencyPair,

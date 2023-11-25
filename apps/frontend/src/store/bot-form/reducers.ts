@@ -1,7 +1,9 @@
-import type { BarSize, IGridLine } from "@opentrader/types";
+import type { IGridLine } from "@opentrader/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { TExchangeAccount, TExchangeCode } from "src/types/trpc";
+import { GridBotFormChartBarSize } from "src/store/bot-form/types";
+import type { TExchangeAccount } from "src/types/trpc";
+import type { ExchangeCode } from "@opentrader/types";
 import type {
   ChangeFormTypePayload,
   UpdateGridLinePricePayload,
@@ -50,7 +52,7 @@ export const gridBotFormSlice = createSlice({
     },
     [setExchangeCodeAction.type]: (
       state,
-      action: PayloadAction<TExchangeCode>,
+      action: PayloadAction<ExchangeCode>,
     ) => {
       state.exchangeCode = action.payload;
     },
@@ -93,7 +95,10 @@ export const gridBotFormSlice = createSlice({
     [changeBotNameAction.type]: (state, action: PayloadAction<string>) => {
       state.botName = action.payload;
     },
-    [changeBarSizeAction.type]: (state, action: PayloadAction<BarSize>) => {
+    [changeBarSizeAction.type]: (
+      state,
+      action: PayloadAction<GridBotFormChartBarSize>,
+    ) => {
       state.barSize = action.payload;
     },
     [setGridLinesAction.type]: (state, action: PayloadAction<IGridLine[]>) => {
