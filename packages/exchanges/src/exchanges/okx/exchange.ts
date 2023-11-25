@@ -144,10 +144,21 @@ export class OkxExchange implements IExchange {
     return normalize.getSymbol.response(data); // @todo refactor
   }
 
-  async getSymbols(): Promise<ISymbolInfo[]> {
+  async getSymbols(
+    type: "spot" | "future" | "option" | "swap" = "spot",
+  ): Promise<ISymbolInfo[]> {
     const markets = await this.loadMarkets();
 
-    return normalize.getSymbols.response(markets);
+    const spotMarkets = Object.entries(markets)
+      .filter(([_currency, market]) => market.type === type)
+      .reduce<Dictionary<Market>>((acc, [currency, market]) => {
+        return {
+          ...acc,
+          [currency]: market,
+        };
+      }, {});
+
+    return normalize.getSymbols.response(spotMarkets);
   }
 
   /**
