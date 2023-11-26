@@ -16,7 +16,7 @@ import type { BarSize } from "@opentrader/types";
 import { computePriceLines } from "./utils/computePriceLines";
 import { computeTradeMarkers } from "./utils/computeTradeMarkers";
 
-const timeframes = ["1d", "4h", "1h", "5m"] as const;
+const timeframes = ["1d", "4h", "1h", "5m", "1m"] as const;
 export type ChartBarSize = Extract<BarSize, (typeof timeframes)[number]>;
 
 type GridChartProps = {
