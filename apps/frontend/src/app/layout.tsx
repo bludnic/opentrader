@@ -5,6 +5,7 @@ import { StoreProvider } from "src/providers/StoreProvider";
 import { TrpcProvider } from "src/providers/TrpcProvider";
 import { TRPCApiErrorProvider } from "src/ui/errors/api";
 import { SnackbarProvider } from "src/ui/snackbar";
+import { ConfirmationDialogProvider } from "src/ui/confirmation-dialog";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
@@ -25,7 +26,9 @@ export default function RootLayout({
           <TrpcProvider>
             <StoreProvider>
               <SnackbarProvider>
-                <ThemeProvider>{children}</ThemeProvider>
+                <ConfirmationDialogProvider>
+                  <ThemeProvider>{children}</ThemeProvider>
+                </ConfirmationDialogProvider>
               </SnackbarProvider>
             </StoreProvider>
           </TrpcProvider>
