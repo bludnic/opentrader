@@ -1,35 +1,26 @@
 import type { BarSize, ExchangeCode } from "@opentrader/types";
-import setMilliseconds from "date-fns/setMilliseconds";
-import setSeconds from "date-fns/setSeconds";
-import setMinutes from "date-fns/setMinutes";
 import { useState, useRef, useEffect } from "react";
 import type { OHLCV } from "ccxt";
 import { useIsStale } from "src/hooks/useIsStale";
+import { barSizeToDuration, roundTimestamp } from "src/utils/charts";
 import { CANDLES_PER_PAGE } from "./constants";
-import { barSizeToMinutes } from "./utils";
 import { useExchange } from "./useExchange";
 
 /**
- * Return current `Date` with hour precision
+ * Returns current time with `barSize` duration precision
  */
-function currentHour() {
-  let date = new Date();
-
-  date = setMilliseconds(date, 0);
-  date = setSeconds(date, 0);
-  date = setMinutes(date, 0);
-
-  return date;
+function currentTime(barSize: BarSize) {
+  return roundTimestamp(Date.now(), barSize);
 }
 
 function calcInitialSince(barSize: BarSize) {
-  const date = currentHour();
+  const timestamp = currentTime(barSize);
 
-  return calcNextSince(date.getTime(), barSize);
+  return calcNextSince(timestamp, barSize);
 }
 
 function calcNextSince(since: number, barSize: BarSize) {
-  const timeRange = barSizeToMinutes(barSize) * 60 * 1000; // * seconds * milliseconds
+  const timeRange = barSizeToDuration(barSize); // ms
 
   return since - timeRange * CANDLES_PER_PAGE;
 }

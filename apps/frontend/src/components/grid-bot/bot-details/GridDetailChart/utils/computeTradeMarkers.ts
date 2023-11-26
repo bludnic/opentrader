@@ -1,7 +1,7 @@
 import Big from "big.js";
 import type { TCompletedSmartTrade } from "src/types/trpc";
 import { computeMarker } from "src/utils/charts/marker";
-import { roundToInterval } from "src/utils/date/roundToInterval";
+import { roundTimestamp } from "src/utils/charts/barSize";
 import type { ChartBarSize } from "../GridDetailChart";
 
 type Order = {
@@ -80,7 +80,7 @@ function computeOrders(smartTrades: TCompletedSmartTrade[]): Order[] {
         orderId: order.id,
         quantity: order.quantity,
         filledPrice: order.filledPrice,
-        filledAt: roundToInterval(order.filledAt.getTime(), "1m"),
+        filledAt: roundTimestamp(order.filledAt.getTime(), "1m"),
         side: order.side === "Buy" ? "buy" : "sell",
       };
 
@@ -100,7 +100,7 @@ function computeOrders(smartTrades: TCompletedSmartTrade[]): Order[] {
  */
 function stackOrders(orders: Order[], timeframe: ChartBarSize): Marker[] {
   const markersMap = orders.reduce<MarkersMap>((acc, order) => {
-    const timestamp = roundToInterval(order.filledAt, timeframe);
+    const timestamp = roundTimestamp(order.filledAt, timeframe);
     let marker = acc[timestamp];
 
     if (marker) {
