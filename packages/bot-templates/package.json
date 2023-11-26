@@ -13,6 +13,7 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "@types/node": "^20.10.0",
     "eslint": "8.54.0",
     "typescript": "^5.2.2"
   },
