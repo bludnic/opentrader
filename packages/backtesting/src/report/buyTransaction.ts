@@ -14,7 +14,7 @@ export function buyTransaction(smartTrade: SmartTrade): BuyTransaction {
       fee: 0, // @todo fee
       updatedAt: buy.updatedAt,
     },
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- it may not, need to investigate
+
     sell: sell
       ? {
           price: sell.price,

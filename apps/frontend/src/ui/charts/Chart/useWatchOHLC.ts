@@ -1,6 +1,8 @@
-import { BarSize } from "@opentrader/types";
-import { Exchange, NetworkError, type OHLCV } from "ccxt";
-import { MutableRefObject, useEffect } from "react";
+import type { BarSize } from "@opentrader/types";
+import { NetworkError } from "ccxt";
+import type { Exchange, type OHLCV } from "ccxt";
+import type { MutableRefObject } from "react";
+import { useEffect } from "react";
 
 /**
  * Watch new candles using WebSockets

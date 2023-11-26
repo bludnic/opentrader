@@ -3,8 +3,8 @@
 import React from "react";
 import Grid from "@mui/joy/Grid";
 import { TRPCClientErrorBoundary } from "src/ui/errors/suspense";
-import { GridChart } from "./GridChart";
 import { useIsFirstRender } from "src/hooks/useIsFirstRender";
+import type { GridBotFormChartBarSize } from "src/store/bot-form";
 import {
   changeBarSize,
   setBotName,
@@ -17,10 +17,10 @@ import {
   selectBarSize,
   selectGridLines,
   selectSymbolId,
-  GridBotFormChartBarSize,
 } from "src/store/bot-form";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { generateBotName } from "src/utils/grid-bot/generateBotName";
+import { GridChart } from "./GridChart";
 import { CreateGridBotForm } from "./form";
 import { usePageData } from "./hooks/usePagaData";
 

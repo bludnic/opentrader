@@ -6,7 +6,7 @@ import Skeleton from "@mui/joy/Skeleton";
 import type { IGridLine } from "@opentrader/types";
 import type { FC } from "react";
 import React, { Suspense, useDeferredValue, useMemo, useState } from "react";
-import { GridBotFormChartBarSize } from "src/store/bot-form";
+import type { GridBotFormChartBarSize } from "src/store/bot-form";
 import { TIMEFRAMES } from "src/store/bot-form/constants";
 import { Chart, ChartAppBar } from "src/ui/charts/Chart";
 import { CHART_HEIGHT } from "src/ui/charts/Chart/constants";

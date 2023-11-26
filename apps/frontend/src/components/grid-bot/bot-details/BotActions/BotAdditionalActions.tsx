@@ -8,7 +8,8 @@ import AccordionSummary, {
 import AccordionDetails, {
   accordionDetailsClasses,
 } from "@mui/joy/AccordionDetails";
-import React, { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
+import React from "react";
 
 type BotAdditionalActionsProps = {
   children: ReactNode;
@@ -19,8 +20,6 @@ export const BotAdditionalActions: FC<BotAdditionalActionsProps> = ({
 }) => {
   return (
     <AccordionGroup
-      variant="plain"
-      transition="0.2s"
       size="lg"
       sx={(theme) => ({
         // maxWidth: 400,
@@ -43,6 +42,8 @@ export const BotAdditionalActions: FC<BotAdditionalActionsProps> = ({
           },
         },
       })}
+      transition="0.2s"
+      variant="plain"
     >
       <Accordion>
         <AccordionSummary>More actions</AccordionSummary>

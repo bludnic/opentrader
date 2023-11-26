@@ -1,5 +1,5 @@
-import { GridBotService } from "#trpc/services/grid-bot.service";
 import { xprisma } from "@opentrader/db";
+import { GridBotService } from "#trpc/services/grid-bot.service";
 import type { Context } from "#trpc/utils/context";
 import type { TDeleteGridBotInputSchema } from "./schema";
 

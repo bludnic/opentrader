@@ -1,6 +1,5 @@
 import type {
   SmartTradeEntity,
-  // eslint-disable-next-line camelcase -- this is exception
   SmartTradeEntity_Order_Order,
 } from "#db/entities";
 
@@ -10,7 +9,6 @@ import type {
  */
 export function assertIsOrderBased(
   smartTrade: SmartTradeEntity,
-  // eslint-disable-next-line camelcase -- this is exception
 ): asserts smartTrade is SmartTradeEntity_Order_Order {
   const { entryType, takeProfitType } = smartTrade;
 

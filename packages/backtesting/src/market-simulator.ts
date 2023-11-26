@@ -64,7 +64,7 @@ export class MarketSimulator {
    */
   private placeOrder(smartTrade: SmartTrade): boolean {
     // Update orders statuses from Idle to Placed
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
+
     if (smartTrade.buy && smartTrade.buy.status === OrderStatusEnum.Idle) {
       smartTrade.buy = {
         ...smartTrade.buy,
@@ -73,10 +73,8 @@ export class MarketSimulator {
 
       return true;
     } else if (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
       smartTrade.sell &&
       smartTrade.sell.status === OrderStatusEnum.Idle &&
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
       (!smartTrade.buy || smartTrade.buy.status === OrderStatusEnum.Filled)
     ) {
       smartTrade.sell = {
@@ -101,7 +99,6 @@ export class MarketSimulator {
 
     const updatedAt = candlestick.timestamp;
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
     if (smartTrade.buy && smartTrade.buy.status === OrderStatusEnum.Placed) {
       if (candlestick.close <= smartTrade.buy.price) {
         smartTrade.buy = {
@@ -117,7 +114,6 @@ export class MarketSimulator {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
     if (smartTrade.sell && smartTrade.sell.status === OrderStatusEnum.Placed) {
       if (candlestick.close >= smartTrade.sell.price) {
         smartTrade.sell = {

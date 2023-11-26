@@ -172,7 +172,6 @@ export function toOrderEntity<T extends OrderModel>(order: T): OrderEntity<T> {
         throw new Error('Not implemented yet: "Deleted" case');
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   } else if (type === "Market") {
     switch (status) {
       case "Idle":

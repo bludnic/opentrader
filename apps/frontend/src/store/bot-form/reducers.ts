@@ -1,9 +1,8 @@
-import type { IGridLine } from "@opentrader/types";
+import type { IGridLine, ExchangeCode } from "@opentrader/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { GridBotFormChartBarSize } from "src/store/bot-form/types";
+import type { GridBotFormChartBarSize } from "src/store/bot-form/types";
 import type { TExchangeAccount } from "src/types/trpc";
-import type { ExchangeCode } from "@opentrader/types";
 import type {
   ChangeFormTypePayload,
   UpdateGridLinePricePayload,

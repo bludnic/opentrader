@@ -6,13 +6,13 @@ import Typography from "@mui/joy/Typography";
 import type { FC } from "react";
 import React from "react";
 import { SyncClosedOrdersButton } from "src/components/debug/SyncClosedOrdersButton";
+import { tClient } from "src/lib/trpc/client";
 import { BotAdditionalActions } from "../BotActions/BotAdditionalActions";
 import { RunBotTemplateButton } from "../BotActions/actions/RunBotTemplateButton";
 import { StartStopBotButton } from "../BotActions/actions/StartStopBotButton";
 import { DeleteBotButton } from "../BotActions/actions/DeleteBotButton";
-import { tClient } from "src/lib/trpc/client";
-import { BotSettings } from "./BotSettings";
 import { BotActions } from "../BotActions/BotActions";
+import { BotSettings } from "./BotSettings";
 
 type BotSettingsCardProps = {
   botId: number;

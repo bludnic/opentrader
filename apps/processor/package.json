@@ -8,7 +8,8 @@
     "dev:preview": "ts-node -r tsconfig-paths/register src/index.ts",
     "start": "tsx src/index.ts",
     "build": "webpack",
-    "lint": "eslint . --quiet"
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "bludnic",

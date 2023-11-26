@@ -1,4 +1,4 @@
-import { BarSize } from "@opentrader/types";
+import type { BarSize } from "@opentrader/types";
 
 export type GridBotFormChartBarSize = Extract<
   BarSize,

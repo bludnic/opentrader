@@ -14,7 +14,6 @@ export function gridTable(smartTrades: SmartTrade[]) {
 
     const prevSmartTrade = smartTrades[i - 1];
     const isCurrent =
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need to investigate
       isSell && prevSmartTrade?.sell?.status === OrderStatusEnum.Idle;
 
     const side = isBuy ? "buy" : isSell ? "sell" : "unknown";

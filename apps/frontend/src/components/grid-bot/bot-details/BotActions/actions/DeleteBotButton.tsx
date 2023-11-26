@@ -64,6 +64,8 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
     <Button
       className={clsx(classes.root, className)}
       color="danger"
+      loading={deleteBot.isLoading}
+      loadingPosition="start"
       onClick={() => {
         showConfirmDialog(
           "Are you sure you want to delete the bot? All orders and profit history will be deleted as well.",
@@ -81,8 +83,6 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
       }}
       size="lg"
       variant="soft"
-      loading={deleteBot.isLoading}
-      loadingPosition="start"
     >
       Delete bot
     </Button>

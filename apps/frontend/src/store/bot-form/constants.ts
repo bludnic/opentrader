@@ -1,4 +1,4 @@
-import { GridBotFormChartBarSize } from "./types";
+import type { GridBotFormChartBarSize } from "./types";
 
 export const DEFAULT_GRID_LINES_NUMBER = 10;
 export const DEFAULT_QUANTITY_PER_GRID = 1;

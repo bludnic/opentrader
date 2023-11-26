@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint . --quiet"
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix"
   },
   "author": "",
   "license": "ISC",

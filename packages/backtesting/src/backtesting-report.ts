@@ -46,7 +46,6 @@ export class BacktestingReport {
   private calcTotalProfit(): number {
     return this.smartTrades.reduce((acc, curr) => {
       const priceDiff =
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need investigation
         curr.buy && curr.sell ? curr.sell.price - curr.buy.price : 0;
       const profit = priceDiff * curr.quantity;
 

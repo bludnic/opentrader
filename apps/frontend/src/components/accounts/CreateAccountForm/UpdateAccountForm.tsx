@@ -71,7 +71,6 @@ export const UpdateAccountForm: FC<UpdateAccountFormProps> = (props) => {
   ):
     | Partial<Record<keyof UpdateExchangeAccountFormValues, string>>
     | undefined => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- it may be empty string
     if (!values.exchangeCode) {
       return { exchangeCode: "Required" };
     }

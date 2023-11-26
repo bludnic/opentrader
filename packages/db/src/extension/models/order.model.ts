@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-import type { $Enums } from "@prisma/client";
+import type { PrismaClient, $Enums } from "@prisma/client";
 
 export const orderModel = (prisma: PrismaClient) => ({
   async findByExchangeOrderId(exchangeOrderId: string) {

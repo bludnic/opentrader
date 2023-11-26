@@ -33,7 +33,7 @@ export default function NextAppDirEmotionCacheProvider(
     let inserted: { name: string; isGlobal: boolean }[] = [];
     cache.insert = (...args) => {
       const [selector, serialized] = args;
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- need better typing
+
       if (cache.inserted[serialized.name] === undefined) {
         inserted.push({
           name: serialized.name,

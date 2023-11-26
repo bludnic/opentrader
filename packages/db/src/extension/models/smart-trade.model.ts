@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 
 export const smartTradeModel = (prisma: PrismaClient) => ({
   async setRef(id: number, ref: string | null) {

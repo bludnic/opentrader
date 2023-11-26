@@ -6,7 +6,8 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --quiet"
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "devDependencies": {

@@ -86,7 +86,6 @@ export class GridBotProcessor {
         await processor.start();
       } else if (command === "stop") {
         await processor.stop();
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- @todo switch/case
       } else if (command === "process") {
         await processor.process();
       }

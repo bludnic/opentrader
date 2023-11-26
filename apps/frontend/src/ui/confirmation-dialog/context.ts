@@ -2,7 +2,7 @@
 
 import { createContext } from "react";
 import type { ModalDialogProps } from "@mui/joy/ModalDialog";
-import { ButtonProps } from "@mui/joy/Button";
+import type { ButtonProps } from "@mui/joy/Button";
 
 export type ConfirmationDialogOptions = {
   /**

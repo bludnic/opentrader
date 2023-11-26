@@ -6,6 +6,7 @@
       "outputs": [".next/**", "dist"]
     },
     "lint": {},
+    "lint:fix": {},
     "dev": {},
     "start": {},
     "prisma:migrate": {},

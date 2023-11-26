@@ -26,7 +26,6 @@ export function isWaitingGridLine(
     .minus(targetGridLine.price)
     .abs();
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   if (prevGridLine) {
     const prevGridLinePriceDiff = big(currentAssetPrice)
       .minus(prevGridLine.price)
@@ -38,7 +37,6 @@ export function isWaitingGridLine(
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for readability
   if (nextGridLine) {
     const nextGridLinePriceDiff = big(currentAssetPrice)
       .minus(nextGridLine.price)

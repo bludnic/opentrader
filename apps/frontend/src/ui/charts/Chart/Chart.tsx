@@ -13,8 +13,8 @@ import type {
 import type { FC, ReactNode } from "react";
 import React, { useEffect } from "react";
 import { useElementSize } from "usehooks-ts";
-import { tClient } from "src/lib/trpc/client";
 import type { BarSize } from "@opentrader/types";
+import { tClient } from "src/lib/trpc/client";
 import { CHART_HEIGHT } from "./constants";
 import { useCandlesticksChart } from "./useCandlesticksChart";
 import { useOHLC } from "./useOHLC";
