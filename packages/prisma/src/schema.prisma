@@ -120,7 +120,7 @@ model SmartTrade {
   exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
   exchangeAccountId Int
 
-  bot   Bot? @relation(fields: [botId], references: [id])
+  bot   Bot? @relation(fields: [botId], references: [id], onDelete: Cascade)
   botId Int?
 
   owner   User @relation(fields: [ownerId], references: [id])

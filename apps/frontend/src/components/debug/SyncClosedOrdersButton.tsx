@@ -56,7 +56,7 @@ export const SyncClosedOrdersButton: FC<SyncClosedOrdersButtonProps> = (
       size="lg"
       variant="soft"
     >
-      Sync closed orders
+      Sync orders
     </Button>
   );
 };

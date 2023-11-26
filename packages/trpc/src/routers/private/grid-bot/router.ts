@@ -5,6 +5,8 @@ import { getGridBot } from "./get-bot/handler";
 import { ZGetGridBotInputSchema } from "./get-bot/schema";
 import { createGridBot } from "./create-bot/handler";
 import { ZCreateGridBotInputSchema } from "./create-bot/schema";
+import { deleteGridBot } from "./delete-bot/handler";
+import { ZDeleteGridBotInputSchema } from "./delete-bot/schema";
 import { updateGridBot } from "./update-bot/handler";
 import { ZUpdateGridBotInputSchema } from "./update-bot/schema";
 import { startGridBot } from "./start-bot/handler";
@@ -34,6 +36,9 @@ export const gridBotRouter = router({
   create: authorizedProcedure
     .input(ZCreateGridBotInputSchema)
     .mutation(createGridBot),
+  delete: authorizedProcedure
+    .input(ZDeleteGridBotInputSchema)
+    .mutation(deleteGridBot),
   update: authorizedProcedure
     .input(ZUpdateGridBotInputSchema)
     .mutation(updateGridBot),

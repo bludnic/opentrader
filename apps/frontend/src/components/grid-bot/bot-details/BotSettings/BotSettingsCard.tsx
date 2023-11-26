@@ -6,10 +6,13 @@ import Typography from "@mui/joy/Typography";
 import type { FC } from "react";
 import React from "react";
 import { SyncClosedOrdersButton } from "src/components/debug/SyncClosedOrdersButton";
-import { RunBotTemplateButton } from "src/components/grid-bot/bot-details/RunBotTemplateButton";
-import { StartStopBotButton } from "src/components/grid-bot/bot-details/StartStopBotButton";
+import { BotAdditionalActions } from "../BotActions/BotAdditionalActions";
+import { RunBotTemplateButton } from "../BotActions/actions/RunBotTemplateButton";
+import { StartStopBotButton } from "../BotActions/actions/StartStopBotButton";
+import { DeleteBotButton } from "../BotActions/actions/DeleteBotButton";
 import { tClient } from "src/lib/trpc/client";
 import { BotSettings } from "./BotSettings";
+import { BotActions } from "../BotActions/BotActions";
 
 type BotSettingsCardProps = {
   botId: number;
@@ -32,11 +35,15 @@ export const BotSettingsCard: FC<BotSettingsCardProps> = ({ botId }) => {
 
       <BotSettings bot={bot} />
 
-      <StartStopBotButton bot={bot} />
+      <BotActions>
+        <StartStopBotButton bot={bot} />
+      </BotActions>
 
-      <RunBotTemplateButton bot={bot} />
-
-      <SyncClosedOrdersButton polling={false} />
+      <BotAdditionalActions>
+        <SyncClosedOrdersButton polling={false} />
+        <RunBotTemplateButton bot={bot} />
+        <DeleteBotButton bot={bot} />
+      </BotAdditionalActions>
     </Card>
   );
 };

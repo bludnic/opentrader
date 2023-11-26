@@ -18,6 +18,7 @@ type SyncOrdersButtonProps = {
   bot: TGridBot;
 };
 
+// @deprecated
 export const SyncOrdersButton: FC<SyncOrdersButtonProps> = (props) => {
   const { className, bot } = props;
   const { showSnackbar } = useSnackbar();

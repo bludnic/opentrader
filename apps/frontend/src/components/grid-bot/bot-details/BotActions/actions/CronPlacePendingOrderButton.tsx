@@ -48,6 +48,7 @@ function buildTooltipTable(smartTrades: TPendingSmartTrade[]) {
   return `${tableHead}${tableBody}`;
 }
 
+// @deprecated
 export const CronPlacePendingOrderButton: FC<
   CronPlacePendingOrderButtonProps
 > = (props) => {
