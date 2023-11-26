@@ -1,6 +1,6 @@
 import type { BarSize } from "@opentrader/types";
 import { NetworkError } from "ccxt";
-import type { Exchange, type OHLCV } from "ccxt";
+import type { Exchange, OHLCV } from "ccxt";
 import type { MutableRefObject } from "react";
 import { useEffect } from "react";
 
