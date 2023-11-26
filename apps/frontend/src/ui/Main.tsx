@@ -2,10 +2,8 @@
 
 import { styled } from "@mui/joy/styles";
 import type { FC, ReactNode } from "react";
-import {
-  APP_DRAWER_WIDTH,
-  APP_MINI_DRAWER_WITH,
-} from "src/ui/navigation/AppDrawer";
+import { APP_BAR_HEIGHT } from "./navigation/AppBar";
+import { APP_DRAWER_WIDTH, APP_MINI_DRAWER_WITH } from "./navigation/AppDrawer";
 
 export const StyledMain = styled("main")({
   padding: 32,
@@ -23,6 +21,7 @@ export const Main: FC<MainProps> = ({ size, children }) => {
     <StyledMain
       sx={{
         marginLeft: `${drawerWidth}px`,
+        marginTop: `${APP_BAR_HEIGHT}px`,
       }}
     >
       {children}
