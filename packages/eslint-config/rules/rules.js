@@ -26,6 +26,7 @@ module.exports = {
   "@typescript-eslint/no-extraneous-class": "off",
   "@typescript-eslint/naming-convention": "off",
   "@typescript-eslint/no-unnecessary-condition": "off",
+  "@typescript-eslint/no-meaningless-void-operator": "off",
   camelcase: "off",
   "import/no-cycle": "off", // @todo investigate and enable the rule
 
