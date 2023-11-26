@@ -56,6 +56,7 @@ export const ConfirmationDialog: FC = () => {
         color={color}
         variant={variant}
         layout={layout}
+        maxWidth={500}
         // role="alertdialog"
       >
         <DialogTitle>
