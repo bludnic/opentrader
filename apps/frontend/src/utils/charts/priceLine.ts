@@ -16,8 +16,8 @@ export function computePriceLine(
   const color = isWaitingLinePrice
     ? "gray"
     : price > waitingPrice
-    ? "green"
-    : "red";
+    ? "red"
+    : "green";
 
   const label = isWaitingLinePrice
     ? `Waiting line · ${index}`
@@ -35,11 +35,19 @@ export function priceLine(
   color: "gray" | "green" | "red",
   label: string,
 ): CreatePriceLineOptions {
+  const colorMap = {
+    gray: "#636B74", // var(--joy-palette-neutral-500, #636B74)
+    green: "#1F7A1F", // var(--joy-palette-success-500, #1F7A1F)
+    red: "#C41C1C", // var(--joy-palette-danger-500, #C41C1C)
+  };
+
+  const hexColor = colorMap[color];
+
   return {
     price,
-    color,
+    color: hexColor,
     axisLabelVisible: true,
-    axisLabelColor: color,
+    axisLabelColor: hexColor,
     axisLabelTextColor: "#fff",
     title: label,
     lineVisible: true,
