@@ -1,5 +1,5 @@
 import { BarSize } from "@opentrader/types";
-import { Exchange, type OHLCV } from "ccxt";
+import { Exchange, NetworkError, type OHLCV } from "ccxt";
 import { MutableRefObject, useEffect } from "react";
 
 /**
@@ -18,14 +18,22 @@ export function useWatchOHLC(
     const watchNewCandle = async () => {
       console.log(`WS: Subscribed to ${barSize} candle of ${currencyPair}`);
       while (enabled) {
-        const candles = await exchange.current!.watchOHLCV(
-          currencyPair,
-          barSize,
-        );
+        try {
+          const candles = await exchange.current!.watchOHLCV(
+            currencyPair,
+            barSize,
+          );
 
-        // shouldUpdate
-        if (enabled) {
-          onUpdate(candles[0]);
+          // shouldUpdate
+          if (enabled) {
+            onUpdate(candles[0]);
+          }
+        } catch (err) {
+          if (err instanceof NetworkError) {
+            console.log(`WS: Socket connection closed`, err);
+          } else {
+            throw err;
+          }
         }
       }
     };
