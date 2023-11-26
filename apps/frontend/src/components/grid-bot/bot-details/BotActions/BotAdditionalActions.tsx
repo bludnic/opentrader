@@ -2,7 +2,9 @@
 
 import Accordion from "@mui/joy/Accordion";
 import AccordionGroup from "@mui/joy/AccordionGroup";
-import AccordionSummary from "@mui/joy/AccordionSummary";
+import AccordionSummary, {
+  accordionSummaryClasses,
+} from "@mui/joy/AccordionSummary";
 import AccordionDetails, {
   accordionDetailsClasses,
 } from "@mui/joy/AccordionDetails";
@@ -25,6 +27,9 @@ export const BotAdditionalActions: FC<BotAdditionalActionsProps> = ({
         mx: -2,
         mb: -2,
         borderRadius: "md",
+        [`& .${accordionSummaryClasses.button}`]: {
+          color: theme.vars.palette.text.tertiary,
+        },
         [`& .${accordionDetailsClasses.root}`]: {
           backgroundColor: "transparent",
           color: theme.vars.palette.text.primary,
