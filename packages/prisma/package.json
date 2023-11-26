@@ -21,13 +21,13 @@
     "prisma": "^5.6.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "zod-prisma-types": "^2.8.1"
+    "zod-prisma-types": "3.1.6"
   },
   "dependencies": {
     "@opentrader/tools": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@prisma/client": "5.6.0",
-    "zod": "3.21.1"
+    "zod": "3.22.4"
   },
   "prisma": {
     "schema": "src/schema.prisma",
