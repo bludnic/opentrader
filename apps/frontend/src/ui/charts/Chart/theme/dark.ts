@@ -1,8 +1,11 @@
-import { LineStyle } from "lightweight-charts";
+import { CrosshairMode, LineStyle } from "lightweight-charts";
 import type { ChartTheme } from "./types";
 
 export const darkTheme: ChartTheme = {
   chartOptions: {
+    crosshair: {
+      mode: CrosshairMode.Normal,
+    },
     layout: {
       background: { color: "#222" },
       textColor: "#DDD",
