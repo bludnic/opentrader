@@ -8,7 +8,7 @@ envValidationSchema.parse(process.env); // validate ENV schema
 
 /** @type {import('next').NextConfig} */
 module.exports = {
-  output: 'standalone',
+  output: "standalone",
   reactStrictMode: true,
   webpack: (config) => {
     // Solves: Module not found: `bufferutil` and `utf-8-validate`
