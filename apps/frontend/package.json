@@ -34,7 +34,7 @@
     "final-form": "^4.20.10",
     "lightweight-charts": "^4.1.1",
     "lodash": "^4.17.21",
-    "next": "14.0.2",
+    "next": "14.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-final-form": "^6.5.9",
