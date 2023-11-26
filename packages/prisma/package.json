@@ -18,7 +18,7 @@
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.9.0",
-    "prisma": "^5.5.2",
+    "prisma": "^5.6.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "zod-prisma-types": "^2.8.1"
@@ -26,7 +26,7 @@
   "dependencies": {
     "@opentrader/tools": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@prisma/client": "5.5.2",
+    "@prisma/client": "5.6.0",
     "zod": "3.21.1"
   },
   "prisma": {
