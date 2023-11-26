@@ -1,7 +1,7 @@
+import { PrismaClient } from "@prisma/client";
 import type { $Enums } from "@prisma/client";
-import { prisma } from "#db/prisma";
 
-export const orderModel = {
+export const orderModel = (prisma: PrismaClient) => ({
   async findByExchangeOrderId(exchangeOrderId: string) {
     return prisma.order.findFirst({
       where: {
@@ -99,4 +99,4 @@ export const orderModel = {
       },
     });
   },
-};
+});

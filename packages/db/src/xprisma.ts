@@ -1,19 +1,28 @@
-import { prisma } from "./prisma";
 import { gridBotModel } from "./extension/models/grid-bot.model";
 import { orderModel } from "./extension/models/order.model";
 import { smartTradeModel } from "./extension/models/smart-trade.model";
+import { PrismaClient } from "@prisma/client";
 
-/**
- * Type utilities https://www.prisma.io/docs/concepts/components/prisma-client/client-extensions/type-utilities
- */
-export const xprisma = prisma.$extends({
+function newPrismaClientInstance() {
+  console.log("❕ DB: Created new instance of PrismaClient");
+  return new PrismaClient();
+}
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient;
+  xprisma: typeof xprismaClient;
+};
+
+const prismaClient = globalForPrisma.prisma || newPrismaClientInstance();
+
+const xprismaClient = prismaClient.$extends({
   name: "xprisma",
   model: {
     bot: {
-      grid: gridBotModel,
+      grid: gridBotModel(prismaClient),
     },
-    order: orderModel,
-    smartTrade: smartTradeModel,
+    order: orderModel(prismaClient),
+    smartTrade: smartTradeModel(prismaClient),
   },
   result: {
     exchangeAccount: {
@@ -38,3 +47,10 @@ export const xprisma = prisma.$extends({
     },
   },
 });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prismaClient;
+  globalForPrisma.xprisma = xprismaClient;
+}
+
+export const xprisma = globalForPrisma.xprisma || xprismaClient;

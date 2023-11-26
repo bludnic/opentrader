@@ -1,4 +1,4 @@
-import { xprisma } from "#db/xprimsa";
+import { xprisma } from "@opentrader/db";
 import { SmartTradeProcessor } from "@opentrader/processing";
 import type { Context } from "#trpc/utils/context";
 import type { TCronPlacePendingOrdersInputSchema } from "./schema";

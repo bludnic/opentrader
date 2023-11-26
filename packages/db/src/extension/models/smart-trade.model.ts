@@ -1,6 +1,6 @@
-import { prisma } from "#db/prisma";
+import { PrismaClient } from "@prisma/client";
 
-export const smartTradeModel = {
+export const smartTradeModel = (prisma: PrismaClient) => ({
   async setRef(id: number, ref: string | null) {
     return prisma.smartTrade.update({
       where: {
@@ -25,4 +25,4 @@ export const smartTradeModel = {
       },
     });
   },
-};
+});

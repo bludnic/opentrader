@@ -1,9 +1,8 @@
-import type { Prisma } from "@prisma/client";
-import { prisma } from "#db/prisma";
+import { Prisma, PrismaClient } from "@prisma/client";
 import type { TGridBotSettings } from "#db/types/grid-bot";
 import { ZGridBotSettings } from "#db/types/grid-bot";
 
-export const gridBotModel = {
+export const gridBotModel = (prisma: PrismaClient) => ({
   async findUnique<T extends Prisma.BotFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindUniqueArgs>,
   ) {
@@ -143,4 +142,4 @@ export const gridBotModel = {
       },
     });
   },
-};
+});

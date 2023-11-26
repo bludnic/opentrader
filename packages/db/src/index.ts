@@ -1,4 +1,4 @@
-export * from "./xprimsa";
+export * from "./xprisma";
 export * from "./types";
 export * from "./entities";
 export * from "./asserts";
