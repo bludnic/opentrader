@@ -1,4 +1,8 @@
 export function getBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC) {
+    return `${process.env.NEXT_PUBLIC_PROCESSOR_URL}`;
+  }
+
   if (typeof window !== "undefined")
     // browser should use relative path
     return "";

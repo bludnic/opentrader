@@ -1,8 +1,15 @@
 import http from "node:http";
 import express from "express";
+import cors from "cors";
 import { processor } from "./processing";
+import { useTrpc } from "./trpc";
 
 const app = express();
+app.use(cors());
+
+if (process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC) {
+  useTrpc(app);
+}
 
 const PORT = process.env.PORT || 4000;
 

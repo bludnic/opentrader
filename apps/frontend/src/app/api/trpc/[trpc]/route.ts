@@ -5,6 +5,8 @@ import { PrismaCacheProvider } from "@opentrader/exchanges/server";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
+const FRONTEND_ENABLE_TRPC = !process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC;
+
 const handler = (req: Request) =>
   fetchRequestHandler({
     endpoint: "/api/trpc",
@@ -21,4 +23,7 @@ const handler = (req: Request) =>
     }),
   });
 
-export { handler as GET, handler as POST };
+export const GET = FRONTEND_ENABLE_TRPC ? handler : undefined;
+export const POST = FRONTEND_ENABLE_TRPC ? handler : undefined;
+
+// export { handler as GET, handler as POST };

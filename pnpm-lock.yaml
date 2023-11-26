@@ -214,6 +214,12 @@ importers:
       '@opentrader/processing':
         specifier: workspace:*
         version: link:../../packages/processing
+      '@opentrader/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
+      '@trpc/server':
+        specifier: ^10.43.3
+        version: 10.43.3
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -223,6 +229,9 @@ importers:
       ccxt:
         specifier: 4.1.48
         version: 4.1.48
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -245,6 +254,9 @@ importers:
       '@types/async':
         specifier: ^3.2.23
         version: 3.2.23
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/node':
         specifier: ^20.9.0
         version: 20.9.0
@@ -2526,6 +2538,12 @@ packages:
     dependencies:
       '@types/node': 20.10.0
 
+  /@types/cors@2.8.17:
+    resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
+    dependencies:
+      '@types/node': 20.10.0
+    dev: true
+
   /@types/cross-spawn@6.0.3:
     resolution: {integrity: sha512-BDAkU7WHHRHnvBf5z89lcvACsvkz/n7Tv+HyD/uW76O29HoH1Tk/W6iQrepaZVbisvlEek4ygwT8IW7ow9XLAA==}
     dependencies:
@@ -3811,6 +3829,14 @@ packages:
 
   /core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+    dev: false
+
+  /cors@2.8.5:
+    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
+    engines: {node: '>= 0.10'}
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
     dev: false
 
   /cosmiconfig@7.1.0:

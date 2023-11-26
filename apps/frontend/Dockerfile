@@ -47,7 +47,16 @@ COPY turbo.json turbo.json
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN turbo run prisma:migrate:prod --filter=packages/prisma
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
+ARG NEXT_PUBLIC_PROCESSOR_URL
+ENV NEXT_PUBLIC_PROCESSOR_URL=$NEXT_PUBLIC_PROCESSOR_URL
+
+ARG NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC
+ENV NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC=$NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC
+
+RUN turbo run prisma:deploy --filter=./packages/prisma
 RUN turbo run build --filter=frontend
 
 FROM base AS runner

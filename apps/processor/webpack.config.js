@@ -21,6 +21,7 @@ module.exports = {
       "#db": path.resolve(__dirname, "../../packages/db/src"),
       "#processing": path.resolve(__dirname, "../../packages/processing/src"),
       "#exchanges": path.resolve(__dirname, "../../packages/exchanges/src"),
+      "#trpc": path.resolve(__dirname, "../../packages/trpc/src"),
     },
   },
   // in order to ignore all modules in node_modules folder

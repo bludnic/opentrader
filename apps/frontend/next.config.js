@@ -1,7 +1,8 @@
 const { z } = require("zod");
 
 const envValidationSchema = z.object({
-  NEXT_PUBLIC_PROCESSOR_API_URL: z.string().min(1),
+  NEXT_PUBLIC_PROCESSOR_URL: z.string().optional(),
+  NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: z.enum(["true", ""]).optional(),
   DATABASE_URL: z.string().min(1),
 });
 envValidationSchema.parse(process.env); // validate ENV schema
