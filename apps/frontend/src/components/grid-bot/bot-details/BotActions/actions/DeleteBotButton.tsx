@@ -66,7 +66,7 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
       color="danger"
       onClick={() => {
         showConfirmDialog(
-          "Are you sure you want to delete the bot?",
+          "Are you sure you want to delete the bot? All orders and profit history will be deleted as well.",
           () => {
             void deleteBot.mutate({
               botId: bot.id,
