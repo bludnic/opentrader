@@ -59,8 +59,6 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
           }
         }
       } catch (err) {
-        console.log(err);
-
         if (err instanceof NetworkError) {
           console.log("❗ NetworkError occurred. Possible WS connection lost.");
           // https://github.com/ccxt/ccxt/issues/7951
@@ -69,6 +67,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
 
           // @todo RequestTimeout reconnect on error
         } else {
+          console.log(err);
           await this.disable();
           break;
         }
