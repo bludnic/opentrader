@@ -2,6 +2,8 @@ import type { BarSize, ExchangeCode } from "@opentrader/types";
 import { useState, useRef, useEffect } from "react";
 import type { OHLCV } from "ccxt";
 import { useIsStale } from "src/hooks/useIsStale";
+import { useWatchOHLC } from "./useWatchOHLC";
+import { logCandle } from "./utils";
 import { barSizeToDuration, roundTimestamp } from "src/utils/charts";
 import { CANDLES_PER_PAGE } from "./constants";
 import { useExchange } from "./useExchange";
@@ -90,6 +92,27 @@ export function useOHLC(
 
     setSince(calcNextSince(since, barSize));
   };
+
+  // Watch new candles using WebSockets
+  useWatchOHLC(exchange, currencyPair, barSize, (candle) => {
+    const [timestamp] = candle;
+
+    setCandlesticks((candlesticks) => {
+      const isNewCandle = !candlesticks.some(
+        (candlestick) => candlestick[0] === timestamp,
+      );
+
+      if (isNewCandle) {
+        logCandle(`WS: New ${barSize} candle`, candle);
+        // push new candle
+        return [...candlesticks, candle];
+      } else {
+        logCandle(`WS: Updated ${barSize} candle`, candle);
+        // replace last candle data
+        return [...candlesticks.slice(0, -1), candle];
+      }
+    });
+  });
 
   return {
     candlesticks,
