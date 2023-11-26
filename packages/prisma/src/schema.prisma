@@ -7,9 +7,9 @@ generator client {
 }
 
 generator zod {
-  provider         = "zod-prisma-types"
-  output           = "./zod"
-  useMultipleFiles = true
+  provider          = "zod-prisma-types"
+  output            = "./zod"
+  useMultipleFiles  = true
   // Since there is a known typscript error when using zod greater than 3.21.1 you can
   // now use type assertions to circumvent the error and use the latest version of zod.
   // @todo remove when issue will be resolved
