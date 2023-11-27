@@ -14,6 +14,9 @@ export async function getGridBots({ ctx }: Options) {
         id: ctx.user.id,
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return bots;
