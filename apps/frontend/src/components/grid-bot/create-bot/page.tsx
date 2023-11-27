@@ -19,7 +19,7 @@ import {
   selectSymbolId,
 } from "src/store/bot-form";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { generateBotName } from "src/utils/grid-bot/generateBotName";
+import { generateBotName } from "src/utils/bot-name-generator";
 import { GridChart } from "./GridChart";
 import { CreateGridBotForm } from "./form";
 import { usePageData } from "./hooks/usePagaData";
