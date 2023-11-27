@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext } from "react";
+import { createContext, ReactNode } from "react";
 import type { ModalDialogProps } from "@mui/joy/ModalDialog";
 import type { ButtonProps } from "@mui/joy/Button";
 
@@ -43,7 +43,7 @@ export type ConfirmationDialogOptions = {
    * Cancel button text.
    * Default to "Cancel"
    */
-  cancelText?: string;
+  cancelText?: ReactNode;
   /**
    * Cancel button color.
    * Default to `"neutral"`
@@ -72,13 +72,13 @@ const defaultOptions: Required<ConfirmationDialogOptions> = {
 export type State = {
   open: boolean;
   showConfirmDialog: (
-    message: string,
+    message: ReactNode,
     onConfirm: () => void,
     options?: ConfirmationDialogOptions,
   ) => void;
   handleClose: () => void;
   onConfirm: () => Promise<unknown> | unknown;
-  message: string;
+  message: ReactNode;
 } & Required<ConfirmationDialogOptions>;
 
 export const defaultState: State = {

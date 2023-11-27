@@ -23,7 +23,7 @@ export const ConfirmationDialogProvider: FC<
   };
 
   const showConfirmDialog = (
-    message: string,
+    message: ReactNode,
     onConfirm: () => void,
     options?: ConfirmationDialogOptions,
   ) => {
