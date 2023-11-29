@@ -94,7 +94,7 @@ export const Chart: FC<ChartProps> = ({
 
     return () => {
       savedPriceLines.forEach((priceLine) => {
-        series.removePriceLine(priceLine);
+        chart.series.current?.removePriceLine(priceLine);
       });
     };
   }, [priceLines, showPriceLines]);
@@ -109,7 +109,7 @@ export const Chart: FC<ChartProps> = ({
     series.setMarkers(markers);
 
     return () => {
-      series.setMarkers([]);
+      chart.series.current?.setMarkers([]);
     };
   }, [markers, showMarkers]);
 

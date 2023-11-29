@@ -28,6 +28,8 @@ export function useCandlesticksChart(params: UseCandlesticksChartParams) {
 
     return () => {
       chart.current?.remove();
+      chart.current = null;
+      series.current = null;
     };
   }, []);
 
