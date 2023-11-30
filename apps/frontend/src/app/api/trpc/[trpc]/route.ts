@@ -2,6 +2,7 @@ import { appRouter } from "@opentrader/trpc";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { cache } from "@opentrader/exchanges";
 import { PrismaCacheProvider } from "@opentrader/exchanges/server";
+import { cookies } from "next/headers";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
@@ -23,15 +24,31 @@ const handler = (req: Request) =>
     endpoint: "/api/trpc",
     req,
     router: appRouter,
-    createContext: () => ({
-      user: {
-        id: 1,
-        password: "huitebe",
-        email: "nu@nahui",
-        displayName: "Hui tebe",
-        role: "Admin" as const, // @todo use createContext above
-      },
-    }),
+    createContext: () => {
+      const passwordCookie = cookies().get("ADMIN_PASSWORD");
+
+      if (!passwordCookie) {
+        return {
+          user: null,
+        };
+      }
+
+      if (passwordCookie.value === process.env.ADMIN_PASSWORD) {
+        return {
+          user: {
+            id: 1,
+            password: "huitebe",
+            email: "nu@nahui",
+            displayName: "Hui tebe",
+            role: "Admin" as const,
+          },
+        };
+      }
+
+      return {
+        user: null,
+      };
+    },
   });
 
 export const GET = FRONTEND_ENABLE_TRPC ? handler : undefined;

@@ -7,15 +7,25 @@ import type { Express } from "express";
 const createContext = ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => ({
-  user: {
-    id: 1,
-    password: "huitebe",
-    email: "nu@nahui",
-    displayName: "Hui tebe",
-    role: "Admin" as const,
-  },
-});
+}: trpcExpress.CreateExpressContextOptions) => {
+  const cookiePassword = (req.cookies as Record<string, string>).ADMIN_PASSWORD;
+
+  if (cookiePassword === process.env.ADMIN_PASSWORD) {
+    return {
+      user: {
+        id: 1,
+        password: "huitebe",
+        email: "nu@nahui",
+        displayName: "Hui tebe",
+        role: "Admin" as const,
+      },
+    };
+  }
+
+  return {
+    user: null,
+  };
+};
 type Context = Awaited<ReturnType<typeof createContext>>;
 
 export const t = initTRPC.context<Context>().create();

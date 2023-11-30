@@ -5,6 +5,7 @@ const envValidationSchema = z.object({
   NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: z.enum(["true", ""]).optional(),
   NEXT_PUBLIC_STATIC: z.enum(["true", ""]).optional(),
   DATABASE_URL: z.string().min(1),
+  ADMIN_PASSWORD: z.string().min(1),
 });
 envValidationSchema.parse(process.env); // validate ENV schema
 

@@ -3,10 +3,12 @@ import path from "node:path";
 import express from "express";
 import cors from "cors";
 import serveHandler from "serve-handler";
+import cookieParser from "cookie-parser";
 import { processor } from "./processing";
 import { useTrpc } from "./trpc";
 
 const app = express();
+app.use(cookieParser());
 app.use(cors());
 
 if (process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC) {
