@@ -37,7 +37,7 @@ export default function CreateGridBotPage() {
     dispatch(setQuantityPerGrid(symbol.filters.lot.minQuantity));
     dispatch(setLowPrice(lowPrice));
     dispatch(setHighPrice(highPrice));
-    dispatch(setBotName(generateBotName(symbol)));
+    dispatch(setBotName(generateBotName()));
   }
 
   const symbolId = useAppSelector(selectSymbolId);
