@@ -24,14 +24,7 @@ export const ExchangeIcon: FC<Props> = ({
 
   // When using <Image/>, after building as a static app
   // image returns 404 Not Found.
-  return (
-    <img
-      alt={exchangeCode}
-      height={height}
-      src={logoUrl}
-      width={width}
-    />
-  );
+  return <img alt={exchangeCode} height={height} src={logoUrl} width={width} />;
 };
 
 ExchangeIcon.displayName = componentName;
