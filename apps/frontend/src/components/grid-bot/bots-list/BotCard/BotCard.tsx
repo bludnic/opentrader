@@ -23,6 +23,7 @@ import type { TGridBot } from "src/types/trpc";
 import { calcAverageQuantityPerGrid } from "src/utils/grid-bot/calcAverageQuantityPerGrid";
 import { findHighestGridLinePrice } from "src/utils/grid-bot/findHighestGridLinePrice";
 import { findLowestGridLinePrice } from "src/utils/grid-bot/findLowestGridLinePrice";
+import { toPage } from "src/utils/next/toPage";
 import { BotStatusIndicator } from "./BotStatusIndicator";
 import { Bull } from "./Bull";
 
@@ -74,7 +75,7 @@ export const BotCard: FC<BotCardProps> = (props) => {
         <Box display="flex">
           <Link
             className={classes.botTitle}
-            href={`/dashboard/grid-bot/${bot.id}`}
+            href={toPage("grid-bot/:id", bot.id)}
           >
             <Typography fontWeight="400" level="h3">
               {bot.name}

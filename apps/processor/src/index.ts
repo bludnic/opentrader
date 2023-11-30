@@ -1,6 +1,8 @@
 import http from "node:http";
+import path from "node:path";
 import express from "express";
 import cors from "cors";
+import serveHandler from "serve-handler";
 import { processor } from "./processing";
 import { useTrpc } from "./trpc";
 
@@ -11,13 +13,13 @@ if (process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC) {
   useTrpc(app);
 }
 
-const PORT = process.env.PORT || 4000;
+// Serves Next.js Static generated app
+if (process.env.NEXT_PUBLIC_STATIC === "true") {
+  const staticDir = path.resolve(__dirname, "../../frontend/out");
+  app.get("*", (req, res) => serveHandler(req, res, { public: staticDir }));
+}
 
-app.get("/", (req, res) => {
-  res.send({
-    hello: "world",
-  });
-});
+const PORT = process.env.PORT || 4000;
 
 const server = http.createServer(app);
 

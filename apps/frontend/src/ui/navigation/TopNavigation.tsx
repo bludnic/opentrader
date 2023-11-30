@@ -1,5 +1,6 @@
 import Button from "@mui/joy/Button";
 import NextLink from "next/link";
+import { toPage } from "src/utils/next/toPage";
 
 export function TopNavigation() {
   return (
@@ -7,7 +8,7 @@ export function TopNavigation() {
       <Button
         color="neutral"
         component={NextLink}
-        href="/dashboard/grid-bot"
+        href={toPage("grid-bot")}
         size="lg"
         variant="plain"
       >
@@ -17,7 +18,7 @@ export function TopNavigation() {
       <Button
         color="neutral"
         component={NextLink}
-        href="/dashboard/accounts"
+        href={toPage("accounts")}
         size="lg"
         variant="plain"
       >

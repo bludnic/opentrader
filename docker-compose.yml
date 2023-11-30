@@ -1,6 +1,24 @@
 version: "3.8"
 
 services:
+  monolith:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
+        NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
+        NEXT_PUBLIC_STATIC: "true"
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/postgres
+      NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
+      NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
+      NEXT_PUBLIC_STATIC: "true"
+    depends_on:
+      - database
   processor:
     build:
       context: .

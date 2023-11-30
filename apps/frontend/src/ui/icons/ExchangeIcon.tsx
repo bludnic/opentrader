@@ -22,11 +22,12 @@ export const ExchangeIcon: FC<Props> = ({
   const fileName = exchangeCode.toLowerCase();
   const logoUrl = `${cdnUrl}/${size}x${size}/${fileName}.png`;
 
+  // When using <Image/>, after building as a static app
+  // image returns 404 Not Found.
   return (
-    <Image
+    <img
       alt={exchangeCode}
       height={height}
-      loading="lazy"
       src={logoUrl}
       width={width}
     />

@@ -36,7 +36,7 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/", "*.spec.*"],
+  ignorePatterns: ["node_modules/", "dist/", "*.spec.*", "out/"],
   // add rules configurations here
   rules,
 };

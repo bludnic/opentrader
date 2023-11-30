@@ -9,6 +9,7 @@ import { tClient } from "src/lib/trpc/client";
 import type { TGridBot } from "src/types/trpc";
 import { useConfirmationDialog } from "src/ui/confirmation-dialog";
 import { useSnackbar } from "src/ui/snackbar";
+import { toPage } from "src/utils/next/toPage";
 
 const componentName = "DeleteBotButton";
 const classes = {
@@ -40,7 +41,7 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
       showSnackbar("Bot has been deleted");
 
       setTimeout(() => {
-        router.push(`/dashboard/grid-bot`);
+        router.push(toPage("grid-bot"));
       }, 1500);
     },
   });

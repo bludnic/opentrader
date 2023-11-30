@@ -9,6 +9,7 @@ import { tClient } from "src/lib/trpc/client";
 import { selectBotFormState } from "src/store/bot-form/selectors";
 import { useAppSelector } from "src/store/hooks";
 import { useSnackbar } from "src/ui/snackbar";
+import { toPage } from "src/utils/next/toPage";
 import { mapFormToDto } from "./helpers/mapFormToDto";
 
 export const SubmitButton: FC = () => {
@@ -22,7 +23,7 @@ export const SubmitButton: FC = () => {
       showSnackbar("Bot created successfully");
 
       setTimeout(() => {
-        router.push(`/dashboard/grid-bot/${bot.id}`);
+        router.push(toPage("grid-bot/:id", bot.id));
       }, 1000);
     },
   });

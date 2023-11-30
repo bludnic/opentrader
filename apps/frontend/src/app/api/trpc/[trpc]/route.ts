@@ -5,6 +5,17 @@ import { PrismaCacheProvider } from "@opentrader/exchanges/server";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
+export async function generateStaticParams() {
+  // Workaround:
+  // Next.js throws an error when building a static app and empty array is returned.
+  // Error: Page "/api/trpc/[trpc]" is missing "generateStaticParams()".
+  return [
+    {
+      trpc: "_",
+    },
+  ];
+}
+
 const FRONTEND_ENABLE_TRPC = !process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC;
 
 const handler = (req: Request) =>

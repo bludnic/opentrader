@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "NEXT_PUBLIC_STATIC=true next build",
     "start": "next start",
     "start:prod": "next start",
     "lint": "eslint . --quiet",
