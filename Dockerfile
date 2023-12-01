@@ -67,7 +67,9 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 expressjs
 RUN adduser --system --uid 1001 expressjs
 USER expressjs
-COPY --from=installer /app .
+COPY --from=installer /app/apps/frontend/out ./apps/frontend/out
+COPY --from=installer /app/apps/processor ./apps/processor
+COPY --from=installer /app/node_modules ./node_modules
 
 WORKDIR /app/apps/processor
 CMD node dist/main.js
