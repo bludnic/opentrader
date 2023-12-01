@@ -19,27 +19,22 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
       await this.syncOrders();
 
       // timeout 60s
-      console.debug(`Synced orders. Timeout for 60s`);
+      console.debug(`Sync ended. Timeout for 60s`);
       await new Promise((resolve) => setTimeout(resolve, 60000));
     }
   }
 
   private async syncOrders() {
-    const exchangeAccounts = await xprisma.exchangeAccount.findMany();
-
-    for (const exchangeAccount of exchangeAccounts) {
-      console.log(
-        `OrderSynchronizerPollingWatcher: Start syncing order statuses of "${exchangeAccount.name}"`,
-      );
-
-      const processor = new ExchangeAccountProcessor(exchangeAccount);
-      await processor.syncOrders({
-        onFilled: (exchangeOrder, order) =>
-          this.emit("onFilled", [exchangeOrder, order]),
-        onCanceled: (exchangeOrder, order) =>
-          this.emit("onCanceled", [exchangeOrder, order]),
-      });
-    }
+    console.log(
+      `PollingWatcher: Start syncing order statuses of "${this.exchange.name}"`,
+    );
+    const processor = new ExchangeAccountProcessor(this.exchange);
+    await processor.syncOrders({
+      onFilled: (exchangeOrder, order) =>
+        this.emit("onFilled", [exchangeOrder, order]),
+      onCanceled: (exchangeOrder, order) =>
+        this.emit("onCanceled", [exchangeOrder, order]),
+    });
   }
 
   private async syncOrders__deprecated() {
