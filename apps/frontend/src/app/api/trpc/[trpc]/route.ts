@@ -6,17 +6,6 @@ import { cookies } from "next/headers";
 
 cache.setCacheProvider(new PrismaCacheProvider());
 
-export async function generateStaticParams() {
-  // Workaround:
-  // Next.js throws an error when building a static app and empty array is returned.
-  // Error: Page "/api/trpc/[trpc]" is missing "generateStaticParams()".
-  return [
-    {
-      trpc: "_",
-    },
-  ];
-}
-
 const FRONTEND_ENABLE_TRPC = !process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC;
 
 const handler = (req: Request) =>
@@ -53,5 +42,19 @@ const handler = (req: Request) =>
 
 export const GET = FRONTEND_ENABLE_TRPC ? handler : undefined;
 export const POST = FRONTEND_ENABLE_TRPC ? handler : undefined;
+
+export const generateStaticParams =
+  process.env.NEXT_PUBLIC_STATIC === "true"
+    ? () => {
+        // Workaround:
+        // Next.js throws an error when building a static app and empty array is returned.
+        // Error: Page "/api/trpc/[trpc]" is missing "generateStaticParams()".
+        return [
+          {
+            trpc: "_",
+          },
+        ];
+      }
+    : undefined;
 
 // export { handler as GET, handler as POST };
