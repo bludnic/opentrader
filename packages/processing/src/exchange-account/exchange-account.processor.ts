@@ -54,9 +54,6 @@ export class ExchangeAccountProcessor {
         smartTrade: true,
       },
     });
-    console.log(
-      `ExchangeAccountProcessor: Preparing ${orders.length} orders for synchronization`,
-    );
 
     if (orders.length === 0) {
       console.log("ExchangeAccountProcessor: Nothing to sync");
@@ -64,6 +61,10 @@ export class ExchangeAccountProcessor {
         affectedBotsIds,
       };
     }
+
+    console.log(
+      `ExchangeAccountProcessor: Preparing ${orders.length} orders for synchronization`,
+    );
 
     for (const order of orders) {
       const { statusChanged, newStatus, exchangeOrder } =
