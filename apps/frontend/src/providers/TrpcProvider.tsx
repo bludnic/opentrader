@@ -1,5 +1,6 @@
 "use client";
 
+import { getAuthToken } from "src/utils/auth/getAuthToken";
 import superjson from "superjson";
 import {
   MutationCache,
@@ -49,6 +50,17 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
       links: [
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          async headers() {
+            const password = getAuthToken();
+
+            if (password) {
+              return {
+                Authorization: password,
+              };
+            }
+
+            return {};
+          },
         }),
       ],
     }),

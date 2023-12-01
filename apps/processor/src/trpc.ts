@@ -8,9 +8,9 @@ const createContext = ({
   req,
   res,
 }: trpcExpress.CreateExpressContextOptions) => {
-  const cookiePassword = (req.cookies as Record<string, string>).ADMIN_PASSWORD;
+  const password = req.headers.authorization;
 
-  if (cookiePassword === process.env.ADMIN_PASSWORD) {
+  if (password === process.env.ADMIN_PASSWORD) {
     return {
       user: {
         id: 1,
