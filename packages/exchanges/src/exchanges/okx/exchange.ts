@@ -41,7 +41,11 @@ export class OkxExchange implements IExchange {
         }
       : undefined;
     this.ccxt = new pro.okx(ccxtCredentials);
+
     this.ccxt.fetchImplementation = fetcher; // #57
+    // #88 Fixes: 'e instanceof this.AbortError' is not an object
+    this.ccxt.FetchError = TypeError // when fetch request failed (network error)
+    this.ccxt.AbortError = DOMException // when fetch request aborted
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
