@@ -172,37 +172,6 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
-  apps/playground:
-    dependencies:
-      async:
-        specifier: ^3.2.5
-        version: 3.2.5
-      express:
-        specifier: ^4.18.2
-        version: 4.18.2
-    devDependencies:
-      '@types/async':
-        specifier: ^3.2.23
-        version: 3.2.23
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/node':
-        specifier: ^20.9.0
-        version: 20.9.0
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.9.0)(typescript@5.2.2)
-      ts-node-dev:
-        specifier: ^2.0.0
-        version: 2.0.0(@types/node@20.9.0)(typescript@5.2.2)
-      tsx:
-        specifier: ^4.1.1
-        version: 4.1.1
-      typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
-
   apps/processor:
     dependencies:
       '@opentrader/db':
