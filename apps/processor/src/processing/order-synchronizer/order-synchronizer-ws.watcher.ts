@@ -60,7 +60,8 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
         }
       } catch (err) {
         if (err instanceof NetworkError) {
-          console.log(`❕ NetworkError: ${err.message}`);
+          console.log(`❕ NetworkError: ${err.message}. Timeout: 3s`);
+          await new Promise(resolve => setTimeout(resolve, 3000)) // prevents infinite cycle
           // https://github.com/ccxt/ccxt/issues/7951
           // if the connection is dropped, you should catch the NetworkError exception
           // and your next call should reconnect in the background
