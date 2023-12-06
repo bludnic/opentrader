@@ -1,5 +1,5 @@
 import { xprisma } from "@opentrader/db";
-import { NetworkError } from "ccxt";
+import { NetworkError, RequestTimeout } from "ccxt";
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
 
 export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
@@ -60,13 +60,15 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
         }
       } catch (err) {
         if (err instanceof NetworkError) {
-          console.log("❗ NetworkError occurred. Possible WS connection lost.");
+          console.log(`❕ NetworkError: ${err.message}`);
           // https://github.com/ccxt/ccxt/issues/7951
           // if the connection is dropped, you should catch the NetworkError exception
           // and your next call should reconnect in the background
-
-          // @todo RequestTimeout reconnect on error
+        } else if (err instanceof RequestTimeout) {
+          console.log(`❗ RequestTimeout: ${err.message}`);
+          console.log(err)
         } else {
+          console.log("‼️ Unhandled error occurred. Disabling WS connection.");
           console.log(err);
           await this.disable();
           break;
