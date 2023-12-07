@@ -1,14 +1,13 @@
 "use client";
 
 import Box from "@mui/joy/Box";
-import Checkbox from "@mui/joy/Checkbox";
 import Skeleton from "@mui/joy/Skeleton";
 import type { IGridLine } from "@opentrader/types";
 import type { FC } from "react";
 import React, { Suspense, useDeferredValue, useMemo, useState } from "react";
 import type { GridBotFormChartBarSize } from "src/store/bot-form";
 import { TIMEFRAMES } from "src/store/bot-form/constants";
-import { Chart, ChartAppBar } from "src/ui/charts/Chart";
+import { Chart, ChartOptions } from "src/ui/charts/Chart";
 import { CHART_HEIGHT } from "src/ui/charts/Chart/constants";
 import { ExchangeAccountField } from "src/components/grid-bot/create-bot/form/fields/ExchangeAccountField";
 import { PairField } from "src/components/grid-bot/create-bot/form/fields/PairField";
@@ -59,36 +58,33 @@ export const GridChart: FC<GridChartProps> = ({
         showPriceLines={showPriceLines}
         symbolId={deferredSymbolId}
       >
-        <ChartAppBar>
-          <Suspense fallback={<InputSkeleton width={232} />}>
-            <ExchangeAccountField />
-          </Suspense>
+        <Suspense fallback={<InputSkeleton width={232} />}>
+          <ExchangeAccountField />
+        </Suspense>
 
-          <Suspense fallback={<InputSkeleton width={232} />}>
-            <PairField />
-          </Suspense>
+        <Suspense fallback={<InputSkeleton width={232} />}>
+          <PairField />
+        </Suspense>
 
-          <BarSizeSelect
-            onChange={(value) => {
-              if (onBarSizeChange) {
-                onBarSizeChange(value);
-              }
-            }}
-            value={barSize}
-            whitelist={TIMEFRAMES}
+        <BarSizeSelect
+          onChange={(value) => {
+            if (onBarSizeChange) {
+              onBarSizeChange(value);
+            }
+          }}
+          value={barSize}
+          whitelist={TIMEFRAMES}
+        />
+
+        <FlexSpacer />
+
+        <Box display="flex">
+          <ChartOptions
+            gridVisible={showPriceLines}
+            hideTradesButton
+            onGridVisibleChange={setShowPriceLines}
           />
-
-          <FlexSpacer />
-
-          <Box display="flex">
-            <Checkbox
-              checked={showPriceLines}
-              label="Grid"
-              onChange={(e) => setShowPriceLines(e.target.checked)}
-              size="md"
-            />
-          </Box>
-        </ChartAppBar>
+        </Box>
       </Chart>
     </Suspense>
   );

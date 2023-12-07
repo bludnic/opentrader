@@ -1,14 +1,13 @@
 "use client";
 
 import Box from "@mui/joy/Box";
-import Checkbox from "@mui/joy/Checkbox";
 import Skeleton from "@mui/joy/Skeleton";
 import { composeSymbolId } from "@opentrader/tools";
 import type { FC } from "react";
 import React, { Suspense, useMemo, useState } from "react";
 import type { BarSize } from "@opentrader/types";
 import { tClient } from "src/lib/trpc/client";
-import { Chart, ChartAppBar, CHART_HEIGHT } from "src/ui/charts/Chart";
+import { Chart, CHART_HEIGHT, ChartOptions } from "src/ui/charts/Chart";
 import { FlexSpacer } from "src/ui/FlexSpacer";
 import { ExchangeAccountSelect } from "src/ui/selects/ExchangeAccountSelect";
 import { SymbolSelect } from "src/ui/selects/SymbolSelect";
@@ -79,44 +78,32 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
         showPriceLines={showPriceLines}
         symbolId={symbol.symbolId}
       >
-        <ChartAppBar>
-          <ExchangeAccountSelect onChange={NOOP} value={exchangeAccount} />
+        <ExchangeAccountSelect onChange={NOOP} value={exchangeAccount} />
 
-          <SymbolSelect
-            exchangeCode={exchangeAccount.exchangeCode}
-            onChange={NOOP}
-            value={symbol}
+        <SymbolSelect
+          exchangeCode={exchangeAccount.exchangeCode}
+          onChange={NOOP}
+          value={symbol}
+        />
+
+        <BarSizeSelect
+          onChange={(value) => {
+            setBarSize(value);
+          }}
+          value={barSize}
+          whitelist={timeframes}
+        />
+
+        <FlexSpacer />
+
+        <Box display="flex">
+          <ChartOptions
+            gridVisible={showPriceLines}
+            onGridVisibleChange={setShowPriceLines}
+            onTradesVisibleChange={setShowTradeMarkers}
+            tradesVisible={showTradeMarkers}
           />
-
-          <BarSizeSelect
-            onChange={(value) => {
-              setBarSize(value);
-            }}
-            value={barSize}
-            whitelist={timeframes}
-          />
-
-          <FlexSpacer />
-
-          <Box display="flex">
-            <Checkbox
-              checked={showPriceLines}
-              label="Grid"
-              onChange={(e) => setShowPriceLines(e.target.checked)}
-              size="md"
-            />
-
-            <Checkbox
-              checked={showTradeMarkers}
-              label="Trades"
-              onChange={(e) => setShowTradeMarkers(e.target.checked)}
-              size="md"
-              sx={{
-                ml: 2,
-              }}
-            />
-          </Box>
-        </ChartAppBar>
+        </Box>
       </Chart>
     </Suspense>
   );

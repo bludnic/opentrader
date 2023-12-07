@@ -1,3 +1,3 @@
 export * from "./Chart";
-export * from "./ChartAppBar";
+export * from "./ChartOptions";
 export * from "./constants";
