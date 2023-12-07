@@ -1,4 +1,4 @@
-import { OrderNotFound } from "ccxt";
+import { NetworkError, OrderNotFound, RequestTimeout } from "ccxt";
 import { subHours } from "date-fns";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { ExchangeAccountProcessor } from "@opentrader/processing";
@@ -29,12 +29,28 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
       `PollingWatcher: Start syncing order statuses of "${this.exchange.name}"`,
     );
     const processor = new ExchangeAccountProcessor(this.exchange);
-    await processor.syncOrders({
-      onFilled: (exchangeOrder, order) =>
-        this.emit("onFilled", [exchangeOrder, order]),
-      onCanceled: (exchangeOrder, order) =>
-        this.emit("onCanceled", [exchangeOrder, order]),
-    });
+
+    try {
+      await processor.syncOrders({
+        onFilled: (exchangeOrder, order) =>
+          this.emit("onFilled", [exchangeOrder, order]),
+        onCanceled: (exchangeOrder, order) =>
+          this.emit("onCanceled", [exchangeOrder, order]),
+      });
+    } catch (err) {
+      if (err instanceof NetworkError) {
+        console.log(
+          `❕ NetworkError during ExchangeAccountProcessor.syncOrders(): ${err.message}`,
+        );
+      } else if (err instanceof RequestTimeout) {
+        console.log(
+          `❗ RequestTimeout during ExchangeAccountProcessor.syncOrders(): ${err.message}`,
+        );
+        console.log(err);
+      } else {
+        throw err;
+      }
+    }
   }
 
   private async syncOrders__deprecated() {
