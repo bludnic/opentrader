@@ -1,4 +1,3 @@
-
 import Box from "@mui/joy/Box";
 import type { FC, ReactNode } from "react";
 

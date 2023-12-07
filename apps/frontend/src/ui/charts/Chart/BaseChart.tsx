@@ -9,15 +9,18 @@ import type {
   CreatePriceLineOptions,
   IPriceLine,
   UTCTimestamp,
+  MouseEventHandler,
+  BarData,
 } from "lightweight-charts";
 import type { FC } from "react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useElementSize } from "usehooks-ts";
 import type { BarSize } from "@opentrader/types";
 import { tClient } from "src/lib/trpc/client";
 import { CHART_HEIGHT } from "./constants";
 import { useCandlesticksChart } from "./useCandlesticksChart";
 import { useOHLC } from "./useOHLC";
+import { Ohlc, ChartHeader, Symbol } from "./ChartHeader";
 
 function normalizeCandle(candle: OHLCV) {
   const [timestamp, open, high, low, close] = candle;
@@ -118,6 +121,25 @@ export const BaseChart: FC<BaseChartProps> = ({
     });
   }, [width, height]);
 
+  // Current candle OHLC
+  const [currentCandleOHLC, setCurrentCandleOHLC] = useState<BarData | null>();
+  const crosshairMoveHandler = useCallback<MouseEventHandler<Time>>(
+    (params) => {
+      const ohlc = params.seriesData.get(chart.series.current!) as
+        | BarData
+        | undefined;
+      setCurrentCandleOHLC(ohlc || null);
+    },
+    [],
+  );
+  useEffect(() => {
+    chart.api.current?.subscribeCrosshairMove(crosshairMoveHandler);
+
+    return () => {
+      chart.api.current?.unsubscribeCrosshairMove(crosshairMoveHandler);
+    };
+  }, []);
+
   return (
     <Box
       ref={containerRef}
@@ -127,9 +149,15 @@ export const BaseChart: FC<BaseChartProps> = ({
         transition: dimmed
           ? "opacity 0.1s 0.1s linear"
           : "opacity 0s 0s linear",
+        position: "relative",
         ...sx,
       }}
     >
+      <ChartHeader>
+        <Symbol>{symbolId}</Symbol>
+        {currentCandleOHLC ? <Ohlc {...currentCandleOHLC} /> : null}
+      </ChartHeader>
+
       <div
         ref={chart.ref}
         style={{

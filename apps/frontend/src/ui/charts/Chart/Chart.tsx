@@ -21,6 +21,7 @@ export const Chart: FC<ChartProps> = (props) => {
         sx={{
           borderRadius: 6,
           overflow: "hidden",
+          border: `1px solid var(--joy-palette-neutral-outlinedBorder)`,
         }}
       />
     </ChartContainer>
