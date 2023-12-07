@@ -5,8 +5,10 @@ import type { FC, ReactNode } from "react";
 import { APP_BAR_HEIGHT } from "./navigation/AppBar";
 import { APP_DRAWER_WIDTH, APP_MINI_DRAWER_WITH } from "./navigation/AppDrawer";
 
+export const MAIN_PADDING = 16;
+
 export const StyledMain = styled("main")({
-  padding: 32,
+  padding: MAIN_PADDING,
 });
 
 type MainProps = {
