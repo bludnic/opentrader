@@ -45,14 +45,14 @@ export const BotNameField: FC = () => {
       <FormLabel>Bot name</FormLabel>
 
       <Input
-        onBlur={handleBlur}
-        onChange={handleChange}
-        value={value}
         endDecorator={
           <IconButton onClick={regenerateBotName}>
             <ReplayIcon />
           </IconButton>
         }
+        onBlur={handleBlur}
+        onChange={handleChange}
+        value={value}
       />
 
       {errorMessage ? <FormHelperText>{errorMessage}</FormHelperText> : null}

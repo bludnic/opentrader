@@ -1,6 +1,5 @@
 "use client";
 
-import { getAuthToken } from "src/utils/auth/getAuthToken";
 import superjson from "superjson";
 import {
   MutationCache,
@@ -10,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
+import { getAuthToken } from "src/utils/auth/getAuthToken";
 import { isTRPCError } from "src/ui/errors/utils";
 import { useTRPCErrorModal } from "src/ui/errors/api";
 import { tClient } from "src/lib/trpc/client";
