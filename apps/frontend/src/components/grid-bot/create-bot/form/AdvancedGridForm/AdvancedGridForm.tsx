@@ -22,11 +22,13 @@ export const AdvancedGridForm: FC = () => {
     );
   };
 
+  const inverseIndex = (index: number) => gridLines.length - 1 - index;
+
   return (
     <Grid container spacing={2}>
       <Grid xs={12}>
         {gridLines.map((gridLine, i) => (
-          <AdvancedGridFormItem gridLineIndex={i} key={i} />
+          <AdvancedGridFormItem gridLineIndex={inverseIndex(i)} key={i} />
         ))}
       </Grid>
 
