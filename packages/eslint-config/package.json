@@ -2,6 +2,10 @@
   "name": "@opentrader/eslint-config",
   "description": "ESLint configuration from OpenTrader",
   "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Open-Trader/opentrader.git"
+  },
   "files": [
     "module.js",
     "next.js"
@@ -10,5 +14,15 @@
     "@vercel/style-guide": "^5.1.0",
     "eslint-config-turbo": "^1.10.16",
     "typescript": "^5.2.2"
-  }
+  },
+  "keywords": [
+    "tsconfig",
+    "opentrader"
+  ],
+  "author": "bludnic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Open-Trader/opentrader/issues"
+  },
+  "homepage": "https://github.com/Open-Trader/opentrader/tree/master/packages/eslint-config"
 }
