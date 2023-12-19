@@ -1,6 +1,6 @@
 {
   "name": "@opentrader/tsconfig",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TypeScript configuration from OpenTrader",
   "repository": {
     "type": "git",
