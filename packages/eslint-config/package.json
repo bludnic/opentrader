@@ -1,7 +1,7 @@
 {
   "name": "@opentrader/eslint-config",
   "description": "ESLint configuration from OpenTrader",
-  "private": true,
+  "version": "0.0.2",
   "files": [
     "module.js",
     "next.js"
