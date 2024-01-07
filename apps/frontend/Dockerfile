@@ -34,7 +34,8 @@ COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 # Copy Prisma Schema as it is not included in `/json` dir
 COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
-RUN pnpm install
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
+RUN pnpm install --offline
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
