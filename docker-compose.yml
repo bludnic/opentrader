@@ -22,6 +22,7 @@ services:
       PORT: 5000
     depends_on:
       - database
+    platform: linux/amd64
   processor:
     build:
       context: .
