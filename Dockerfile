@@ -15,7 +15,7 @@ RUN corepack enable
 WORKDIR /app
 RUN pnpm add turbo -g
 COPY . .
-RUN turbo prune --scope=processor --scope=frontend --docker
+RUN turbo prune --scope=frontend --docker
 
 FROM base AS backend-builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -73,7 +73,7 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-RUN --mount=type=cache,id=turbo,target=/app/node_modules/.cache/turbo turbo run build
+RUN turbo run build --filter=processor
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS frontend-installer
@@ -117,7 +117,7 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-RUN --mount=type=cache,id=turbo,target=/app/node_modules/.cache/turbo turbo run build
+RUN turbo run build --filter=frontend
 
 FROM base AS runner
 WORKDIR /app
