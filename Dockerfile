@@ -74,6 +74,7 @@ ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
 RUN turbo run build --filter=processor
+# pnpm prune --prod --config.ignore-scripts=true
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS frontend-installer
