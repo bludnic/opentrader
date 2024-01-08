@@ -59,7 +59,7 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-RUN turbo run build
+RUN --mount=type=cache,id=turbo,target=/app/node_modules/.cache turbo run build
 
 FROM base AS runner
 WORKDIR /app
