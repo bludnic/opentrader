@@ -22,7 +22,7 @@ services:
       PORT: 5000
     depends_on:
       - database
-    platform: linux/amd64
+#    platform: linux/amd64 # works slow when building on Mac M1
   processor:
     build:
       context: .
