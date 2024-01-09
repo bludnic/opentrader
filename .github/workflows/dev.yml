@@ -1,0 +1,33 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: >-
+          docker build
+          --build-arg DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+          --build-arg NEXT_PUBLIC_PROCESSOR_URL=http://localhost:5000
+          --build-arg NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC=true
+          --build-arg NEXT_PUBLIC_STATIC=true
+          --build-arg ADMIN_PASSWORD=password
+          -t opentrader/opentrader:latest .
+
+      - name: Push Docker Image
+        run: docker push opentrader/opentrader:latest
