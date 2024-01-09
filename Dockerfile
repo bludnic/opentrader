@@ -81,8 +81,7 @@ COPY --from=installer /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=installer /app/packages ./packages
 COPY --from=installer /app/.npmrc ./.npmrc
 
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --prod
-RUN pnpm i --prod --prefer-offline
+RUN pnpm i --prod
 
 
 FROM base AS runner
