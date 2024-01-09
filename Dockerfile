@@ -58,7 +58,8 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-RUN --mount=type=cache,id=turbo-cache,target=/app/node_modules/.cache turbo run build
+# RUN --mount=type=cache,id=turbo-cache,target=/app/node_modules/.cache turbo run build
+RUN turbo run build
 
 FROM base AS optimizer
 # Intall only production deps
