@@ -73,13 +73,16 @@ RUN corepack enable
 
 WORKDIR /app
 
-#COPY --from=frontend-installer /app/apps/frontend/out ./apps/frontend/out
+COPY --from=installer /app/apps/frontend/out ./apps/frontend/out
 COPY --from=installer /app/apps/processor ./apps/processor
 COPY --from=installer /app/package.json ./package.json
 COPY --from=installer /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=installer /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=installer /app/packages ./packages
-RUN pnpm i --prod
+COPY --from=installer /app/.npmrc ./.npmrc
+
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --prod
+RUN pnpm i --prod --prefer-offline
 
 
 FROM base AS runner
@@ -91,7 +94,7 @@ RUN addgroup --system --gid 1001 expressjs
 RUN adduser --system --uid 1001 expressjs
 USER expressjs
 
-COPY --from=installer /app/apps/frontend/out ./apps/frontend/out
+COPY --from=optimizer /app/apps/frontend/out ./apps/frontend/out
 COPY --from=optimizer /app/apps/processor ./apps/processor
 COPY --from=optimizer /app/node_modules ./node_modules
 
