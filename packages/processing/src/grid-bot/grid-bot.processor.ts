@@ -137,6 +137,7 @@ export class GridBotProcessor {
       baseCurrency: this.bot.baseCurrency,
       quoteCurrency: this.bot.quoteCurrency,
       gridLines: this.bot.settings.gridLines,
+      exchangeCode: exchangeAccount.exchangeCode,
     };
 
     const storeAdapter = new GridBotStoreAdapter(xprisma, this.bot, () =>
