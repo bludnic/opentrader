@@ -21,6 +21,7 @@
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
+    "@opentrader/indicators": "workspace:*",
     "@opentrader/tools": "workspace:*"
   }
 }

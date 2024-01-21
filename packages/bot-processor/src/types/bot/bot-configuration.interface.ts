@@ -1,4 +1,4 @@
-import { ExchangeCode } from "@opentrader/types";
+import type { ExchangeCode } from "@opentrader/types";
 
 export type IBotConfiguration = {
   id: number;

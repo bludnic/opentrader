@@ -56,7 +56,7 @@ const OuterElementType = forwardRef<HTMLDivElement>((props, ref) => {
 });
 OuterElementType.displayName = "OuterElementType";
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any -- will be typed later */
+/* eslint-disable @typescript-eslint/no-explicit-any -- will be typed later */
 export const ListboxComponent = React.forwardRef<
   HTMLDivElement,
   {
@@ -105,4 +105,4 @@ export const ListboxComponent = React.forwardRef<
     </Popper>
   );
 });
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any -- will be typed later */
+/* eslint-enable @typescript-eslint/no-explicit-any -- will be typed later */

@@ -35,7 +35,6 @@ async function run() {
   });
 
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- no types
     data: { candlesticks },
   } = await axios.get("http://localhost:5000/mapi/candlesticks", {
     params: {

@@ -118,7 +118,7 @@ const getSymbol: Normalize["getSymbol"] = {
 
     filters: {
       price: {
-        /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
+        /* eslint-disable @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
         tickSize: market.info.tickSz,
         minPrice: null, // OKx doesn't provide this info
         maxPrice: null, // OKx doesn't provide this info
@@ -127,7 +127,7 @@ const getSymbol: Normalize["getSymbol"] = {
         stepSize: market.info.lotSz,
         minQuantity: market.info.minSz,
         maxQuantity: market.info.maxLmtSz,
-        /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
+        /* eslint-enable @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
       },
     },
   }),

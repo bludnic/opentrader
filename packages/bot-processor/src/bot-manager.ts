@@ -1,4 +1,7 @@
 import type { IExchange } from "@opentrader/exchanges";
+import { computeIndicators } from "@opentrader/indicators";
+import type { IndicatorBarSize } from "@opentrader/types";
+import { lastClosedCandleDate } from "@opentrader/tools";
 import type { TBotContext } from "#bot-processor/types/bot/bot-context.type";
 import { createContext } from "./utils/createContext";
 import { SmartTradeService } from "./smart-trade.service";
@@ -7,6 +10,7 @@ import { isReplaceSmartTradeEffect } from "./effects/utils/isReplaceSmartTradeEf
 import { isUseExchangeEffect } from "./effects/utils/isUseExchangeEffect";
 import { isUseSmartTradeEffect } from "./effects/utils/isUseSmartTradeEffect";
 import { isCancelSmartTradeEffect } from "./effects/utils/isCancelSmartTradeEffect";
+import { isUseIndicatorsEffect } from "./effects/utils/isUseIndicatorsEffect";
 
 export class BotManager<T extends IBotConfiguration> {
   constructor(
@@ -35,13 +39,13 @@ export class BotManager<T extends IBotConfiguration> {
   }
 
   private async _process(context: TBotContext<T>): Promise<void> {
+    const processingDate = Date.now(); // @todo better to pass it through context
     const generator = this.botTemplate(context);
 
     let item = generator.next();
 
     for (; !item.done; ) {
       if (item.value instanceof Promise) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- will be typed later
         const result = await item.value;
 
         item = generator.next(result);
@@ -73,6 +77,22 @@ export class BotManager<T extends IBotConfiguration> {
         item = generator.next();
       } else if (isUseExchangeEffect(item.value)) {
         item = generator.next(this.exchange);
+      } else if (isUseIndicatorsEffect(item.value)) {
+        const effect = item.value;
+        const barSize = effect.payload.barSize as IndicatorBarSize; // @todo fix eslint error
+        const { exchangeCode, baseCurrency, quoteCurrency } = this.botConfig;
+
+        console.log(`Compute indicators`, effect.payload);
+        const indicators = await computeIndicators({
+          exchangeCode,
+          symbol: `${baseCurrency}/${quoteCurrency}`,
+          barSize,
+          untilDate: lastClosedCandleDate(processingDate, barSize),
+          indicators: effect.payload.indicators,
+        });
+        console.log("Indicators computed", indicators);
+
+        item = generator.next(indicators);
       } else {
         console.log(item.value);
         throw new Error("Unsupported effect");

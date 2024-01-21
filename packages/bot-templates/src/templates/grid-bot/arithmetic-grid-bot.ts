@@ -7,6 +7,7 @@ import type {
 import {
   cancelSmartTrade,
   useExchange,
+  useIndicators,
   useSmartTrade,
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
@@ -14,6 +15,7 @@ import type {
   IGetMarketPriceResponse,
   IGridBotLevel,
   IGridLine,
+  XCandle,
 } from "@opentrader/types";
 
 export interface GridBotConfig extends IBotConfiguration {
@@ -21,6 +23,11 @@ export interface GridBotConfig extends IBotConfiguration {
 }
 
 export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
+  const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
+    ["SMA10", "SMA15", "SMA30"],
+    "1m",
+  );
+  const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
   const { config: bot, onStart, onStop } = ctx;
 
   const exchange: IExchange = yield useExchange();

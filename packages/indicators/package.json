@@ -1,5 +1,5 @@
 {
-  "name": "@opentrader/bot-processor",
+  "name": "@opentrader/indicators",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
@@ -9,21 +9,17 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "bludnic",
   "devDependencies": {
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.10.0",
     "eslint": "8.54.0",
     "ts-node": "^10.9.1",
-    "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@opentrader/exchanges": "workspace:*",
-    "@opentrader/indicators": "workspace:*",
-    "@opentrader/tools": "workspace:*"
+    "axios": "^1.6.1"
   }
 }

@@ -3,3 +3,4 @@ export * from "./useSmartTrade";
 export * from "./replaceSmartTrade";
 export * from "./cancelSmartTrade";
 export * from "./useExchange";
+export * from "./useIndicators";

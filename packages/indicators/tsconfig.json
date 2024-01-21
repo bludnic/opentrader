@@ -1,0 +1,12 @@
+{
+  "extends": "@opentrader/tsconfig/module.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "#indicators/*": ["./src/*"],
+      // imported modules
+      "#db/*": ["../db/src/*"]
+    }
+  }
+}

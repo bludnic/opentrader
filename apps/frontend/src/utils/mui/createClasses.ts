@@ -63,7 +63,6 @@ export function createClasses<C extends string, E extends ElementsParam<E>>(
   const elementsKeys = Object.keys(elements) as (keyof E)[];
 
   for (const elementKey of elementsKeys) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- it may be typed better, but it will require much more TS code that will affect the readability
     result[elementKey] = buildElement(
       componentName,
       elementKey as string,
