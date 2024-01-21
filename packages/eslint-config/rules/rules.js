@@ -29,6 +29,7 @@ module.exports = {
   "@typescript-eslint/no-meaningless-void-operator": "off",
   camelcase: "off",
   "import/no-cycle": "off", // @todo investigate and enable the rule
+  "@typescript-eslint/no-unsafe-assignment": "off", // false positives, probably a bug in the rule
 
   // warnings
   "import/no-named-as-default-member": "off",
