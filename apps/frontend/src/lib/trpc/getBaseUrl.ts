@@ -1,4 +1,14 @@
 export function getBaseUrl(): string {
+  const isProduction = process.env.NODE_ENV === "production";
+  if (isProduction) {
+    if (typeof window !== "undefined") {
+      const customURL = localStorage.getItem("APP_URL");
+
+      // browser should use relative path
+      return customURL ? customURL : "";
+    }
+  }
+
   if (process.env.NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC) {
     return `${process.env.NEXT_PUBLIC_PROCESSOR_URL}`;
   }
