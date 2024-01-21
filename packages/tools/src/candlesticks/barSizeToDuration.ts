@@ -19,18 +19,6 @@ export const barSizeDurationMap: Record<BarSize, number> = {
 /**
  * Returns duration of `barSize` in `ms`
  */
-// @todo refactor: use the `barSizeToDuration` from `@opentrader/types`
 export function barSizeToDuration(barSize: BarSize) {
   return barSizeDurationMap[barSize];
-}
-
-/**
- * Rounds a timestamp with `barSize` precision
- * @param timestamp - Timestamp
- * @param barSize - Timeframe
- */
-export function roundTimestamp(timestamp: number, barSize: BarSize) {
-  const DURATION = barSizeDurationMap[barSize];
-
-  return Math.floor(timestamp / DURATION) * DURATION;
 }
