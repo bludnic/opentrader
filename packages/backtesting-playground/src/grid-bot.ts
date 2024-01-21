@@ -26,6 +26,7 @@ async function run() {
     ],
     baseCurrency: "ETH",
     quoteCurrency: "USDT",
+    exchangeCode: "OKX",
   };
   console.log("Bot config", config);
 
