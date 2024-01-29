@@ -23,7 +23,6 @@ import { ExchangeCode } from "@opentrader/types";
 import type { MarketSimulator } from "../market-simulator";
 
 export class MemoryExchange implements IExchange {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, -- for simplicity
   ccxt = {} as any;
   /**
    * @internal

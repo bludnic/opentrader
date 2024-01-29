@@ -66,7 +66,7 @@ export function createClasses<C extends string, E extends ElementsParam<E>>(
     result[elementKey] = buildElement(
       componentName,
       elementKey as string,
-    ) as any; // eslint-disable-line @typescript-eslint/no-explicit-any -- see comment above
+    ) as any;
   }
 
   return result;

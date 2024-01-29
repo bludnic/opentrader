@@ -132,14 +132,4 @@ export const gridBotModel = (prisma: PrismaClient) => ({
       settings: bot.settings as unknown as TGridBotSettings,
     };
   },
-  async setProcessing(value: boolean, botId: number) {
-    return prisma.bot.update({
-      where: {
-        id: botId,
-      },
-      data: {
-        processing: value,
-      },
-    });
-  },
 });

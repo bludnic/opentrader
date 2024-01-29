@@ -27,6 +27,7 @@ enum ExchangeCode {
 }
 
 enum BotType {
+  Bot
   GridBot
 }
 
@@ -166,6 +167,10 @@ model Bot {
   baseCurrency  String
   quoteCurrency String
   enabled       Boolean @default(false)
+
+  // Template name that will be executed by the bot
+  // e.g. `gridBot`, see templates in @opentrader/templates
+  template String
 
   // Means that the bot template is being processed right now.
   // This must guarantee that the bot template will not be processed

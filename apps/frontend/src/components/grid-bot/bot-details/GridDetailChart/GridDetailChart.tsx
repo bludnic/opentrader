@@ -36,12 +36,11 @@ export const GridDetailChart: FC<GridChartProps> = ({ botId }) => {
       bot.quoteCurrency,
     ),
   });
-  const [activeSmartTrades] =
-    tClient.gridBot.activeSmartTrades.useSuspenseQuery({
-      botId,
-    });
+  const [activeSmartTrades] = tClient.bot.activeSmartTrades.useSuspenseQuery({
+    botId,
+  });
   const [completedSmartTrades] =
-    tClient.gridBot.completedSmartTrades.useSuspenseQuery({
+    tClient.bot.completedSmartTrades.useSuspenseQuery({
       botId,
     });
 

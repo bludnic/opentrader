@@ -22,7 +22,7 @@ export class PrismaCacheProvider implements ICacheProvider {
         `    getMarkets() from ${exchangeCode} exchange using PrismaCacheProvider`,
       );
       console.log(`    Returned from cache in ${duration}s`);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- @todo type it properly
+
       return cachedMarkets.markets as any as Dictionary<Market>;
     }
 
@@ -48,7 +48,7 @@ export class PrismaCacheProvider implements ICacheProvider {
     await xprisma.markets.create({
       data: {
         exchangeCode,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- @todo type it properly
+
         markets: markets as any as Prisma.InputJsonValue,
       },
     });

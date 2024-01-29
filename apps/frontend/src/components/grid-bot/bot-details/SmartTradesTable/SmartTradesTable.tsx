@@ -13,7 +13,7 @@ type SmartTradesTableProps = {
 };
 
 export const SmartTradesTable: FC<SmartTradesTableProps> = ({ botId }) => {
-  const [smartTrades] = tClient.gridBot.activeSmartTrades.useSuspenseQuery({
+  const [smartTrades] = tClient.bot.activeSmartTrades.useSuspenseQuery({
     botId,
   });
 

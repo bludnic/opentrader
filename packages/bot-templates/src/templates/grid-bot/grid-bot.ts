@@ -18,16 +18,19 @@ import type {
   XCandle,
 } from "@opentrader/types";
 
-export interface GridBotConfig extends IBotConfiguration {
-  gridLines: IGridLine[];
+export interface GridBotConfig extends Omit<IBotConfiguration, "settings"> {
+  settings: {
+    gridLines: IGridLine[];
+  };
 }
 
-export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
-  const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
-    ["SMA10", "SMA15", "SMA30"],
-    "1m",
-  );
-  const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
+export function* gridBot(ctx: TBotContext<GridBotConfig>) {
+  console.log("ctx", ctx);
+  // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
+  //   ["SMA10", "SMA15", "SMA30"],
+  //   "1m",
+  // );
+  // const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
   const { config: bot, onStart, onStop } = ctx;
 
   const exchange: IExchange = yield useExchange();
@@ -43,7 +46,7 @@ export function* arithmeticGridBot(ctx: TBotContext<GridBotConfig>) {
   }
 
   const gridLevels: IGridBotLevel[] = computeGridLevelsFromCurrentAssetPrice(
-    bot.gridLines,
+    bot.settings.gridLines,
     price,
   );
 

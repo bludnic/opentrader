@@ -34,7 +34,7 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
     void tUtils.gridBot.list.invalidate();
   };
 
-  const deleteBot = tClient.gridBot.delete.useMutation({
+  const deleteBot = tClient.bot.delete.useMutation({
     onSuccess() {
       invalidateState();
 

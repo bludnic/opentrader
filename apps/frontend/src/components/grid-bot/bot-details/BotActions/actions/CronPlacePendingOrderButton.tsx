@@ -55,12 +55,11 @@ export const CronPlacePendingOrderButton: FC<
   const { className, bot, smartTrades = [] } = props;
   const { showSnackbar } = useSnackbar();
 
-  const { isLoading, mutate } =
-    tClient.gridBot.cronPlaceLimitOrders.useMutation({
-      onSuccess() {
-        showSnackbar("Orders has been placed");
-      },
-    });
+  const { isLoading, mutate } = tClient.bot.cronPlaceLimitOrders.useMutation({
+    onSuccess() {
+      showSnackbar("Orders has been placed");
+    },
+  });
 
   const buttonNode = (
     <Button

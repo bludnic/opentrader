@@ -4,6 +4,6 @@ import type { ReplaceSmartTradeEffect } from "../common/types/replace-smart-trad
 export function isReplaceSmartTradeEffect(
   effect: unknown,
 ): effect is ReplaceSmartTradeEffect {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any -- this is required
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- this is required
   return (effect && (effect as any).type) === REPLACE_SMART_TRADE;
 }

@@ -23,7 +23,7 @@ export const SyncOrdersButton: FC<SyncOrdersButtonProps> = (props) => {
   const { className, bot } = props;
   const { showSnackbar } = useSnackbar();
 
-  const { isLoading, mutate } = tClient.gridBot.syncOrders.useMutation({
+  const { isLoading, mutate } = tClient.bot.syncOrders.useMutation({
     onSuccess() {
       showSnackbar("Orders have been synced");
     },

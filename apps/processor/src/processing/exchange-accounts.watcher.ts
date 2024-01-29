@@ -1,5 +1,5 @@
 import type { IWatchOrder } from "@opentrader/types";
-import { GridBotProcessor } from "@opentrader/processing";
+import { BotProcessing } from "@opentrader/processing";
 import type { OrderWithSmartTrade } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { processingQueue } from "./processing.queue";
@@ -44,7 +44,7 @@ export class ExchangeAccountsWatcher {
       `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
     );
 
-    const bot = await GridBotProcessor.fromSmartTradeId(order.smartTrade.id);
+    const bot = await BotProcessing.fromSmartTradeId(order.smartTrade.id);
 
     if (bot.isBotStopped()) {
       console.error("❗ Cannot run bot process when the bot is disabled");

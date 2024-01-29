@@ -22,9 +22,9 @@ export const RunBotTemplateButton: FC<RunBotTemplateButtonProps> = (props) => {
   const { className, bot } = props;
   const { showSnackbar } = useSnackbar();
 
-  const { isLoading, mutate } = tClient.gridBot.manualProcess.useMutation({
+  const { isLoading, mutate } = tClient.bot.manualProcess.useMutation({
     onSuccess() {
-      showSnackbar("Bot has been enabled");
+      showSnackbar("Bot template executed");
     },
   });
 

@@ -20,7 +20,7 @@ type ProfitsCardProps = {
 
 export const ProfitsCard: FC<ProfitsCardProps> = ({ botId }) => {
   const [bot] = tClient.gridBot.getOne.useSuspenseQuery(botId);
-  const [smartTrades] = tClient.gridBot.completedSmartTrades.useSuspenseQuery({
+  const [smartTrades] = tClient.bot.completedSmartTrades.useSuspenseQuery({
     botId,
   });
 

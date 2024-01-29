@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { gridBotModel } from "./extension/models/grid-bot.model";
 import { orderModel } from "./extension/models/order.model";
 import { smartTradeModel } from "./extension/models/smart-trade.model";
+import { customBotModel } from "./extension/models/custom-bot.model";
 
 function newPrismaClientInstance() {
   console.log("❕ DB: Created new instance of PrismaClient");
@@ -20,6 +21,21 @@ const xprismaClient = prismaClient.$extends({
   model: {
     bot: {
       grid: gridBotModel(prismaClient),
+      custom: customBotModel(prismaClient),
+
+      /**
+       * Additional helpers for bot model
+       */
+      async setProcessing(value: boolean, botId: number) {
+        return prismaClient.bot.update({
+          where: {
+            id: botId,
+          },
+          data: {
+            processing: value,
+          },
+        });
+      },
     },
     order: orderModel(prismaClient),
     smartTrade: smartTradeModel(prismaClient),

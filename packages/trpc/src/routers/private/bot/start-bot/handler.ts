@@ -1,5 +1,5 @@
-import { GridBotProcessor } from "@opentrader/processing";
-import { GridBotService } from "#trpc/services/grid-bot.service";
+import { BotProcessing } from "@opentrader/processing";
+import { BotService } from "#trpc/services/bot.service";
 import type { Context } from "#trpc/utils/context";
 import type { TStartGridBotInputSchema } from "./schema";
 
@@ -13,11 +13,11 @@ type Options = {
 export async function startGridBot({ input }: Options) {
   const { botId } = input;
 
-  const botService = await GridBotService.fromId(botId);
+  const botService = await BotService.fromId(botId);
   botService.assertIsNotAlreadyRunning();
   botService.assertIsNotProcessing();
 
-  const botProcessor = new GridBotProcessor(botService.bot);
+  const botProcessor = new BotProcessing(botService.bot);
   await botProcessor.processStartCommand();
 
   await botService.start();

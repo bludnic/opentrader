@@ -1,6 +1,6 @@
 import {
+  BotProcessing,
   ExchangeAccountProcessor,
-  GridBotProcessor,
 } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
 import type { Context } from "#trpc/utils/context";
@@ -24,7 +24,7 @@ export async function syncClosedOrders({ ctx: _ }: Options) {
     const { affectedBotsIds } = await processor.syncOrders();
 
     for (const botId of affectedBotsIds) {
-      const bot = await GridBotProcessor.fromId(botId);
+      const bot = await BotProcessing.fromId(botId);
 
       await bot.process();
       await bot.placePendingOrders();

@@ -3,17 +3,12 @@ import type {
   SmartTrade,
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
-import type { TGridBot, xprisma } from "@opentrader/db";
-import { toSmartTradeEntity } from "@opentrader/db";
+import { xprisma, toSmartTradeEntity } from "@opentrader/db";
 import { SmartTradeProcessor } from "#processing/smart-trade";
 import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
 
-export class GridBotStoreAdapter implements IStore {
-  constructor(
-    private prisma: typeof xprisma,
-    private bot: TGridBot,
-    private stopBotFn: (botId: number) => Promise<void>,
-  ) {}
+export class BotStoreAdapter implements IStore {
+  constructor(private stopBotFn: (botId: number) => Promise<void>) {}
 
   stopBot(botId: number): Promise<void> {
     return this.stopBotFn(botId);
@@ -21,7 +16,7 @@ export class GridBotStoreAdapter implements IStore {
 
   async getSmartTrade(ref: string, botId: number): Promise<SmartTrade | null> {
     try {
-      const smartTrade = await this.prisma.smartTrade.findFirstOrThrow({
+      const smartTrade = await xprisma.smartTrade.findFirstOrThrow({
         where: {
           type: "Trade",
           ref,
@@ -46,16 +41,16 @@ export class GridBotStoreAdapter implements IStore {
     payload: UseSmartTradePayload,
     botId: number,
   ) {
-    console.log(`[GridBotStateManagement] createSmartTrade (key:${ref})`);
+    console.log(`[BotStoreAdapter] createSmartTrade (key:${ref})`);
 
-    const bot = await this.prisma.bot.findUnique({
+    const bot = await xprisma.bot.findUnique({
       where: {
         id: botId,
       },
     });
     if (!bot) {
       throw new Error(
-        `[GridBotStateManagement] getSmartTrade(): botId ${botId} not found`,
+        `[BotStoreAdapter] getSmartTrade(): botId ${botId} not found`,
       );
     }
 
@@ -72,7 +67,7 @@ export class GridBotStoreAdapter implements IStore {
 
     // Clear old ref in case of `SmartTrade.replace()`
     // @todo db transaction
-    await this.prisma.smartTrade.updateMany({
+    await xprisma.smartTrade.updateMany({
       where: {
         botId,
         ref,
@@ -81,7 +76,7 @@ export class GridBotStoreAdapter implements IStore {
         ref: null,
       },
     });
-    const smartTrade = await this.prisma.smartTrade.create({
+    const smartTrade = await xprisma.smartTrade.create({
       data,
       include: {
         orders: true,
@@ -90,27 +85,27 @@ export class GridBotStoreAdapter implements IStore {
     });
 
     console.log(
-      `[GridBotControl] Smart Trade with (key:${ref}) was saved to DB`,
+      `[BotStoreAdapter] Smart Trade with (key:${ref}) was saved to DB`,
     );
 
     return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
   }
 
   async cancelSmartTrade(ref: string, botId: number) {
-    console.log(`[GridBotStateManagement] cancelSmartTrade (ref:${ref})`);
+    console.log(`[BotStoreAdapter] cancelSmartTrade (ref:${ref})`);
 
-    const bot = await this.prisma.bot.findUnique({
+    const bot = await xprisma.bot.findUnique({
       where: {
         id: botId,
       },
     });
     if (!bot) {
       throw new Error(
-        `[GridBotStateManagement] getSmartTrade(): botId ${botId} not found`,
+        `[BotStoreAdapter] getSmartTrade(): botId ${botId} not found`,
       );
     }
 
-    const smartTrade = await this.prisma.smartTrade.findFirst({
+    const smartTrade = await xprisma.smartTrade.findFirst({
       where: {
         type: "Trade",
         ref,
@@ -124,7 +119,7 @@ export class GridBotStoreAdapter implements IStore {
       },
     });
     if (!smartTrade) {
-      console.log("[GridBotStateManagement] SmartTrade not found");
+      console.log("[BotStoreAdapter] SmartTrade not found");
       return false;
     }
 

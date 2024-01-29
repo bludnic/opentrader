@@ -5,5 +5,6 @@ export type IBotConfiguration = {
   baseCurrency: string;
   quoteCurrency: string;
   exchangeCode: ExchangeCode;
+  settings: Record<string, any>;
   // @todo type
 };

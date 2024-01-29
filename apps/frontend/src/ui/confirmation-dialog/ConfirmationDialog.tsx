@@ -33,7 +33,7 @@ export const ConfirmationDialog: FC = () => {
 
   const handleConfirm = async () => {
     const maybePromise = onConfirm();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access -- this is safe
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- this is safe
     const isPromise = !!(maybePromise as any)?.then;
 
     if (isPromise) {

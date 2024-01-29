@@ -1,12 +1,12 @@
-import type { TGridBot } from "@opentrader/db";
+import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { TRPCError } from "@trpc/server";
 
-export class GridBotService {
-  constructor(public bot: TGridBot) {}
+export class BotService {
+  constructor(public bot: TBot) {}
 
   static async fromId(id: number) {
-    const bot = await xprisma.bot.grid.findUniqueOrThrow({
+    const bot = await xprisma.bot.custom.findUniqueOrThrow({
       where: {
         id,
       },
@@ -15,11 +15,11 @@ export class GridBotService {
       },
     });
 
-    return new GridBotService(bot);
+    return new BotService(bot);
   }
 
   static async fromSmartTradeId(smartTradeId: number) {
-    const bot = await xprisma.bot.grid.findFirstOrThrow({
+    const bot = await xprisma.bot.custom.findFirstOrThrow({
       where: {
         smartTrades: {
           some: {
@@ -32,11 +32,11 @@ export class GridBotService {
       },
     });
 
-    return new GridBotService(bot);
+    return new BotService(bot);
   }
 
   async start() {
-    this.bot = await xprisma.bot.grid.update({
+    this.bot = await xprisma.bot.custom.update({
       where: {
         id: this.bot.id,
       },
@@ -50,7 +50,7 @@ export class GridBotService {
   }
 
   async stop() {
-    this.bot = await xprisma.bot.grid.update({
+    this.bot = await xprisma.bot.custom.update({
       where: {
         id: this.bot.id,
       },

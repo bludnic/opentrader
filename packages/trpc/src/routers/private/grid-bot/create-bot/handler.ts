@@ -33,6 +33,7 @@ export async function createGridBot({ ctx, input }: Options) {
     data: {
       ...data,
       type: "GridBot",
+      template: "gridBot",
       exchangeAccount: {
         connect: {
           id: exchangeAccount.id,

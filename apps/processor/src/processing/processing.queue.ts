@@ -1,5 +1,5 @@
 import type { OrderWithSmartTrade } from "#db/types";
-import { GridBotProcessor } from "#processing/grid-bot";
+import { BotProcessing } from "@opentrader/processing";
 import { cargoQueue } from "async";
 
 export const processingQueue = cargoQueue<OrderWithSmartTrade["id"]>(
@@ -13,7 +13,7 @@ export const processingQueue = cargoQueue<OrderWithSmartTrade["id"]>(
     // getting last task from the queue
     const smartTradeId = tasks[tasks.length - 1];
 
-    const bot = await GridBotProcessor.fromSmartTradeId(smartTradeId);
+    const bot = await BotProcessing.fromSmartTradeId(smartTradeId);
 
     await bot.process();
     await bot.placePendingOrders();

@@ -1,29 +1,25 @@
-import type { IGridLine } from "@opentrader/types";
-import { arithmeticGridBot } from "@opentrader/bot-templates";
+import { gridBot, type GridBotConfig } from "@opentrader/bot-templates";
 import { Backtesting } from "@opentrader/backtesting";
-import type { IBotConfiguration } from "@opentrader/bot-processor";
 // import { calcGridLines } from "@opentrader/tools";
 import axios from "axios";
 
-type BotConfig = {
-  gridLines: IGridLine[];
-} & IBotConfiguration;
-
 async function run() {
-  const config: BotConfig = {
+  const config: GridBotConfig = {
     id: 1,
-    gridLines: [
-      { price: 1600, quantity: 1 },
-      { price: 1655, quantity: 1 },
-      { price: 1711, quantity: 1 },
-      { price: 1766, quantity: 1 },
-      { price: 1822, quantity: 1 },
-      { price: 1877, quantity: 1 },
-      { price: 1933, quantity: 1 },
-      { price: 1988, quantity: 1 },
-      { price: 2044, quantity: 1 },
-      { price: 2100, quantity: 1 },
-    ],
+    settings: {
+      gridLines: [
+        { price: 1600, quantity: 1 },
+        { price: 1655, quantity: 1 },
+        { price: 1711, quantity: 1 },
+        { price: 1766, quantity: 1 },
+        { price: 1822, quantity: 1 },
+        { price: 1877, quantity: 1 },
+        { price: 1933, quantity: 1 },
+        { price: 1988, quantity: 1 },
+        { price: 2044, quantity: 1 },
+        { price: 2100, quantity: 1 },
+      ],
+    },
     baseCurrency: "ETH",
     quoteCurrency: "USDT",
     exchangeCode: "OKX",
@@ -32,7 +28,7 @@ async function run() {
 
   const backtesting = new Backtesting({
     botConfig: config,
-    botTemplate: arithmeticGridBot,
+    botTemplate: gridBot,
   });
 
   const {

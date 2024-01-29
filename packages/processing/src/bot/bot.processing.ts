@@ -1,17 +1,17 @@
+import type { IBotConfiguration } from "@opentrader/bot-processor";
 import { BotProcessor } from "@opentrader/bot-processor";
-import type { GridBotConfig } from "@opentrader/bot-templates";
-import { arithmeticGridBot } from "@opentrader/bot-templates";
+import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
-import type { TGridBot } from "@opentrader/db";
+import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { SmartTradeProcessor } from "#processing/smart-trade";
-import { GridBotStoreAdapter } from "./grid-bot-store-adapter";
+import { BotStoreAdapter } from "./bot-store-adapter";
 
-export class GridBotProcessor {
-  constructor(private bot: TGridBot) {}
+export class BotProcessing {
+  constructor(private bot: TBot) {}
 
   static async fromId(id: number) {
-    const bot = await xprisma.bot.grid.findUniqueOrThrow({
+    const bot = await xprisma.bot.custom.findUniqueOrThrow({
       where: {
         id,
       },
@@ -20,11 +20,11 @@ export class GridBotProcessor {
       },
     });
 
-    return new GridBotProcessor(bot);
+    return new BotProcessing(bot);
   }
 
   static async fromSmartTradeId(smartTradeId: number) {
-    const bot = await xprisma.bot.grid.findFirstOrThrow({
+    const bot = await xprisma.bot.custom.findFirstOrThrow({
       where: {
         smartTrades: {
           some: {
@@ -37,11 +37,11 @@ export class GridBotProcessor {
       },
     });
 
-    return new GridBotProcessor(bot);
+    return new BotProcessing(bot);
   }
 
   private async start() {
-    this.bot = await xprisma.bot.grid.update({
+    this.bot = await xprisma.bot.custom.update({
       where: {
         id: this.bot.id,
       },
@@ -55,7 +55,7 @@ export class GridBotProcessor {
   }
 
   private async stop() {
-    this.bot = await xprisma.bot.grid.update({
+    this.bot = await xprisma.bot.custom.update({
       where: {
         id: this.bot.id,
       },
@@ -69,7 +69,7 @@ export class GridBotProcessor {
   }
 
   async processCommand(command: "start" | "stop" | "process") {
-    console.log("🤖 @opentrader/processing: GridBotProcessor.process() start");
+    console.log("🤖 @opentrader/processing: BotProcessing.process() start");
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -79,8 +79,7 @@ export class GridBotProcessor {
 
     const processor = await this.getProcessor();
 
-    await xprisma.bot.grid.setProcessing(true, this.bot.id);
-
+    await xprisma.bot.setProcessing(true, this.bot.id);
     try {
       if (command === "start") {
         await processor.start();
@@ -90,13 +89,13 @@ export class GridBotProcessor {
         await processor.process();
       }
     } catch (err) {
-      await xprisma.bot.grid.setProcessing(false, this.bot.id);
+      await xprisma.bot.setProcessing(false, this.bot.id);
 
       throw err;
     }
 
-    await xprisma.bot.grid.setProcessing(false, this.bot.id);
-    console.log("🤖 @opentrader/processing: GridBotProcessor.process() end");
+    await xprisma.bot.setProcessing(false, this.bot.id);
+    console.log("🤖 @opentrader/processing: BotProcessing.process() end");
   }
 
   async processStartCommand() {
@@ -132,23 +131,22 @@ export class GridBotProcessor {
 
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
 
-    const configuration: GridBotConfig = {
+    const configuration: IBotConfiguration = {
       id: this.bot.id,
       baseCurrency: this.bot.baseCurrency,
       quoteCurrency: this.bot.quoteCurrency,
-      gridLines: this.bot.settings.gridLines,
+      settings: this.bot.settings,
       exchangeCode: exchangeAccount.exchangeCode,
     };
 
-    const storeAdapter = new GridBotStoreAdapter(xprisma, this.bot, () =>
-      this.stop(),
-    );
+    const storeAdapter = new BotStoreAdapter(() => this.stop());
+    const botTemplate = findTemplate(this.bot.template);
 
     const processor = BotProcessor.create({
       store: storeAdapter,
       exchange,
       botConfig: configuration,
-      botTemplate: arithmeticGridBot,
+      botTemplate,
     });
 
     return processor;
@@ -156,7 +154,7 @@ export class GridBotProcessor {
 
   async placePendingOrders() {
     console.log(
-      "🤖 @opentrader/processing: GridBotProcessor.placePendingOrders() start",
+      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() start",
     );
     const smartTrades = await xprisma.smartTrade.findMany({
       where: {
@@ -187,7 +185,7 @@ export class GridBotProcessor {
     }
 
     console.log(
-      "🤖 @opentrader/processing: GridBotProcessor.placePendingOrders() end",
+      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() end",
     );
   }
 }

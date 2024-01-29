@@ -1,19 +1,19 @@
 import { xprisma } from "@opentrader/db";
-import { GridBotService } from "#trpc/services/grid-bot.service";
+import { BotService } from "#trpc/services/bot.service";
 import type { Context } from "#trpc/utils/context";
-import type { TDeleteGridBotInputSchema } from "./schema";
+import type { TDeleteBotInputSchema } from "./schema";
 
 type Options = {
   ctx: {
     user: NonNullable<Context["user"]>;
   };
-  input: TDeleteGridBotInputSchema;
+  input: TDeleteBotInputSchema;
 };
 
-export async function deleteGridBot({ ctx, input }: Options) {
+export async function deleteBot({ ctx, input }: Options) {
   const { botId } = input;
 
-  const botService = await GridBotService.fromId(botId);
+  const botService = await BotService.fromId(botId);
   botService.assertIsNotAlreadyRunning();
   botService.assertIsNotProcessing();
 

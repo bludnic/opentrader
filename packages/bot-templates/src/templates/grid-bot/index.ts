@@ -1,1 +1,1 @@
-export * from "./arithmetic-grid-bot";
+export * from "./grid-bot";

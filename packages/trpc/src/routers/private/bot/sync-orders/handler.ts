@@ -1,4 +1,4 @@
-import { GridBotProcessor, SmartTradeProcessor } from "@opentrader/processing";
+import { BotProcessing, SmartTradeProcessor } from "@opentrader/processing";
 import type { OrderEntity } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
@@ -48,7 +48,7 @@ export async function syncOrders({ input }: Options) {
     order: OrderEntity,
     _exchangeOrder: IGetLimitOrderResponse,
   ) => {
-    const bot = await GridBotProcessor.fromSmartTradeId(order.smartTradeId);
+    const bot = await BotProcessing.fromSmartTradeId(order.smartTradeId);
     await bot.process();
   };
 

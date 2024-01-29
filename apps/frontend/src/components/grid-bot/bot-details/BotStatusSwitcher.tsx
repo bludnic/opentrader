@@ -35,11 +35,11 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
 
   const invalidateState = () => {
     void tUtils.gridBot.getOne.invalidate(bot.id);
-    void tUtils.gridBot.activeSmartTrades.invalidate({ botId: bot.id });
-    void tUtils.gridBot.completedSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.bot.activeSmartTrades.invalidate({ botId: bot.id });
+    void tUtils.bot.completedSmartTrades.invalidate({ botId: bot.id });
   };
 
-  const startBot = tClient.gridBot.start.useMutation({
+  const startBot = tClient.bot.start.useMutation({
     onSuccess() {
       invalidateState();
 
@@ -47,7 +47,7 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
     },
   });
 
-  const stopBot = tClient.gridBot.stop.useMutation({
+  const stopBot = tClient.bot.stop.useMutation({
     onSuccess() {
       invalidateState();
 
