@@ -9,7 +9,7 @@ import type { ChipProps } from "@mui/joy/Chip";
 import Chip from "@mui/joy/Chip";
 import { styled } from "@mui/joy/styles";
 import { tClient } from "src/lib/trpc/client";
-import type { TGridBot } from "src/types/trpc";
+import type { TBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "BotStatusChip";
@@ -23,7 +23,7 @@ const StyledChip = styled(Chip)(() => ({
 
 type BotStatusSwitcherProps = {
   className?: string;
-  bot: TGridBot;
+  bot: TBot;
   sx?: SxProps;
   size?: ChipProps["size"];
 };
@@ -34,7 +34,10 @@ export const BotStatusSwitcher: FC<BotStatusSwitcherProps> = (props) => {
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
+    // workaround, until refactored to one endpoint
     void tUtils.gridBot.getOne.invalidate(bot.id);
+    void tUtils.bot.getOne.invalidate(bot.id);
+
     void tUtils.bot.activeSmartTrades.invalidate({ botId: bot.id });
     void tUtils.bot.completedSmartTrades.invalidate({ botId: bot.id });
   };

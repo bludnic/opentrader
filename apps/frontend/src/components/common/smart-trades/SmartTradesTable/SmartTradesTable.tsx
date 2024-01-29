@@ -4,9 +4,9 @@ import Sheet from "@mui/joy/Sheet";
 import Table from "@mui/joy/Table";
 import type { FC } from "react";
 import { tClient } from "src/lib/trpc/client";
-import { SmartTradesTableHead } from "./SmartTradesTableHead";
-import { SmartTradesTableItem } from "./SmartTradesTableItem";
-import { NoActiveSmartTradesPlaceholder } from "./NoActiveSmartTradesPlaceholder";
+import { SmartTradesTableHead } from "src/components/common/smart-trades/SmartTradesTable/SmartTradesTableHead";
+import { SmartTradesTableItem } from "src/components/common/smart-trades/SmartTradesTable/SmartTradesTableItem";
+import { NoActiveSmartTradesPlaceholder } from "src/components/common/smart-trades/SmartTradesTable/NoActiveSmartTradesPlaceholder";
 
 type SmartTradesTableProps = {
   botId: number;

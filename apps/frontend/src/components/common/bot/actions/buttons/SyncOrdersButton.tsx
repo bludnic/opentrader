@@ -5,7 +5,7 @@ import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
-import type { TGridBot } from "src/types/trpc";
+import type { TBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "RunBotTemplateButton";
@@ -15,7 +15,7 @@ const classes = {
 
 type SyncOrdersButtonProps = {
   className?: string;
-  bot: TGridBot;
+  bot: TBot;
 };
 
 // @deprecated

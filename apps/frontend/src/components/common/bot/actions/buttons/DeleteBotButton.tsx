@@ -6,7 +6,7 @@ import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
-import type { TGridBot } from "src/types/trpc";
+import type { TBot } from "src/types/trpc";
 import { useConfirmationDialog } from "src/ui/confirmation-dialog";
 import { useSnackbar } from "src/ui/snackbar";
 import { toPage } from "src/utils/next/toPage";
@@ -18,7 +18,7 @@ const classes = {
 
 type DeleteBotButtonProps = {
   className?: string;
-  bot: TGridBot;
+  bot: TBot;
 };
 
 export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
@@ -31,6 +31,7 @@ export const DeleteBotButton: FC<DeleteBotButtonProps> = ({
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
+    void tUtils.bot.list.invalidate();
     void tUtils.gridBot.list.invalidate();
   };
 

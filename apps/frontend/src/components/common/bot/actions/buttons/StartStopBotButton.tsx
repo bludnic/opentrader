@@ -5,7 +5,7 @@ import React from "react";
 import clsx from "clsx";
 import Button from "@mui/joy/Button";
 import { tClient } from "src/lib/trpc/client";
-import type { TGridBot } from "src/types/trpc";
+import type { TBot } from "src/types/trpc";
 import { useSnackbar } from "src/ui/snackbar";
 
 const componentName = "StartStopBotButton";
@@ -15,7 +15,7 @@ const classes = {
 
 type StartStopBotButtonProps = {
   className?: string;
-  bot: TGridBot;
+  bot: TBot;
 };
 
 export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
@@ -26,7 +26,10 @@ export const StartStopBotButton: FC<StartStopBotButtonProps> = ({
   const tUtils = tClient.useUtils();
 
   const invalidateState = () => {
+    // workaround, until merged into one endpoint
     void tUtils.gridBot.getOne.invalidate(bot.id);
+    void tUtils.bot.getOne.invalidate(bot.id);
+
     void tUtils.bot.activeSmartTrades.invalidate({ botId: bot.id });
     void tUtils.bot.completedSmartTrades.invalidate({ botId: bot.id });
   };

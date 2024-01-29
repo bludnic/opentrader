@@ -10,7 +10,7 @@ import Tooltip from "@mui/joy/Tooltip";
 import Typography from "@mui/joy/Typography";
 import List from "@mui/joy/List";
 import { tClient } from "src/lib/trpc/client";
-import { calcTotalProfitFromSmartTrades } from "src/utils/grid-bot/calcTotalProfitFromSmartTrades";
+import { calcTotalProfitFromSmartTrades } from "src/utils/smart-trades/calcTotalProfitFromSmartTrades";
 import { ProfitItem } from "./ProfitItem";
 import { Profit } from "./Profit";
 
@@ -19,7 +19,7 @@ type ProfitsCardProps = {
 };
 
 export const ProfitsCard: FC<ProfitsCardProps> = ({ botId }) => {
-  const [bot] = tClient.gridBot.getOne.useSuspenseQuery(botId);
+  const [bot] = tClient.bot.getOne.useSuspenseQuery(botId);
   const [smartTrades] = tClient.bot.completedSmartTrades.useSuspenseQuery({
     botId,
   });

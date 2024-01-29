@@ -5,7 +5,7 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import Typography from "@mui/joy/Typography";
 import type { TCompletedSmartTrade } from "src/types/trpc";
-import { calcProfitFromSmartTrade } from "src/utils/grid-bot/calcProfitFromSmartTrade";
+import { calcProfitFromSmartTrade } from "src/utils/smart-trades/calcProfitFromSmartTrade";
 
 type ProfitDetailsProps = {
   smartTrade: TCompletedSmartTrade;

@@ -6,8 +6,8 @@ import type { FC } from "react";
 import React from "react";
 import type { TActiveSmartTrade } from "src/types/trpc";
 import { formatDateTime } from "src/utils/date/formatDateTime";
-import { SmartTradeStatus } from "./SmartTradeStatus";
-import { ID_COLUMN_MIN_WIDTH } from "./constants";
+import { SmartTradeStatus } from "src/components/common/smart-trades/SmartTradesTable/SmartTradeStatus";
+import { ID_COLUMN_MIN_WIDTH } from "src/components/common/smart-trades/SmartTradesTable/constants";
 
 type SmartTradeTableItemProps = {
   smartTrade: TActiveSmartTrade;

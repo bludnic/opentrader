@@ -19,7 +19,7 @@ type BotSettingsCardProps = {
 };
 
 export const BotSettingsCard: FC<BotSettingsCardProps> = ({ botId }) => {
-  const [bot] = tClient.gridBot.getOne.useSuspenseQuery(botId);
+  const [bot] = tClient.bot.getOne.useSuspenseQuery(botId);
 
   return (
     <Card>

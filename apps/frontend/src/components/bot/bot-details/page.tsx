@@ -1,11 +1,12 @@
 import Grid from "@mui/joy/Grid";
 import Skeleton from "@mui/joy/Skeleton";
 import React, { Suspense } from "react";
-import { BotSettingsCard } from "src/components/grid-bot/bot-details/BotSettings";
-import { GridDetailChart } from "src/components/grid-bot/bot-details/GridDetailChart";
 import { ProfitsCard } from "src/components/common/smart-trades/ProfitsCard";
-import { SmartTradesTable } from "src/components/common/smart-trades/SmartTradesTable";
+import { BotSettingsCard } from "./BotSettings/BotSettingsCard";
 import { CHART_HEIGHT } from "src/ui/charts/Chart";
+import { BotSettingsForm } from "./BotSettingsForm/BotSettingsForm";
+import { BotChart } from "./BotChart";
+import { SmartTradesTable } from "src/components/common/smart-trades/SmartTradesTable";
 
 type Props = {
   botId: number;
@@ -30,7 +31,7 @@ export default function BotDetailsPage(props: Props) {
             />
           }
         >
-          <GridDetailChart botId={botId} />
+          <BotChart botId={botId} />
         </Suspense>
       </Grid>
 

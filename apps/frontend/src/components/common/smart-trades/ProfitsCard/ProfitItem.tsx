@@ -9,7 +9,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/joy/Tooltip";
 import type { TCompletedSmartTrade } from "src/types/trpc";
 import { formatDateTime } from "src/utils/date/formatDateTime";
-import { calcProfitFromSmartTrade } from "src/utils/grid-bot/calcProfitFromSmartTrade";
+import { calcProfitFromSmartTrade } from "src/utils/smart-trades/calcProfitFromSmartTrade";
 import { ProfitDetails } from "./ProfitDetails";
 import { Profit } from "./Profit";
 

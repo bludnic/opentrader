@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { ID_COLUMN_MIN_WIDTH } from "./constants";
+import { ID_COLUMN_MIN_WIDTH } from "src/components/common/smart-trades/SmartTradesTable/constants";
 
 export const SmartTradesTableHead: FC = () => {
   return (

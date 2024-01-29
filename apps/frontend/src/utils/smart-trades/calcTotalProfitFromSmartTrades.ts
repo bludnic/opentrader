@@ -1,6 +1,6 @@
 import big from "big.js";
 import type { TCompletedSmartTrade } from "src/types/trpc";
-import { calcProfitFromSmartTrade } from "./calcProfitFromSmartTrade";
+import { calcProfitFromSmartTrade } from "src/utils/smart-trades/calcProfitFromSmartTrade";
 
 export function calcTotalProfitFromSmartTrades(
   smartTrades: TCompletedSmartTrade[],

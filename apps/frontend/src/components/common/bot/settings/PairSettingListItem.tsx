@@ -6,10 +6,10 @@ import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import Typography from "@mui/joy/Typography";
 import type { FC } from "react";
 import { CryptoIcon } from "src/ui/icons/CryptoIcon";
-import type { TGridBot } from "src/types/trpc";
+import type { TBot } from "src/types/trpc";
 
 type PairSettingListItemProps = {
-  bot: TGridBot;
+  bot: TBot;
 };
 
 export const PairSettingListItem: FC<PairSettingListItemProps> = ({ bot }) => {
