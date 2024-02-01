@@ -11,6 +11,8 @@ import { isUseExchangeEffect } from "./effects/utils/isUseExchangeEffect";
 import { isUseSmartTradeEffect } from "./effects/utils/isUseSmartTradeEffect";
 import { isCancelSmartTradeEffect } from "./effects/utils/isCancelSmartTradeEffect";
 import { isUseIndicatorsEffect } from "./effects/utils/isUseIndicatorsEffect";
+import { isGetSmartTradeEffect } from "./effects/utils/isGetSmartTradeEffect";
+import { isCreateSmartTradeEffect } from "./effects/utils/isCreateSmartTradeEffect";
 
 export class BotManager<T extends IBotConfiguration> {
   constructor(
@@ -75,6 +77,25 @@ export class BotManager<T extends IBotConfiguration> {
         await this.control.cancelSmartTrade(effect.ref);
 
         item = generator.next();
+      } else if (isGetSmartTradeEffect(item.value)) {
+        const effect = item.value;
+
+        const smartTrade = await this.control.getSmartTrade(effect.ref);
+        const smartTradeService = smartTrade
+          ? new SmartTradeService(effect.ref, smartTrade)
+          : null;
+
+        item = generator.next(smartTradeService);
+      } else if (isCreateSmartTradeEffect(item.value)) {
+        const effect = item.value;
+
+        const smartTrade = await this.control.getOrCreateSmartTrade(
+          effect.ref,
+          effect.payload,
+        );
+        const smartTradeService = new SmartTradeService(effect.ref, smartTrade);
+
+        item = generator.next(smartTradeService);
       } else if (isUseExchangeEffect(item.value)) {
         item = generator.next(this.exchange);
       } else if (isUseIndicatorsEffect(item.value)) {
