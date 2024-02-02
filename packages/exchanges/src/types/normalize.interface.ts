@@ -18,6 +18,8 @@ import type {
   ISymbolInfo,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
+  IPlaceStopOrderRequest,
+  IPlaceStopOrderResponse,
 } from "@opentrader/types";
 import type {
   Balances,
@@ -47,6 +49,13 @@ export type Normalize = {
       params: IPlaceLimitOrderRequest,
     ) => Parameters<Exchange["createLimitOrder"]>;
     response: (data: Order) => IPlaceLimitOrderResponse;
+  };
+
+  placeStopOrder: {
+    request: (
+      params: IPlaceStopOrderRequest,
+    ) => Parameters<Exchange["createStopOrder"]>;
+    response: (data: Order) => IPlaceStopOrderResponse;
   };
 
   cancelLimitOrder: {

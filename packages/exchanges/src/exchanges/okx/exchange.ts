@@ -15,6 +15,8 @@ import type {
   IGetSymbolInfoRequest,
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
+  IPlaceStopOrderRequest,
+  IPlaceStopOrderResponse,
   ISymbolInfo,
   ITradingPairSymbolRequest,
   IWatchOrdersRequest,
@@ -85,6 +87,19 @@ export class OkxExchange implements IExchange {
     const data = await this.ccxt.createLimitOrder(...args);
 
     return normalize.placeLimitOrder.response(data);
+  }
+
+  async placeStopOrder(
+    params: IPlaceStopOrderRequest,
+  ): Promise<IPlaceStopOrderResponse> {
+    if (params.type === "limit" && params.price === undefined) {
+      throw new Error("Validation: `price` required for Limit order type");
+    }
+
+    const args = normalize.placeStopOrder.request(params);
+    const data = await this.ccxt.createStopOrder(...args);
+
+    return normalize.placeStopOrder.response(data);
   }
 
   async getOpenOrders(

@@ -19,6 +19,8 @@ import type {
   IGetClosedOrdersResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
+  IPlaceStopOrderRequest,
+  IPlaceStopOrderResponse,
 } from "@opentrader/types";
 import type { Dictionary, Market, okex5 } from "ccxt";
 
@@ -37,6 +39,9 @@ export interface IExchange {
   cancelLimitOrder: (
     body: ICancelLimitOrderRequest,
   ) => Promise<ICancelLimitOrderResponse>;
+  placeStopOrder: (
+    body: IPlaceStopOrderRequest,
+  ) => Promise<IPlaceStopOrderResponse>;
   getOpenOrders: (
     body: IGetOpenOrdersRequest,
   ) => Promise<IGetOpenOrdersResponse>;
