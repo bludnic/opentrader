@@ -89,7 +89,7 @@ export class BotManager<T extends IBotConfiguration> {
       } else if (isCreateSmartTradeEffect(item.value)) {
         const effect = item.value;
 
-        const smartTrade = await this.control.getOrCreateSmartTrade(
+        const smartTrade = await this.control.createSmartTrade(
           effect.ref,
           effect.payload,
         );
