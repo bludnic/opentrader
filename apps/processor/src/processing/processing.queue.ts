@@ -1,4 +1,4 @@
-import type { OrderWithSmartTrade } from "#db/types";
+import type { OrderWithSmartTrade } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { cargoQueue } from "async";
 

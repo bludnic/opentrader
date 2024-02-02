@@ -172,6 +172,10 @@ model Bot {
   // e.g. `gridBot`, see templates in @opentrader/templates
   template String
 
+  // Bot template will be executed at the candle close of specified timeframe.
+  // If not specified than the template will be executed on SmartTrade filled event.
+  timeframe String?
+
   // Means that the bot template is being processed right now.
   // This must guarantee that the bot template will not be processed
   // several times simultaneously.

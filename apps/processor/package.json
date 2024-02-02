@@ -21,6 +21,7 @@
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/node": "^20.9.0",
+    "@types/node-cron": "^3.0.11",
     "@types/serve-handler": "^6.1.4",
     "@types/webpack-node-externals": "^3.0.4",
     "ts-loader": "^9.5.1",
@@ -47,6 +48,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.54.0",
     "express": "^4.18.2",
+    "node-cron": "^3.0.3",
     "serve-handler": "^6.1.5"
   }
 }

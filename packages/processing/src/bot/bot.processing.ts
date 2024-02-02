@@ -69,7 +69,7 @@ export class BotProcessing {
   }
 
   async processCommand(command: "start" | "stop" | "process") {
-    console.log("🤖 @opentrader/processing: BotProcessing.process() start");
+    console.log(`🤖 Bot #${this.bot.id} command=${command}`);
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -95,7 +95,7 @@ export class BotProcessing {
     }
 
     await xprisma.bot.setProcessing(false, this.bot.id);
-    console.log("🤖 @opentrader/processing: BotProcessing.process() end");
+    console.log(`🤖 Bot #${this.bot.id} command=${command} finished`);
   }
 
   async processStartCommand() {
@@ -120,6 +120,14 @@ export class BotProcessing {
 
   isBotProcessing() {
     return this.bot.processing;
+  }
+
+  getId() {
+    return this.bot.id;
+  }
+
+  getTimeframe() {
+    return this.bot.timeframe;
   }
 
   private async getProcessor() {

@@ -51,6 +51,13 @@ export class ExchangeAccountsWatcher {
       return;
     }
 
+    if (bot.getTimeframe()) {
+      console.error(
+        `❕ The bot #${bot.getId()} is timeframe-based: ${bot.getTimeframe()}. Skip processing`,
+      );
+      return;
+    }
+
     processingQueue.push(order.smartTrade.id, () => {
       console.log(`Task processed, ST: ${order.smartTrade.id}`);
     });
