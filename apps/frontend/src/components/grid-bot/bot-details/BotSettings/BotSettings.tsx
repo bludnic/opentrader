@@ -61,7 +61,7 @@ export const BotSettings: FC<BotSettingsProps> = ({ bot }) => {
       <ListDivider inset="startContent" />
 
       <SettingListItem icon={<DataObjectIcon />} name="Template">
-        <Chip variant="soft" color="primary">
+        <Chip color="primary" variant="soft">
           {bot.template}
         </Chip>
       </SettingListItem>
