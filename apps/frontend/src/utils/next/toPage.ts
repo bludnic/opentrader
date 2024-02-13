@@ -1,4 +1,5 @@
 const routes = {
+  login: "/dashboard/login",
   dashboard: "/dashboard",
   accounts: "/dashboard/accounts",
   "bot/:id": (botId: number) => {

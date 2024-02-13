@@ -1,12 +1,25 @@
+"use client";
+
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import Link from "@mui/joy/Link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toPage } from "src/utils/next/toPage";
 
 export function LoginForm() {
+  const [email, setEmail] = useState("opentrader");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleLogin = () => {
+    window.localStorage.setItem("ADMIN_PASSWORD", password);
+    router.replace(toPage("grid-bot"));
+  };
+
   return (
     <Sheet
       sx={{
@@ -23,47 +36,42 @@ export function LoginForm() {
       variant="outlined"
     >
       <Typography component="h1" level="h4">
-        Welcome!
+        Welcome Trader!
       </Typography>
       <Typography level="body-sm">Sign in to continue.</Typography>
 
       <FormControl>
-        <FormLabel>Email</FormLabel>
+        <FormLabel>Username</FormLabel>
 
-        <Input name="email" placeholder="victor@vlas.pro" type="email" />
+        <Input
+          name="username"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="username"
+          type="text"
+          value={email}
+        />
       </FormControl>
 
       <FormControl>
         <FormLabel>Password</FormLabel>
 
-        <Input name="password" placeholder="password" type="password" />
+        <Input
+          name="password"
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </FormControl>
 
       <Button
         sx={{
           mt: 1,
         }}
+        onClick={handleLogin}
       >
         Log in
       </Button>
-      <Button>Primary</Button>
-      <Button color="neutral">Secondary</Button>
-      <Button color="success">Success</Button>
-      <Button color="danger">Danger</Button>
-      <Button color="warning">Warning</Button>
-      <Button color="neutral" variant="soft">
-        Light
-      </Button>
-
-      <Typography
-        endDecorator={<Link href="/sign-up">Sign up</Link>}
-        fontSize="sm"
-        sx={{
-          alignSelf: "center",
-        }}
-      >
-        Don&apos;t have an account?
-      </Typography>
     </Sheet>
   );
 }

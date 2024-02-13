@@ -14,6 +14,9 @@ import { isTRPCError } from "src/ui/errors/utils";
 import { useTRPCErrorModal } from "src/ui/errors/api";
 import { tClient } from "src/lib/trpc/client";
 import { getBaseUrl } from "src/lib/trpc/getBaseUrl";
+import { isUnauthorizedError } from "src/ui/errors/utils/isUnauthorizedError";
+import { isLoginPage } from "src/utils/auth/isLoginPage";
+import { toPage } from "src/utils/next/toPage";
 
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -26,6 +29,11 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
         queryCache: new QueryCache({
           onError: (error) => {
             if (isTRPCError(error)) {
+              if (isUnauthorizedError(error) && !isLoginPage()) {
+                window.location.href = toPage("login");
+                return;
+              }
+
               showErrorModal(error);
             }
           },
