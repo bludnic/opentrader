@@ -1,45 +1,87 @@
-import type { IBotConfiguration, TBotContext } from "@opentrader/bot-processor";
+import type {
+  IBotConfiguration,
+  TBotContext,
+  SmartTradeService,
+} from "@opentrader/bot-processor";
 import {
   cancelSmartTrade,
-  SmartTradeService,
-  useExchange,
+  createSmartTrade,
+  getSmartTrade,
   useIndicators,
-  useSmartTrade
 } from "@opentrader/bot-processor";
-import type { IExchange } from "@opentrader/exchanges";
 import type { XCandle } from "@opentrader/types";
+import { OrderStatusEnum } from "@opentrader/types";
 
 export interface LowCapBotConfig extends IBotConfiguration {
-  settings: any;
+  settings: {
+    targetDrop: number; // 0.05
+    takeProfit: number; // 1.05
+  };
 }
 
 export function* lowCap(ctx: TBotContext<LowCapBotConfig>) {
-  const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
-    ["SMA10", "SMA15"],
-    "1m",
+  const {
+    indicators: { SMA5, SMA10, SMA15 },
+    open,
+    high,
+    low,
+    close,
+  }: XCandle<"SMA5" | "SMA10" | "SMA15"> = yield useIndicators(
+    ["SMA5", "SMA10", "SMA15"],
+    "1h",
   );
-  // const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
   const { config: bot, onStart, onStop } = ctx;
+  console.log("bot settings", bot);
 
   if (onStop) {
-    yield cancelSmartTrade("0");
+    yield cancelSmartTrade("x");
+    console.log("[Lowcap] Bot stopped");
 
     return;
   }
 
-  const smartTrade: SmartTradeService = yield useSmartTrade("0", {
-    buy: {
-      price: 42000,
-    },
-    sell: {
-      price: 50000,
-    },
-    quantity: 0.01,
-  });
+  if (onStart) {
+    console.log("[Lowcap] Bot started");
+  }
 
-  console.log("LowCap: Bot template run.");
-  console.log("smartTrade.isCompleted()", smartTrade.isCompleted());
-  console.log("candle1m", candle1m);
+  const priceDrop = (open - close) / open;
 
-  const exchange: IExchange = yield useExchange();
+  console.log("[Lowcap] Bot process");
+  console.log("OHLC", open, high, low, close);
+  console.log("Price drop", `${(priceDrop * 100).toFixed(2)}%`);
+  console.log("SMA5 SMA10", SMA5, SMA10);
+
+  // cancel previous order if failed to fill at a candle close price
+  const smartTrade: SmartTradeService | null = yield getSmartTrade("x");
+  if (smartTrade && smartTrade.buy.status === OrderStatusEnum.Placed) {
+    yield cancelSmartTrade("x");
+    console.log(
+      `SmartTrade cancelled buy:${smartTrade.buy.price} sell:${smartTrade.sell.price} (reason: not filled)`,
+    );
+  }
+
+  // price dropped > 1%
+  if (priceDrop > bot.settings.targetDrop && SMA5 < SMA10 && SMA10 < SMA15) {
+    console.log(`Price dropped: ${(priceDrop * 100).toFixed(2)}%`);
+    const smartTrade: SmartTradeService | null = yield getSmartTrade("x");
+
+    if (smartTrade && !smartTrade.isCompleted()) {
+      console.log(
+        `There is an active SmartTrade buy:${smartTrade.buy.price} sell:${smartTrade.sell.price}. Skip placing.`,
+      );
+    } else {
+      const smartTrade: SmartTradeService = yield createSmartTrade("x", {
+        buy: {
+          price: close,
+        },
+        sell: {
+          price: close * bot.settings.takeProfit,
+        },
+        quantity: 1,
+      });
+      console.log(
+        `Created SmartTrade buy:${smartTrade.buy.price} sell:${smartTrade.sell.price}.`,
+      );
+    }
+  }
 }

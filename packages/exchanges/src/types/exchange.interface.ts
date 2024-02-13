@@ -21,6 +21,12 @@ import type {
   IWatchOrdersResponse,
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
+  IPlaceStopLimitOrderRequest,
+  IPlaceStopLimitOrderResponse,
+  IPlaceStopMarketOrderRequest,
+  IPlaceStopMarketOrderResponse,
+  IPlaceOCOOrderRequest,
+  IPlaceOCOOrderResponse,
 } from "@opentrader/types";
 import type { Dictionary, Market, okex5 } from "ccxt";
 
@@ -42,6 +48,15 @@ export interface IExchange {
   placeStopOrder: (
     body: IPlaceStopOrderRequest,
   ) => Promise<IPlaceStopOrderResponse>;
+  placeStopLimitOrder: (
+    body: IPlaceStopLimitOrderRequest,
+  ) => Promise<IPlaceStopLimitOrderResponse>;
+  placeStopMarketOrder: (
+    body: IPlaceStopMarketOrderRequest,
+  ) => Promise<IPlaceStopMarketOrderResponse>;
+  placeOCOOrder: (
+    body: IPlaceOCOOrderRequest,
+  ) => Promise<IPlaceOCOOrderResponse>;
   getOpenOrders: (
     body: IGetOpenOrdersRequest,
   ) => Promise<IGetOpenOrdersResponse>;

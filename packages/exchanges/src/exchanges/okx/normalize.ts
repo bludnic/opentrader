@@ -1,3 +1,4 @@
+import { toExchangeSymbol } from "#exchanges/exchanges/okx/utils";
 import { ExchangeCode } from "@opentrader/types";
 import { composeSymbolIdFromPair } from "@opentrader/tools";
 import type { Normalize } from "#exchanges/types/normalize.interface";
@@ -59,6 +60,62 @@ const placeStopOrder: Normalize["placeStopOrder"] = {
   response: (order) => ({
     orderId: order.id,
     clientOrderId: order.clientOrderId,
+  }),
+};
+
+const placeStopLimitOrder: Normalize["placeStopLimitOrder"] = {
+  request: (params) => ({
+    instId: toExchangeSymbol(params.symbol),
+    side: params.side,
+    ordType: "conditional",
+    sz: String(params.quantity),
+    tdMode: "cash",
+    tgtCcy: "base_ccy",
+    tpTriggerPx: String(params.stopPrice),
+    tpOrdPx: String(params.price),
+  }),
+  response: (res) => ({
+    orderId: res.data[0].algoId,
+  }),
+};
+
+const placeStopMarketOrder: Normalize["placeStopMarketOrder"] = {
+  request: (params) => ({
+    instId: toExchangeSymbol(params.symbol),
+    side: params.side,
+    ordType: "conditional",
+    sz: String(params.quantity),
+    tdMode: "cash",
+    // When size="sell" and tgtCcy="base_ccy"
+    // the OKX API return an error "Parameter tgtCcy error"
+    // even the order will use actually "base_ccy"
+    tgtCcy: params.side === "buy" ? "base_ccy" : undefined,
+    tpTriggerPx: String(params.stopPrice),
+    tpOrdPx: "-1",
+  }),
+  response: (res) => ({
+    orderId: res.data[0].algoId,
+  }),
+};
+
+const placeOCOOrder: Normalize["placeOCOOrder"] = {
+  request: (params) => ({
+    instId: toExchangeSymbol(params.symbol),
+    side: params.side,
+    ordType: "oco",
+    sz: String(params.quantity),
+    tdMode: "cash",
+    // When size="sell" and tgtCcy="base_ccy"
+    // the OKX API return an error "Parameter tgtCcy error"
+    // even the order will use actually "base_ccy"
+    tgtCcy: params.side === "buy" ? "base_ccy" : undefined,
+    tpTriggerPx: String(params.tpStopPrice),
+    tpOrdPx: params.tpType === "limit" ? String(params.tpPrice) : "-1",
+    slTriggerPx: String(params.slStopPrice),
+    slOrdPx: params.slType === "limit" ? String(params.slPrice) : "-1",
+  }),
+  response: (res) => ({
+    orderId: res.data[0].algoId,
   }),
 };
 
@@ -181,6 +238,9 @@ export const normalize: Normalize = {
   getLimitOrder,
   placeLimitOrder,
   placeStopOrder,
+  placeStopLimitOrder,
+  placeStopMarketOrder,
+  placeOCOOrder,
   cancelLimitOrder,
   getOpenOrders,
   getClosedOrders,

@@ -1,4 +1,4 @@
-export interface IPlaceStopOrderResponse {
+export interface IPlaceOCOOrderResponse {
   /**
    * Order ID.
    */

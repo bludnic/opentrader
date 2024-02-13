@@ -15,6 +15,12 @@ import type {
   IGetSymbolInfoRequest,
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
+  IPlaceOCOOrderRequest,
+  IPlaceOCOOrderResponse,
+  IPlaceStopLimitOrderRequest,
+  IPlaceStopLimitOrderResponse,
+  IPlaceStopMarketOrderRequest,
+  IPlaceStopMarketOrderResponse,
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
   ISymbolInfo,
@@ -43,6 +49,7 @@ export class OkxExchange implements IExchange {
         }
       : undefined;
     this.ccxt = new pro.okx(ccxtCredentials);
+    // this.ccxt.verbose = true;
 
     this.ccxt.fetchImplementation = fetcher; // #57
     // #88 Fixes: 'e instanceof this.AbortError' is not an object
@@ -74,6 +81,28 @@ export class OkxExchange implements IExchange {
     return normalize.getLimitOrder.response(data);
   }
 
+  async getAlgoOrder(params: any) {
+    return this.ccxt.privateGetTradeOrderAlgo({
+      algoId: params.orderId,
+    });
+  }
+
+  async createOrder(params: any) {
+    return this.ccxt.createOrder('ETH/USDT', 'limit', 'buy', 0.05, 2297, {
+      'stopLoss': {
+        'type': 'limit', // or 'market', this field is not necessary if limit price is specified
+        'price': 1900, // limit price for a limit stop loss order
+        'triggerPrice': 2000,
+      },
+      'takeProfit': {
+        'type': 'market', // or 'limit', this field is not necessary if limit price is specified
+        // no limit price for a market take profit order
+        // 'price': 160.33, // this field is not necessary for a market take profit order
+        'triggerPrice': 2500,
+      }
+    });
+  }
+
   async placeLimitOrder(
     params: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
@@ -92,14 +121,60 @@ export class OkxExchange implements IExchange {
   async placeStopOrder(
     params: IPlaceStopOrderRequest,
   ): Promise<IPlaceStopOrderResponse> {
-    if (params.type === "limit" && params.price === undefined) {
-      throw new Error("Validation: `price` required for Limit order type");
+    if (params.type === "limit") {
+      return this.placeStopLimitOrder(params);
+    } else {
+      return this.placeStopMarketOrder(params);
     }
+  }
 
-    const args = normalize.placeStopOrder.request(params);
-    const data = await this.ccxt.createStopOrder(...args);
+  async placeStopLimitOrder(
+    params: IPlaceStopLimitOrderRequest,
+  ): Promise<IPlaceStopLimitOrderResponse> {
+    // instId: "ETH-USDT",
+    // side: "buy",
+    // ordType: "conditional",
+    // sz: "0.01",
+    // tdMode: "cash",
+    // tgtCcy: "base_ccy",
+    // tpTriggerPx: "2200",
+    // tpOrdPx: "2300",
+    // slTriggerPx: "2400",
+    // slOrdPx: "2500",
+    const args = normalize.placeStopLimitOrder.request(params);
+    const data = await this.ccxt.privatePostTradeOrderAlgo(args);
 
-    return normalize.placeStopOrder.response(data);
+    return normalize.placeStopLimitOrder.response(data);
+  }
+
+  async placeStopMarketOrder(
+    params: IPlaceStopMarketOrderRequest,
+  ): Promise<IPlaceStopMarketOrderResponse> {
+    // instId: "ETH-USDT",
+    // side: "buy",
+    // ordType: "conditional",
+    // sz: "0.01",
+    // tdMode: "cash",
+    // tgtCcy: "base_ccy",
+    // tpTriggerPx: "2200",
+    // tpOrdPx: "2300",
+    // slTriggerPx: "2400",
+    // slOrdPx: "2500",
+    const args = normalize.placeStopMarketOrder.request(params);
+    console.log(args);
+    const data = await this.ccxt.privatePostTradeOrderAlgo(args);
+
+    return normalize.placeStopMarketOrder.response(data);
+  }
+
+  async placeOCOOrder(
+    params: IPlaceOCOOrderRequest,
+  ): Promise<IPlaceOCOOrderResponse> {
+    const args = normalize.placeOCOOrder.request(params);
+    console.log(args);
+    const data = await this.ccxt.privatePostTradeOrderAlgo(args);
+
+    return normalize.placeOCOOrder.response(data);
   }
 
   async getOpenOrders(

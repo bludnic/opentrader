@@ -1,10 +1,6 @@
 import type { OrderSide } from "src/exchanges/api/trade/common/types";
 
-type StopOrderBase<T extends "limit" | "market"> = {
-  /**
-   * Order type
-   */
-  type: T;
+export interface IPlaceStopMarketOrderRequest {
   /**
    * Instrument ID, e.g `ADA/USDT`.
    */
@@ -17,12 +13,7 @@ type StopOrderBase<T extends "limit" | "market"> = {
    */
   quantity: number;
   /**
-   * Trigger price
+   * Trigger price.
    */
   stopPrice: number;
-} & (T extends "limit" ? { price: number } : {});
-
-export type IPlaceStopOrderRequest =
-  | StopOrderBase<"limit">
-  | StopOrderBase<"market">;
-
+}
