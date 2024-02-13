@@ -18,6 +18,8 @@ import type {
   ISymbolInfo,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
+  IPlaceStopOrderRequest,
+  IPlaceStopOrderResponse,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
 import type { MarketSimulator } from "../market-simulator";
@@ -57,6 +59,15 @@ export class MemoryExchange implements IExchange {
   async placeLimitOrder(
     _body: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
+    return {
+      orderId: "",
+      clientOrderId: "",
+    };
+  }
+
+  async placeStopOrder(
+    _body: IPlaceStopOrderRequest,
+  ): Promise<IPlaceStopOrderResponse> {
     return {
       orderId: "",
       clientOrderId: "",
