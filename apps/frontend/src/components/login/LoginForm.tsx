@@ -57,18 +57,18 @@ export function LoginForm() {
 
         <Input
           name="password"
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
         />
       </FormControl>
 
       <Button
+        onClick={handleLogin}
         sx={{
           mt: 1,
         }}
-        onClick={handleLogin}
       >
         Log in
       </Button>

@@ -1,10 +1,13 @@
-import type { IBotConfiguration, TBotContext } from "@opentrader/bot-processor";
+import type {
+  IBotConfiguration,
+  TBotContext,
+  SmartTradeService,
+} from "@opentrader/bot-processor";
 import {
   cancelSmartTrade,
-  SmartTradeService,
   useExchange,
   useIndicators,
-  useSmartTrade
+  useSmartTrade,
 } from "@opentrader/bot-processor";
 import type { IExchange } from "@opentrader/exchanges";
 import type { XCandle } from "@opentrader/types";
