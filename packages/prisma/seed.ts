@@ -54,6 +54,7 @@ async function main() {
       baseCurrency: "BTC",
       quoteCurrency: "USDT",
       type: "GridBot",
+      template: "gridBot",
 
       settings: {
         gridLines: gridLines as any,
