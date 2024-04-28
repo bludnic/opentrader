@@ -428,12 +428,24 @@ importers:
 
   packages/cli:
     dependencies:
+      '@opentrader/backtesting':
+        specifier: workspace:*
+        version: link:../backtesting
       '@opentrader/bot-processor':
         specifier: workspace:*
         version: link:../bot-processor
+      '@opentrader/bot-templates':
+        specifier: workspace:*
+        version: link:../bot-templates
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges
+      ccxt:
+        specifier: 4.1.48
+        version: 4.1.48
+      commander:
+        specifier: ^12.0.0
+        version: 12.0.0
     devDependencies:
       '@opentrader/eslint-config':
         specifier: workspace:*
@@ -450,6 +462,9 @@ importers:
       eslint:
         specifier: 8.54.0
         version: 8.54.0
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.10.0)(typescript@5.2.2)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -3835,6 +3850,11 @@ packages:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
     dev: true
+
+  /commander@12.0.0:
+    resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
+    engines: {node: '>=18'}
+    dev: false
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
