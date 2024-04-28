@@ -426,6 +426,34 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  packages/cli:
+    dependencies:
+      '@opentrader/bot-processor':
+        specifier: workspace:*
+        version: link:../bot-processor
+      '@opentrader/exchanges':
+        specifier: workspace:*
+        version: link:../exchanges
+    devDependencies:
+      '@opentrader/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@opentrader/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
+      '@types/node':
+        specifier: ^20.10.0
+        version: 20.10.0
+      eslint:
+        specifier: 8.54.0
+        version: 8.54.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
   packages/db:
     dependencies:
       '@opentrader/prisma':
