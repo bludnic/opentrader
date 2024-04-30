@@ -1,5 +1,5 @@
-import { BotProcessing } from "#processing/bot";
-import { xprisma } from "@opentrader/db/dist";
+import { BotProcessing } from "@opentrader/processing";
+import { xprisma } from "@opentrader/db";
 import type { ScheduledTask } from "node-cron";
 import { schedule } from "node-cron";
 
