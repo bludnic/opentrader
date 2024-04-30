@@ -1,4 +1,2 @@
-import pino from "pino";
-import pinoPretty from "pino-pretty";
-
-export const logger = pino(pinoPretty());
+export * as format from "./formatters";
+export { logger } from "./logger";

@@ -1,0 +1,26 @@
+// Bot config
+{
+  // Bot ID, if you use a database to support multiple bots
+  // Leave it as 0 if you only have one bot
+  id: 0,
+  // Strategy config
+  // It's different for each strategy
+  // See the strategies dir: `/packages/bot-templates/src/templates`
+  settings: {
+    gridLines: [
+      { price: 1600, quantity: 1 },
+      { price: 1655, quantity: 1 },
+      { price: 1711, quantity: 1 },
+      { price: 1766, quantity: 1 },
+      { price: 1822, quantity: 1 },
+      { price: 1877, quantity: 1 },
+      { price: 1933, quantity: 1 },
+      { price: 1988, quantity: 1 },
+      { price: 2044, quantity: 1 },
+      { price: 2100, quantity: 1 },
+    ],
+  },
+  baseCurrency: "ETH",
+  quoteCurrency: "USDT",
+  exchangeCode: "OKX",
+}

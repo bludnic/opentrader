@@ -24,7 +24,10 @@
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
+    "@opentrader/logger": "workspace:*",
+    "@opentrader/tools": "workspace:*",
     "ccxt": "4.1.48",
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "json5": "^2.2.3"
   }
 }

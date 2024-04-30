@@ -9,7 +9,8 @@
       "#bot-processor/*": ["../bot-processor/src/*"],
       "#bot-template/*": ["../bot-template/src/*"],
       "#backtesting/*": ["../backtesting/src/*"],
-      "#exchanges/*": ["../exchanges/src/*"]
+      "#exchanges/*": ["../exchanges/src/*"],
+      "#logger/*": ["../logger/src/*"]
     }
   }
 }

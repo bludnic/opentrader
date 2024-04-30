@@ -25,7 +25,6 @@ export interface GridBotConfig extends Omit<IBotConfiguration, "settings"> {
 }
 
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
-  console.log("ctx", ctx);
   // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
   //   ["SMA10", "SMA15", "SMA30"],
   //   "1m",

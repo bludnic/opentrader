@@ -1,5 +1,6 @@
-import * as api from './api'
-import { Command } from "commander";
+import { Argument, Command, Option } from "commander";
+import { addBacktestCommand } from "./commands/backtest";
+import { addGridLinesCommand } from "./commands/grid-lines";
 
 const program = new Command();
 
@@ -8,20 +9,7 @@ program
   .description("CLI for OpenTrader")
   .version("0.0.1");
 
-program
-  .command("backtest")
-  .description("Backtesting a strategy")
-  .argument("<strategy>", "Strategy name")
-  .option("-c, --config <config>", "Config file", "config.json5")
-  .action(async (strategy, options) => {
-    const report = await api.runBacktest();
-
-    return console.log(report)
-  });
+addBacktestCommand(program);
+addGridLinesCommand(program);
 
 program.parse();
-
-// const options = program.opts();
-//
-// console.log("options:", options);
-// console.log("args", program.args);

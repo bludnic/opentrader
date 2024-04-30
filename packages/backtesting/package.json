@@ -23,6 +23,7 @@
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
+    "@opentrader/logger": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "lodash": "^4.17.21"
   }
