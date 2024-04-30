@@ -1,12 +1,7 @@
 import type { UseSmartTradePayload } from "../../effects/common/types/use-smart-trade-effect";
-import type { IStore } from "../store/store.interface";
 import type { SmartTrade } from "../smart-trade/smart-trade.type";
-import type { IBotConfiguration } from "./bot-configuration.interface";
 
-export interface IBotControl<T extends IBotConfiguration> {
-  store: IStore;
-  bot: T;
-
+export interface IBotControl {
   /**
    * Stop bot
    */

@@ -1,5 +1,5 @@
 {
-  "name": "@opentrader/bot-templates",
+  "name": "@opentrader/logger",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
@@ -16,13 +16,12 @@
     "@opentrader/types": "workspace:*",
     "@types/node": "^20.10.0",
     "eslint": "8.54.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@opentrader/bot-processor": "workspace:*",
-    "@opentrader/exchanges": "workspace:*",
-    "@opentrader/indicators": "workspace:*",
-    "@opentrader/tools": "workspace:*",
-    "zod": "3.22.4"
+    "chalk": "4",
+    "pino": "^9.0.0",
+    "pino-pretty": "^11.0.0"
   }
 }

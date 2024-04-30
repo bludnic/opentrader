@@ -76,6 +76,7 @@ export class MemoryStore implements IStore {
   }
 
   async cancelSmartTrade(_ref: string, _botId: number): Promise<boolean> {
-    throw new Error("Not implemented yet.");
+    return false; // @todo
+    // throw new Error("Not implemented yet.");
   }
 }

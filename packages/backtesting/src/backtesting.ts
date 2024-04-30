@@ -11,8 +11,9 @@ import type { ReportResult } from "./types";
 import { MarketSimulator } from "./market-simulator";
 import { MemoryExchange } from "./exchange/memory-exchange";
 import { MemoryStore } from "./store/memory-store";
+import { logger, format } from "@opentrader/logger";
 
-export class Backtesting<T extends IBotConfiguration> {
+export class Backtesting<T extends IBotConfiguration<T>> {
   private marketSimulator: MarketSimulator;
   private store: MemoryStore;
   private exchange: MemoryExchange;
@@ -37,14 +38,10 @@ export class Backtesting<T extends IBotConfiguration> {
     for (const [index, candle] of candlesticks.entries()) {
       this.marketSimulator.nextCandle(candle);
 
-      const candleDateString = new Date(candle.timestamp)
-        .toISOString()
-        .slice(0, 10);
-      console.log(
-        `Process candle ${candleDateString} (#${index + 1} of ${
-          candlesticks.length
-        })`,
-        candle.close,
+      logger.info(
+        `Process candle ${format.candletime(candle.timestamp)}: ${format.candle(
+          candle,
+        )}`,
       );
 
       const anyOrderFulfilled = this.marketSimulator.fulfillOrders();

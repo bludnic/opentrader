@@ -5,10 +5,10 @@ import type { IBotControl } from "./types/bot/bot-control.interface";
 import type { SmartTrade } from "./types/smart-trade/smart-trade.type";
 import type { IStore } from "./types/store/store.interface";
 
-export class BotControl<T extends IBotConfiguration> implements IBotControl<T> {
+export class BotControl<T extends IBotConfiguration> implements IBotControl {
   constructor(
-    public store: IStore,
-    public bot: T,
+    private store: IStore,
+    private bot: T,
   ) {}
 
   async stop() {

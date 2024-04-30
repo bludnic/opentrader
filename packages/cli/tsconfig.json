@@ -4,12 +4,12 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "#backtesting/*": ["./src/*"],
-
+      "#cli/*": ["./src/*"],
       // imported modules
       "#bot-processor/*": ["../bot-processor/src/*"],
+      "#bot-template/*": ["../bot-template/src/*"],
+      "#backtesting/*": ["../backtesting/src/*"],
       "#exchanges/*": ["../exchanges/src/*"],
-      "#db/*": ["../db/src/*"],
       "#logger/*": ["../logger/src/*"]
     }
   }
