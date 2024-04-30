@@ -18,11 +18,9 @@ import type {
   XCandle,
 } from "@opentrader/types";
 
-export interface GridBotConfig extends Omit<IBotConfiguration, "settings"> {
-  settings: {
-    gridLines: IGridLine[];
-  };
-}
+export type GridBotConfig = IBotConfiguration<{
+  gridLines: IGridLine[];
+}>;
 
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
