@@ -53,10 +53,6 @@ Features:
 - Place pending orders on the Exchange
 - Async queue (in case two or more orders were filled at the same time)
 
-The package is optional. If you decide to use it, don't forget to disable the sync orders statuses in the `frontend` app.
-Otherwise, it may end up in an inconsistent bot state when two synchronizers running at the same time.
-For development it's enough to run the `frontend` app.
-
 # Installation
 
 1. Install dependencies
@@ -89,7 +85,7 @@ $ turbo run prisma:seed
 
 # Development
 
-**Option 1**: Runs both `frontend` and `processor` apps in a single terminal
+**Option 1**: Run both `frontend` and `processor` apps in a single terminal
 
 ```bash
 $ turbo run dev
