@@ -18,7 +18,9 @@ export function addBacktestCommand(program: Command) {
         .default(new Date("2024-01-07")),
     )
     .addOption(
-      new Option("-s, --symbol <symbol>", "Symbol").default("BTC/USDT"),
+      new Option("-s, --symbol <symbol>", "Symbol")
+        .argParser((symbol) => symbol.toUpperCase())
+        .default("BTC/USDT"),
     )
     .addOption(
       new Option("-b, --timeframe <timeframe>", "Timeframe").default("1h"),
