@@ -363,9 +363,12 @@ importers:
 
   packages/bot:
     dependencies:
+      '@opentrader/logger':
+        specifier: workspace:*
+        version: link:../logger
       ccxt:
-        specifier: ^4.2.50
-        version: 4.3.11
+        specifier: 4.1.48
+        version: 4.1.48
     devDependencies:
       '@opentrader/eslint-config':
         specifier: workspace:*
@@ -377,7 +380,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^20.9.0
+        specifier: ^20.10.0
         version: 20.10.0
       eslint:
         specifier: 8.54.0
@@ -465,6 +468,9 @@ importers:
       '@opentrader/backtesting':
         specifier: workspace:*
         version: link:../backtesting
+      '@opentrader/bot':
+        specifier: workspace:*
+        version: link:../bot
       '@opentrader/bot-processor':
         specifier: workspace:*
         version: link:../bot-processor
@@ -3810,18 +3816,6 @@ packages:
   /ccxt@4.1.48:
     resolution: {integrity: sha512-+caI8xubVqeTLoOXPI6qLm1Ln49bHEIfqUUlASDo+oBmh98F66B8V79ztrqPsPLS5n4cSZxZ9VOxP+n2RdvLRA==}
     engines: {node: '>=15.0.0'}
-    requiresBuild: true
-    dependencies:
-      ws: 8.14.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
-  /ccxt@4.3.11:
-    resolution: {integrity: sha512-FsehbT2/ykOL/BgqmKHdEvCRO2JWzgwC86ERYD3SZDwtl63JjY8NytWQAZSl/4b0kTilRZb9oTWEAJKyhrkjow==}
-    engines: {node: '>=15.0.0'}
-    hasBin: true
     requiresBuild: true
     dependencies:
       ws: 8.14.2

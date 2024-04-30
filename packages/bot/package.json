@@ -1,5 +1,5 @@
 {
-  "name": "@opentrader/cli",
+  "name": "@opentrader/bot",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
@@ -20,15 +20,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@opentrader/backtesting": "workspace:*",
-    "@opentrader/bot": "workspace:*",
-    "@opentrader/bot-processor": "workspace:*",
-    "@opentrader/bot-templates": "workspace:*",
-    "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
-    "@opentrader/tools": "workspace:*",
-    "ccxt": "4.1.48",
-    "commander": "^12.0.0",
-    "json5": "^2.2.3"
+    "ccxt": "4.1.48"
   }
 }

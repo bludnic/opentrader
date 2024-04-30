@@ -1,0 +1,11 @@
+{
+  "extends": "@opentrader/tsconfig/module.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "#bot/*": ["./src/*"]
+      // imported modules
+    }
+  }
+}
