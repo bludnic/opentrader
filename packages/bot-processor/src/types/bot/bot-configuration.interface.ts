@@ -1,6 +1,6 @@
 import type { ExchangeCode } from "@opentrader/types";
 
-export type IBotConfiguration<T extends any = any> = {
+export type IBotConfiguration<T = any> = {
   id: number;
   baseCurrency: string;
   quoteCurrency: string;

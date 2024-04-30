@@ -1,5 +1,5 @@
 export type ConfigName = "default" | "dev" | "prod";
 
-export type CommandResult<T extends unknown = unknown> = {
+export type CommandResult<T = unknown> = {
   result: T;
 };

@@ -21,7 +21,8 @@ export async function runBacktest(
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 
-  if (strategyName in templates === false) {
+  const strategyExists = strategyName in templates;
+  if (!strategyExists) {
     const availableStrategies = Object.keys(templates).join(", ");
     logger.info(
       `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,

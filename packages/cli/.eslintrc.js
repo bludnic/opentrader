@@ -2,5 +2,7 @@
 module.exports = {
   root: true,
   extends: ["@opentrader/eslint-config/module.js"],
-  rules: {}
+  rules: {
+    "import/namespace": "off",
+  },
 };

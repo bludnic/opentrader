@@ -5,7 +5,7 @@ export type TBotContext<T extends IBotConfiguration> = {
   /**
    * Bot control panel
    */
-  control: IBotControl<T>;
+  control: IBotControl;
   /**
    * Bot configuration
    */

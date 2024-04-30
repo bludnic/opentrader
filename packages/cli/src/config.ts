@@ -12,14 +12,16 @@ const rootDir = join(__dirname, "..");
  * @param configName - Config name. Example: dev, prod, default. Will be converted to `config.<configName>.json5`
  * @returns Parsed JSON5 config file
  */
-export function readBotConfig<T extends any = any>(
+export function readBotConfig<T = any>(
   configName: ConfigName = "default",
 ): IBotConfiguration<T> {
   const configFileName = `config.${configName}.json5`;
   const configPath = rootDir + `/${configFileName}`;
 
   logger.info(`Using config file: ${configFileName}`);
-  const config = JSON5.parse(fs.readFileSync(configPath, "utf8"));
+  const config = JSON5.parse<IBotConfiguration<T>>(
+    fs.readFileSync(configPath, "utf8"),
+  );
 
   return config;
 }

@@ -16,7 +16,7 @@ import { isCreateSmartTradeEffect } from "./effects/utils/isCreateSmartTradeEffe
 
 export class BotManager<T extends IBotConfiguration> {
   constructor(
-    private control: IBotControl<T>,
+    private control: IBotControl,
     private botConfig: T,
     private exchange: IExchange,
     private botTemplate: BotTemplate<T>,

@@ -5,7 +5,7 @@ import { CommandResult } from "../types";
  * Return a wrapper what will process an async function and log the result
  * @param asyncFunc - async function to process
  */
-export function handle<T extends Array<any>, U>(
+export function handle<T extends any[], U>(
   asyncFunc: (...args: T) => Promise<CommandResult<U>> | CommandResult<U>,
 ) {
   return async (...args: T): Promise<void> => {
