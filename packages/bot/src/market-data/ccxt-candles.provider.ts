@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import { Exchange, OHLCV } from "ccxt";
+import { type Exchange, type OHLCV } from "ccxt";
 import { BarSize, ICandlestick } from "@opentrader/types";
 import { ICandlesProvider } from "./candles-provider.interface";
 
@@ -9,19 +9,20 @@ export class CCXTCandlesProvider
 {
   // Required for typing arguments in the `on` method
   // when using the instance of this class
+  // ESLint doesn't like this
   // @todo move to the interface
-  emit(event: "start"): boolean;
-  emit(event: "done"): boolean;
-  emit(event: "candle", candle: ICandlestick): boolean;
-  emit(event: string | symbol, ...args: any[]): boolean {
-    return super.emit(event, ...args);
-  }
-  on(event: "start", listener: () => void): this;
-  on(event: "done", listener: () => void): this;
-  on(event: "candle", listener: (candle: ICandlestick) => void): this;
-  on(event: string | symbol, listener: (...args: any[]) => void): this {
-    return super.on(event, listener);
-  }
+  // emit(event: "start"): boolean;
+  // emit(event: "done"): boolean;
+  // emit(event: "candle", candle: ICandlestick): boolean;
+  // emit(event: string | symbol, ...args: any[]): boolean {
+  //   return super.emit(event, ...args);
+  // }
+  // on(event: "start", listener: () => void): this;
+  // on(event: "done", listener: () => void): this;
+  // on(event: "candle", listener: (candle: ICandlestick) => void): this;
+  // on(event: string | symbol, listener: (...args: any[]) => void): this {
+  //   return super.on(event, listener);
+  // }
 
   /**
    * Instance of CCXT exchange
@@ -129,13 +130,13 @@ export class CCXTCandlesProvider
       return;
     }
 
-    this.start();
+    void this.start();
   }
 }
 
 /**
  * Normalize CCXT candle to unified format
- * @param candle CCXT candle
+ * @param candle - CCXT candle
  * @returns Normalized candle
  */
 const normalizeCandle = (candle: OHLCV): ICandlestick => ({
