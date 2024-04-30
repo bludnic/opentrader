@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
 import type {
   IBotConfiguration,
@@ -11,16 +12,7 @@ import {
   useSmartTrade,
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
-import type {
-  IGetMarketPriceResponse,
-  IGridBotLevel,
-  IGridLine,
-  XCandle,
-} from "@opentrader/types";
-
-export type GridBotConfig = IBotConfiguration<{
-  gridLines: IGridLine[];
-}>;
+import type { IGetMarketPriceResponse, XCandle } from "@opentrader/types";
 
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
@@ -42,7 +34,7 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
     console.log(`[GridBotTemple] Bot started [markPrice: ${price}]`);
   }
 
-  const gridLevels: IGridBotLevel[] = computeGridLevelsFromCurrentAssetPrice(
+  const gridLevels = computeGridLevelsFromCurrentAssetPrice(
     bot.settings.gridLines,
     price,
   );
@@ -73,3 +65,15 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
     }
   }
 }
+
+gridBot.displayName = "Grid Bot";
+gridBot.schema = z.object({
+  gridLines: z.array(
+    z.object({
+      price: z.number().positive(),
+      quantity: z.number().positive(),
+    }),
+  ),
+});
+
+export type GridBotConfig = IBotConfiguration<z.infer<typeof gridBot.schema>>;

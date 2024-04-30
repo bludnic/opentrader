@@ -1,20 +1,8 @@
+import { z } from "zod";
 import { IBotConfiguration, TBotContext } from "@opentrader/bot-processor";
 import { calcGridLines } from "@opentrader/tools";
 
 import { GridBotConfig, gridBot } from "./grid-bot";
-
-export type GridBotLiteConfig = IBotConfiguration<{
-  highPrice: number;
-  lowPrice: number;
-  /**
-   * Number of grid lines
-   */
-  gridLevels: number;
-  /**
-   * Quantity of base currency per each grid
-   */
-  quantityPerGrid: number;
-}>;
 
 /**
  * Wrapper for the `gridBot` template with a simplified configuration.
@@ -43,3 +31,18 @@ export function* gridBotLite(ctx: TBotContext<GridBotLiteConfig>) {
 
   yield* gridBot(gridBotCtx);
 }
+
+gridBotLite.displayName = "Grid Bot Lite";
+gridBotLite.schema = z.object({
+  highPrice: z.number().positive().describe("Highest price of the grid"),
+  lowPrice: z.number().positive().describe("Lowest price of the grid"),
+  gridLevels: z.number().positive().describe("Number of grid lines"),
+  quantityPerGrid: z
+    .number()
+    .positive()
+    .describe("Quantity of base currency per each grid"),
+});
+
+export type GridBotLiteConfig = IBotConfiguration<
+  z.infer<typeof gridBotLite.schema>
+>;
