@@ -2,7 +2,7 @@ import type { IBotConfiguration, IBotControl } from "../types";
 import type { TBotContext } from "../types/bot/bot-context.type";
 
 export function createContext<T extends IBotConfiguration>(
-  control: IBotControl<T>,
+  control: IBotControl,
   config: T,
   command: "start" | "stop" | "process", // @todo add type in file
 ): TBotContext<T> {
