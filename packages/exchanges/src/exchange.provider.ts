@@ -34,7 +34,7 @@ export class ExchangeProvider {
     }
 
     // Create new exchange instance
-    const newExchange = exchanges[exchangeCode]({
+    const newExchange = exchanges[exchangeCode as ExchangeCode]({
       ...credentials,
       code: credentials.code,
       password: credentials.password ?? "",
