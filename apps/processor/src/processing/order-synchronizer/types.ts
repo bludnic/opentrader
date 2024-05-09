@@ -1,4 +1,4 @@
-import type { OrderWithSmartTrade } from "@opentrader/db/dist";
+import type { OrderWithSmartTrade } from "@opentrader/db";
 import type { IWatchOrder } from "@opentrader/types";
 
 export type Event = "onFilled" | "onCanceled" | "onPlaced";
