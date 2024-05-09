@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import type { TBotSettings } from "#db/types";
-import { ZBotSettings } from "#db/types";
+import type { TBotSettings } from "../../types";
+import { ZBotSettings } from "../../types";
 
 export const customBotModel = (prisma: PrismaClient) => ({
   async findUnique<T extends Prisma.BotFindUniqueArgs>(

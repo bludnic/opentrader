@@ -4,7 +4,7 @@ import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import { SmartTradeProcessor } from "#processing/smart-trade";
+import { SmartTradeProcessor } from "../smart-trade";
 import { BotStoreAdapter } from "./bot-store-adapter";
 
 export class BotProcessing {

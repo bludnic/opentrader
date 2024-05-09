@@ -1,5 +1,5 @@
-import { router } from "#trpc/trpc";
-import { authorizedProcedure } from "#trpc/procedures";
+import { router } from "../../../trpc";
+import { authorizedProcedure } from "../../../procedures";
 import { getGridBots } from "./get-bots/handler";
 import { getGridBot } from "./get-bot/handler";
 import { ZGetGridBotInputSchema } from "./get-bot/schema";

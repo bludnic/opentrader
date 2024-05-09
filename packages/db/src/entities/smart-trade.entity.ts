@@ -1,5 +1,5 @@
 import type { $Enums } from "@prisma/client";
-import type { SmartTradeWithOrders } from "#db/types/smart-trade";
+import type { SmartTradeWithOrders } from "../types/smart-trade";
 import type { OrderEntity } from "./order.entity";
 import { toOrderEntity } from "./order.entity";
 

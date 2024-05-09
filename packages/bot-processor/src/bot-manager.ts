@@ -2,7 +2,7 @@ import type { IExchange } from "@opentrader/exchanges";
 import { computeIndicators } from "@opentrader/indicators";
 import type { IndicatorBarSize } from "@opentrader/types";
 import { lastClosedCandleDate } from "@opentrader/tools";
-import type { TBotContext } from "#bot-processor/types/bot/bot-context.type";
+import type { TBotContext } from "./types/bot/bot-context.type";
 import { createContext } from "./utils/createContext";
 import { SmartTradeService } from "./smart-trade.service";
 import type { IBotConfiguration, BotTemplate, IBotControl } from "./types";

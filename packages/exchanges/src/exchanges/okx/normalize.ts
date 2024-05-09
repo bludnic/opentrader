@@ -1,7 +1,7 @@
 import { ExchangeCode } from "@opentrader/types";
 import { composeSymbolIdFromPair } from "@opentrader/tools";
-import type { Normalize } from "#exchanges/types/normalize.interface";
-import { normalizeOrderStatus } from "#exchanges/utils/normalizeOrderStatus";
+import type { Normalize } from "../../types/normalize.interface";
+import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>

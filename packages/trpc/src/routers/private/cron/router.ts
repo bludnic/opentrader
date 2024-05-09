@@ -1,5 +1,5 @@
-import { router } from "#trpc/trpc";
-import { authorizedProcedure } from "#trpc/procedures";
+import { router } from "../../../trpc";
+import { authorizedProcedure } from "../../../procedures";
 import { syncClosedOrders } from "./sync-closed-orders/handler";
 
 export const cronRouter = router({

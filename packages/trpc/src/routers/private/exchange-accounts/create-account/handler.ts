@@ -1,5 +1,5 @@
 import { xprisma } from "@opentrader/db";
-import type { Context } from "#trpc/utils/context";
+import type { Context } from "../../../../utils/context";
 import type { TCreateExchangeAccountInputSchema } from "./schema";
 
 type Options = {

@@ -25,8 +25,7 @@ import type {
 import { ExchangeCode } from "@opentrader/types";
 import type { Dictionary, Market, okex5 } from "ccxt";
 import { pro } from "ccxt";
-import type { IExchangeCredentials } from "#exchanges/types/exchange-credentials.interface";
-import type { IExchange } from "#exchanges/types/exchange.interface";
+import type { IExchange, IExchangeCredentials } from "../../types";
 import { cache } from "../../cache";
 import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";

@@ -3,10 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "paths": {
-      "#indicators/*": ["./src/*"],
-      // imported modules
-      "#db/*": ["../db/src/*"]
-    }
+    "paths": {}
   }
 }

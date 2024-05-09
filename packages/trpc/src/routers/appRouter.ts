@@ -1,4 +1,4 @@
-import { trpc } from "#trpc/trpc"; // @todo relative path
+import { trpc } from "../trpc"; // @todo relative path
 import {
   botRouter,
   cronRouter,

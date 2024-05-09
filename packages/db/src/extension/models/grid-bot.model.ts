@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import type { TGridBotSettings } from "#db/types/grid-bot";
-import { ZGridBotSettings } from "#db/types/grid-bot";
+import type { TGridBotSettings } from "../../types/grid-bot";
+import { ZGridBotSettings } from "../../types/grid-bot";
 
 export const gridBotModel = (prisma: PrismaClient) => ({
   async findUnique<T extends Prisma.BotFindUniqueArgs>(

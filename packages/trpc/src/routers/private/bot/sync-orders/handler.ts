@@ -2,7 +2,7 @@ import { BotProcessing, SmartTradeProcessor } from "@opentrader/processing";
 import type { OrderEntity } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
-import type { Context } from "#trpc/utils/context";
+import type { Context } from "../../../../utils/context";
 import type { TSyncGridBotOrdersInputSchema } from "./schema";
 
 type Options = {

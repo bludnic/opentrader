@@ -1,4 +1,4 @@
-import type { IBotControl } from "#bot-processor/types/bot/bot-control.interface";
+import type { IBotControl } from "./bot-control.interface";
 import type { IBotConfiguration } from "./bot-configuration.interface";
 
 export type TBotContext<T extends IBotConfiguration> = {

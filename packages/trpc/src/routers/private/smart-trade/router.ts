@@ -1,5 +1,5 @@
-import { router } from "#trpc/trpc";
-import { authorizedProcedure } from "#trpc/procedures";
+import { router } from "../../../trpc";
+import { authorizedProcedure } from "../../../procedures";
 import { getSmartTrades } from "./get-smart-trades/handler";
 import { getSmartTrade } from "./get-smart-trade/handler";
 import { ZGetSmartTradeInputSchema } from "./get-smart-trade/schema";

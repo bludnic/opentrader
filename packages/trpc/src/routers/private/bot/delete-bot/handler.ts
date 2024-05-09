@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
-import { BotService } from "#trpc/services/bot.service";
-import type { Context } from "#trpc/utils/context";
+import { BotService } from "../../../../services/bot.service";
+import type { Context } from "../../../../utils/context";
 import type { TDeleteBotInputSchema } from "./schema";
 
 type Options = {

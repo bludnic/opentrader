@@ -3,12 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "paths": {
-      "#bot-processor/*": ["./src/*"],
-
-      // imported modules
-      "#exchanges/*": ["../exchanges/src/*"],
-      "#db/*": ["../db/src/*"]
-    }
+    "paths": {}
   }
 }

@@ -1,6 +1,6 @@
 import { BotProcessing } from "@opentrader/processing";
-import { BotService } from "#trpc/services/bot.service";
-import type { Context } from "#trpc/utils/context";
+import { BotService } from "../../../../services/bot.service";
+import type { Context } from "../../../../utils/context";
 import type { TManualProcessGridBotInputSchema } from "./schema";
 
 type Options = {

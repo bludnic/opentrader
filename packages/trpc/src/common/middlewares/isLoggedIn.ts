@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { middleware } from "#trpc/trpc";
+import { middleware } from "../../trpc";
 
 export const isLoggedIn = middleware(({ next, ctx }) => {
   if (!ctx.user) {

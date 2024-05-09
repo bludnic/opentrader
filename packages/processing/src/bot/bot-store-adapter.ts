@@ -4,7 +4,7 @@ import type {
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
-import { SmartTradeProcessor } from "#processing/smart-trade";
+import { SmartTradeProcessor } from "../smart-trade";
 import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
 
 export class BotStoreAdapter implements IStore {

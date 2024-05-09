@@ -1,5 +1,5 @@
-import { authorizedProcedure } from "#trpc/procedures";
-import { router } from "#trpc/trpc";
+import { authorizedProcedure } from "../../../procedures";
+import { router } from "../../../trpc";
 import { getExchangeAccounts } from "./get-accounts/handler";
 import { getExchangeAccount } from "./get-account/handler";
 import { ZGetExchangeAccountInputSchema } from "./get-account/schema";

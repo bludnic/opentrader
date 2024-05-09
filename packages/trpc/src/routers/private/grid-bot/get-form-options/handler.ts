@@ -1,7 +1,7 @@
 import { exchangeProvider } from "@opentrader/exchanges";
 import { decomposeSymbolId } from "@opentrader/tools";
 import type { ExchangeCode } from "@opentrader/types";
-import type { Context } from "#trpc/utils/context";
+import type { Context } from "../../../../utils/context";
 import type { TGetGridBotFormOptionsInputSchema } from "./schema";
 
 type Options = {

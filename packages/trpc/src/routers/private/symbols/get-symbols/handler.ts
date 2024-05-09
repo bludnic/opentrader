@@ -1,5 +1,5 @@
 import { exchangeProvider } from "@opentrader/exchanges";
-import type { Context } from "#trpc/utils/context";
+import type { Context } from "../../../../utils/context";
 import type { TGetSymbolsInputSchema } from "./schema";
 
 type Options = {
