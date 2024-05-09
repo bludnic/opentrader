@@ -158,7 +158,7 @@ export class SmartTradeProcessor {
 
         try {
           await this.exchange.cancelLimitOrder({
-            orderId: order.exchangeOrderId,
+            orderId: order.exchangeOrderId!,
             symbol: this.smartTrade.exchangeSymbolId,
           });
           await xprisma.order.updateStatus("Canceled", order.id);
