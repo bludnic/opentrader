@@ -15,8 +15,8 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/lodash": "^4.14.201",
-    "@types/node": "^20.10.0",
+    "@types/lodash": "^4.17.1",
+    "@types/node": "^20.12.11",
     "eslint": "8.54.0",
     "typescript": "^5.2.2"
   },

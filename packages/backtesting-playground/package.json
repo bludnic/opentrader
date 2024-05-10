@@ -15,9 +15,9 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.12.11",
     "eslint": "8.54.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
@@ -25,6 +25,6 @@
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "axios": "^1.6.1"
+    "axios": "^1.6.8"
   }
 }

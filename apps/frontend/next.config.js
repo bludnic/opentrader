@@ -25,5 +25,6 @@ module.exports = {
   },
   experimental: {
     optimizePackageImports: ["@mui/base", "@mui/joy"],
+    missingSuspenseWithCSRBailout: false, // error when building app: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
   },
 };

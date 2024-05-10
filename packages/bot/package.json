@@ -14,11 +14,11 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/async": "^3.2.23",
-    "@types/node": "^20.10.0",
+    "@types/async": "^3.2.24",
+    "@types/node": "^20.12.11",
     "@types/node-cron": "^3.0.11",
     "eslint": "8.54.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {

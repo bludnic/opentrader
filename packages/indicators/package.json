@@ -14,12 +14,12 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.12.11",
     "eslint": "8.54.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "axios": "^1.6.1"
+    "axios": "^1.6.8"
   }
 }

@@ -25,7 +25,7 @@
     "@opentrader/prisma": "workspace:*",
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "@trpc/server": "^10.43.3",
+    "@trpc/server": "^10.45.2",
     "ccxt": "4.1.48",
     "superjson": "^1.13.3",
     "zod": "3.22.4"

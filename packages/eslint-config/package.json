@@ -11,8 +11,8 @@
     "next.js"
   ],
   "devDependencies": {
-    "@vercel/style-guide": "^5.1.0",
-    "eslint-config-turbo": "^1.10.16",
+    "@vercel/style-guide": "^5.2.0",
+    "eslint-config-turbo": "^1.13.3",
     "typescript": "^5.2.2"
   },
   "keywords": [
