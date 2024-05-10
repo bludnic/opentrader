@@ -1,0 +1,9 @@
+{
+  OKX: {
+    name: "OKX Live",
+    apiKey: "exchange_api_key",
+    secretKey: "exchange_secret_key",
+    password: "exchange_password",
+    exchangeCode: "OKX",
+  },
+}

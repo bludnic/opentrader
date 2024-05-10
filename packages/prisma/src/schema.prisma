@@ -93,6 +93,7 @@ model User {
 model ExchangeAccount {
   id           Int          @id @default(autoincrement())
   name         String
+  label        String?      @unique
   exchangeCode ExchangeCode // ExchangeCode
 
   // Credentials
@@ -164,6 +165,7 @@ model Bot {
   id            Int     @id @default(autoincrement())
   type          BotType
   name          String
+  label         String? @unique
   baseCurrency  String
   quoteCurrency String
   enabled       Boolean @default(false)

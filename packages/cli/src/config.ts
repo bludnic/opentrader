@@ -2,8 +2,8 @@ import * as fs from "node:fs";
 import { join } from "node:path";
 import JSON5 from "json5";
 import { logger } from "@opentrader/logger";
-import { IBotConfiguration } from "@opentrader/bot-processor";
-import { ConfigName } from "./types";
+import type { IBotConfiguration } from "@opentrader/bot-processor";
+import type { ConfigName, ExchangeConfig } from "./types";
 
 const rootDir = join(__dirname, "..");
 
@@ -16,10 +16,24 @@ export function readBotConfig<T = any>(
   configName: ConfigName = "default",
 ): IBotConfiguration<T> {
   const configFileName = `config.${configName}.json5`;
-  const configPath = rootDir + `/${configFileName}`;
+  const configPath = `${rootDir}/${configFileName}`;
 
-  logger.info(`Using config file: ${configFileName}`);
+  logger.info(`Using bot config file: ${configFileName}`);
   const config = JSON5.parse<IBotConfiguration<T>>(
+    fs.readFileSync(configPath, "utf8"),
+  );
+
+  return config;
+}
+
+export function readExchangesConfig(
+  configName: ConfigName = "default",
+): Record<string, ExchangeConfig> {
+  const configFileName = `exchanges.${configName}.json5`;
+  const configPath = `${rootDir}/${configFileName}`;
+
+  logger.info(`Using exchanges config file: ${configFileName}`);
+  const config = JSON5.parse<Record<string, ExchangeConfig>>(
     fs.readFileSync(configPath, "utf8"),
   );
 
