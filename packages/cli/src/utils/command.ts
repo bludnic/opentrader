@@ -1,5 +1,5 @@
 import { logger } from "@opentrader/logger";
-import { CommandResult } from "../types";
+import type { CommandResult } from "../types";
 
 /**
  * Return a wrapper what will process an async function and log the result

@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { IBotConfiguration, TBotContext } from "@opentrader/bot-processor";
+import type { IBotConfiguration, TBotContext } from "@opentrader/bot-processor";
 import { calcGridLines } from "@opentrader/tools";
-
-import { GridBotConfig, gridBot } from "./grid-bot";
+import type { GridBotConfig } from "./grid-bot";
+import { gridBot } from "./grid-bot";
 
 /**
  * Wrapper for the `gridBot` template with a simplified configuration.

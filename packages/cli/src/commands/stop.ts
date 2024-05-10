@@ -1,4 +1,5 @@
-import { Command, Option } from "commander";
+import type { Command } from "commander";
+import { Option } from "commander";
 import { DEFAULT_CONFIG_NAME } from "../config";
 import { handle } from "../utils/command";
 import * as api from "../api";

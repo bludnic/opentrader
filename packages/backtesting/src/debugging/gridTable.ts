@@ -22,8 +22,8 @@ export function gridTable(smartTrades: SmartTrade[]) {
       side === "sell"
         ? smartTrade.sell.price
         : side === "buy"
-        ? smartTrade.buy.price
-        : "unknown";
+          ? smartTrade.buy.price
+          : "unknown";
 
     const gridLine = {
       stIndex: i,

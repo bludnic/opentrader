@@ -1,4 +1,4 @@
-import { ICandlestick } from "@opentrader/types";
+import type { ICandlestick } from "@opentrader/types";
 import c from "chalk";
 
 const pad = (value: string | number, length: number) =>

@@ -42,7 +42,9 @@ export async function runTrading(
   await processor.onApplicationBootstrap();
 
   if (bot.enabled) {
-    logger.info(`Bot "${bot.label}" is already enabled. Cancelling previous orders...`);
+    logger.info(
+      `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
+    );
     await stopBot(bot.id);
     logger.info(`The bot state were cleared`);
   }

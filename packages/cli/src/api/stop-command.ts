@@ -5,11 +5,9 @@ import { BotProcessing } from "@opentrader/processing";
 import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig, readExchangesConfig } from "../config";
 
-export async function stopCommand(
-  options: {
-    config: ConfigName;
-  },
-): Promise<CommandResult> {
+export async function stopCommand(options: {
+  config: ConfigName;
+}): Promise<CommandResult> {
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 
@@ -19,7 +17,7 @@ export async function stopCommand(
   const bot = await xprisma.bot.custom.findUnique({
     where: {
       label: config.label,
-    }
+    },
   });
 
   if (!bot) {

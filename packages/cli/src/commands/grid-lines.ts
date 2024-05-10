@@ -1,4 +1,5 @@
-import { Argument, Command, Option } from "commander";
+import type { Command } from "commander";
+import { Argument, Option } from "commander";
 import { handle } from "../utils/command";
 import * as api from "../api";
 

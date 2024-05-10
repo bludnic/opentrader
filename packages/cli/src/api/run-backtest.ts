@@ -3,8 +3,8 @@ import { templates } from "@opentrader/bot-templates";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
-import { BarSize, ICandlestick } from "@opentrader/types";
-import { CommandResult, ConfigName } from "../types";
+import type { BarSize, ICandlestick } from "@opentrader/types";
+import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig } from "../config";
 import { exchangeClassMap } from "../utils/ccxt";
 

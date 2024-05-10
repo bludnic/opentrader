@@ -27,10 +27,10 @@ async function run() {
   console.log("Bot config", config);
 
   const backtesting = new Backtesting({
-    // @ts-ignore-next-line - @todo fix type
+    // @ts-expect-error-next-line - @todo fix type
     botConfig: config,
-    // @ts-ignore-next-line - @todo fix type
-    botTemplate: gridbot,
+    // @ts-expect-error-next-line - @todo fix type
+    botTemplate: gridBot,
   });
 
   const {

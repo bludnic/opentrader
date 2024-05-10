@@ -16,16 +16,16 @@ export function computePriceLine(
   const color = isWaitingLinePrice
     ? "gray"
     : price > waitingPrice
-    ? "red"
-    : "green";
+      ? "red"
+      : "green";
 
   const label = isWaitingLinePrice
     ? `Waiting line · ${index}`
     : isUpperLimitPrice
-    ? `High price · ${index}`
-    : isLowerLimitPrice
-    ? `Low price · ${index}`
-    : `${index}`;
+      ? `High price · ${index}`
+      : isLowerLimitPrice
+        ? `Low price · ${index}`
+        : `${index}`;
 
   return priceLine(price, color, label);
 }

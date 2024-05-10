@@ -28,15 +28,15 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
       isBuy || isBuyFilled
         ? "buy"
         : isSell || isSellFilled
-        ? "sell"
-        : "unknown";
+          ? "sell"
+          : "unknown";
 
     const price =
       side === "sell"
         ? smartTrade.sell.price
         : side === "buy"
-        ? smartTrade.buy.price
-        : "unknown";
+          ? smartTrade.buy.price
+          : "unknown";
 
     const gridLine = {
       stIndex: i,

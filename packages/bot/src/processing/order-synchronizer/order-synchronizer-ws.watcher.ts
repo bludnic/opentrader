@@ -26,7 +26,9 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
           );
 
           if (!order) {
-            logger.info(`Order "${exchangeOrder.exchangeOrderId}" is not linked to any SmartTrade`);
+            logger.info(
+              `Order "${exchangeOrder.exchangeOrderId}" is not linked to any SmartTrade`,
+            );
             continue;
           }
 

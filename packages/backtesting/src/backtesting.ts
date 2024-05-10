@@ -5,13 +5,13 @@ import type {
 } from "@opentrader/bot-processor";
 import { BotProcessor } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
+import { logger, format } from "@opentrader/logger";
 import { fulfilledTable, gridTable } from "./debugging";
 import { BacktestingReport } from "./backtesting-report";
 import type { ReportResult } from "./types";
 import { MarketSimulator } from "./market-simulator";
 import { MemoryExchange } from "./exchange/memory-exchange";
 import { MemoryStore } from "./store/memory-store";
-import { logger, format } from "@opentrader/logger";
 
 export class Backtesting<T extends IBotConfiguration<T>> {
   private marketSimulator: MarketSimulator;

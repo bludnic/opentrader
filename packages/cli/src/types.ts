@@ -1,4 +1,4 @@
-import { ExchangeAccount } from "@prisma/client";
+import type { ExchangeAccount } from "@prisma/client";
 
 export type ConfigName = "default" | "dev" | "prod";
 

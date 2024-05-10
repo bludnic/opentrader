@@ -1,2 +1,2 @@
 export { CCXTCandlesProvider } from "./market-data/ccxt-candles.provider";
-export { Processor } from './processing'
+export { Processor } from "./processing";

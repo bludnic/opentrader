@@ -1,6 +1,9 @@
 import type { IWatchOrder } from "@opentrader/types";
 import { BotProcessing } from "@opentrader/processing";
-import type { OrderWithSmartTrade , ExchangeAccountWithCredentials } from "@opentrader/db";
+import type {
+  OrderWithSmartTrade,
+  ExchangeAccountWithCredentials,
+} from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { processingQueue } from "./processing.queue";

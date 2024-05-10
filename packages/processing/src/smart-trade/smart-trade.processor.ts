@@ -91,8 +91,8 @@ export class SmartTradeProcessor {
       entryOrder.status === "Idle"
         ? entryOrder
         : entryOrder.status === "Filled" && takeProfitOrder.status === "Idle"
-        ? takeProfitOrder
-        : null;
+          ? takeProfitOrder
+          : null;
 
     if (orderPendingPlacement) {
       const exchangeOrder = await this.placeOrder(orderPendingPlacement);
@@ -158,7 +158,7 @@ export class SmartTradeProcessor {
 
         try {
           await this.exchange.cancelLimitOrder({
-            orderId: order.exchangeOrderId!,
+            orderId: order.exchangeOrderId,
             symbol: this.smartTrade.exchangeSymbolId,
           });
           await xprisma.order.updateStatus("Canceled", order.id);
