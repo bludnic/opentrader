@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { addStopCommand } from "./commands/stop";
 import { addBacktestCommand } from "./commands/backtest";
 import { addGridLinesCommand } from "./commands/grid-lines";
 import { addTradeCommand } from "./commands/trade";
@@ -13,5 +14,6 @@ program
 addBacktestCommand(program);
 addGridLinesCommand(program);
 addTradeCommand(program);
+addStopCommand(program);
 
 program.parse();
