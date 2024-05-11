@@ -2,7 +2,6 @@ import type { Dictionary, Exchange, Market } from "ccxt";
 import type { ExchangeCode } from "@opentrader/types";
 import type { Prisma } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import { logger } from "@opentrader/logger";
 import type { ICacheProvider } from "../../../types/cache/cache-provider.interface";
 
 export class PrismaCacheProvider implements ICacheProvider {
@@ -19,7 +18,7 @@ export class PrismaCacheProvider implements ICacheProvider {
       const endTime = Date.now();
       const duration = (endTime - startTime) / 1000;
 
-      logger.info(
+      console.info(
         `PrismaCacheProvider: Fetched ${Object.keys(cachedMarkets).length} markets on ${exchangeCode} from cache in ${duration}s`,
       );
 
@@ -32,7 +31,7 @@ export class PrismaCacheProvider implements ICacheProvider {
     const endTime = Date.now();
     const duration = (endTime - startTime) / 1000;
 
-    logger.info(
+    console.info(
       `PrismaCacheProvider: Fetched ${Object.keys(markets).length} markets on ${exchangeCode} exchange in ${duration}s`,
     );
 

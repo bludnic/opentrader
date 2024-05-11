@@ -602,9 +602,6 @@ importers:
       '@opentrader/db':
         specifier: workspace:*
         version: link:../db
-      '@opentrader/logger':
-        specifier: workspace:*
-        version: link:../logger
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
