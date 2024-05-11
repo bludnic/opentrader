@@ -7,6 +7,7 @@ import type {
 import { xprisma } from "@opentrader/db";
 import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
+import { logger } from "@opentrader/logger";
 import { toDbStatus } from "../utils";
 
 type SymbolId = string;
@@ -56,13 +57,13 @@ export class ExchangeAccountProcessor {
     });
 
     if (orders.length === 0) {
-      console.log("ExchangeAccountProcessor: Nothing to sync");
+      logger.info("ExchangeAccountProcessor: No orders in DB to synchronize");
       return {
         affectedBotsIds,
       };
     }
 
-    console.log(
+    logger.info(
       `ExchangeAccountProcessor: Preparing ${orders.length} orders for synchronization`,
     );
 
@@ -131,20 +132,20 @@ export class ExchangeAccountProcessor {
           filledAt: new Date(exchangeOrder.lastTradeTimestamp),
           fee: exchangeOrder.fee,
         });
-        console.log(
+        logger.info(
           `        -> Filled with price ${exchangeOrder.filledPrice} and fee ${exchangeOrder.fee}`,
         );
 
         return;
       case "Canceled":
         await xprisma.order.updateStatus("Canceled", order.id);
-        console.log(`        -> Canceled`);
+        logger.info(`        -> Canceled`);
 
         return;
       case "Deleted":
         await xprisma.order.updateStatus("Deleted", order.id);
 
-        console.log(
+        logger.info(
           `        Order not found on the exchange. Status updated to "Deleted"`,
         );
     }
@@ -158,8 +159,8 @@ export class ExchangeAccountProcessor {
       return cachedOrder;
     }
 
-    console.log(
-      `❗ Order ${order.id}:${order.exchangeOrderId} not found in Open/Closed orders list. Fetching from exchange.`,
+    logger.warn(
+      `Order ${order.id}:${order.exchangeOrderId} not found in Open/Closed orders list. Fetching from exchange.`,
     );
     const exchangeOrder = await this.exchange.getLimitOrder({
       symbol,
@@ -186,17 +187,17 @@ export class ExchangeAccountProcessor {
       return cachedOrders;
     }
 
-    console.log(`Fetching open orders of ${symbol} symbol`);
+    logger.info(`Fetching open orders of ${symbol} symbol`);
     const openOrders = await this.exchange.getOpenOrders({
       symbol,
     });
 
-    console.log(`Fetching closed orders of ${symbol} symbol`);
+    logger.info(`Fetching closed orders of ${symbol} symbol`);
     const closedOrders = await this.exchange.getClosedOrders({
       symbol,
     });
 
-    console.log(
+    logger.info(
       `Open Orders: ${openOrders.length}: Closed Orders: ${closedOrders.length}`,
     );
     const orders = [...closedOrders, ...openOrders];

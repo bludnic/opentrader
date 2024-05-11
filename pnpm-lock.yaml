@@ -461,6 +461,9 @@ importers:
       '@opentrader/indicators':
         specifier: workspace:*
         version: link:../indicators
+      '@opentrader/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
@@ -599,6 +602,9 @@ importers:
       '@opentrader/db':
         specifier: workspace:*
         version: link:../db
+      '@opentrader/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@opentrader/tools':
         specifier: workspace:*
         version: link:../tools
@@ -735,6 +741,9 @@ importers:
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges
+      '@opentrader/logger':
+        specifier: workspace:*
+        version: link:../logger
       ccxt:
         specifier: 4.1.48
         version: 4.1.48
@@ -1335,12 +1344,6 @@ packages:
   '@floating-ui/dom@1.5.3':
     resolution: {integrity: sha512-ClAbQnEqJAKCJOEbbLo5IUlZHkNszqhuxS4fHAVxRPXPya6Ysf2G8KypnYcOTpx6I8xcgF9bbHb6g/2KpbV8qA==}
 
-  '@floating-ui/react-dom@2.0.4':
-    resolution: {integrity: sha512-CF8k2rgKeh/49UrnIBs4BdxPUV6vize/Db1d/YbCLyp9GiVZ0BEwf5AiDSxJRCr6yOkGqTFHtmrULxkEfYZ7dQ==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-
   '@floating-ui/react-dom@2.0.9':
     resolution: {integrity: sha512-q0umO0+LQK4+p6aGyvzASqKbKOJcAHJ7ycE9CuUvfx3s9zTHWmGJTPOIlM/hmSBfUfg/XfY5YhLBLR/LHwShQQ==}
     peerDependencies:
@@ -1638,24 +1641,6 @@ packages:
     resolution: {integrity: sha512-MZsBZ4q4HfzBsywtXgM1Ksj6HDThtiwmOKUXH1pKYISI9gAVXCNHNpo7TlGoGrBaYWZTdNoirIN7JsQcQUjmQQ==}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-
-  '@mui/types@7.2.9':
-    resolution: {integrity: sha512-k1lN/PolaRZfNsRdAqXtcR71sTnv3z/VCCGPxU8HfdftDkzi335MdJ6scZxvofMAd/K/9EbzCZTFBmlNpQVdCg==}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-
-  '@mui/utils@5.14.18':
-    resolution: {integrity: sha512-HZDRsJtEZ7WMSnrHV9uwScGze4wM/Y+u6pDVo+grUjt5yXzn+wI8QX/JwTHh9YSw/WpnUL80mJJjgCnWj2VrzQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -5845,12 +5830,6 @@ snapshots:
       '@floating-ui/core': 1.5.0
       '@floating-ui/utils': 0.1.6
 
-  '@floating-ui/react-dom@2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@floating-ui/dom': 1.5.3
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
   '@floating-ui/react-dom@2.0.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/dom': 1.5.3
@@ -6096,9 +6075,9 @@ snapshots:
   '@mui/base@5.0.0-beta.24(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.5
-      '@floating-ui/react-dom': 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mui/types': 7.2.9(@types/react@18.3.1)
-      '@mui/utils': 5.14.18(@types/react@18.3.1)(react@18.3.1)
+      '@floating-ui/react-dom': 2.0.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/types': 7.2.14(@types/react@18.3.1)
+      '@mui/utils': 5.15.14(@types/react@18.3.1)(react@18.3.1)
       '@popperjs/core': 2.11.8
       clsx: 2.1.1
       prop-types: 15.8.1
@@ -6170,11 +6149,11 @@ snapshots:
       '@mui/base': 5.0.0-beta.24(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/core-downloads-tracker': 5.14.18
       '@mui/system': 5.14.18(@emotion/react@11.11.4(@types/react@18.3.1)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.1)(react@18.3.1))(@types/react@18.3.1)(react@18.3.1))(@types/react@18.3.1)(react@18.3.1)
-      '@mui/types': 7.2.9(@types/react@18.3.1)
-      '@mui/utils': 5.14.18(@types/react@18.3.1)(react@18.3.1)
+      '@mui/types': 7.2.14(@types/react@18.3.1)
+      '@mui/utils': 5.15.14(@types/react@18.3.1)(react@18.3.1)
       '@types/react-transition-group': 4.4.9
       clsx: 2.1.1
-      csstype: 3.1.2
+      csstype: 3.1.3
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -6188,7 +6167,7 @@ snapshots:
   '@mui/private-theming@5.14.18(@types/react@18.3.1)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.5
-      '@mui/utils': 5.14.18(@types/react@18.3.1)(react@18.3.1)
+      '@mui/utils': 5.15.14(@types/react@18.3.1)(react@18.3.1)
       prop-types: 15.8.1
       react: 18.3.1
     optionalDependencies:
@@ -6207,7 +6186,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.24.5
       '@emotion/cache': 11.11.0
-      csstype: 3.1.2
+      csstype: 3.1.3
       prop-types: 15.8.1
       react: 18.3.1
     optionalDependencies:
@@ -6230,10 +6209,10 @@ snapshots:
       '@babel/runtime': 7.24.5
       '@mui/private-theming': 5.14.18(@types/react@18.3.1)(react@18.3.1)
       '@mui/styled-engine': 5.14.18(@emotion/react@11.11.4(@types/react@18.3.1)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.1)(react@18.3.1))(@types/react@18.3.1)(react@18.3.1))(react@18.3.1)
-      '@mui/types': 7.2.9(@types/react@18.3.1)
-      '@mui/utils': 5.14.18(@types/react@18.3.1)(react@18.3.1)
+      '@mui/types': 7.2.14(@types/react@18.3.1)
+      '@mui/utils': 5.15.14(@types/react@18.3.1)(react@18.3.1)
       clsx: 2.1.1
-      csstype: 3.1.2
+      csstype: 3.1.3
       prop-types: 15.8.1
       react: 18.3.1
     optionalDependencies:
@@ -6258,20 +6237,6 @@ snapshots:
       '@types/react': 18.3.1
 
   '@mui/types@7.2.14(@types/react@18.3.1)':
-    optionalDependencies:
-      '@types/react': 18.3.1
-
-  '@mui/types@7.2.9(@types/react@18.3.1)':
-    optionalDependencies:
-      '@types/react': 18.3.1
-
-  '@mui/utils@5.14.18(@types/react@18.3.1)(react@18.3.1)':
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@types/prop-types': 15.7.11
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-is: 18.2.0
     optionalDependencies:
       '@types/react': 18.3.1
 
@@ -7515,7 +7480,7 @@ snapshots:
   dom-helpers@5.2.1:
     dependencies:
       '@babel/runtime': 7.24.5
-      csstype: 3.1.2
+      csstype: 3.1.3
 
   domexception@4.0.0:
     dependencies:

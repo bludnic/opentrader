@@ -23,6 +23,7 @@
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
+    "@opentrader/logger": "workspace:*",
     "ccxt": "4.1.48"
   }
 }

@@ -1,5 +1,6 @@
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import type { ExchangeCode } from "@opentrader/types";
+import { logger } from "@opentrader/logger";
 import { exchanges } from "./exchanges";
 import type { IExchange } from "./types";
 
@@ -42,8 +43,8 @@ export class ExchangeProvider {
 
     this.privateExchanges[id] = newExchange; // cache it
 
-    console.log(
-      `❕ ExchangeProvider: Created a new private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (#${exchangeAccount.id})`,
+    logger.debug(
+      `ExchangeProvider: Created a new private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (ID: ${exchangeAccount.id})`,
     );
 
     return newExchange;
@@ -64,8 +65,8 @@ export class ExchangeProvider {
 
     this.publicExchanges[exchangeCode] = newExchange; // cache it
 
-    console.log(
-      `❕ ExchangeProvider: Created a new public instance of ${exchangeCode}`,
+    logger.debug(
+      `ExchangeProvider: Created a new public instance of ${exchangeCode}`,
     );
 
     return newExchange;

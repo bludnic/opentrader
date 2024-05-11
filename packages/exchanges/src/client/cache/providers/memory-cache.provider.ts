@@ -1,3 +1,4 @@
+import { logger } from "@opentrader/logger/dist";
 import type { Dictionary, Exchange, Market } from "ccxt";
 import type { ExchangeCode } from "@opentrader/types";
 import type { ICacheProvider } from "../../../types/cache/cache-provider.interface";
@@ -13,11 +14,10 @@ export class MemoryCacheProvider implements ICacheProvider {
     const cachedMarkets = this.store[exchangeCode];
 
     if (cachedMarkets) {
-      console.log("🏛️ @opentrader/exchanges");
-      console.log(
-        `    getMarkets() from ${exchangeCode} exchange using MemoryCacheProvider`,
+      logger.info(
+        `MemoryCacheProvider: Fetched ${Object.keys(cachedMarkets).length} markets on ${exchangeCode} from cache`,
       );
-      console.log(`    Returned from cache`);
+
       return cachedMarkets;
     }
 
@@ -25,11 +25,10 @@ export class MemoryCacheProvider implements ICacheProvider {
 
     const endTime = Date.now();
     const duration = (endTime - startTime) / 1000;
-    console.log("🏛️ @opentrader/exchanges");
-    console.log(
-      `    getMarkets() from ${exchangeCode} exchange using MemoryCacheProvider`,
+
+    logger.info(
+      `MemoryCacheProvider: Fetched ${Object.keys(markets).length} markets on ${exchangeCode} exchange in ${duration}s`,
     );
-    console.log(`    Fetched from Exchange in ${duration}s`);
 
     return this.cacheMarkets(markets, exchangeCode);
   }
