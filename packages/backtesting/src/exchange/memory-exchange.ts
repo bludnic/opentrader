@@ -120,15 +120,31 @@ export class MemoryExchange implements IExchange {
       baseCurrency: "ADA",
       quoteCurrency: "USDT",
       filters: {
-        price: {
-          minPrice: "0.0001",
-          tickSize: "0.0001",
-          maxPrice: "100000",
+        precision: {
+          amount: 1,
+          price: 0.01,
         },
-        lot: {
-          minQuantity: "1",
-          stepSize: "1",
-          maxQuantity: "10000",
+        decimals: {
+          amount: 0,
+          price: 2,
+        },
+        limits: {
+          amount: {
+            min: 1,
+            max: 10000,
+          },
+          cost: {
+            min: 0.01,
+            max: 100000,
+          },
+          leverage: {
+            min: 1,
+            max: 100,
+          },
+          price: {
+            min: 0.01,
+            max: 100000,
+          },
         },
       },
     };

@@ -34,7 +34,9 @@ export default function CreateGridBotPage() {
     dispatch(setExchangeAccountId(exchangeAccount.id));
     dispatch(setExchangeCode(exchangeAccount.exchangeCode));
     dispatch(setSymbolId(symbol.symbolId));
-    dispatch(setQuantityPerGrid(symbol.filters.lot.minQuantity));
+    dispatch(
+      setQuantityPerGrid(symbol.filters.limits.amount?.min?.toString() || ""),
+    );
     dispatch(setLowPrice(lowPrice));
     dispatch(setHighPrice(highPrice));
     dispatch(setBotName(generateBotName()));

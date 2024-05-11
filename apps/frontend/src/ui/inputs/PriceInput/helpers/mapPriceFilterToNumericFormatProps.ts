@@ -6,6 +6,6 @@ export function mapPriceFilterToNumericFormatProps(
   filter: ISymbolFilter,
 ): Pick<NumericFormatProps, "decimalScale"> {
   return {
-    decimalScale: getExponentAbs(filter.price.tickSize),
+    decimalScale: filter.decimals.price,
   };
 }

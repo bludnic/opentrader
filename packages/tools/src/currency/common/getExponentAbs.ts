@@ -5,7 +5,7 @@ import Big from "big.js";
  *
  * @param numberLike - e.g. "0.01000000" will return 2
  */
-export function getExponentAbs(numberLike: string): number {
+export function getExponentAbs(numberLike: string | number): number {
   const number = new Big(numberLike);
 
   return Math.abs(number.e);

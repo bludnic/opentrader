@@ -17,19 +17,19 @@ export function validateQuantityByFilter(
 
   const bigNum = new Big(numStr);
 
-  const isLowerThan = filter.lot.minQuantity
-    ? bigNum.lt(filter.lot.minQuantity)
+  const isLowerThan = filter.limits.amount?.min
+    ? bigNum.lt(filter.limits.amount?.min)
     : null;
-  const isGreaterThan = filter.lot.maxQuantity
-    ? bigNum.gte(filter.lot.maxQuantity)
+  const isGreaterThan = filter.limits.amount?.max
+    ? bigNum.gte(filter.limits.amount?.max)
     : null;
 
   if (isLowerThan) {
-    return `Quantity cannot be lower than MIN: ${filter.lot.minQuantity}`;
+    return `Quantity cannot be lower than MIN: ${filter.limits.amount?.min}`;
   }
 
   if (isGreaterThan) {
-    return `Quantity cannot be higher than MAX: ${filter.lot.maxQuantity}`;
+    return `Quantity cannot be higher than MAX: ${filter.limits.amount?.max}`;
   }
 
   return null;

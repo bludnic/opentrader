@@ -6,6 +6,6 @@ export function mapQuantityFilterToNumericFormatProps(
   filter: ISymbolFilter,
 ): Pick<NumericFormatProps, "decimalScale"> {
   return {
-    decimalScale: getExponentAbs(filter.lot.stepSize),
+    decimalScale: filter.decimals.amount,
   };
 }

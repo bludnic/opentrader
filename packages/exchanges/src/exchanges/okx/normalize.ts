@@ -1,5 +1,5 @@
 import { ExchangeCode } from "@opentrader/types";
-import { composeSymbolIdFromPair } from "@opentrader/tools";
+import { composeSymbolIdFromPair, getExponentAbs } from "@opentrader/tools";
 import type { Normalize } from "../../types/normalize.interface";
 import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
 
@@ -136,18 +136,16 @@ const getSymbol: Normalize["getSymbol"] = {
     quoteCurrency: market.quote,
 
     filters: {
-      price: {
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
-        tickSize: market.info.tickSz,
-        minPrice: null, // OKx doesn't provide this info
-        maxPrice: null, // OKx doesn't provide this info
+      precision: market.precision,
+      decimals: {
+        amount: market.precision.amount
+          ? getExponentAbs(market.precision.amount)
+          : undefined,
+        price: market.precision.price
+          ? getExponentAbs(market.precision.price)
+          : undefined,
       },
-      lot: {
-        stepSize: market.info.lotSz,
-        minQuantity: market.info.minSz,
-        maxQuantity: market.info.maxLmtSz,
-        /* eslint-enable @typescript-eslint/no-unsafe-member-access -- @todo need to assert */
-      },
+      limits: market.limits,
     },
   }),
 };

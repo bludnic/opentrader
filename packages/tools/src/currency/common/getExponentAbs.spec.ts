@@ -20,4 +20,12 @@ describe("getExponentAbs", () => {
   it("no decimals as a real", () => {
     expect(getExponentAbs("1")).toBe(0);
   });
+
+  it("using number type", () => {
+    expect(getExponentAbs(0.01)).toBe(2);
+  });
+
+  it("with scientific notation", () => {
+    expect(getExponentAbs(1e-8)).toBe(8);
+  });
 });

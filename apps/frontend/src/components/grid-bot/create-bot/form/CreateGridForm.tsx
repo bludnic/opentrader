@@ -45,7 +45,9 @@ export const CreateGridBotForm: FC = () => {
   );
   if (useIsStale(symbol)) {
     if (symbol) {
-      dispatch(setQuantityPerGrid(symbol.filters.lot.minQuantity));
+      const quantityPerGrid =
+        symbol.filters.limits.amount?.min?.toString() || "";
+      dispatch(setQuantityPerGrid(quantityPerGrid));
     }
   }
 

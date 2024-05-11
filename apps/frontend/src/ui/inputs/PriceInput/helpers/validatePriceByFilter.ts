@@ -17,19 +17,19 @@ export function validatePriceByFilter(
 
   const bigNum = new Big(numStr);
 
-  const isLowerThan = filter.price.minPrice
-    ? bigNum.lt(filter.price.minPrice)
+  const isLowerThan = filter.limits.price?.min
+    ? bigNum.lt(filter.limits.price?.min)
     : null;
-  const isGreaterThan = filter.price.maxPrice
-    ? bigNum.gte(filter.price.maxPrice)
+  const isGreaterThan = filter.limits.price?.max
+    ? bigNum.gte(filter.limits.price?.max)
     : null;
 
   if (isLowerThan) {
-    return `Price cannot be lower than MIN: ${filter.price.minPrice}`;
+    return `Price cannot be lower than MIN: ${filter.limits.price?.min}`;
   }
 
   if (isGreaterThan) {
-    return `Price cannot be higher than MAX: ${filter.price.maxPrice}`;
+    return `Price cannot be higher than MAX: ${filter.limits.price?.max}`;
   }
 
   return null;
