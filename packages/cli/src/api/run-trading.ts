@@ -49,6 +49,14 @@ export async function runTrading(
     logger.info(`The bot state were cleared`);
   }
 
+  if (bot.processing) {
+    logger.warn(
+      `Bot "${bot.label}" is already processing. It could happen because previous process was interrupted.`,
+    );
+    await resetProcessing(bot.id);
+    logger.warn(`The bot processing state was cleared`);
+  }
+
   await startBot(bot.id);
   logger.info(`Bot "${bot.label}" started`);
 
@@ -233,6 +241,17 @@ async function disableBot(botId: number) {
     },
     data: {
       enabled: false,
+    },
+  });
+}
+
+async function resetProcessing(botId: number) {
+  await xprisma.bot.custom.update({
+    where: {
+      id: botId,
+    },
+    data: {
+      processing: false,
     },
   });
 }
