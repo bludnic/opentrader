@@ -19,7 +19,8 @@
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "front": "turbo run dev --filter=frontend",
-    "postinstall": "pnpm link --global"
+    "postinstall": "pnpm link --global",
+    "debug": "ts-node --transpile-only packages/cli/src/index.ts trade debug"
   },
   "bin": {
     "opentrader": "./bin/opentrader.sh"
