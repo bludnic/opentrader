@@ -1,8 +1,17 @@
 import { ExchangeCode } from "@opentrader/types";
-import type { IExchangeCredentials } from "../types/exchange-credentials.interface";
-import { OkxExchange } from "./okx/exchange";
+import { createExchange } from "./ccxt/factory";
+import { exchangeCodeMapCCXT } from "./ccxt/constants";
 
-export const exchanges = {
-  [ExchangeCode.OKX]: (credentials?: IExchangeCredentials) =>
-    new OkxExchange(credentials),
+export const exchanges: Record<
+  ExchangeCode,
+  ReturnType<typeof createExchange>
+> = {
+  [ExchangeCode.OKX]: createExchange(ExchangeCode.OKX),
+  [ExchangeCode.BYBIT]: createExchange(ExchangeCode.BYBIT),
+  [ExchangeCode.BINANCE]: createExchange(ExchangeCode.BINANCE),
+  [ExchangeCode.KRAKEN]: createExchange(ExchangeCode.KRAKEN),
+  [ExchangeCode.COINBASE]: createExchange(ExchangeCode.COINBASE),
+  [ExchangeCode.GATEIO]: createExchange(ExchangeCode.GATEIO),
 } as const;
+
+export { exchangeCodeMapCCXT };

@@ -6,7 +6,7 @@ import { logger } from "@opentrader/logger";
 import type { BarSize, ICandlestick } from "@opentrader/types";
 import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig } from "../config";
-import { exchangeClassMap } from "../utils/ccxt";
+import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 
 export async function runBacktest(
   strategyName: keyof typeof templates,
@@ -33,7 +33,7 @@ export async function runBacktest(
     };
   }
 
-  const ccxtExchange = exchangeClassMap[config.exchangeCode];
+  const ccxtExchange = exchangeCodeMapCCXT[config.exchangeCode];
   const exchange = new ccxt[ccxtExchange]();
 
   const backtesting = new Backtesting({

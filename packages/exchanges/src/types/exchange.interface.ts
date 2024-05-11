@@ -21,11 +21,13 @@ import type {
   IWatchOrdersResponse,
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
+  ExchangeCode,
 } from "@opentrader/types";
-import type { Dictionary, Market, okex5 } from "ccxt";
+import type { Dictionary, Market, Exchange } from "ccxt";
 
 export interface IExchange {
-  ccxt: okex5;
+  ccxt: Exchange;
+  exchangeCode: ExchangeCode;
 
   loadMarkets: () => Promise<Dictionary<Market>>; // forward to `ccxt.loadMarkets`
 
@@ -54,6 +56,5 @@ export interface IExchange {
   getCandlesticks: (params: IGetCandlesticksRequest) => Promise<ICandlestick[]>;
   getSymbols: () => Promise<ISymbolInfo[]>;
   getSymbol: (params: IGetSymbolInfoRequest) => Promise<ISymbolInfo>;
-  tradingPairSymbol: (params: ITradingPairSymbolRequest) => string;
   watchOrders: (params?: IWatchOrdersRequest) => Promise<IWatchOrdersResponse>;
 }

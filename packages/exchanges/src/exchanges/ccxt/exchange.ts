@@ -18,22 +18,25 @@ import type {
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
   ISymbolInfo,
-  ITradingPairSymbolRequest,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
-import type { Dictionary, Market, okex5 } from "ccxt";
-import { pro } from "ccxt";
+import type { Dictionary, Market } from "ccxt";
+import { pro, type Exchange } from "ccxt";
 import type { IExchange, IExchangeCredentials } from "../../types";
 import { cache } from "../../cache";
 import { fetcher } from "../../utils/next/fetcher";
 import { normalize } from "./normalize";
+import { exchangeCodeMapCCXT } from "./constants";
 
-export class OkxExchange implements IExchange {
-  public ccxt: okex5;
+export class CCXTExchange implements IExchange {
+  public exchangeCode: ExchangeCode;
+  public ccxt: Exchange;
 
-  constructor(credentials?: IExchangeCredentials) {
+  constructor(exchangeCode: ExchangeCode, credentials?: IExchangeCredentials) {
+    this.exchangeCode = exchangeCode;
+
     const ccxtCredentials = credentials
       ? {
           apiKey: credentials.apiKey,
@@ -41,7 +44,9 @@ export class OkxExchange implements IExchange {
           password: credentials.password,
         }
       : undefined;
-    this.ccxt = new pro.okx(ccxtCredentials);
+
+    const ccxtClassName = exchangeCodeMapCCXT[exchangeCode];
+    this.ccxt = new pro[ccxtClassName](ccxtCredentials);
 
     this.ccxt.fetchImplementation = fetcher; // #57
     // #88 Fixes: 'e instanceof this.AbortError' is not an object
@@ -55,7 +60,7 @@ export class OkxExchange implements IExchange {
 
   async loadMarkets(): Promise<Dictionary<Market>> {
     const cacheProvider = cache.getCacheProvider();
-    return cacheProvider.getMarkets(ExchangeCode.OKX, this.ccxt);
+    return cacheProvider.getMarkets(this.exchangeCode, this.ccxt);
   }
 
   async accountAssets(): Promise<IAccountAsset[]> {
@@ -177,15 +182,6 @@ export class OkxExchange implements IExchange {
       }, {});
 
     return normalize.getSymbols.response(spotMarkets);
-  }
-
-  /**
-   * OKx uses the `BTC-USDT` format for annotating trading pairs
-   */
-  tradingPairSymbol(params: ITradingPairSymbolRequest): string {
-    const { baseCurrency, quoteCurrency } = params;
-
-    return `${baseCurrency}-${quoteCurrency}`;
   }
 
   async watchOrders(

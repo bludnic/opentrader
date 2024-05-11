@@ -7,6 +7,8 @@ import type { CreateExchangeAccountFormValues } from "../types";
 
 const fieldName: keyof CreateExchangeAccountFormValues = "exchangeCode";
 
+const exchangeCodes = Object.values(ExchangeCode);
+
 export function ExchangeCodeField() {
   return (
     <Field<ExchangeCode> name={fieldName}>
@@ -14,11 +16,15 @@ export function ExchangeCodeField() {
         <Select
           defaultValue={ExchangeCode.OKX}
           name={input.name}
-          onChange={input.onChange}
+          onChange={(e, newValue) => input.onChange(newValue)}
           required
           value={input.value}
         >
-          <Option value={ExchangeCode.OKX}>OKx</Option>
+          {exchangeCodes.map((exchangeCode) => (
+            <Option value={exchangeCode} key={exchangeCode}>
+              {exchangeCode}
+            </Option>
+          ))}
         </Select>
       )}
     </Field>

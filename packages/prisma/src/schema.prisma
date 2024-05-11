@@ -24,6 +24,11 @@ datasource db {
 
 enum ExchangeCode {
   OKX
+  BYBIT
+  BINANCE
+  KRAKEN
+  COINBASE
+  GATEIO
 }
 
 enum BotType {

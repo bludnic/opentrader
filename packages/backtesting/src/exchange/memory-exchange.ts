@@ -26,6 +26,8 @@ import type { MarketSimulator } from "../market-simulator";
 
 export class MemoryExchange implements IExchange {
   ccxt = {} as any;
+  exchangeCode = ExchangeCode.OKX;
+
   /**
    * @internal
    */

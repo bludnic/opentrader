@@ -1,12 +1,10 @@
 import { type OHLCV, pro as ccxt } from "ccxt";
 import { ExchangeCode } from "@opentrader/types";
+import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 
 export function ccxtInstanceFromExchangeCode(exchangeCode: ExchangeCode) {
-  const map: Record<ExchangeCode, keyof typeof ccxt> = {
-    [ExchangeCode.OKX]: "okx",
-  };
-
-  const exchange = new ccxt[map[exchangeCode]]();
+  const ccxtClassName = exchangeCodeMapCCXT[exchangeCode];
+  const exchange = new ccxt[ccxtClassName]();
 
   return exchange;
 }
