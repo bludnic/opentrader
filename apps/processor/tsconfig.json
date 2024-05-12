@@ -8,15 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "outDir": "./dist",
-    "paths": {
-      // imported modules
-      //      "#backtesting/*": ["../../packages/backtesting/src/*"],
-      "#bot-processor/*": ["../../packages/bot-processor/src/*"],
-      "#db/*": ["../../packages/db/src/*"],
-      "#exchanges/*": ["../../packages/exchanges/src/*"],
-      "#processing/*": ["../../packages/processing/src/*"],
-      "#trpc/*": ["../../packages/trpc/src/*"]
-    }
+    "paths": {}
   },
   "include": ["src/index.ts"]
 }
