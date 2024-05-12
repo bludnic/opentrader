@@ -20,6 +20,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "front": "turbo run dev --filter=frontend",
     "postinstall": "pnpm link --global",
+    "build:packages": "turbo run build --filter='./packages/*'",
     "debug": "ts-node --transpile-only packages/cli/src/index.ts trade debug"
   },
   "bin": {
