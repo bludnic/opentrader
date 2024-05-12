@@ -1,8 +1,9 @@
 import type { BarSize, ExchangeCode } from "@opentrader/types";
 import { useState, useRef, useEffect } from "react";
 import type { OHLCV } from "ccxt";
+import { barSizeToDuration } from "@opentrader/tools";
 import { useIsStale } from "src/hooks/useIsStale";
-import { barSizeToDuration, roundTimestamp } from "src/utils/charts";
+import { roundTimestamp } from "src/utils/charts";
 import { useWatchOHLC } from "./useWatchOHLC";
 import { logCandle } from "./utils";
 import { CANDLES_PER_PAGE } from "./constants";
