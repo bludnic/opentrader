@@ -48,8 +48,10 @@ export class CandlesProcessor {
       const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
 
       if (bot.timeframe === null) {
-        logger.error(`CandlesProcessor: Bot ${bot.id} has no timeframe`);
-        throw new Error(`Bot ${bot.id} has no timeframe`);
+        logger.warn(
+          `CandlesProcessor: Bot ${bot.id} is not timeframe based. Skip adding to channel.`,
+        );
+        continue;
       }
 
       channel.add(symbol, bot.timeframe as BarSize);
