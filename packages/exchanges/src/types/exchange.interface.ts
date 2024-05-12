@@ -10,7 +10,6 @@ import type {
   IGetLimitOrderResponse,
   IPlaceLimitOrderRequest,
   IPlaceLimitOrderResponse,
-  ITradingPairSymbolRequest,
   ISymbolInfo,
   IGetSymbolInfoRequest,
   IGetOpenOrdersRequest,
@@ -22,6 +21,7 @@ import type {
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
   ExchangeCode,
+  IWatchCandlesRequest,
 } from "@opentrader/types";
 import type { Dictionary, Market, Exchange } from "ccxt";
 
@@ -57,4 +57,5 @@ export interface IExchange {
   getSymbols: () => Promise<ISymbolInfo[]>;
   getSymbol: (params: IGetSymbolInfoRequest) => Promise<ISymbolInfo>;
   watchOrders: (params?: IWatchOrdersRequest) => Promise<IWatchOrdersResponse>;
+  watchCandles: (symbol: IWatchCandlesRequest) => Promise<ICandlestick[]>;
 }

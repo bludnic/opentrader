@@ -18,12 +18,14 @@ import type {
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
   ISymbolInfo,
+  IWatchCandlesRequest,
+  IWatchCandlesResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
+  ExchangeCode,
 } from "@opentrader/types";
-import { ExchangeCode } from "@opentrader/types";
-import type { Dictionary, Market } from "ccxt";
-import { pro, type Exchange } from "ccxt";
+import { pro } from "ccxt";
+import type { Dictionary, Market, Exchange } from "ccxt";
 import type { IExchange, IExchangeCredentials } from "../../types";
 import { cache } from "../../cache";
 import { fetcher } from "../../utils/next/fetcher";
@@ -191,5 +193,14 @@ export class CCXTExchange implements IExchange {
     const data = await this.ccxt.watchOrders(...args);
 
     return normalize.watchOrders.response(data);
+  }
+
+  async watchCandles(
+    params: IWatchCandlesRequest,
+  ): Promise<IWatchCandlesResponse> {
+    const args = normalize.watchCandles.request(params);
+    const data = await this.ccxt.watchOHLCV(...args);
+
+    return normalize.watchCandles.response(data);
   }
 }

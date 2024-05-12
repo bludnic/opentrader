@@ -375,6 +375,9 @@ importers:
       '@opentrader/processing':
         specifier: workspace:*
         version: link:../processing
+      '@opentrader/tools':
+        specifier: workspace:*
+        version: link:../tools
       async:
         specifier: ^3.2.5
         version: 3.2.5

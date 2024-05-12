@@ -3,6 +3,26 @@ import type { TBotSettings } from "../../types";
 import { ZBotSettings } from "../../types";
 
 export const customBotModel = (prisma: PrismaClient) => ({
+  async findFirst<T extends Prisma.BotFindFirstArgs>(
+    args: Prisma.SelectSubset<T, Prisma.BotFindFirstArgs>,
+  ) {
+    const bot = await prisma.bot.findFirst<T>({
+      ...args,
+      where: {
+        ...args.where,
+      },
+    });
+
+    if (!bot) return null;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
+    const { settings, ...rest } = bot;
+
+    return {
+      ...rest,
+      settings: bot.settings as unknown as TBotSettings,
+    };
+  },
   async findUnique<T extends Prisma.BotFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindUniqueArgs>,
   ) {

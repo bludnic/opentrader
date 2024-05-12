@@ -26,6 +26,7 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/processing": "workspace:*",
+    "@opentrader/tools": "workspace:*",
     "async": "^3.2.5",
     "ccxt": "4.1.48",
     "node-cron": "^3.0.3"

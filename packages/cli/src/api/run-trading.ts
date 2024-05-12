@@ -1,10 +1,9 @@
 import type { IBotConfiguration } from "@opentrader/bot-processor";
 import { templates } from "@opentrader/bot-templates";
-import type { ExchangeAccountWithCredentials } from "@opentrader/db/dist";
-import { xprisma } from "@opentrader/db/dist";
 import { logger } from "@opentrader/logger";
 import { Processor } from "@opentrader/bot";
-import type { Bot } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
+import type { TBot, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import type { CommandResult, ConfigName, ExchangeConfig } from "../types";
 import { readBotConfig, readExchangesConfig } from "../config";
@@ -38,7 +37,7 @@ export async function runTrading(
     await createOrUpdateExchangeAccounts(exchangesConfig);
   const bot = await createOrUpdateBot(strategyName, config, exchangeAccounts);
 
-  const processor = new Processor(exchangeAccounts);
+  const processor = new Processor(exchangeAccounts, [bot]);
   await processor.onApplicationBootstrap();
 
   if (bot.enabled) {
@@ -132,7 +131,7 @@ async function createOrUpdateBot<T = object>(
   strategyName: string,
   botConfig: IBotConfiguration<T>,
   exchangeAccounts: ExchangeAccountWithCredentials[],
-): Promise<Bot> {
+): Promise<TBot> {
   const exchangeAccount = exchangeAccounts.find(
     (exchangeAccount) =>
       exchangeAccount.exchangeCode === botConfig.exchangeCode,
@@ -143,7 +142,7 @@ async function createOrUpdateBot<T = object>(
     );
   }
 
-  let bot = await xprisma.bot.findFirst({
+  let bot = await xprisma.bot.custom.findFirst({
     where: {
       label: botConfig.label,
     },
@@ -151,7 +150,7 @@ async function createOrUpdateBot<T = object>(
 
   if (bot) {
     logger.info(`Bot "${botConfig.label}" found in DB. Updating...`);
-    bot = await xprisma.bot.update({
+    bot = await xprisma.bot.custom.update({
       where: {
         id: bot.id,
       },
@@ -179,7 +178,7 @@ async function createOrUpdateBot<T = object>(
     logger.info(`Bot "${botConfig.label}" updated`);
   } else {
     logger.info(`Bot "${botConfig.label}" not found. Adding to DB...`);
-    bot = await xprisma.bot.create({
+    bot = await xprisma.bot.custom.create({
       data: {
         type: "Bot",
         name: "Default bot",

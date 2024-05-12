@@ -6,3 +6,4 @@ export * from "./place-stop-order";
 export * from "./get-open-orders";
 export * from "./get-closed-orders";
 export * from "./watch-orders";
+export * from "./watch-candles";

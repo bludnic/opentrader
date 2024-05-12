@@ -174,6 +174,19 @@ const watchOrders: Normalize["watchOrders"] = {
     })),
 };
 
+const watchCandles: Normalize["watchCandles"] = {
+  request: (params) => [params.symbol],
+  response: (ohlcv) =>
+    ohlcv.map((order) => ({
+      timestamp: order[0],
+      open: order[1],
+      high: order[2],
+      low: order[3],
+      close: order[4],
+      volume: order[5],
+    })),
+};
+
 export const normalize: Normalize = {
   accountAssets,
   getLimitOrder,
@@ -187,4 +200,5 @@ export const normalize: Normalize = {
   getSymbol,
   getSymbols,
   watchOrders,
+  watchCandles,
 };

@@ -1,34 +1,44 @@
-import type { ExchangeAccountWithCredentials } from "@opentrader/db";
+import type { ExchangeAccountWithCredentials, TBot } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
+import { CandlesProcessor } from "./candles.processor";
 import { TimeframeCron } from "./timeframe.cron";
 import { ExchangeAccountsWatcher } from "./exchange-accounts.watcher";
 
 export class Processor {
   private exchangeAccountsWatcher: ExchangeAccountsWatcher;
   private timeframeCron: TimeframeCron;
+  private candlesProcessor: CandlesProcessor;
 
-  constructor(exchangeAccounts: ExchangeAccountWithCredentials[]) {
+  constructor(
+    exchangeAccounts: ExchangeAccountWithCredentials[],
+    bots: TBot[],
+  ) {
     this.exchangeAccountsWatcher = new ExchangeAccountsWatcher(
       exchangeAccounts,
     );
     this.timeframeCron = new TimeframeCron();
+    this.candlesProcessor = new CandlesProcessor(bots);
   }
 
   async onApplicationBootstrap() {
-    logger.info("onApplicationBootstrap: ExchangeAccountsWatcher -> create()");
+    logger.info("[Processor] OrdersProcessor created");
     await this.exchangeAccountsWatcher.create();
 
-    logger.info("onApplicationBootstrap: TimeframeCron -> create()");
-    this.timeframeCron.create();
+    // logger.info("[Processor] TimeframeProcessor created");
+    // this.timeframeCron.create();
+
+    logger.info("[Processor] CandlesProcessor created");
+    await this.candlesProcessor.create();
   }
 
   async beforeApplicationShutdown() {
-    logger.info(
-      "beforeApplicationShutdown: ExchangeAccountsWatcher -> destroy()",
-    );
+    logger.info("[Processor] OrdersProcessor destroyed");
     await this.exchangeAccountsWatcher.destroy();
 
-    logger.info("onApplicationBootstrap: TimeframeCron -> destroy()");
-    this.timeframeCron.destroy();
+    // logger.info("[Processor] TimeframeProcessor destroyed");
+    // this.timeframeCron.destroy();
+
+    logger.info("[Processor] CandlesProcessor destroyed");
+    this.candlesProcessor.destroy();
   }
 }

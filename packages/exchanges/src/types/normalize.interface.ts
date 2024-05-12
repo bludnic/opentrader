@@ -20,6 +20,8 @@ import type {
   IWatchOrdersResponse,
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
+  IWatchCandlesRequest,
+  IWatchCandlesResponse,
 } from "@opentrader/types";
 import type {
   Balances,
@@ -112,5 +114,12 @@ export type Normalize = {
       params: IWatchOrdersRequest,
     ) => Parameters<Exchange["watchOrders"]>;
     response: (data: Order[]) => IWatchOrdersResponse;
+  };
+
+  watchCandles: {
+    request: (
+      params: IWatchCandlesRequest,
+    ) => Parameters<Exchange["watchOHLCV"]>;
+    response: (data: OHLCV[]) => IWatchCandlesResponse;
   };
 };
