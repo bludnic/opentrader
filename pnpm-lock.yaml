@@ -177,6 +177,9 @@ importers:
 
   apps/processor:
     dependencies:
+      '@opentrader/bot':
+        specifier: workspace:*
+        version: link:../../packages/bot
       '@opentrader/db':
         specifier: workspace:*
         version: link:../../packages/db

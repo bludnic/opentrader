@@ -46,9 +46,17 @@ export class CandlesProcessor {
       }
 
       const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
+
+      if (bot.timeframe === null) {
+        logger.error(`CandlesProcessor: Bot ${bot.id} has no timeframe`);
+        throw new Error(`Bot ${bot.id} has no timeframe`);
+      }
+
       channel.add(symbol, bot.timeframe as BarSize);
     }
   }
+
+  // @todo reload(bots: TBot[]) method for subscribing to new channel when new bot is created
 
   // @todo maybe queue
   private async handleCandle(data: CandleEvent) {
