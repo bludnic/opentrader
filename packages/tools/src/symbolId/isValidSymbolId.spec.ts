@@ -12,4 +12,8 @@ describe("isValidSymbolId", () => {
   it("test non-existing exchange with a valid currency pair", () => {
     expect(isValidSymbolId("UNK:BTC/USDT")).toBe(false);
   });
+
+  it("test existing exchange with a symbol starting with a number", () => {
+    expect(isValidSymbolId("OKX:1INCH/USDT")).toBe(true);
+  });
 });
