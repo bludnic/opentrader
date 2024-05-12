@@ -3,7 +3,6 @@ import type {
   IAccountAsset,
   IGetTradingFeeRatesRequest,
   IGetTradingFeeRatesResponse,
-  ITradingPairSymbolRequest,
   IGetCandlesticksRequest,
   ICandlestick,
   IGetMarketPriceRequest,
@@ -20,6 +19,8 @@ import type {
   IWatchOrdersResponse,
   IPlaceStopOrderRequest,
   IPlaceStopOrderResponse,
+  IWatchCandlesRequest,
+  IWatchCandlesResponse,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
 import type { MarketSimulator } from "../market-simulator";
@@ -172,7 +173,11 @@ export class MemoryExchange implements IExchange {
     );
   }
 
-  tradingPairSymbol(params: ITradingPairSymbolRequest) {
-    return `${params.baseCurrency}-${params.quoteCurrency}`;
+  async watchCandles(
+    _params?: IWatchCandlesRequest,
+  ): Promise<IWatchCandlesResponse> {
+    throw new Error(
+      "Not implemented. Backtesting doesn't require this method.",
+    );
   }
 }
