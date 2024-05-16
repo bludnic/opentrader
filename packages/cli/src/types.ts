@@ -8,5 +8,10 @@ export type CommandResult<T = unknown> = {
 
 export type ExchangeConfig = Pick<
   ExchangeAccount,
-  "name" | "apiKey" | "secretKey" | "password" | "exchangeCode"
+  | "name"
+  | "apiKey"
+  | "secretKey"
+  | "password"
+  | "exchangeCode"
+  | "isDemoAccount"
 >;
