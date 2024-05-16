@@ -1,10 +1,11 @@
 import type { IBotConfiguration } from "@opentrader/bot-processor";
-import { BotProcessor } from "@opentrader/bot-processor";
+import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import { SmartTradeProcessor } from "../smart-trade";
+import { logger } from "@opentrader/logger";
+import { SmartTradeExecutor } from "../executors";
 import { BotStoreAdapter } from "./bot-store-adapter";
 
 export class BotProcessing {
@@ -150,7 +151,7 @@ export class BotProcessing {
     const storeAdapter = new BotStoreAdapter(() => this.stop());
     const botTemplate = findTemplate(this.bot.template);
 
-    const processor = BotProcessor.create({
+    const processor = createStrategyRunner({
       store: storeAdapter,
       exchange,
       botConfig: configuration,
@@ -182,14 +183,20 @@ export class BotProcessing {
       },
     });
 
+    logger.info(`Found ${smartTrades.length} pending orders for placement`);
+
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
 
-      const smartTradeService = new SmartTradeProcessor(
+      logger.info(
+        `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.exchangeSymbolId}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
+      );
+
+      const smartTradeExecutor = SmartTradeExecutor.create(
         smartTrade,
         exchangeAccount,
       );
-      await smartTradeService.placeNext();
+      await smartTradeExecutor.next();
     }
 
     console.log(

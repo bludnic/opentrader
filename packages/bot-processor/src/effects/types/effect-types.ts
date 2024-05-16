@@ -1,4 +1,7 @@
 export const USE_SMART_TRADE = "USE_SMART_TRADE";
+export const USE_TRADE = "USE_TRADE";
+export const BUY = "BUY";
+export const SELL = "SELL";
 export const REPLACE_SMART_TRADE = "REPLACE_SMART_TRADE";
 export const GET_SMART_TRADE = "GET_SMART_TRADE";
 export const CREATE_SMART_TRADE = "CREATE_SMART_TRADE";
@@ -8,6 +11,9 @@ export const USE_INDICATORS = "USE_INDICATORS";
 
 export type EffectType =
   | typeof USE_SMART_TRADE
+  | typeof USE_TRADE
+  | typeof BUY
+  | typeof SELL
   | typeof REPLACE_SMART_TRADE
   | typeof GET_SMART_TRADE
   | typeof CREATE_SMART_TRADE

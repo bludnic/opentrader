@@ -1,7 +1,12 @@
+import type { IExchange } from "@opentrader/exchanges";
 import type { IBotControl } from "./bot-control.interface";
 import type { IBotConfiguration } from "./bot-configuration.interface";
 
 export type TBotContext<T extends IBotConfiguration> = {
+  /**
+   * Default exchange instance.
+   */
+  exchange: IExchange;
   /**
    * Bot control panel
    */

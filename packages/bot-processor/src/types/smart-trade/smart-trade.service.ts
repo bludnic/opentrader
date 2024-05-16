@@ -1,8 +1,6 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import type { CancelSmartTradeEffect } from "./effects/common/types/cancel-smart-trade-effect";
-import type { ReplaceSmartTradeEffect } from "./effects";
-import { cancelSmartTrade, replaceSmartTrade } from "./effects";
-import type { SmartTrade } from "./types";
+import { cancelSmartTrade, replaceSmartTrade } from "../../effects";
+import type { SmartTrade } from "./smart-trade.type";
 
 export class SmartTradeService {
   buy: SmartTrade["buy"];
@@ -22,15 +20,15 @@ export class SmartTradeService {
   /**
    * Create a new SmartTrade with same buy/sell orders
    */
-  replace(): ReplaceSmartTradeEffect {
-    return replaceSmartTrade(this.ref, this.smartTrade);
+  replace() {
+    return replaceSmartTrade(this.smartTrade, this.ref);
   }
 
-  cancel(): CancelSmartTradeEffect {
+  cancel() {
     return cancelSmartTrade(this.ref);
   }
 
   isCompleted(): boolean {
-    return this.smartTrade.sell.status === OrderStatusEnum.Filled;
+    return this.smartTrade.sell?.status === OrderStatusEnum.Filled;
   }
 }

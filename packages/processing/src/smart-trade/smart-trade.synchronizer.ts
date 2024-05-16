@@ -6,15 +6,11 @@ import type {
   SmartTradeWithOrders,
 } from "@opentrader/db";
 import {
-  assertHasExchangeOrderId,
   assertIsOrderBased,
   toSmartTradeEntity,
   xprisma,
 } from "@opentrader/db";
-import type {
-  IGetLimitOrderResponse,
-  IPlaceLimitOrderResponse,
-} from "@opentrader/types";
+import type { IGetLimitOrderResponse } from "@opentrader/types";
 import { OrderNotFound } from "ccxt";
 
 type SyncParams = {
@@ -28,7 +24,7 @@ type SyncParams = {
   ) => Promise<void> | void;
 };
 
-export class SmartTradeProcessor {
+export class SmartTradeSynchronizer {
   private exchange: IExchange;
   private smartTrade: SmartTradeEntity_Order_Order;
   private exchangeAccount: ExchangeAccountWithCredentials;
@@ -58,7 +54,7 @@ export class SmartTradeProcessor {
       },
     });
 
-    return new SmartTradeProcessor(smartTrade, smartTrade.exchangeAccount);
+    return new SmartTradeSynchronizer(smartTrade, smartTrade.exchangeAccount);
   }
 
   static async fromOrderId(orderId: number) {
@@ -76,113 +72,11 @@ export class SmartTradeProcessor {
       },
     });
 
-    return new SmartTradeProcessor(smartTrade, smartTrade.exchangeAccount);
+    return new SmartTradeSynchronizer(smartTrade, smartTrade.exchangeAccount);
   }
 
   /**
-   * Will place Entry Order if not placed before.
-   * OR
-   * Will place takeProfit order if Entry Order was filled.
-   */
-  async placeNext() {
-    const { entryOrder, takeProfitOrder } = this.smartTrade;
-
-    const orderPendingPlacement =
-      entryOrder.status === "Idle"
-        ? entryOrder
-        : entryOrder.status === "Filled" && takeProfitOrder.status === "Idle"
-          ? takeProfitOrder
-          : null;
-
-    if (orderPendingPlacement) {
-      const exchangeOrder = await this.placeOrder(orderPendingPlacement);
-      console.log(
-        `⚙️ @SmartTradeProcessor.placeNext(): Order #${orderPendingPlacement.id} placed`,
-      );
-      console.log(exchangeOrder);
-    }
-  }
-
-  private async placeOrder(
-    order: OrderEntity,
-  ): Promise<IPlaceLimitOrderResponse> {
-    if (order.type === "Market") {
-      throw new Error("placeOrder: Market order is not supported yet");
-    }
-
-    const exchangeOrder = await this.exchange.placeLimitOrder({
-      symbol: this.smartTrade.exchangeSymbolId,
-      side: order.side === "Buy" ? "buy" : "sell", // @todo map helper
-      price: order.price,
-      quantity: order.quantity,
-    });
-
-    // Update status to Placed
-    // Save exchange orderId to DB
-    await xprisma.order.update({
-      where: {
-        id: order.id,
-      },
-      data: {
-        status: "Placed",
-        exchangeOrderId: exchangeOrder.orderId,
-        placedAt: new Date(), // maybe use Exchange time (if possible)
-      },
-    });
-
-    return exchangeOrder;
-  }
-
-  /**
-   * Will cancel all orders that belongs to the SmartTrade
-   */
-  async cancelOrders() {
-    console.log(
-      "⚙️ @opentrader/processing: SmartTradeProcessor.cancelOrders()",
-    );
-    const { entryOrder, takeProfitOrder } = this.smartTrade;
-
-    await this.cancelOrder(entryOrder);
-    await this.cancelOrder(takeProfitOrder);
-  }
-
-  private async cancelOrder(order: OrderEntity) {
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check -- "Canceled" | "Revoked" | "Deleted" doesn't require to be processed
-    switch (order.status) {
-      case "Idle":
-        await xprisma.order.updateStatus("Revoked", order.id);
-        console.log(`    Canceled order #${order.id}: Idle -> Revoked`);
-        return;
-      case "Placed":
-        assertHasExchangeOrderId(order);
-
-        try {
-          await this.exchange.cancelLimitOrder({
-            orderId: order.exchangeOrderId,
-            symbol: this.smartTrade.exchangeSymbolId,
-          });
-          await xprisma.order.updateStatus("Canceled", order.id);
-
-          console.log(`    Canceled order #${order.id}: Placed -> Canceled`);
-        } catch (err) {
-          if (err instanceof OrderNotFound) {
-            await xprisma.order.updateStatus("Deleted", order.id);
-
-            console.log(
-              `    Canceled order #${order.id}: Placed -> Deleted (order not found on the exchange)`,
-            );
-          } else {
-            throw err;
-          }
-        }
-        return;
-      case "Filled":
-        await xprisma.order.removeRef(order.id);
-    }
-  }
-
-  /**
-   * Sync orders: `exchange -> db`
+   * Manual syncing orders with the exchange. Update statuses in DB.
    * - Sync order status `Placed -> Filled`
    * - Save `fee` to DB if order was filled
    */
@@ -199,7 +93,7 @@ export class SmartTradeProcessor {
 
   private async syncOrder(order: OrderEntity, params: SyncParams) {
     const { onFilled, onCanceled } = params;
-    console.log("⚙️ @opentrader/processing");
+    console.log(`SmartTradeSynchronizer: Syncing order (id: ${order.id}) status with the exchange`);
 
     if (!order.exchangeOrderId) {
       throw new Error("Order: Missing `exchangeOrderId`");

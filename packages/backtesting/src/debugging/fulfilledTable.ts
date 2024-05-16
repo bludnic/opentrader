@@ -7,17 +7,17 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
 
     const isBuy =
       buy.status === OrderStatusEnum.Placed &&
-      sell.status === OrderStatusEnum.Idle;
+      (!sell || sell.status === OrderStatusEnum.Idle);
     const isSell =
       buy.status === OrderStatusEnum.Filled &&
-      sell.status === OrderStatusEnum.Placed;
+      sell?.status === OrderStatusEnum.Placed;
 
     const isBuyFilled =
       buy.status === OrderStatusEnum.Filled &&
-      sell.status === OrderStatusEnum.Idle;
+      (!sell || sell.status === OrderStatusEnum.Idle);
     const isSellFilled =
       buy.status === OrderStatusEnum.Filled &&
-      sell.status === OrderStatusEnum.Filled;
+      sell?.status === OrderStatusEnum.Filled;
 
     const prevSmartTrade = smartTrades[i - 1];
     const isCurrent =
@@ -33,7 +33,7 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
 
     const price =
       side === "sell"
-        ? smartTrade.sell.price
+        ? smartTrade.sell?.price
         : side === "buy"
           ? smartTrade.buy.price
           : "unknown";
@@ -45,7 +45,7 @@ export function fulfilledTable(smartTrades: SmartTrade[]) {
       side,
       price,
       buy: smartTrade.buy.price,
-      sell: smartTrade.sell.price,
+      sell: smartTrade.sell?.price,
       filled: isBuyFilled ? "buy filled" : isSellFilled ? "sell filled" : "",
     };
 

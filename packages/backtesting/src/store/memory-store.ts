@@ -3,6 +3,7 @@ import type {
   SmartTrade,
   UseSmartTradePayload,
 } from "@opentrader/bot-processor";
+import type { IExchange } from "@opentrader/exchanges";
 import { OrderStatusEnum } from "@opentrader/types";
 import uniqueId from "lodash/uniqueId";
 import type { MarketSimulator } from "../market-simulator";
@@ -61,12 +62,14 @@ export class MemoryStore implements IStore {
         createdAt,
         updatedAt: createdAt,
       },
-      sell: {
-        price: sell.price,
-        status: sell.status || OrderStatusEnum.Idle,
-        createdAt,
-        updatedAt: createdAt,
-      },
+      sell: sell
+        ? {
+            price: sell.price,
+            status: sell.status || OrderStatusEnum.Idle,
+            createdAt,
+            updatedAt: createdAt,
+          }
+        : undefined,
       quantity,
     };
 
@@ -75,8 +78,53 @@ export class MemoryStore implements IStore {
     return smartTrade;
   }
 
+  async updateSmartTrade(
+    ref: string,
+    payload: Pick<UseSmartTradePayload, "sell">,
+    botId: number,
+  ) {
+    if (!payload.sell) {
+      console.log(
+        "MemoryStore: Unable to update smart trade. Reason: `payload.sell` not provided.",
+      );
+      return null;
+    }
+
+    const smartTrade = await this.getSmartTrade(ref, botId);
+
+    if (!smartTrade) {
+      return null;
+    }
+
+    const candlestick = this.marketSimulator.currentCandle;
+    const updatedAt = candlestick.timestamp;
+
+    if (smartTrade.sell) {
+      console.log(
+        "MemoryStore: SmartTrade already has a sell order. Skipping.",
+      );
+      return smartTrade;
+    }
+
+    const updatedSmartTrade: SmartTrade = {
+      ...smartTrade,
+      sell: {
+        price: payload.sell.price,
+        status: payload.sell.status || OrderStatusEnum.Idle,
+        createdAt: updatedAt,
+        updatedAt,
+      },
+    };
+
+    return updatedSmartTrade;
+  }
+
   async cancelSmartTrade(_ref: string, _botId: number): Promise<boolean> {
     return false; // @todo
     // throw new Error("Not implemented yet.");
+  }
+
+  async getExchange(_label: string): Promise<IExchange | null> {
+    throw new Error("Not implemented yet.");
   }
 }

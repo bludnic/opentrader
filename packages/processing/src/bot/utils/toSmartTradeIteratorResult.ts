@@ -39,7 +39,7 @@ export function toSmartTradeIteratorResult(
   if (entryOrder.type === "Market") {
     throw new Error("Order type Market is not supported yet");
   }
-  if (takeProfitOrder.type === "Market") {
+  if (takeProfitOrder?.type === "Market") {
     throw new Error("Order type Market is not supported yet");
   }
 
@@ -53,11 +53,13 @@ export function toSmartTradeIteratorResult(
       createdAt: entryOrder.createdAt.getTime(),
       updatedAt: entryOrder.updatedAt.getTime(),
     },
-    sell: {
-      status: toProcessorOrderStatus(takeProfitOrder.status),
-      price: takeProfitOrder.price,
-      createdAt: takeProfitOrder.createdAt.getTime(),
-      updatedAt: takeProfitOrder.updatedAt.getTime(),
-    },
+    sell: takeProfitOrder
+      ? {
+          status: toProcessorOrderStatus(takeProfitOrder.status),
+          price: takeProfitOrder.price,
+          createdAt: takeProfitOrder.createdAt.getTime(),
+          updatedAt: takeProfitOrder.updatedAt.getTime(),
+        }
+      : undefined,
   };
 }

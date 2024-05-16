@@ -1,9 +1,11 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import type { UseSmartTradePayload } from "./effects/common/types/use-smart-trade-effect";
-import type { IBotConfiguration } from "./types/bot/bot-configuration.interface";
-import type { IBotControl } from "./types/bot/bot-control.interface";
-import type { SmartTrade } from "./types/smart-trade/smart-trade.type";
-import type { IStore } from "./types/store/store.interface";
+import type { UseSmartTradePayload } from "./effects";
+import type {
+  IBotConfiguration,
+  IBotControl,
+  SmartTrade,
+  IStore,
+} from "./types";
 
 export class BotControl<T extends IBotConfiguration> implements IBotControl {
   constructor(
@@ -21,6 +23,13 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
 
   async createSmartTrade(ref: string, payload: UseSmartTradePayload) {
     return this.store.createSmartTrade(ref, payload, this.bot.id);
+  }
+
+  async updateSmartTrade(
+    ref: string,
+    payload: Pick<UseSmartTradePayload, "sell">,
+  ) {
+    return this.store.updateSmartTrade(ref, payload, this.bot.id);
   }
 
   async getOrCreateSmartTrade(
@@ -45,10 +54,12 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
         price: smartTrade.buy.price,
         status: OrderStatusEnum.Idle,
       },
-      sell: {
-        price: smartTrade.sell.price,
-        status: OrderStatusEnum.Idle,
-      },
+      sell: smartTrade.sell
+        ? {
+            price: smartTrade.sell.price,
+            status: OrderStatusEnum.Idle,
+          }
+        : undefined,
       quantity: smartTrade.quantity,
     };
 
@@ -57,5 +68,9 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
 
   async cancelSmartTrade(ref: string) {
     return this.store.cancelSmartTrade(ref, this.bot.id);
+  }
+
+  async getExchange(label: string) {
+    return this.store.getExchange(label);
   }
 }

@@ -1,9 +1,9 @@
 import type {
   IBotConfiguration,
-  BotManager,
+  StrategyRunner,
   BotTemplate,
 } from "@opentrader/bot-processor";
-import { BotProcessor } from "@opentrader/bot-processor";
+import { createStrategyRunner } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { logger, format } from "@opentrader/logger";
 import { fulfilledTable, gridTable } from "./debugging";
@@ -17,7 +17,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
   private marketSimulator: MarketSimulator;
   private store: MemoryStore;
   private exchange: MemoryExchange;
-  private processor: BotManager<T>;
+  private processor: StrategyRunner<T>;
 
   constructor(options: { botConfig: T; botTemplate: BotTemplate<T> }) {
     const { botConfig, botTemplate } = options;
@@ -26,7 +26,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     this.store = new MemoryStore(this.marketSimulator);
     this.exchange = new MemoryExchange(this.marketSimulator);
 
-    this.processor = BotProcessor.create({
+    this.processor = createStrategyRunner({
       store: this.store,
       exchange: this.exchange,
       botConfig,

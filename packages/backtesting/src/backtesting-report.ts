@@ -24,7 +24,10 @@ export class BacktestingReport {
 
     finishedSmartTrades.forEach((smartTrade) => {
       transactions.push(buyTransaction(smartTrade));
-      transactions.push(sellTransaction(smartTrade));
+
+      if (smartTrade.sell) {
+        transactions.push(sellTransaction(smartTrade));
+      }
     });
 
     return transactions;
@@ -37,7 +40,10 @@ export class BacktestingReport {
 
     smartTrades.forEach((smartTrade) => {
       activeOrders.push(buyOrder(smartTrade));
-      activeOrders.push(sellOrder(smartTrade));
+
+      if (smartTrade.sell) {
+        activeOrders.push(sellOrder(smartTrade));
+      }
     });
 
     return activeOrders;
@@ -57,7 +63,7 @@ export class BacktestingReport {
     return this.smartTrades.filter(
       (smartTrade) =>
         smartTrade.buy.status === OrderStatusEnum.Placed ||
-        smartTrade.sell.status === OrderStatusEnum.Placed,
+        smartTrade.sell?.status === OrderStatusEnum.Placed,
     );
   }
 
@@ -65,7 +71,7 @@ export class BacktestingReport {
     return this.smartTrades.filter((smartTrade) => {
       return (
         smartTrade.buy.status === OrderStatusEnum.Filled &&
-        smartTrade.sell.status === OrderStatusEnum.Filled
+        smartTrade.sell?.status === OrderStatusEnum.Filled
       );
     });
   }

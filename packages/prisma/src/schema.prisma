@@ -74,6 +74,7 @@ enum EntryType {
 enum TakeProfitType {
   Order
   Ladder
+  None
 }
 
 enum EntityType {

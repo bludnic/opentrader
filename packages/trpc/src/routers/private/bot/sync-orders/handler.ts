@@ -1,4 +1,8 @@
-import { BotProcessing, SmartTradeProcessor } from "@opentrader/processing";
+import {
+  BotProcessing,
+  SmartTradeSynchronizer,
+  SmartTradeExecutor,
+} from "@opentrader/processing";
 import type { OrderEntity } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
@@ -60,12 +64,12 @@ export async function syncOrders({ input }: Options) {
   };
 
   for (const smartTrade of smartTrades) {
-    const processor = new SmartTradeProcessor(
+    const smartTradeSynchronizer = new SmartTradeSynchronizer(
       smartTrade,
       smartTrade.exchangeAccount,
     );
 
-    await processor.sync({
+    await smartTradeSynchronizer.sync({
       onFilled,
       onCanceled,
     });
@@ -91,12 +95,12 @@ export async function syncOrders({ input }: Options) {
   });
 
   for (const smartTrade of pendingSmartTrades) {
-    const processor = new SmartTradeProcessor(
+    const processor = SmartTradeExecutor.create(
       smartTrade,
       smartTrade.exchangeAccount,
     );
 
-    await processor.placeNext();
+    await processor.next();
   }
 
   return {

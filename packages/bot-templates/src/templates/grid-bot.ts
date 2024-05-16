@@ -8,18 +8,12 @@ import type {
 import {
   cancelSmartTrade,
   useExchange,
-  useIndicators,
   useSmartTrade,
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
-import type { IGetMarketPriceResponse, XCandle } from "@opentrader/types";
+import type { IGetMarketPriceResponse } from "@opentrader/types";
 
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
-  // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
-  //   ["SMA10", "SMA15", "SMA30"],
-  //   "1m",
-  // );
-  // const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
   const { config: bot, onStart, onStop } = ctx;
 
   const exchange: IExchange = yield useExchange();
@@ -48,17 +42,20 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   }
 
   for (const [index, grid] of gridLevels.entries()) {
-    const smartTrade: SmartTradeService = yield useSmartTrade(`${index}`, {
-      buy: {
-        price: grid.buy.price,
-        status: grid.buy.status,
+    const smartTrade: SmartTradeService = yield useSmartTrade(
+      {
+        buy: {
+          price: grid.buy.price,
+          status: grid.buy.status,
+        },
+        sell: {
+          price: grid.sell.price,
+          status: grid.sell.status,
+        },
+        quantity: grid.buy.quantity, // or grid.sell.quantity
       },
-      sell: {
-        price: grid.sell.price,
-        status: grid.sell.status,
-      },
-      quantity: grid.buy.quantity, // or grid.sell.quantity
-    });
+      `${index}`,
+    );
 
     if (smartTrade.isCompleted()) {
       yield smartTrade.replace();

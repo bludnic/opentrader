@@ -7,10 +7,10 @@ export function gridTable(smartTrades: SmartTrade[]) {
 
     const isBuy =
       buy.status === OrderStatusEnum.Placed &&
-      sell.status === OrderStatusEnum.Idle;
+      (!sell || sell.status === OrderStatusEnum.Idle);
     const isSell =
       buy.status === OrderStatusEnum.Filled &&
-      sell.status === OrderStatusEnum.Placed;
+      sell?.status === OrderStatusEnum.Placed;
 
     const prevSmartTrade = smartTrades[i - 1];
     const isCurrent =
@@ -20,7 +20,7 @@ export function gridTable(smartTrades: SmartTrade[]) {
 
     const price =
       side === "sell"
-        ? smartTrade.sell.price
+        ? smartTrade.sell?.price
         : side === "buy"
           ? smartTrade.buy.price
           : "unknown";
@@ -32,7 +32,7 @@ export function gridTable(smartTrades: SmartTrade[]) {
       side,
       price,
       buy: smartTrade.buy.price,
-      sell: smartTrade.sell.price,
+      sell: smartTrade.sell?.price,
     };
 
     if (isCurrent) {

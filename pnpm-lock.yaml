@@ -707,10 +707,16 @@ importers:
       '@opentrader/logger':
         specifier: workspace:*
         version: link:../logger
+      '@prisma/client':
+        specifier: 5.13.0
+        version: 5.13.0(prisma@5.13.0)
       ccxt:
         specifier: 4.1.48
         version: 4.1.48
     devDependencies:
+      '@jest/globals':
+        specifier: ^29.7.0
+        version: 29.7.0
       '@opentrader/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -720,12 +726,21 @@ importers:
       '@opentrader/types':
         specifier: workspace:*
         version: link:../types
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.12
       '@types/node':
         specifier: ^20.12.11
         version: 20.12.11
       eslint:
         specifier: 8.54.0
         version: 8.54.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.12.11)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.12.11)(typescript@5.2.2))
+      ts-jest:
+        specifier: ^29.1.2
+        version: 29.1.2(@babel/core@7.23.3)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.23.3))(jest@29.7.0(@types/node@20.12.11)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.12.11)(typescript@5.2.2)))(typescript@5.2.2)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -8765,7 +8780,7 @@ snapshots:
       '@jest/types': 29.6.3
       '@types/node': 20.12.11
       chalk: 4.1.2
-      ci-info: 3.8.0
+      ci-info: 3.9.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
 

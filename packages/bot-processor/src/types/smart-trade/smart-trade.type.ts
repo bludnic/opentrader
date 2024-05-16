@@ -13,13 +13,15 @@ export type Order = {
   updatedAt: number;
 };
 
-type SmartTradeBase = {
+type SmartTradeBuilder<WithSell extends boolean> = {
   id: number | string; // @todo remove this prop, the bot processor is not required to know the ID of the bot
   ref: string;
-};
-
-export type SmartTrade = SmartTradeBase & {
   quantity: number;
   buy: Order;
-  sell: Order;
+  sell: WithSell extends true ? Order : undefined;
 };
+
+export type SmartTradeBuyOnly = SmartTradeBuilder<false>;
+export type SmartTradeWithSell = SmartTradeBuilder<true>;
+
+export type SmartTrade = SmartTradeBuyOnly | SmartTradeWithSell;

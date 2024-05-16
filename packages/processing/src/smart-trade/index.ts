@@ -1,1 +1,1 @@
-export * from "./smart-trade.processor";
+export * from "./smart-trade.synchronizer";
