@@ -84,12 +84,6 @@ export function createStrategyRunner<T extends IBotConfiguration>(options: {
   const { botConfig, store, exchange, botTemplate } = options;
 
   const botControl = new BotControl(store, botConfig);
-  const manager = new StrategyRunner(
-    botControl,
-    botConfig,
-    exchange,
-    botTemplate,
-  );
 
-  return manager;
+  return new StrategyRunner(botControl, botConfig, exchange, botTemplate);
 }
