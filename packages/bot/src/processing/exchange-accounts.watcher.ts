@@ -1,5 +1,5 @@
 import type { IWatchOrder } from "@opentrader/types";
-import { BotProcessing, SmartTradeExecutor } from "@opentrader/processing";
+import { BotProcessing } from "@opentrader/processing";
 import type {
   OrderWithSmartTrade,
   ExchangeAccountWithCredentials,
@@ -50,8 +50,6 @@ export class ExchangeAccountsWatcher {
     logger.info(
       `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
     );
-    const smartTrade = await SmartTradeExecutor.fromId(order.id);
-    await smartTrade.next();
 
     const bot = await BotProcessing.fromSmartTradeId(order.smartTrade.id);
 
