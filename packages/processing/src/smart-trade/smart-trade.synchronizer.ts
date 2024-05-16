@@ -93,7 +93,9 @@ export class SmartTradeSynchronizer {
 
   private async syncOrder(order: OrderEntity, params: SyncParams) {
     const { onFilled, onCanceled } = params;
-    console.log(`SmartTradeSynchronizer: Syncing order (id: ${order.id}) status with the exchange`);
+    console.log(
+      `SmartTradeSynchronizer: Syncing order (id: ${order.id}) status with the exchange`,
+    );
 
     if (!order.exchangeOrderId) {
       throw new Error("Order: Missing `exchangeOrderId`");

@@ -11,5 +11,5 @@ export interface ISmartTradeExecutor {
    */
   cancelOrders: () => Promise<number>;
 
-  get status(): "Entering" | "Exiting" | "Finished"
+  get status(): "Entering" | "Exiting" | "Finished";
 }

@@ -12,4 +12,4 @@ export type BuyPayload = {
 
 export function buy(payload: BuyPayload, ref = "0") {
   return makeEffect(BUY, payload, ref);
-};
+}
