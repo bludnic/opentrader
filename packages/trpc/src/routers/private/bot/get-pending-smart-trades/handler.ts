@@ -14,6 +14,8 @@ export async function getPendingSmartTrades({ ctx, input }: Options) {
   const smartTrades = await xprisma.smartTrade.findMany({
     where: {
       type: "Trade",
+      entryType: "Order",
+      takeProfitType: "Order",
       owner: {
         id: ctx.user.id,
       },
