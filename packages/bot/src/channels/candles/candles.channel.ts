@@ -63,11 +63,12 @@ export class CandlesChannel extends EventEmitter {
     }
 
     aggregator = new CandlesAggregator(timeframe, watcher);
-    aggregator.on("candle", (candle: ICandlestick) => {
+    aggregator.on("candle", (candle: ICandlestick, history: ICandlestick[]) => {
       const candleEvent: CandleEvent = {
         symbol,
         timeframe,
         candle,
+        history,
       };
 
       this.emit("candle", candleEvent);

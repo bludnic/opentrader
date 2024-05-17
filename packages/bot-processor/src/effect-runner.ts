@@ -12,6 +12,8 @@ import type {
   cancelSmartTrade,
   createSmartTrade,
   replaceSmartTrade,
+  useMarket,
+  useCandle,
 } from "./effects";
 import {
   BUY,
@@ -24,6 +26,8 @@ import {
   USE_INDICATORS,
   USE_SMART_TRADE,
   USE_TRADE,
+  USE_MARKET,
+  USE_CANDLE,
 } from "./effects";
 
 export const effectRunnerMap: Record<
@@ -42,6 +46,8 @@ export const effectRunnerMap: Record<
   [USE_INDICATORS]: () => {
     throw new Error("useIndicators() hook is deprecated");
   },
+  [USE_MARKET]: runUseMarketEffect,
+  [USE_CANDLE]: runUseCandleEffect,
 };
 
 async function runUseSmartTradeEffect(
@@ -192,4 +198,24 @@ async function runUseExchangeEffect(
   }
 
   return ctx.exchange;
+}
+
+async function runUseMarketEffect(
+  _effect: ReturnType<typeof useMarket>,
+  ctx: TBotContext<any>,
+) {
+  return ctx.market;
+}
+
+async function runUseCandleEffect(
+  effect: ReturnType<typeof useCandle>,
+  ctx: TBotContext<any>,
+) {
+  const index = effect.payload;
+
+  if (index >= 0) {
+    return ctx.market.candles[index];
+  }
+
+  return ctx.market.candles[ctx.market.candles.length + index];
 }

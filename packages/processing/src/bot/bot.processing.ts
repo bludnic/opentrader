@@ -1,4 +1,4 @@
-import type { IBotConfiguration } from "@opentrader/bot-processor";
+import type { IBotConfiguration, MarketData } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
@@ -69,8 +69,13 @@ export class BotProcessing {
     });
   }
 
-  async processCommand(command: "start" | "stop" | "process") {
-    console.log(`🤖 Bot #${this.bot.id} command=${command}`);
+  async processCommand(
+    command: "start" | "stop" | "process",
+    market?: MarketData,
+  ) {
+    console.log(
+      `🤖 Bot #${this.bot.id} command=${command} candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length} start`,
+    );
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -87,7 +92,7 @@ export class BotProcessing {
       } else if (command === "stop") {
         await processor.stop();
       } else if (command === "process") {
-        await processor.process();
+        await processor.process(market);
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);
@@ -107,8 +112,8 @@ export class BotProcessing {
     await this.processCommand("stop");
   }
 
-  async process() {
-    await this.processCommand("process");
+  async process(market?: MarketData) {
+    await this.processCommand("process", market);
   }
 
   isBotRunning() {

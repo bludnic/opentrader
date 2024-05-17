@@ -57,7 +57,10 @@ export class Backtesting<T extends IBotConfiguration<T>> {
         // last candle
         await this.processor.stop();
       } else {
-        await this.processor.process();
+        await this.processor.process({
+          candle,
+          candles: candlesticks.slice(0, index + 1),
+        });
       }
 
       const anyOrderPlaced = this.marketSimulator.placeOrders();

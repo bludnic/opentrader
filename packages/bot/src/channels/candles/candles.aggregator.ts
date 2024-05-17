@@ -8,7 +8,7 @@ import type { CandlesWatcher } from "./candles.watcher";
  * Aggregates 1m candles to higher timeframes.
  *
  * Emits:
- * - candle: `ICandlestick`
+ * - candle(lastCandle: `ICandlestick`, candlesHistory: ICandlestick[]): void
  */
 export class CandlesAggregator extends EventEmitter {
   public timeframe: BarSize;
@@ -21,6 +21,10 @@ export class CandlesAggregator extends EventEmitter {
    * Storing 1m candles for further aggregation.
    */
   private bucket: ICandlestick[] = [];
+  /**
+   * Pushing aggregated candles to history.
+   */
+  private candlesHistory: ICandlestick[] = [];
   private candlesWatcher: CandlesWatcher;
 
   constructor(timeframe: BarSize, candlesWatcher: CandlesWatcher) {
@@ -39,12 +43,13 @@ export class CandlesAggregator extends EventEmitter {
           `Bucket length of ${this.symbol} reached ${this.bucket.length}/${this.bucketSize}. Aggregating ${this.timeframe} bucket`,
         );
         const candle = this.aggregate();
+        this.candlesHistory.push(candle);
 
         logger.info(
           candle,
           `Aggregated ${this.symbol} ${this.bucketSize}m candles to ${this.timeframe}: O: ${candle.open}, H: ${candle.high}, L: ${candle.low}, C: ${candle.close} at ${new Date(candle.timestamp).toISOString()}`,
         );
-        this.emit("candle", candle);
+        this.emit("candle", candle, this.candlesHistory);
 
         return;
       }

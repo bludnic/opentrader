@@ -7,6 +7,7 @@ import type {
   IBotConfiguration,
   IBotControl,
   IStore,
+  MarketData,
   TBotContext,
 } from "./types";
 import { createContext } from "./utils/createContext";
@@ -41,12 +42,13 @@ export class StrategyRunner<T extends IBotConfiguration> {
     await this.runTemplate(context);
   }
 
-  async process() {
+  async process(market?: MarketData) {
     const context = createContext(
       this.control,
       this.botConfig,
       this.exchange,
       "process",
+      market,
     );
 
     await this.runTemplate(context);
