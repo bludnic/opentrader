@@ -45,7 +45,7 @@ export async function runTrading(
       `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
     );
     await stopBot(bot.id);
-    logger.info(`The bot state were cleared`);
+    logger.info(`The bot state was cleared`);
   }
 
   if (bot.processing) {

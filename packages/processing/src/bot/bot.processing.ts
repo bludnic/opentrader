@@ -74,7 +74,7 @@ export class BotProcessing {
     market?: MarketData,
   ) {
     console.log(
-      `🤖 Bot #${this.bot.id} command=${command} candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length} start`,
+      `🤖 Processing "${command}" command. Context { candle=${JSON.stringify(market?.candle)}, candlesHistory=${market?.candles.length || 0} }. Bot { id: ${this.bot.id}, name: ${this.bot.name} }`,
     );
     if (this.isBotProcessing()) {
       console.warn(
@@ -101,7 +101,9 @@ export class BotProcessing {
     }
 
     await xprisma.bot.setProcessing(false, this.bot.id);
-    console.log(`🤖 Bot #${this.bot.id} command=${command} finished`);
+    console.log(
+      `🤖 Processing "${command}" command finished. Bot { id: ${this.bot.id}, name: ${this.bot.name} }`,
+    );
   }
 
   async processStartCommand() {

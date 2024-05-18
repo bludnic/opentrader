@@ -16,10 +16,7 @@ export function handle<T extends any[], U>(
         logger.info(result);
       }
     } catch (error) {
-      console.error(
-        "Error:",
-        error instanceof Error ? error.message : "Unknown error",
-      );
+      console.error(error);
     }
   };
 }
