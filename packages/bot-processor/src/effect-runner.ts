@@ -1,3 +1,4 @@
+import { rsi } from "@opentrader/indicators";
 import { OrderSideEnum, OrderStatusEnum } from "@opentrader/types";
 import { TradeService, SmartTradeService } from "./types";
 import type { TBotContext } from "./types";
@@ -14,6 +15,7 @@ import type {
   replaceSmartTrade,
   useMarket,
   useCandle,
+  useRSI,
 } from "./effects";
 import {
   BUY,
@@ -28,6 +30,7 @@ import {
   USE_TRADE,
   USE_MARKET,
   USE_CANDLE,
+  USE_RSI_INDICATOR,
 } from "./effects";
 
 export const effectRunnerMap: Record<
@@ -48,6 +51,7 @@ export const effectRunnerMap: Record<
   },
   [USE_MARKET]: runUseMarketEffect,
   [USE_CANDLE]: runUseCandleEffect,
+  [USE_RSI_INDICATOR]: runUseRsiIndicatorEffect,
 };
 
 async function runUseSmartTradeEffect(
@@ -218,4 +222,22 @@ async function runUseCandleEffect(
   }
 
   return ctx.market.candles[ctx.market.candles.length + index];
+}
+
+async function runUseRsiIndicatorEffect(
+  effect: ReturnType<typeof useRSI>,
+  ctx: TBotContext<any>,
+): Promise<number> {
+  if (ctx.market.candles.length === 0) {
+    console.warn(
+      "[UseRSI] Candles are empty. Skipping RSI calculation. Returned NaN.",
+    );
+
+    return NaN;
+  }
+
+  const periods = effect.payload;
+  const rsiValues = await rsi({ periods }, ctx.market.candles);
+
+  return rsiValues[rsiValues.length - 1];
 }

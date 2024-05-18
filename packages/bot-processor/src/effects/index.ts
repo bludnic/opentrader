@@ -7,3 +7,4 @@ export * from "./useExchange";
 export * from "./useIndicators";
 export * from "./useTrade";
 export * from "./market";
+export * from "./indicators";

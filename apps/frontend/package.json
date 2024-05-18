@@ -19,7 +19,6 @@
     "@mui/base": "5.0.0-beta.40",
     "@mui/icons-material": "^5.15.17",
     "@mui/joy": "5.0.0-beta.36",
-    "@opentrader/backtesting": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "@opentrader/trpc": "workspace:*",
