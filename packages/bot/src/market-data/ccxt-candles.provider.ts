@@ -77,7 +77,7 @@ export class CCXTCandlesProvider
 
     this.on("start", () => {
       console.log(
-        "CandleProvider: Start fetching candles from",
+        `CandleProvider: Start fetching ${this.symbol} candles from`,
         this.startDate,
         "to",
         this.endDate,
