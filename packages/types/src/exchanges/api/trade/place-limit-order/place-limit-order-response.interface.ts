@@ -6,5 +6,5 @@ export interface IPlaceLimitOrderResponse {
   /**
    * Client-supplied order ID
    */
-  clientOrderId: string;
+  clientOrderId?: string;
 }

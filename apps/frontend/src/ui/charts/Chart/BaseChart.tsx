@@ -26,11 +26,11 @@ function normalizeCandle(candle: OHLCV) {
   const [timestamp, open, high, low, close] = candle;
 
   return {
-    time: (new Date(timestamp).getTime() / 1000) as UTCTimestamp,
-    open,
-    high,
-    low,
-    close,
+    time: (new Date(timestamp!).getTime() / 1000) as UTCTimestamp,
+    open: open!,
+    high: high!,
+    low: low!,
+    close: close!,
   };
 }
 

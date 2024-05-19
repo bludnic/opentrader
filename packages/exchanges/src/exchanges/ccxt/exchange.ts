@@ -175,7 +175,7 @@ export class CCXTExchange implements IExchange {
     const markets = await this.loadMarkets();
 
     const spotMarkets = Object.entries(markets)
-      .filter(([_currency, market]) => market.type === type)
+      .filter(([_currency, market]) => market?.type === type)
       .reduce<Dictionary<Market>>((acc, [currency, market]) => {
         return {
           ...acc,

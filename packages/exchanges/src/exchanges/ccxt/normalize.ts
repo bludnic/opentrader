@@ -24,7 +24,7 @@ const getLimitOrder: Normalize["getLimitOrder"] = {
     price: order.price,
     filledPrice: order.average || null,
     status: normalizeOrderStatus(order),
-    fee: order.fee.cost,
+    fee: order.fee?.cost || 0,
     createdAt: order.timestamp,
     lastTradeTimestamp: order.lastTradeTimestamp,
   }),
@@ -80,7 +80,7 @@ const getOpenOrders: Normalize["getOpenOrders"] = {
       price: order.price,
       filledPrice: null,
       status: normalizeOrderStatus(order),
-      fee: order.fee.cost,
+      fee: order.fee?.cost || 0,
       createdAt: order.timestamp,
       lastTradeTimestamp: order.lastTradeTimestamp,
     })),
@@ -97,7 +97,7 @@ const getClosedOrders: Normalize["getClosedOrders"] = {
       price: order.price,
       filledPrice: order.average || order.price, // assume that filled order must always contain `order.average`
       status: normalizeOrderStatus(order),
-      fee: order.fee.cost,
+      fee: order.fee?.cost || 0,
       createdAt: order.timestamp,
       lastTradeTimestamp: order.lastTradeTimestamp,
     })),
@@ -107,8 +107,8 @@ const getMarketPrice: Normalize["getMarketPrice"] = {
   request: (params) => [params.symbol],
   response: (ticker) => ({
     symbol: ticker.symbol,
-    price: ticker.last || ticker.bid || ticker.ask,
-    timestamp: ticker.timestamp,
+    price: ticker.last! || ticker.bid! || ticker.ask!,
+    timestamp: ticker.timestamp!,
   }),
 };
 
@@ -116,36 +116,36 @@ const getCandlesticks: Normalize["getCandlesticks"] = {
   request: (params) => [params.symbol, params.bar, params.since, params.limit],
   response: (candlesticks) =>
     candlesticks.map((candlestick) => ({
-      timestamp: candlestick[0],
-      open: candlestick[1],
-      high: candlestick[2],
-      low: candlestick[3],
-      close: candlestick[4],
+      timestamp: candlestick[0]!,
+      open: candlestick[1]!,
+      high: candlestick[2]!,
+      low: candlestick[3]!,
+      close: candlestick[4]!,
     })),
 };
 
 const getSymbol: Normalize["getSymbol"] = {
   request: (params) => [params.currencyPair],
   response: (market) => ({
-    symbolId: composeSymbolIdFromPair(ExchangeCode.OKX, market.symbol),
-    currencyPair: market.symbol,
+    symbolId: composeSymbolIdFromPair(ExchangeCode.OKX, market!.symbol),
+    currencyPair: market!.symbol,
     exchangeCode: ExchangeCode.OKX,
-    exchangeSymbolId: market.id,
+    exchangeSymbolId: market!.id,
 
-    baseCurrency: market.base,
-    quoteCurrency: market.quote,
+    baseCurrency: market!.base,
+    quoteCurrency: market!.quote,
 
     filters: {
-      precision: market.precision,
+      precision: market!.precision,
       decimals: {
-        amount: market.precision.amount
-          ? getExponentAbs(market.precision.amount)
+        amount: market!.precision.amount
+          ? getExponentAbs(market!.precision.amount)
           : undefined,
-        price: market.precision.price
-          ? getExponentAbs(market.precision.price)
+        price: market!.precision.price
+          ? getExponentAbs(market!.precision.price)
           : undefined,
       },
-      limits: market.limits,
+      limits: market!.limits,
     },
   }),
 };
@@ -168,7 +168,7 @@ const watchOrders: Normalize["watchOrders"] = {
       price: order.price,
       filledPrice: order.average || null,
       status: normalizeOrderStatus(order),
-      fee: order.fee.cost,
+      fee: order.fee?.cost || 0,
       createdAt: order.timestamp,
       lastTradeTimestamp: order.lastTradeTimestamp,
     })),
@@ -178,12 +178,12 @@ const watchCandles: Normalize["watchCandles"] = {
   request: (params) => [params.symbol],
   response: (ohlcv) =>
     ohlcv.map((order) => ({
-      timestamp: order[0],
-      open: order[1],
-      high: order[2],
-      low: order[3],
-      close: order[4],
-      volume: order[5],
+      timestamp: order[0]!,
+      open: order[1]!,
+      high: order[2]!,
+      low: order[3]!,
+      close: order[4]!,
+      volume: order[5]!,
     })),
 };
 

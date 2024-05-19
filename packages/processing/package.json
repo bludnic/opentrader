@@ -30,6 +30,6 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@prisma/client": "5.13.0",
-    "ccxt": "4.1.48"
+    "ccxt": "4.3.27"
   }
 }

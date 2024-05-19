@@ -26,6 +26,6 @@ export function logCandle(message: string, candle: OHLCV) {
     volume,
     "timestamp",
     timestamp,
-    new Date(timestamp).toISOString(),
+    new Date(timestamp!).toISOString(),
   );
 }
