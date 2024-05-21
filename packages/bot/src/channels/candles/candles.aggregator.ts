@@ -59,17 +59,12 @@ export class CandlesAggregator extends EventEmitter {
       this.candlesHistory.push(candle);
 
       logger.info(
-        candle,
         `[${this.symbol}#${this.timeframe}] Aggregated candle: O: ${candle.open}, H: ${candle.high}, L: ${candle.low}, C: ${candle.close} at ${new Date(candle.timestamp).toISOString()}`,
       );
       this.emit("candle", candle, this.candlesHistory);
 
       return;
     }
-
-    logger.info(
-      `[${this.symbol}#${this.timeframe}] Bucket length is ${this.bucket.length}/${this.bucketSize}`,
-    );
 
     const lastCandle = this.bucket[this.bucket.length - 1];
     if (candle.timestamp < lastCandle?.timestamp) {
@@ -82,7 +77,7 @@ export class CandlesAggregator extends EventEmitter {
 
     if (candle.timestamp === lastCandle?.timestamp) {
       logger.info(
-        `[${this.symbol}#${this.timeframe}] Updated OHLCV of ${new Date(candle.timestamp).toISOString()} candle`,
+        `[${this.symbol}#${this.timeframe}] Updated OHLCV of ${new Date(candle.timestamp).toISOString()} candle. Bucket length is ${this.bucket.length}/${this.bucketSize}`,
       );
       lastCandle.open = candle.open;
       lastCandle.high = Math.max(candle.high, lastCandle.high);
@@ -105,7 +100,7 @@ export class CandlesAggregator extends EventEmitter {
     const isFirstCandle = candle.timestamp % (this.bucketSize * 60000) === 0;
     if (this.bucket.length > 0 || isFirstCandle) {
       logger.info(
-        `[${this.symbol}#${this.timeframe}] Pushed ${this.symbol} ${isFirstCandle ? "first " : ""}candle ${new Date(candle.timestamp).toISOString()} to the bucket (length: ${this.bucket.length})`,
+        `[${this.symbol}#${this.timeframe}] Pushed ${isFirstCandle ? "first " : ""}candle ${new Date(candle.timestamp).toISOString()}. Bucket length is ${this.bucket.length}/${this.bucketSize}`,
       );
 
       this.bucket.push(candle);
