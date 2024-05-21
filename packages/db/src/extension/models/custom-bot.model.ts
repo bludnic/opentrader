@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import type { TBotSettings } from "../../types";
+import type { TBotSettings, TBotState } from "../../types";
 import { ZBotSettings } from "../../types";
 
 export const customBotModel = (prisma: PrismaClient) => ({
@@ -16,11 +16,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     if (!bot) return null;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findUnique<T extends Prisma.BotFindUniqueArgs>(
@@ -36,11 +37,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     if (!bot) return null;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findUniqueOrThrow<T extends Prisma.BotFindUniqueOrThrowArgs>(
@@ -54,11 +56,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findFirstOrThrow<T extends Prisma.BotFindFirstOrThrowArgs>(
@@ -72,11 +75,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findMany<T extends Prisma.BotFindManyArgs>(
@@ -91,11 +95,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
 
     return bots.map((bot) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-      const { settings, ...rest } = bot;
+      const { settings, state, ...rest } = bot;
 
       return {
         ...rest,
         settings: bot.settings as unknown as TBotSettings,
+        state: bot.state as unknown as TBotState,
       };
     });
   },
@@ -114,11 +119,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async update<T extends Prisma.BotUpdateArgs>(
@@ -139,11 +145,12 @@ export const customBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async setProcessing(value: boolean, botId: number) {

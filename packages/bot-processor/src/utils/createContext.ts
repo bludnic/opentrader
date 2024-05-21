@@ -1,5 +1,6 @@
 import type { IExchange } from "@opentrader/exchanges";
 import type {
+  BotState,
   IBotConfiguration,
   IBotControl,
   MarketData,
@@ -11,6 +12,7 @@ export function createContext<T extends IBotConfiguration>(
   config: T,
   exchange: IExchange,
   command: "start" | "stop" | "process", // @todo add type in file
+  state: BotState,
   market: MarketData = {
     candles: [],
   },
@@ -23,6 +25,7 @@ export function createContext<T extends IBotConfiguration>(
     onStart: command === "start",
     onStop: command === "stop",
     onProcess: command === "process",
+    state,
     market,
   };
 }

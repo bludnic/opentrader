@@ -1,4 +1,5 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
+import type { TBotState } from "../../types";
 import type { TGridBotSettings } from "../../types/grid-bot";
 import { ZGridBotSettings } from "../../types/grid-bot";
 
@@ -17,11 +18,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
     if (!bot) return null;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findUniqueOrThrow<T extends Prisma.BotFindUniqueOrThrowArgs>(
@@ -36,11 +38,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findFirstOrThrow<T extends Prisma.BotFindFirstOrThrowArgs>(
@@ -55,11 +58,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async findMany<T extends Prisma.BotFindManyArgs>(
@@ -75,11 +79,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
 
     return bots.map((bot) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-      const { settings, ...rest } = bot;
+      const { settings, state, ...rest } = bot;
 
       return {
         ...rest,
         settings: bot.settings as unknown as TGridBotSettings,
+        state: bot.state as unknown as TBotState,
       };
     });
   },
@@ -99,11 +104,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
   async update<T extends Prisma.BotUpdateArgs>(
@@ -125,11 +131,12 @@ export const gridBotModel = (prisma: PrismaClient) => ({
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required to destruct
-    const { settings, ...rest } = bot;
+    const { settings, state, ...rest } = bot;
 
     return {
       ...rest,
       settings: bot.settings as unknown as TGridBotSettings,
+      state: bot.state as unknown as TBotState,
     };
   },
 });

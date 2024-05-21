@@ -188,6 +188,7 @@ async function createOrUpdateBot<T = any>(
         baseCurrency,
         quoteCurrency,
         settings: botConfig.settings as object,
+        state: {}, // resets bot state
         exchangeAccount: {
           connect: {
             id: exchangeAccount.id,

@@ -2,6 +2,7 @@ import type { IExchange } from "@opentrader/exchanges";
 import type { MarketData } from "../market";
 import type { IBotControl } from "./bot-control.interface";
 import type { IBotConfiguration } from "./bot-configuration.interface";
+import type { BotState } from "./bot.state";
 
 export type TBotContext<T extends IBotConfiguration> = {
   /**
@@ -16,6 +17,10 @@ export type TBotContext<T extends IBotConfiguration> = {
    * Bot configuration
    */
   config: T;
+  /**
+   * Bot's state
+   */
+  state: BotState;
   /**
    * Event
    */

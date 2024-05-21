@@ -1,4 +1,8 @@
-import type { IBotConfiguration, MarketData } from "@opentrader/bot-processor";
+import type {
+  BotState,
+  IBotConfiguration,
+  MarketData,
+} from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
@@ -84,15 +88,16 @@ export class BotProcessing {
     }
 
     const processor = await this.getProcessor();
+    const botState = this.bot.state as BotState;
 
     await xprisma.bot.setProcessing(true, this.bot.id);
     try {
       if (command === "start") {
-        await processor.start();
+        await processor.start(botState);
       } else if (command === "stop") {
-        await processor.stop();
+        await processor.stop(botState);
       } else if (command === "process") {
-        await processor.process(market);
+        await processor.process(botState, market);
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);
@@ -101,6 +106,7 @@ export class BotProcessing {
     }
 
     await xprisma.bot.setProcessing(false, this.bot.id);
+    await xprisma.bot.updateState(botState, this.bot.id);
     console.log(
       `🤖 Processing "${command}" command finished. Bot { id: ${this.bot.id}, name: ${this.bot.name} }`,
     );

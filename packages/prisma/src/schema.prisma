@@ -193,6 +193,7 @@ model Bot {
   createdAt DateTime @default(now())
 
   settings Json // @todo gridLines
+  state    Json @default("{}")
 
   smartTrades SmartTrade[]
 

@@ -3,6 +3,7 @@ import { BotControl } from "./bot-control";
 import { effectRunnerMap } from "./effect-runner";
 import { isEffect } from "./effects";
 import type {
+  BotState,
   BotTemplate,
   IBotConfiguration,
   IBotControl,
@@ -20,34 +21,37 @@ export class StrategyRunner<T extends IBotConfiguration> {
     private botTemplate: BotTemplate<T>,
   ) {}
 
-  async start() {
+  async start(state: BotState) {
     const context = createContext(
       this.control,
       this.botConfig,
       this.exchange,
       "start",
+      state,
     );
 
     await this.runTemplate(context);
   }
 
-  async stop() {
+  async stop(state: BotState) {
     const context = createContext(
       this.control,
       this.botConfig,
       this.exchange,
       "stop",
+      state,
     );
 
     await this.runTemplate(context);
   }
 
-  async process(market?: MarketData) {
+  async process(state: BotState, market?: MarketData) {
     const context = createContext(
       this.control,
       this.botConfig,
       this.exchange,
       "process",
+      state,
       market,
     );
 

@@ -51,13 +51,14 @@ export class Backtesting<T extends IBotConfiguration<T>> {
         console.table(fulfilledTable(this.store.getSmartTrades()));
       }
 
+      const botState = {};
       if (index === 0) {
-        await this.processor.start();
+        await this.processor.start(botState);
       } else if (index === candlesticks.length - 1) {
         // last candle
-        await this.processor.stop();
+        await this.processor.stop(botState);
       } else {
-        await this.processor.process({
+        await this.processor.process(botState, {
           candle,
           candles: candlesticks.slice(0, index + 1),
         });
