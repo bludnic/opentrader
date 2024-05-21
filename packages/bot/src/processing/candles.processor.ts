@@ -4,6 +4,7 @@ import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import type { BarSize } from "@opentrader/types";
+import { findTemplate } from "@opentrader/bot-templates";
 import type { CandleEvent } from "../channels";
 import { CandlesChannel } from "../channels";
 
@@ -54,7 +55,12 @@ export class CandlesProcessor {
         continue;
       }
 
-      channel.add(symbol, bot.timeframe as BarSize);
+      const template = findTemplate(bot.template);
+      await channel.add(
+        symbol,
+        bot.timeframe as BarSize,
+        template.requiredHistory,
+      );
     }
   }
 

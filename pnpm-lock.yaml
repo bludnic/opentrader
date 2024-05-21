@@ -323,6 +323,9 @@ importers:
 
   packages/bot:
     dependencies:
+      '@opentrader/bot-templates':
+        specifier: workspace:*
+        version: link:../bot-templates
       '@opentrader/db':
         specifier: workspace:*
         version: link:../db

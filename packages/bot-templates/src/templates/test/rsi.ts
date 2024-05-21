@@ -24,3 +24,6 @@ export function* testRsi(ctx: TBotContext<any>) {
     logger.info(`[TestRsi] RSI is in no trend. Do nothing.`);
   }
 }
+
+testRsi.displayName = "Test RSI";
+testRsi.requiredHistory = 15;

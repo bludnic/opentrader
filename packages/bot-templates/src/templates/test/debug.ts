@@ -33,6 +33,12 @@ export function* debug(ctx: TBotContext<DebugStrategyConfig>) {
   }
 
   logger.info(`[DebugStrategy] Run bot template`);
+  logger.info(
+    ctx.market.candles.map((candle) =>
+      new Date(candle.timestamp).toISOString(),
+    ),
+    `[DebugStrategy] Candles`,
+  );
 
   logger.info(`[DebugStrategy] Bot template executed successfully`);
 }
@@ -41,6 +47,7 @@ debug.displayName = "Debug Strategy";
 debug.schema = z.object({
   fetchSymbols: z.boolean().optional(),
 });
+debug.requiredHistory = 15;
 
 export type DebugStrategyConfig = IBotConfiguration<
   z.infer<typeof debug.schema>
