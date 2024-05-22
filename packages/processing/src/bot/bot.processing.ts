@@ -77,9 +77,12 @@ export class BotProcessing {
     command: "start" | "stop" | "process",
     market?: MarketData,
   ) {
-    console.log(
-      `🤖 Processing "${command}" command. Context { candle=${JSON.stringify(market?.candle)}, candlesHistory=${market?.candles.length || 0} }. Bot { id: ${this.bot.id}, name: ${this.bot.name} }`,
-    );
+    console.log(`🤖 Exec "${command}" command`, {
+      context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0}`,
+      bot: `id=${this.bot.id} name="${this.bot.name}"`,
+    });
+    const t0 = Date.now();
+
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -107,9 +110,14 @@ export class BotProcessing {
 
     await xprisma.bot.setProcessing(false, this.bot.id);
     await xprisma.bot.updateState(botState, this.bot.id);
-    console.log(
-      `🤖 Processing "${command}" command finished. Bot { id: ${this.bot.id}, name: ${this.bot.name} }`,
-    );
+
+    const t1 = Date.now();
+    const duration = (t1 - t0) / 1000;
+
+    console.log(`🤖 Exec "${command}" command finished in ${duration}s`, {
+      botId: this.bot.id,
+      botName: this.bot.name,
+    });
   }
 
   async processStartCommand() {
@@ -193,7 +201,9 @@ export class BotProcessing {
       },
     });
 
-    logger.info(`BotProcessing: Found ${smartTrades.length} pending orders for placement`);
+    logger.info(
+      `BotProcessing: Found ${smartTrades.length} pending orders for placement`,
+    );
 
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
