@@ -175,9 +175,6 @@ export class BotProcessing {
   }
 
   async placePendingOrders() {
-    console.log(
-      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() start",
-    );
     const smartTrades = await xprisma.smartTrade.findMany({
       where: {
         type: "Trade",
@@ -196,7 +193,7 @@ export class BotProcessing {
       },
     });
 
-    logger.info(`Found ${smartTrades.length} pending orders for placement`);
+    logger.info(`BotProcessing: Found ${smartTrades.length} pending orders for placement`);
 
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
@@ -211,9 +208,5 @@ export class BotProcessing {
       );
       await smartTradeExecutor.next();
     }
-
-    console.log(
-      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() end",
-    );
   }
 }
