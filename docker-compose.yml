@@ -4,7 +4,7 @@ services:
   monolith:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: pro.Dockerfile
       args:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
         NEXT_PUBLIC_PROCESSOR_URL: http://localhost:5000
