@@ -205,10 +205,19 @@ async function runBuyEffect(
     };
   }
 
-  const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
+  let smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
     quantity: payload.quantity,
     buy,
   });
+
+  if (smartTrade.sell?.status === OrderStatusEnum.Filled) {
+    console.info("Trade replaced. Reason: Sell filled");
+
+    smartTrade = await ctx.control.createSmartTrade(ref, {
+      quantity: payload.quantity,
+      buy,
+    });
+  }
 
   return new TradeService(ref, smartTrade);
 }
