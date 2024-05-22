@@ -7,6 +7,7 @@ module.exports = {
     // ```ts
     // const result: SomeType = yield someEffect()
     // ```
-    '@typescript-eslint/no-unsafe-assignment': "off"
-  }
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+  },
 };
