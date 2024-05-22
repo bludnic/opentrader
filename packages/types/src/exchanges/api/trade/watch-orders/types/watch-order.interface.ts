@@ -37,5 +37,5 @@ export interface IWatchOrder {
   /**
    * Unix timestamp of the most recent trade on this order.
    */
-  lastTradeTimestamp: number;
+  lastTradeTimestamp?: number;
 }
