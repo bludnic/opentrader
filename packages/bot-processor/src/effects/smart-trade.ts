@@ -1,4 +1,4 @@
-import type { OrderStatusEnum } from "@opentrader/types";
+import type { OrderStatusEnum, OrderType } from "@opentrader/types";
 import type { SmartTrade } from "../types";
 import {
   GET_SMART_TRADE,
@@ -12,23 +12,16 @@ import { makeEffect } from "./utils";
 // Default smart trade reference
 const DEFAULT_REF = "0";
 
-export type CreateSmartTradePayload = {
-  buy: {
-    price: number;
-  };
-  sell: {
-    price: number;
-  };
-  quantity: number;
-};
 export type UseSmartTradePayload = {
   buy: {
+    type: OrderType;
     status?: OrderStatusEnum; // default to Idle
-    price: number;
+    price?: number; // if undefined, then it's a market order
   };
   sell?: {
+    type: OrderType;
     status?: OrderStatusEnum; // default to Idle
-    price: number;
+    price?: number; // if undefined, then it's a market order
   };
   quantity: number;
 };
@@ -42,7 +35,7 @@ export function getSmartTrade(ref = DEFAULT_REF) {
 }
 
 export function createSmartTrade(
-  payload: CreateSmartTradePayload,
+  payload: UseSmartTradePayload,
   ref = DEFAULT_REF,
 ) {
   return makeEffect(CREATE_SMART_TRADE, payload, ref);

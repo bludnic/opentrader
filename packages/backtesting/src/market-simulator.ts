@@ -1,4 +1,8 @@
-import type { SmartTrade } from "@opentrader/bot-processor";
+import type {
+  LimitOrderFilled,
+  MarketOrderFilled,
+  SmartTrade,
+} from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { OrderStatusEnum } from "@opentrader/types";
 
@@ -100,33 +104,70 @@ export class MarketSimulator {
     const updatedAt = candlestick.timestamp;
 
     if (smartTrade.buy && smartTrade.buy.status === OrderStatusEnum.Placed) {
-      if (candlestick.close <= smartTrade.buy.price) {
-        smartTrade.buy = {
+      if (smartTrade.buy.type === "Market") {
+        const filledOrder: MarketOrderFilled = {
           ...smartTrade.buy,
           status: OrderStatusEnum.Filled,
+          filledPrice: candlestick.close,
           updatedAt,
         };
+        smartTrade.buy = filledOrder;
+
         console.log(
-          `[TestingDb] ST# ${smartTrade.id} buy order filled, updated at ${updatedAt}`,
+          `[TestingDb] ST# ${smartTrade.id} buy marked order filled with ${filledOrder.filledPrice}, updated at ${updatedAt}`,
         );
-        console.log(smartTrade);
+
         return true;
+      } else if (smartTrade.buy.type === "Limit") {
+        if (candlestick.close <= smartTrade.buy.price) {
+          const filledOrder: LimitOrderFilled = {
+            ...smartTrade.buy,
+            status: OrderStatusEnum.Filled,
+            filledPrice: smartTrade.buy.price,
+            updatedAt,
+          };
+          smartTrade.buy = filledOrder;
+
+          console.log(
+            `[TestingDb] ST# ${smartTrade.id} buy order filled, updated at ${updatedAt}`,
+          );
+          console.log(smartTrade);
+          return true;
+        }
       }
     }
 
     if (smartTrade.sell && smartTrade.sell.status === OrderStatusEnum.Placed) {
-      if (candlestick.close >= smartTrade.sell.price) {
-        smartTrade.sell = {
+      if (smartTrade.sell.type === "Market") {
+        const filledOrder: MarketOrderFilled = {
           ...smartTrade.sell,
           status: OrderStatusEnum.Filled,
+          filledPrice: candlestick.close,
           updatedAt,
         };
+        smartTrade.sell = filledOrder;
 
         console.log(
-          `[TestingDb] ST# ${smartTrade.id} sell order filled, updated at ${updatedAt}`,
+          `[TestingDb] ST# ${smartTrade.id} sell marked order filled with ${filledOrder.filledPrice}, updated at ${updatedAt}`,
         );
-        console.log(smartTrade);
         return true;
+      } else if (smartTrade.sell.type === "Limit") {
+        if (candlestick.close >= smartTrade.sell.price) {
+          const filledOrder: LimitOrderFilled = {
+            ...smartTrade.sell,
+            status: OrderStatusEnum.Filled,
+            filledPrice: smartTrade.sell.price,
+            updatedAt,
+          };
+
+          smartTrade.sell = filledOrder;
+
+          console.log(
+            `[TestingDb] ST# ${smartTrade.id} sell order filled, updated at ${updatedAt}`,
+          );
+          console.log(smartTrade);
+          return true;
+        }
       }
     }
 

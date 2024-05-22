@@ -43,6 +43,14 @@ const placeLimitOrder: Normalize["placeLimitOrder"] = {
   }),
 };
 
+const placeMarketOrder: Normalize["placeMarketOrder"] = {
+  request: (params) => [params.symbol, params.side, params.quantity],
+  response: (order) => ({
+    orderId: order.id,
+    clientOrderId: order.clientOrderId,
+  }),
+};
+
 const placeStopOrder: Normalize["placeStopOrder"] = {
   request: (params) => {
     const type = params.type === "limit" ? "limit" : "market";
@@ -191,6 +199,7 @@ export const normalize: Normalize = {
   accountAssets,
   getLimitOrder,
   placeLimitOrder,
+  placeMarketOrder,
   placeStopOrder,
   cancelLimitOrder,
   getOpenOrders,

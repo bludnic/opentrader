@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
-import type {
+import {
   IBotConfiguration,
   SmartTradeService,
   TBotContext,
@@ -45,10 +45,12 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
     const smartTrade: SmartTradeService = yield useSmartTrade(
       {
         buy: {
+          type: "Limit",
           price: grid.buy.price,
           status: grid.buy.status,
         },
         sell: {
+          type: "Limit",
           price: grid.sell.price,
           status: grid.sell.status,
         },

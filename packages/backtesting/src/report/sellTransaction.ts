@@ -12,12 +12,12 @@ export function sellTransaction(
     side: OrderSideEnum.Sell,
     quantity,
     buy: {
-      price: buy.price,
+      price: buy.filledPrice || buy.price || 0,
       fee: 0, // @todo fee
       updatedAt: buy.updatedAt,
     },
     sell: {
-      price: sell.price,
+      price: sell.filledPrice || sell.price || 0,
       fee: 0, // @todo fee
       updatedAt: sell.updatedAt,
     },

@@ -51,8 +51,6 @@ export class OrderExecutor {
         quantity: this.order.quantity,
       });
 
-      // Update status to Placed
-      // Save exchange orderId to DB
       await xprisma.order.update({
         where: {
           id: this.order.id,
@@ -67,10 +65,28 @@ export class OrderExecutor {
 
       return true;
     } else if (this.order.type === "Market") {
-      throw new Error("Market order is not supported yet");
-    }
+      const exchangeOrder = await this.exchange.placeMarketOrder({
+        symbol: this.symbol,
+        side: this.order.side === "Buy" ? "buy" : "sell",
+        quantity: this.order.quantity,
+      });
 
-    return false;
+      await xprisma.order.update({
+        where: {
+          id: this.order.id,
+        },
+        data: {
+          status: "Placed",
+          exchangeOrderId: exchangeOrder.orderId,
+          placedAt: new Date(), // maybe use Exchange time (if possible)
+        },
+      });
+      await this.pullOrder();
+
+      return true;
+    } else {
+      throw new Error(`Unsupported order type`);
+    }
   }
 
   /**

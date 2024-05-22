@@ -1,5 +1,5 @@
 import { rsi } from "@opentrader/indicators";
-import { OrderSideEnum, OrderStatusEnum } from "@opentrader/types";
+import { OrderStatusEnum, OrderType } from "@opentrader/types";
 import { TradeService, SmartTradeService } from "./types";
 import type { TBotContext } from "./types";
 import type { BaseEffect, EffectType } from "./effects/types";
@@ -112,19 +112,68 @@ async function runUseTradeEffect(
 ) {
   const { payload, ref } = effect;
 
+  let buy;
+  const sell =
+    payload.takeProfitType === OrderType.Market
+      ? {
+          type: OrderType.Market,
+          status: OrderStatusEnum.Idle,
+        }
+      : payload.tp
+        ? {
+            type: OrderType.Limit,
+            status: OrderStatusEnum.Idle,
+            price: payload.tp,
+          }
+        : undefined;
+
+  /**
+   * Side "sell" means that the base asset was bought the user directly on the exchange.
+   * So, the bot should only sell it.
+   * We need to create a smart trade with a buy order already filled.
+   * The bought "price" is mandatory, to calculate the profit after trade finished.
+   */
+  if (payload.side === "sell") {
+    if (!payload.price) {
+      throw new Error(`Bought "price" is required for sell only orders`);
+    }
+
+    buy = {
+      type: OrderType.Limit,
+      price: payload.price,
+      status: OrderStatusEnum.Filled,
+    };
+  } else {
+    // side == "buy"
+    const entryType = payload.entryType || OrderType.Limit;
+
+    switch (entryType) {
+      case "Limit":
+        if (!payload.price) {
+          throw new Error(`"price" is required for Limit entry order`);
+        }
+
+        buy = {
+          type: OrderType.Limit,
+          status: OrderStatusEnum.Idle,
+          price: payload.price,
+        };
+        break;
+      case "Market":
+        buy = {
+          type: OrderType.Market,
+          status: OrderStatusEnum.Idle,
+        };
+        break;
+      default:
+        throw new Error(`Invalid entry type: ${payload.entryType}`);
+    }
+  }
+
   const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
     quantity: payload.quantity,
-    buy: {
-      status:
-        payload.side === OrderSideEnum.Buy
-          ? OrderStatusEnum.Idle
-          : OrderStatusEnum.Filled,
-      price: payload.price!, // @todo type
-    },
-    sell: {
-      status: OrderStatusEnum.Idle,
-      price: effect.payload.tp!, // @todo type
-    },
+    buy,
+    sell,
   });
 
   return new SmartTradeService(effect.ref, smartTrade);
@@ -136,12 +185,29 @@ async function runBuyEffect(
 ) {
   const { payload, ref } = effect;
 
+  let buy;
+
+  if (payload.orderType === OrderType.Market) {
+    buy = {
+      type: OrderType.Market,
+      status: OrderStatusEnum.Idle,
+    };
+  } else {
+    // OrderType.Limit
+    if (!payload.price) {
+      throw new Error(`"price" is required for Limit buy orders`);
+    }
+
+    buy = {
+      type: OrderType.Limit,
+      status: OrderStatusEnum.Idle,
+      price: payload.price,
+    };
+  }
+
   const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
     quantity: payload.quantity,
-    buy: {
-      status: OrderStatusEnum.Idle,
-      price: payload.price!, // @todo type
-    },
+    buy,
   });
 
   return new TradeService(ref, smartTrade);
@@ -151,7 +217,9 @@ async function runSellEffect(
   effect: ReturnType<typeof sell>,
   ctx: TBotContext<any>,
 ) {
-  let smartTrade = await ctx.control.getSmartTrade(effect.ref);
+  const { payload, ref } = effect;
+
+  let smartTrade = await ctx.control.getSmartTrade(ref);
   if (!smartTrade) {
     console.info("Skip selling effect. Reason: Not bought before");
 
@@ -173,10 +241,15 @@ async function runSellEffect(
     return null;
   }
 
-  smartTrade = await ctx.control.updateSmartTrade(effect.ref, {
+  if (payload.orderType !== OrderType.Market && !payload.price) {
+    throw new Error(`"price" is required for Limit sell orders`);
+  }
+
+  smartTrade = await ctx.control.updateSmartTrade(ref, {
     sell: {
+      type: payload.orderType || OrderType.Limit,
       status: OrderStatusEnum.Idle,
-      price: effect.payload.price!, // @todo type
+      price: payload.price,
     },
   });
 

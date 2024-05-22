@@ -151,7 +151,7 @@ export class BotStoreAdapter implements IStore {
       await xprisma.order.create({
         data: {
           entityType: "TakeProfitOrder",
-          type: "Limit",
+          type: payload.sell.type,
           side: "Sell",
           price: payload.sell.price,
           quantity: entryOrder.quantity, // @todo multiply by 0.99 for safety amount
@@ -190,6 +190,7 @@ export class BotStoreAdapter implements IStore {
 
       return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
     } catch (err) {
+      console.log("An error occurred while updating SmartTrade", err);
       return null; // return null if smartTrade not found
     }
   }

@@ -3,8 +3,8 @@ import { BUY } from "./types";
 import { makeEffect } from "./utils";
 
 export type BuyPayload = {
-  exchange: ExchangeCode;
-  pair: string;
+  exchange?: ExchangeCode; // not implemented
+  pair?: string; // not implemented
   quantity: number;
   price?: number; // if not provided, a market order will be placed
   orderType?: "Limit" | "Market";

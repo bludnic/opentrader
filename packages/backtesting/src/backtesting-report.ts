@@ -52,7 +52,9 @@ export class BacktestingReport {
   private calcTotalProfit(): number {
     return this.smartTrades.reduce((acc, curr) => {
       const priceDiff =
-        curr.buy && curr.sell ? curr.sell.price - curr.buy.price : 0;
+        curr.buy.filledPrice && curr.sell?.filledPrice
+          ? curr.sell.filledPrice - curr.buy.filledPrice
+          : 0;
       const profit = priceDiff * curr.quantity;
 
       return acc + profit;

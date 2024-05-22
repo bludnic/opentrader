@@ -51,11 +51,13 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
   ): Promise<SmartTrade> {
     const payload: UseSmartTradePayload = {
       buy: {
+        type: smartTrade.buy.type,
         price: smartTrade.buy.price,
         status: OrderStatusEnum.Idle,
       },
       sell: smartTrade.sell
         ? {
+            type: smartTrade.sell.type,
             price: smartTrade.sell.price,
             status: OrderStatusEnum.Idle,
           }
