@@ -83,7 +83,6 @@ export class CandlesProcessor {
     logger.info(`CandlesProcessor: ${timeframe}. Found ${bots.length} bots`);
 
     for (const bot of bots) {
-      logger.info(`Exec bot #${bot.id} template`);
       const botProcessor = await BotProcessing.fromId(bot.id);
 
       if (botProcessor.isBotStopped()) {
@@ -96,8 +95,6 @@ export class CandlesProcessor {
         candles: history,
       });
       await botProcessor.placePendingOrders();
-
-      logger.info(`Exec bot #${bot.id} template done`);
     }
   }
 
