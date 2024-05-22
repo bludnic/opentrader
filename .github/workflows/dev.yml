@@ -27,6 +27,8 @@ jobs:
           --build-arg NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC=true
           --build-arg NEXT_PUBLIC_STATIC=true
           --build-arg ADMIN_PASSWORD=password
+          --build-arg GITHUB_TOKEN=${{ secrets.PRO_GITHUB_TOKEN }}
+          -f pro.Dockerfile
           -t opentrader/opentrader:latest .
 
       - name: Push Docker Image

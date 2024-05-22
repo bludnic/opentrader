@@ -1,8 +1,11 @@
+# PRO version of OpenTrader
+# You must have access to the private repository to build this image
+# https://github.com/bludnic/opentrader-pro
 FROM node:18-alpine AS base
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat git
 RUN apk update
 # Install pnpm
 ENV PNPM_HOME="/pnpm"
@@ -12,6 +15,15 @@ RUN corepack enable
 WORKDIR /app
 RUN pnpm add turbo -g
 COPY . .
+# Install opentrader-pro git submodule
+# Configure Git to use the token for GitHub
+ARG GITHUB_TOKEN
+RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+RUN rm -rf pro
+RUN git clone https://github.com/bludnic/opentrader-pro.git pro
+
+# Lockfile is required to prune. This will override the param from .npmrc
+RUN pnpm install --lockfile
 RUN turbo prune --scope=processor --scope=frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
@@ -33,7 +45,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Copy Prisma Schema as it is not included in `/json` dir
 COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
-RUN pnpm install --offline
+RUN pnpm install --prefer-offline
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .

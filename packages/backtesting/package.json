@@ -18,7 +18,7 @@
     "@types/lodash": "^4.17.1",
     "@types/node": "^20.12.11",
     "eslint": "8.54.0",
-    "typescript": "^5.2.2"
+    "typescript": "5.2.2"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
