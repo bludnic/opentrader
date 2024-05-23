@@ -25,6 +25,7 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "table": "^6.8.2"
   }
 }

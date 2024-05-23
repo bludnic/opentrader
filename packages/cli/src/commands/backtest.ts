@@ -12,12 +12,12 @@ export function addBacktestCommand(program: Command) {
     .description("Backtesting a strategy")
     .addArgument(new Argument("<strategy>", "Strategy name"))
     .addOption(
-      new Option("-f, --from <from>", "Start date")
+      new Option("--from <from>", "Start date")
         .argParser((dateISO) => new Date(dateISO))
         .default(new Date("2024-01-01")),
     )
     .addOption(
-      new Option("-t, --to <to>", "End date")
+      new Option("--to <to>", "End date")
         .argParser((dateISO) => new Date(dateISO))
         .default(new Date("2024-01-07")),
     )
@@ -25,7 +25,7 @@ export function addBacktestCommand(program: Command) {
       new Option("-p, --pair <pair>", "Trading pair").argParser(validatePair),
     )
     .addOption(
-      new Option("-b, --timeframe <timeframe>", "Timeframe").default("1h"),
+      new Option("-t, --timeframe <timeframe>", "Timeframe").default("1h"),
     )
     .addOption(
       new Option("-c, --config <config>", "Config file").default(

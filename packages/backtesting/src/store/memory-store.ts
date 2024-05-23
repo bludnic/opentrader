@@ -256,10 +256,14 @@ export class MemoryStore implements IStore {
       }
     }
 
-    return {
+    const newSmartTrade: SmartTrade = {
       ...smartTrade,
       sell: order,
     };
+
+    this.marketSimulator.editSmartTrade(newSmartTrade, ref);
+
+    return newSmartTrade;
   }
 
   async cancelSmartTrade(_ref: string, _botId: number): Promise<boolean> {

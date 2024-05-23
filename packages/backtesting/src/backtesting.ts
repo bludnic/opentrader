@@ -2,6 +2,7 @@ import type {
   IBotConfiguration,
   StrategyRunner,
   BotTemplate,
+  BotState,
 } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
@@ -18,6 +19,9 @@ export class Backtesting<T extends IBotConfiguration<T>> {
   private store: MemoryStore;
   private exchange: MemoryExchange;
   private processor: StrategyRunner<T>;
+  private botState: BotState = {};
+  private botTemplate: BotTemplate<T>;
+  private botConfig: T;
 
   constructor(options: { botConfig: T; botTemplate: BotTemplate<T> }) {
     const { botConfig, botTemplate } = options;
@@ -25,6 +29,8 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     this.marketSimulator = new MarketSimulator();
     this.store = new MemoryStore(this.marketSimulator);
     this.exchange = new MemoryExchange(this.marketSimulator);
+    this.botTemplate = botTemplate;
+    this.botConfig = botConfig;
 
     this.processor = createStrategyRunner({
       store: this.store,
@@ -34,7 +40,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     });
   }
 
-  async run(candlesticks: ICandlestick[]): Promise<ReportResult> {
+  async run(candlesticks: ICandlestick[]): Promise<string> {
     for (const [index, candle] of candlesticks.entries()) {
       this.marketSimulator.nextCandle(candle);
 
@@ -46,33 +52,35 @@ export class Backtesting<T extends IBotConfiguration<T>> {
 
       const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
 
-      if (anyOrderFulfilled) {
-        console.log("Fulfilled Table");
-        console.table(fulfilledTable(this.store.getSmartTrades()));
-      }
+      // if (anyOrderFulfilled) {
+      //   console.log("Fulfilled Table");
+      //   console.table(fulfilledTable(this.store.getSmartTrades()));
+      // }
 
-      const botState = {};
       if (index === 0) {
-        await this.processor.start(botState);
+        await this.processor.start(this.botState);
       } else if (index === candlesticks.length - 1) {
         // last candle
-        await this.processor.stop(botState);
+        await this.processor.stop(this.botState);
       } else {
-        await this.processor.process(botState, {
+        await this.processor.process(this.botState, {
           candle,
           candles: candlesticks.slice(0, index + 1),
         });
       }
 
       const anyOrderPlaced = this.marketSimulator.placeOrders();
-      if (anyOrderPlaced) {
-        console.log("Placed Table");
-        console.table(gridTable(this.store.getSmartTrades()));
-      }
+      // if (anyOrderPlaced) {
+      //   console.log("Placed Table");
+      //   console.table(gridTable(this.store.getSmartTrades()));
+      // }
     }
 
     const report = new BacktestingReport(
+      candlesticks,
       this.marketSimulator.smartTrades,
+      this.botConfig,
+      this.botTemplate,
     ).create();
 
     return report;

@@ -12,9 +12,11 @@ import {
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
 import type { IGetMarketPriceResponse } from "@opentrader/types";
+import { logger } from "@opentrader/logger";
 
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   const { config: bot, onStart, onStop } = ctx;
+  const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
 
   const exchange: IExchange = yield useExchange();
 
@@ -25,7 +27,9 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
         symbol: `${bot.baseCurrency}/${bot.quoteCurrency}`,
       });
     price = markPrice;
-    console.log(`[GridBotTemple] Bot started [markPrice: ${price}]`);
+    logger.info(
+      `[Grid] Bot strategy started on ${symbol} pair. Current price is ${price} ${bot.quoteCurrency}`,
+    );
   }
 
   const gridLevels = computeGridLevelsFromCurrentAssetPrice(

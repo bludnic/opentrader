@@ -5,6 +5,7 @@ import type {
 } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { OrderStatusEnum } from "@opentrader/types";
+import { format, logger } from "@opentrader/logger";
 
 export class MarketSimulator {
   /**
@@ -40,6 +41,16 @@ export class MarketSimulator {
     });
 
     this.smartTrades.push(smartTrade);
+  }
+
+  editSmartTrade(newSmartTrade: SmartTrade, ref: string) {
+    this.smartTrades = this.smartTrades.map((smartTrade) => {
+      if (smartTrade.ref === ref) {
+        return newSmartTrade;
+      }
+
+      return smartTrade;
+    });
   }
 
   /**
@@ -113,8 +124,8 @@ export class MarketSimulator {
         };
         smartTrade.buy = filledOrder;
 
-        console.log(
-          `[TestingDb] ST# ${smartTrade.id} buy marked order filled with ${filledOrder.filledPrice}, updated at ${updatedAt}`,
+        logger.info(
+          `[MarketSimulator] Market BUY order was filled at ${filledOrder.filledPrice} on ${format.datetime(updatedAt)}`,
         );
 
         return true;
@@ -128,10 +139,9 @@ export class MarketSimulator {
           };
           smartTrade.buy = filledOrder;
 
-          console.log(
-            `[TestingDb] ST# ${smartTrade.id} buy order filled, updated at ${updatedAt}`,
+          logger.info(
+            `[MarketSimulator] Limit BUY order was filled at ${filledOrder.filledPrice} on ${format.datetime(updatedAt)}`,
           );
-          console.log(smartTrade);
           return true;
         }
       }
@@ -147,8 +157,8 @@ export class MarketSimulator {
         };
         smartTrade.sell = filledOrder;
 
-        console.log(
-          `[TestingDb] ST# ${smartTrade.id} sell marked order filled with ${filledOrder.filledPrice}, updated at ${updatedAt}`,
+        logger.info(
+          `[MarketSimulator] Market SELL order was filled at ${filledOrder.filledPrice} on ${format.datetime(updatedAt)}`,
         );
         return true;
       } else if (smartTrade.sell.type === "Limit") {
@@ -162,10 +172,9 @@ export class MarketSimulator {
 
           smartTrade.sell = filledOrder;
 
-          console.log(
-            `[TestingDb] ST# ${smartTrade.id} sell order filled, updated at ${updatedAt}`,
+          logger.info(
+            `[MarketSimulator] Limit SELL order was filled at ${filledOrder.filledPrice} on ${format.datetime(updatedAt)}`,
           );
-          console.log(smartTrade);
           return true;
         }
       }

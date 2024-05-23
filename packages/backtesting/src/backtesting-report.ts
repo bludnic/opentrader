@@ -1,20 +1,107 @@
-import type { SmartTrade } from "@opentrader/bot-processor";
-import { OrderStatusEnum } from "@opentrader/types";
+import { table } from "table";
+import type {
+  BotTemplate,
+  IBotConfiguration,
+  Order,
+  SmartTrade,
+} from "@opentrader/bot-processor";
+import { ICandlestick, OrderStatusEnum } from "@opentrader/types";
+import { format, logger } from "@opentrader/logger";
 import { buyOrder } from "./report/buyOrder";
 import { buyTransaction } from "./report/buyTransaction";
 import { sellOrder } from "./report/sellOrder";
 import { sellTransaction } from "./report/sellTransaction";
 import type { ActiveOrder, ReportResult, Transaction } from "./types";
 
-export class BacktestingReport {
-  constructor(private smartTrades: SmartTrade[]) {}
+type OrderInfo = Order & {
+  side: "buy" | "sell";
+  trade: SmartTrade;
+};
 
-  create(): ReportResult {
-    return {
-      transactions: this.getTransactions(),
-      activeOrders: this.getActiveOrders(),
-      totalProfit: this.calcTotalProfit(),
-    };
+export class BacktestingReport {
+  constructor(
+    private candlesticks: ICandlestick[],
+    private smartTrades: SmartTrade[],
+    private botConfig: IBotConfiguration,
+    private template: BotTemplate<any>,
+  ) {}
+
+  create(): string {
+    const startDate = format.datetime(this.candlesticks[0].timestamp);
+    const endDate = format.datetime(
+      this.candlesticks[this.candlesticks.length - 1].timestamp,
+    );
+
+    const strategyParams = JSON.stringify(this.botConfig.settings, null, 2);
+    const strategyName = this.template.name;
+
+    const exchange = this.botConfig.exchangeCode;
+    const baseCurrency = this.botConfig.baseCurrency;
+    const quoteCurrency = this.botConfig.quoteCurrency;
+    const pair = `${baseCurrency}/${quoteCurrency}`;
+
+    const backtestData: Array<any[]> = [
+      ["Date", "Action", "Price", "Quantity", "Profit"],
+    ];
+
+    const trades = this.getOrders().map((order) => {
+      return [
+        format.datetime(order.updatedAt),
+        order.side.toUpperCase(),
+        order.filledPrice,
+        order.trade.quantity,
+        order.side === "sell" && order.trade.sell
+          ? order.trade.sell.filledPrice! - order.trade.buy.filledPrice!
+          : "-",
+      ];
+    });
+    const tradesTable = table(backtestData.concat(trades));
+    const totalProfit = this.calcTotalProfit();
+
+    return `Backtesting done.
+
++------------------------+
+|   Backtesting Report   |
++------------------------+
+
+Strategy: ${strategyName}
+Strategy params:
+${strategyParams}
+
+Exchange: ${exchange}
+Pair: ${pair}
+
+Start date: ${startDate}
+End date: ${endDate}
+
+Trades:
+${tradesTable}
+
+Total Trades: ${this.smartTrades.length}
+Total Profit: ${totalProfit} ${quoteCurrency}
+    `;
+  }
+
+  getOrders(): Array<OrderInfo> {
+    const orders: Array<OrderInfo> = [];
+
+    for (const trade of this.getFinishedSmartTrades()) {
+      orders.push({
+        ...trade.buy,
+        side: "buy",
+        trade,
+      });
+
+      if (trade.sell) {
+        orders.push({
+          ...trade.sell,
+          side: "sell",
+          trade,
+        });
+      }
+    }
+
+    return orders.sort((a, b) => a.updatedAt - b.updatedAt);
   }
 
   getTransactions(): Transaction[] {
