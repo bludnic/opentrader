@@ -138,6 +138,20 @@ The user interface allows managing multiple bots and strategies, viewing backtes
 
 Currently, the UI is under development. For early access, please email me at contact@opentrader.pro
 
+After getting the access, run the following command to pull the UI into monorepo:
+
+```shell
+$ git submodule update --init
+```
+
+Run frontend app:
+
+```shell
+$ pnpm i
+$ turbo run build --filter='./packages/*'
+$ turbo run dev
+```
+
 - Frontend: http://localhost:3000
 - API: http://localhost:4000
 
