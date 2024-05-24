@@ -4,7 +4,9 @@
   </a>
 </p>
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bludnic/opentrader/dev.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/bludnic/opentrader) ![Static Badge](https://img.shields.io/badge/Community-white?logo=Telegram)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bludnic/opentrader/dev.yml)](https://github.com/bludnic/opentrader/actions)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/bludnic/opentrader)](https://github.com/bludnic/opentrader/graphs/contributors)
+[![Static Badge](https://img.shields.io/badge/Community-white?logo=Telegram)](https://t.me/+cJLNxLSjcW83Njgy)
 
 [OpenTrader](https://github.com/bludnic/opentrader) is an advanced cryptocurrency trading bot offering high-frequency, cross-exchange arbitrage and event-based strategies, including technical analysis with indicators. Features a user-friendly management UI, robust backtesting capabilities, and support for 100+ exchanges via CCXT.
 
