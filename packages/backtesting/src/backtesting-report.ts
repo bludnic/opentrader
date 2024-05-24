@@ -41,15 +41,18 @@ export class BacktestingReport {
     const pair = `${baseCurrency}/${quoteCurrency}`;
 
     const backtestData: Array<any[]> = [
-      ["Date", "Action", "Price", "Quantity", "Profit"],
+      ["Date", "Action", "Price", "Quantity", "Amount", "Profit"],
     ];
 
     const trades = this.getOrders().map((order) => {
+      const amount = order.filledPrice! * order.trade.quantity;
+
       return [
         format.datetime(order.updatedAt),
         order.side.toUpperCase(),
         order.filledPrice,
         order.trade.quantity,
+        amount,
         order.side === "sell" && order.trade.sell
           ? order.trade.sell.filledPrice! - order.trade.buy.filledPrice!
           : "-",
