@@ -29,5 +29,5 @@ export function datetime(timestamp: number | Date, resetSeconds = false) {
 }
 
 export function candletime(dateOrTimestamp: Date | number) {
-  return c.gray(datetime(dateOrTimestamp, true));
+  return datetime(dateOrTimestamp, true);
 }
