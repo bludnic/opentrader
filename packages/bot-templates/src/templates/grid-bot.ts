@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
-import {
+import type {
   IBotConfiguration,
   SmartTradeService,
   TBotContext,
@@ -14,6 +14,10 @@ import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
 import type { IGetMarketPriceResponse } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 
+/**
+ * Advanced grid bot template.
+ * The template allows specifying grid lines with custom prices and quantities.
+ */
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   const { config: bot, onStart, onStop } = ctx;
   const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;

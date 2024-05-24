@@ -1,4 +1,4 @@
 export * from "./grid-bot";
-export * from "./grid-bot-lite";
+export * from "./grid";
 export * from "./rsi";
 export * from "./test";

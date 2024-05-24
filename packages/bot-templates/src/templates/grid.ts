@@ -8,7 +8,7 @@ import { gridBot } from "./grid-bot";
  * Wrapper for the `gridBot` template with a simplified configuration.
  * @param ctx - Bot context
  */
-export function* gridBotLite(ctx: TBotContext<GridBotLiteConfig>) {
+export function* grid(ctx: TBotContext<GridBotLiteConfig>) {
   const { config } = ctx;
 
   const gridLines = calcGridLines(
@@ -32,8 +32,8 @@ export function* gridBotLite(ctx: TBotContext<GridBotLiteConfig>) {
   yield* gridBot(gridBotCtx);
 }
 
-gridBotLite.displayName = "Grid Bot Lite";
-gridBotLite.schema = z.object({
+grid.displayName = "Grid Bot Lite";
+grid.schema = z.object({
   highPrice: z.number().positive().describe("Highest price of the grid"),
   lowPrice: z.number().positive().describe("Lowest price of the grid"),
   gridLevels: z.number().positive().describe("Number of grid lines"),
@@ -43,6 +43,4 @@ gridBotLite.schema = z.object({
     .describe("Quantity of base currency per each grid"),
 });
 
-export type GridBotLiteConfig = IBotConfiguration<
-  z.infer<typeof gridBotLite.schema>
->;
+export type GridBotLiteConfig = IBotConfiguration<z.infer<typeof grid.schema>>;
