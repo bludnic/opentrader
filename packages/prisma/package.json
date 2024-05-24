@@ -13,8 +13,8 @@
     "prisma:format": "prisma format",
     "postinstall": "prisma generate"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "bludnic",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.12.11",
