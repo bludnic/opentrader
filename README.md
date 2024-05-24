@@ -12,8 +12,8 @@
 
 **Strategies:**
 
-- [x] `Grid`: A grid trading strategy that profits from the price fluctuation of an asset.
-- [x] `RSI`: A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
+- [x] [Grid](packages/bot-templates/src/templates/grid-bot.ts): A grid trading strategy that profits from the price fluctuation of an asset.
+- [x] [RSI](packages/bot-templates/src/templates/rsi.ts): A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
 - [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
 
 **Supported exchanges:** `OKX`, `BYBIT`, `BINANCE`, `KRAKEN`, `COINBASE`, `GATEIO`
