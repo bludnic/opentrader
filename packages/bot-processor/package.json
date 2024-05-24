@@ -9,8 +9,8 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "bludnic",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",

@@ -10,8 +10,8 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "bludnic",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@opentrader/eslint-config": "workspace:*",

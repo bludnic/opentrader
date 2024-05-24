@@ -46,6 +46,11 @@ export class BacktestingReport {
 
     const trades = this.getOrders().map((order) => {
       const amount = order.filledPrice! * order.trade.quantity;
+      const profit =
+        order.side === "sell" && order.trade.sell
+          ? (order.trade.sell.filledPrice! - order.trade.buy.filledPrice!) *
+            order.trade.quantity
+          : "-";
 
       return [
         format.datetime(order.updatedAt),
@@ -53,9 +58,7 @@ export class BacktestingReport {
         order.filledPrice,
         order.trade.quantity,
         amount,
-        order.side === "sell" && order.trade.sell
-          ? order.trade.sell.filledPrice! - order.trade.buy.filledPrice!
-          : "-",
+        profit,
       ];
     });
     const tradesTable = table(backtestData.concat(trades));

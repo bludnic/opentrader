@@ -1,10 +1,18 @@
 {
+  // Grid strategy params
   settings: {
-    highPrice: 0.8,
-    lowPrice: 0.35,
-    gridLevels: 6,
-    quantityPerGrid: 10,
+    highPrice: 72000, // upper price of the grid
+    lowPrice: 60000, // lower price of the grid
+    gridLevels: 20, // number of grid levels
+    quantityPerGrid: 0.005, // quantity in base currency per each grid
   },
-  pair: "ADA/USDT",
-  exchange: "OKX", // specify exchange credentials in the `exchanges.json5` config using this key
+  // RSI strategy params
+  //  settings: {
+  //    high: 70, // sell when RSI is above this value
+  //    low: 30, // buy when RSI is below this value
+  //    persistence: 1, // Number of candles to persist in trend before buying/selling
+  //    quantity: 0.005, // quantity in base currency to buy/sell
+  //  },
+  pair: "BTC/USDT",
+  exchange: "DEFAULT", // specify exchange credentials in the `exchanges.json5` config using this key
 }
