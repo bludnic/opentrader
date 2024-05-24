@@ -1,4 +1,22 @@
-# Requirements
+<p align="center">
+  <a href="https://github.com/bludnic/opentrader" title="OpenTrader">
+    <img src=".github/images/logo.png" alt="OpenTrader logo" width="300" />
+  </a>
+</p>
+
+[OpenTrader](https://github.com/bludnic/opentrader) is an advanced cryptocurrency trading bot offering high-frequency, cross-exchange arbitrage and event-based strategies, including technical analysis with indicators. Features a user-friendly management UI, robust backtesting capabilities, and support for 100+ exchanges via CCXT.
+
+**Strategies:**
+
+- [x] `Grid`: A grid trading strategy that profits from the price fluctuation of an asset.
+- [x] `RSI`: A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
+- [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
+
+**Supported exchanges:** `OKX`, `BYBIT`, `BINANCE`, `KRAKEN`, `COINBASE`, `GATEIO`
+
+# Quick start
+
+## Requirements
 
 ```bash
 # NodeJS v18 or higher
@@ -16,9 +34,9 @@ $ docker -v
 
 ## Environment variables
 
-The project uses a single `.env` file located in the root directory.
-Frameworks like Next.js requires `.env` file to be located in the project dir itself.
-To solve this some apps/packages may contain a symlink to the root `.env`.
+The project uses a single `.env` file in the root directory.
+Frameworks such as Next.js require the `.env` file to be located directly in the project directory.
+To address this, some `apps/packages` might include a symlink pointing to the root `.env` file.
 
 1. Create environment file `.env` in the root directory
 
@@ -28,32 +46,7 @@ $ cp .env.example .env
 
 2. Replace the `DATABASE_URL` if your URL is different from the actual one.
 
-> 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d database`. See details below.
-
-# Docker (optional)
-
-1. If you want to use PostgreSQL within a Docker container use the following commands:
-
-```bash
-$ docker compose up -d database # start service
-$ docker compose stop database # stop service
-```
-
-2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
-
-# Processing app (optional)
-
-The `apps/processor` is a separate NodeJS app that synchronizes orders with the Exchange faster by using WebSockets.
-
-Features:
-
-- Sync orders statuses with the Exchange by using WebSockets
-- Fallback to REST API by polling every 60s
-- Runs the bot template if any order was filled
-- Place pending orders on the Exchange
-- Async queue (in case two or more orders were filled at the same time)
-
-# Installation
+## Installation
 
 1. Install dependencies
 
@@ -79,35 +72,77 @@ $ turbo run prisma:migrate
 $ turbo run prisma:seed
 ```
 
-> ⚠️ **Note**: Due to that fact that packages doesn't have a `dev` server itself, the `build` command is mandatory on first run.
->
-> If you made changes inside a package, don't forget to run `build` command again.
+> ⚠️ **Note**: Since the packages do not have a dev server, running the `build` command is mandatory on the first run.
 
-# Development
+# Basic usage
 
-**Option 1**: Run both `frontend` and `processor` apps in a single terminal
+## Connect an exchange
 
-```bash
-$ turbo run dev
+Copy the `exchanges.default.json5` file to `exchanges.dev.json5` and add your API keys.
+
+> Supported exchanges: OKX, BYBIT, BINANCE, KRAKEN, COINBASE, GATEIO
+
+## Choose a strategy
+
+Create the strategy configuration file `config.dev.json5`. We will use the `grid` strategy as an example.
+
+```json5
+{
+  // Grid strategy params
+  settings: {
+    highPrice: 70000, // upper price of the grid
+    lowPrice: 60000, // lower price of the grid
+    gridLevels: 20, // number of grid levels
+    quantityPerGrid: 0.0001, // quantity in base currency per each grid
+  },
+  pair: "BTC/USDT",
+  exchange: "DEFAULT",
+}
 ```
 
-**Option 2**: Run each app in a separate terminal
+> Currently supported strategies: `grid`, `rsi`
 
-First Terminal
+## Run a backtest
 
-```bash
-$ cd apps/frontend
-$ pnpm run dev
-```
+Command: `pnpm opentrader backtest <strategy> --from <date> --to <date> -t <timeframe>`
 
-Second Terminal
+Example running a `grid` strategy on `1h` timeframe.
 
 ```bash
-$ cd apps/processor
-$ pnpm run dev
+$ pnpm opentrader backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
 ```
 
-# Apps
+> To get more accurate results, use a smaller timeframe, e.g. 1m, however, it will take more time to download OHLC data from the exchange.
+
+## Live trading
+
+Command: `pnpm opentrader trade <strategy>`
+
+Example running a live trading with `grid` strategy.
+
+```bash
+$ pnpm opentrader trade grid
+```
+
+> After `Ctrl+C`, the orders created by the bot will remain on the exchange. To cancel them, use the `pnpm opentrader stop` command.
+
+# UI
+
+The user interface allows managing multiple bots and strategies, viewing backtest results, and monitoring live trading.
+
+![UI Preview](.github/images/ui.png)
+
+Currently, the UI is under development. For early access, please email me at contact@opentrader.pro
 
 - Frontend: http://localhost:3000
-- Processor: http://localhost:4000
+- API: http://localhost:4000
+
+# Project structure
+
+- Strategies dir: [packages/bot-templates](/packages/bot-templates/src/templates)
+- Indicators: [packages/indicators](/packages/indicators/src/indicators)
+- Exchange connectors: [packages/exchanges](/packages/exchanges/src/exchanges)
+
+# 🪪 License
+
+Licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) License. See the [LICENSE](LICENSE) file for more information.
