@@ -23,7 +23,7 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
   }
 
   private async syncOrders() {
-    logger.info(
+    logger.debug(
       `PollingWatcher: Start syncing order statuses of "${this.exchange.name}"`,
     );
     const processor = new ExchangeAccountProcessor(this.exchange);

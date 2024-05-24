@@ -37,7 +37,7 @@ export class CandlesChannel extends EventEmitter {
     this.exchange = exchange;
   }
 
-  add(symbol: string, timeframe: BarSize) {
+  async add(symbol: string, timeframe: BarSize, requiredHistory?: number) {
     let aggregator = this.aggregators.find(
       (aggregator) =>
         aggregator.timeframe === timeframe && aggregator.symbol === symbol,
@@ -47,6 +47,8 @@ export class CandlesChannel extends EventEmitter {
       logger.warn(
         `Candles aggregator for ${this.exchange.exchangeCode}:${symbol} with ${timeframe} timeframe already exists`,
       );
+      await aggregator.init(requiredHistory);
+
       return;
     }
 
@@ -62,16 +64,19 @@ export class CandlesChannel extends EventEmitter {
       );
     }
 
-    aggregator = new CandlesAggregator(timeframe, watcher);
-    aggregator.on("candle", (candle: ICandlestick) => {
+    aggregator = new CandlesAggregator(timeframe, watcher, this.exchange);
+    aggregator.on("candle", (candle: ICandlestick, history: ICandlestick[]) => {
       const candleEvent: CandleEvent = {
         symbol,
         timeframe,
         candle,
+        history,
       };
 
       this.emit("candle", candleEvent);
     });
+    await aggregator.init(requiredHistory);
+
     this.aggregators.push(aggregator);
   }
 

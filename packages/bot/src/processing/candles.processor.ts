@@ -4,6 +4,7 @@ import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import type { BarSize } from "@opentrader/types";
+import { findTemplate } from "@opentrader/bot-templates";
 import type { CandleEvent } from "../channels";
 import { CandlesChannel } from "../channels";
 
@@ -54,7 +55,12 @@ export class CandlesProcessor {
         continue;
       }
 
-      channel.add(symbol, bot.timeframe as BarSize);
+      const template = findTemplate(bot.template);
+      await channel.add(
+        symbol,
+        bot.timeframe as BarSize,
+        template.requiredHistory,
+      );
     }
   }
 
@@ -62,7 +68,7 @@ export class CandlesProcessor {
 
   // @todo maybe queue
   private async handleCandle(data: CandleEvent) {
-    const { candle, symbol, timeframe } = data;
+    const { candle, history, symbol, timeframe } = data;
 
     logger.info(
       `CandlesProcessor: Received candle ${timeframe} for ${symbol}. Start processing.`,
@@ -77,7 +83,6 @@ export class CandlesProcessor {
     logger.info(`CandlesProcessor: ${timeframe}. Found ${bots.length} bots`);
 
     for (const bot of bots) {
-      logger.info(`Exec bot #${bot.id} template`);
       const botProcessor = await BotProcessing.fromId(bot.id);
 
       if (botProcessor.isBotStopped()) {
@@ -85,10 +90,11 @@ export class CandlesProcessor {
         continue;
       }
 
-      await botProcessor.process();
+      await botProcessor.process({
+        candle,
+        candles: history,
+      });
       await botProcessor.placePendingOrders();
-
-      logger.info(`Exec bot #${bot.id} template done`);
     }
   }
 

@@ -74,6 +74,7 @@ enum EntryType {
 enum TakeProfitType {
   Order
   Ladder
+  None
 }
 
 enum EntityType {
@@ -192,6 +193,7 @@ model Bot {
   createdAt DateTime @default(now())
 
   settings Json // @todo gridLines
+  state    Json @default("{}")
 
   smartTrades SmartTrade[]
 

@@ -1,8 +1,10 @@
-import type { SmartTrade } from "@opentrader/bot-processor";
+import type { SmartTradeWithSell } from "@opentrader/bot-processor";
 import { OrderSideEnum } from "@opentrader/types";
 import type { SellTransaction } from "../types";
 
-export function sellTransaction(smartTrade: SmartTrade): SellTransaction {
+export function sellTransaction(
+  smartTrade: SmartTradeWithSell,
+): SellTransaction {
   const { buy, sell, quantity, id } = smartTrade;
 
   return {
@@ -10,12 +12,12 @@ export function sellTransaction(smartTrade: SmartTrade): SellTransaction {
     side: OrderSideEnum.Sell,
     quantity,
     buy: {
-      price: buy.price,
+      price: buy.filledPrice || buy.price || 0,
       fee: 0, // @todo fee
       updatedAt: buy.updatedAt,
     },
     sell: {
-      price: sell.price,
+      price: sell.filledPrice || sell.price || 0,
       fee: 0, // @todo fee
       updatedAt: sell.updatedAt,
     },

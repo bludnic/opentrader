@@ -57,7 +57,7 @@ export class ExchangeAccountProcessor {
     });
 
     if (orders.length === 0) {
-      logger.info("ExchangeAccountProcessor: No orders in DB to synchronize");
+      logger.debug("ExchangeAccountProcessor: No orders in DB to synchronize");
       return {
         affectedBotsIds,
       };

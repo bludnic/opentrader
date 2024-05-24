@@ -6,5 +6,5 @@ export interface IPlaceStopOrderResponse {
   /**
    * Client-supplied order ID
    */
-  clientOrderId: string;
+  clientOrderId?: string;
 }

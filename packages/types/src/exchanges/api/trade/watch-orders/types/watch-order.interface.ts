@@ -8,7 +8,7 @@ export interface IWatchOrder {
   /**
    * Client-supplied order ID
    */
-  clientOrderId: string;
+  clientOrderId?: string;
   side: OrderSide;
   /**
    * Quantity to buy or sell.
@@ -37,5 +37,5 @@ export interface IWatchOrder {
   /**
    * Unix timestamp of the most recent trade on this order.
    */
-  lastTradeTimestamp: number;
+  lastTradeTimestamp?: number;
 }

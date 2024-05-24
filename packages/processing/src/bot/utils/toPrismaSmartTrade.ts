@@ -39,16 +39,19 @@ export function toPrismaSmartTrade(
     $Enums.OrderSide.Buy,
     $Enums.EntityType.EntryOrder,
   );
-  const sellOrderData = toPrismaOrder(
-    sell,
-    quantity,
-    $Enums.OrderSide.Sell,
-    $Enums.EntityType.TakeProfitOrder,
-  );
+
+  const sellOrderData = sell
+    ? toPrismaOrder(
+        sell,
+        quantity,
+        $Enums.OrderSide.Sell,
+        $Enums.EntityType.TakeProfitOrder,
+      )
+    : undefined;
 
   return {
     entryType: "Order",
-    takeProfitType: "Order",
+    takeProfitType: sell ? "Order" : "None",
 
     ref,
     type: $Enums.SmartTradeType.Trade,
@@ -58,7 +61,7 @@ export function toPrismaSmartTrade(
 
     orders: {
       createMany: {
-        data: [buyOrderData, sellOrderData],
+        data: sellOrderData ? [buyOrderData, sellOrderData] : [buyOrderData],
       },
     },
 

@@ -14,14 +14,16 @@ export async function stopCommand(options: {
   const exchangesConfig = readExchangesConfig(options.config);
   logger.debug(exchangesConfig, "Parsed exchanges config");
 
+  const botLabel = config.label || "default";
+
   const bot = await xprisma.bot.custom.findUnique({
     where: {
-      label: config.label,
+      label: botLabel,
     },
   });
 
   if (!bot) {
-    logger.info(`Bot "${config.label}" does not exists. Nothing to stop`);
+    logger.info(`Bot "${botLabel}" does not exists. Nothing to stop`);
 
     return {
       result: undefined,

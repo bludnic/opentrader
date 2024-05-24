@@ -36,6 +36,16 @@ const xprismaClient = prismaClient.$extends({
           },
         });
       },
+      async updateState(state: object, botId: number) {
+        return prismaClient.bot.update({
+          where: {
+            id: botId,
+          },
+          data: {
+            state,
+          },
+        });
+      },
     },
     order: orderModel(prismaClient),
     smartTrade: smartTradeModel(prismaClient),

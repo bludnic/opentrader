@@ -21,6 +21,8 @@ import type {
   IPlaceStopOrderResponse,
   IWatchCandlesRequest,
   IWatchCandlesResponse,
+  IPlaceMarketOrderRequest,
+  IPlaceMarketOrderResponse,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
 import type { MarketSimulator } from "../market-simulator";
@@ -62,6 +64,15 @@ export class MemoryExchange implements IExchange {
   async placeLimitOrder(
     _body: IPlaceLimitOrderRequest,
   ): Promise<IPlaceLimitOrderResponse> {
+    return {
+      orderId: "",
+      clientOrderId: "",
+    };
+  }
+
+  async placeMarketOrder(
+    _body: IPlaceMarketOrderRequest,
+  ): Promise<IPlaceMarketOrderResponse> {
     return {
       orderId: "",
       clientOrderId: "",

@@ -2,6 +2,7 @@ import { EventEmitter } from "node:events";
 import { type Exchange, type OHLCV } from "ccxt";
 import type { BarSize, ICandlestick } from "@opentrader/types";
 import type { ICandlesProvider } from "./candles-provider.interface";
+import { logger, format } from "@opentrader/logger";
 
 export class CCXTCandlesProvider
   extends EventEmitter
@@ -76,11 +77,8 @@ export class CCXTCandlesProvider
     this.since = startDate.getTime();
 
     this.on("start", () => {
-      console.log(
-        "CandleProvider: Start fetching candles from",
-        this.startDate,
-        "to",
-        this.endDate,
+      logger.info(
+        `Start fetching ${this.symbol} candles from ${format.datetime(startDate)} to ${format.datetime(endDate)}`,
       );
       void this.start();
     });
@@ -102,20 +100,15 @@ export class CCXTCandlesProvider
     });
 
     if (filteredCandles.length === 0) {
-      console.log("No more candles");
+      logger.debug("No more candles");
       this.emit("done");
       return;
     }
 
     const firstCandle = filteredCandles[0];
     const lastCandle = filteredCandles[filteredCandles.length - 1];
-    console.log(
-      "Fetched",
-      filteredCandles.length,
-      "candles from",
-      new Date(firstCandle.timestamp).toISOString(),
-      "to",
-      new Date(lastCandle.timestamp).toISOString(),
+    logger.info(
+      `Fetched ${filteredCandles.length} candles from ${format.datetime(firstCandle.timestamp)} to ${format.datetime(lastCandle.timestamp)}`,
     );
 
     filteredCandles.forEach((candle) => {
@@ -125,7 +118,7 @@ export class CCXTCandlesProvider
     this.since = lastCandle.timestamp + 60000;
 
     if (this.since >= this.endDate.getTime()) {
-      console.log("Reached the end");
+      logger.debug("Reached the end");
       this.emit("done");
       return;
     }

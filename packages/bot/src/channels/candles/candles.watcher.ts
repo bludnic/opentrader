@@ -48,7 +48,7 @@ export class CandlesWatcher extends EventEmitter {
         const candles = await this.exchange.watchCandles({
           symbol: this.symbol,
         });
-        logger.info(
+        logger.debug(
           candles,
           `CandlesWatcher: Received ${candles.length} candles for ${this.exchange.exchangeCode}:${this.symbol}`,
         );

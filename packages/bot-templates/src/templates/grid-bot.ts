@@ -8,19 +8,19 @@ import type {
 import {
   cancelSmartTrade,
   useExchange,
-  useIndicators,
   useSmartTrade,
 } from "@opentrader/bot-processor";
 import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
-import type { IGetMarketPriceResponse, XCandle } from "@opentrader/types";
+import type { IGetMarketPriceResponse } from "@opentrader/types";
+import { logger } from "@opentrader/logger";
 
+/**
+ * Advanced grid bot template.
+ * The template allows specifying grid lines with custom prices and quantities.
+ */
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
-  // const candle1m: XCandle<"SMA10" | "SMA15"> = yield useIndicators(
-  //   ["SMA10", "SMA15", "SMA30"],
-  //   "1m",
-  // );
-  // const candle5m: XCandle<"SMA10"> = yield useIndicators(["SMA10"], "5m");
   const { config: bot, onStart, onStop } = ctx;
+  const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
 
   const exchange: IExchange = yield useExchange();
 
@@ -31,7 +31,9 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
         symbol: `${bot.baseCurrency}/${bot.quoteCurrency}`,
       });
     price = markPrice;
-    console.log(`[GridBotTemple] Bot started [markPrice: ${price}]`);
+    logger.info(
+      `[Grid] Bot strategy started on ${symbol} pair. Current price is ${price} ${bot.quoteCurrency}`,
+    );
   }
 
   const gridLevels = computeGridLevelsFromCurrentAssetPrice(
@@ -48,17 +50,22 @@ export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   }
 
   for (const [index, grid] of gridLevels.entries()) {
-    const smartTrade: SmartTradeService = yield useSmartTrade(`${index}`, {
-      buy: {
-        price: grid.buy.price,
-        status: grid.buy.status,
+    const smartTrade: SmartTradeService = yield useSmartTrade(
+      {
+        buy: {
+          type: "Limit",
+          price: grid.buy.price,
+          status: grid.buy.status,
+        },
+        sell: {
+          type: "Limit",
+          price: grid.sell.price,
+          status: grid.sell.status,
+        },
+        quantity: grid.buy.quantity, // or grid.sell.quantity
       },
-      sell: {
-        price: grid.sell.price,
-        status: grid.sell.status,
-      },
-      quantity: grid.buy.quantity, // or grid.sell.quantity
-    });
+      `${index}`,
+    );
 
     if (smartTrade.isCompleted()) {
       yield smartTrade.replace();

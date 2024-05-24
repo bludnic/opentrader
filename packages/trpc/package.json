@@ -15,7 +15,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "eslint": "8.54.0",
-    "typescript": "^5.2.2"
+    "typescript": "5.2.2"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
@@ -26,7 +26,7 @@
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "@trpc/server": "^10.45.2",
-    "ccxt": "4.1.48",
+    "ccxt": "4.3.27",
     "superjson": "^1.13.3",
     "zod": "3.22.4"
   }

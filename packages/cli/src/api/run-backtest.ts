@@ -3,23 +3,26 @@ import { templates } from "@opentrader/bot-templates";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
-import type { BarSize, ICandlestick } from "@opentrader/types";
+import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
+import type { BarSize, ExchangeCode, ICandlestick } from "@opentrader/types";
 import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig } from "../config";
-import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
+
+type Options = {
+  config: ConfigName;
+  from: Date;
+  to: Date;
+  timeframe: BarSize;
+  pair: string;
+  exchange: ExchangeCode;
+};
 
 export async function runBacktest(
   strategyName: keyof typeof templates,
-  options: {
-    config: ConfigName;
-    from: Date;
-    to: Date;
-    timeframe: BarSize;
-    symbol: string;
-  },
+  options: Options,
 ): Promise<CommandResult> {
-  const config = readBotConfig(options.config);
-  logger.debug(config, "Parsed bot config");
+  const botConfig = readBotConfig(options.config);
+  logger.debug(botConfig, "Parsed bot config");
 
   const strategyExists = strategyName in templates;
   if (!strategyExists) {
@@ -33,12 +36,26 @@ export async function runBacktest(
     };
   }
 
-  const ccxtExchange = exchangeCodeMapCCXT[config.exchangeCode];
+  const botTemplate = strategyName || botConfig.template;
+  const botTimeframe = options.timeframe || botConfig.timeframe || null;
+  const botPair = options.pair || botConfig.pair;
+  const [baseCurrency, quoteCurrency] = botPair.split("/");
+
+  const ccxtExchange = exchangeCodeMapCCXT[options.exchange];
   const exchange = new ccxt[ccxtExchange]();
 
+  logger.info(
+    `Using ${botPair} on ${options.exchange} exchange with ${botTimeframe} timeframe`,
+  );
   const backtesting = new Backtesting({
-    botConfig: config,
-    botTemplate: templates[strategyName],
+    botConfig: {
+      id: 0,
+      baseCurrency,
+      quoteCurrency,
+      exchangeCode: options.exchange,
+      settings: botConfig.settings,
+    },
+    botTemplate: templates[botTemplate],
   });
 
   return new Promise((resolve) => {
@@ -46,8 +63,8 @@ export async function runBacktest(
 
     const candleProvider = new CCXTCandlesProvider({
       exchange,
-      symbol: options.symbol,
-      timeframe: options.timeframe,
+      symbol: botPair,
+      timeframe: botTimeframe,
       startDate: options.from,
       endDate: options.to,
     });

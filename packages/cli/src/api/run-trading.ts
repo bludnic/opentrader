@@ -1,18 +1,28 @@
-import type { IBotConfiguration } from "@opentrader/bot-processor";
 import { templates } from "@opentrader/bot-templates";
 import { logger } from "@opentrader/logger";
 import { Processor } from "@opentrader/bot";
 import { xprisma } from "@opentrader/db";
 import type { TBot, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
-import type { CommandResult, ConfigName, ExchangeConfig } from "../types";
+import { BarSize } from "@opentrader/types";
+import type {
+  BotConfig,
+  CommandResult,
+  ConfigName,
+  ExchangeConfig,
+} from "../types";
 import { readBotConfig, readExchangesConfig } from "../config";
+
+type Options = {
+  config: ConfigName;
+  pair?: string;
+  exchange?: string;
+  timeframe?: BarSize;
+};
 
 export async function runTrading(
   strategyName: keyof typeof templates,
-  options: {
-    config: ConfigName;
-  },
+  options: Options,
 ): Promise<CommandResult> {
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
@@ -35,7 +45,12 @@ export async function runTrading(
   // Saving exchange accounts to DB if not exists
   const exchangeAccounts: ExchangeAccountWithCredentials[] =
     await createOrUpdateExchangeAccounts(exchangesConfig);
-  const bot = await createOrUpdateBot(strategyName, config, exchangeAccounts);
+  const bot = await createOrUpdateBot(
+    strategyName,
+    options,
+    config,
+    exchangeAccounts,
+  );
 
   const processor = new Processor(exchangeAccounts, [bot]);
   await processor.onApplicationBootstrap();
@@ -45,7 +60,7 @@ export async function runTrading(
       `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
     );
     await stopBot(bot.id);
-    logger.info(`The bot state were cleared`);
+    logger.info(`The bot state was cleared`);
   }
 
   if (bot.processing) {
@@ -127,41 +142,53 @@ async function createOrUpdateExchangeAccounts(
   return exchangeAccounts;
 }
 
-async function createOrUpdateBot<T = object>(
+async function createOrUpdateBot<T = any>(
   strategyName: string,
-  botConfig: IBotConfiguration<T>,
+  options: Options,
+  botConfig: BotConfig<T>,
   exchangeAccounts: ExchangeAccountWithCredentials[],
 ): Promise<TBot> {
+  const exchangeLabel = options.exchange || botConfig.exchange;
+  const botType = botConfig.type || "Bot";
+  const botName = botConfig.name || "Default bot";
+  const botLabel = botConfig.label || "default";
+  const botTemplate = strategyName || botConfig.template;
+  const botTimeframe = options.timeframe || botConfig.timeframe || null;
+  const botPair = options.pair || botConfig.pair;
+  const [baseCurrency, quoteCurrency] = botPair.split("/");
+
   const exchangeAccount = exchangeAccounts.find(
-    (exchangeAccount) =>
-      exchangeAccount.exchangeCode === botConfig.exchangeCode,
+    (exchangeAccount) => exchangeAccount.label === exchangeLabel,
   );
   if (!exchangeAccount) {
     throw new Error(
-      `Exchange account with code "${botConfig.exchangeCode}" not found to create the bot`,
+      `Exchange account with label "${exchangeLabel}" not found. Check the exchanges config file.`,
     );
   }
 
   let bot = await xprisma.bot.custom.findFirst({
     where: {
-      label: botConfig.label,
+      label: botLabel,
     },
   });
 
   if (bot) {
-    logger.info(`Bot "${botConfig.label}" found in DB. Updating...`);
+    logger.info(`Bot "${botLabel}" found in DB. Updating...`);
+
     bot = await xprisma.bot.custom.update({
       where: {
         id: bot.id,
       },
       data: {
-        type: "Bot",
-        name: "Default bot",
-        label: botConfig.label,
-        template: strategyName,
-        baseCurrency: botConfig.baseCurrency,
-        quoteCurrency: botConfig.quoteCurrency,
+        type: botType,
+        name: botName,
+        label: botLabel,
+        template: botTemplate,
+        timeframe: botTimeframe,
+        baseCurrency,
+        quoteCurrency,
         settings: botConfig.settings as object,
+        state: {}, // resets bot state
         exchangeAccount: {
           connect: {
             id: exchangeAccount.id,
@@ -175,17 +202,18 @@ async function createOrUpdateBot<T = object>(
       },
     });
 
-    logger.info(`Bot "${botConfig.label}" updated`);
+    logger.info(`Bot "${botLabel}" updated`);
   } else {
-    logger.info(`Bot "${botConfig.label}" not found. Adding to DB...`);
+    logger.info(`Bot "${botLabel}" not found. Adding to DB...`);
     bot = await xprisma.bot.custom.create({
       data: {
-        type: "Bot",
-        name: "Default bot",
-        label: botConfig.label,
+        type: botType,
+        name: botName,
+        label: botLabel,
         template: strategyName,
-        baseCurrency: botConfig.baseCurrency,
-        quoteCurrency: botConfig.quoteCurrency,
+        timeframe: botTimeframe,
+        baseCurrency,
+        quoteCurrency,
         settings: botConfig.settings as object,
         exchangeAccount: {
           connect: {
@@ -200,7 +228,7 @@ async function createOrUpdateBot<T = object>(
       },
     });
 
-    logger.info(`Bot "${botConfig.label}" created`);
+    logger.info(`Bot "${botLabel}" created`);
   }
 
   return bot;

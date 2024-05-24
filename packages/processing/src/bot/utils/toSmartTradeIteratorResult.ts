@@ -36,28 +36,29 @@ export function toSmartTradeIteratorResult(
 
   const { entryOrder, takeProfitOrder } = smartTrade;
 
-  if (entryOrder.type === "Market") {
-    throw new Error("Order type Market is not supported yet");
-  }
-  if (takeProfitOrder.type === "Market") {
-    throw new Error("Order type Market is not supported yet");
-  }
+  const nullToUndefined = (price: number | null): any => price || undefined; // any as a workaround
 
   return {
     id,
     quantity: entryOrder.quantity, // or sellOrder.quantity
     ref: smartTrade.ref,
     buy: {
+      type: entryOrder.type,
       status: toProcessorOrderStatus(entryOrder.status),
-      price: entryOrder.price,
+      price: nullToUndefined(entryOrder.price), // workaround
+      filledPrice: nullToUndefined(entryOrder.filledPrice), // workaround
       createdAt: entryOrder.createdAt.getTime(),
       updatedAt: entryOrder.updatedAt.getTime(),
     },
-    sell: {
-      status: toProcessorOrderStatus(takeProfitOrder.status),
-      price: takeProfitOrder.price,
-      createdAt: takeProfitOrder.createdAt.getTime(),
-      updatedAt: takeProfitOrder.updatedAt.getTime(),
-    },
+    sell: takeProfitOrder
+      ? {
+          type: takeProfitOrder.type,
+          status: toProcessorOrderStatus(takeProfitOrder.status),
+          price: nullToUndefined(takeProfitOrder.price), // workaround
+          filledPrice: nullToUndefined(takeProfitOrder.filledPrice), // workaround
+          createdAt: takeProfitOrder.createdAt.getTime(),
+          updatedAt: takeProfitOrder.updatedAt.getTime(),
+        }
+      : undefined,
   };
 }

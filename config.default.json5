@@ -1,12 +1,10 @@
 {
-  label: "default",
   settings: {
     highPrice: 0.8,
     lowPrice: 0.35,
     gridLevels: 6,
     quantityPerGrid: 10,
   },
-  baseCurrency: "ADA",
-  quoteCurrency: "USDT",
-  exchangeCode: "OKX",
+  pair: "ADA/USDT",
+  exchange: "OKX", // specify exchange credentials in the `exchanges.json5` config using this key
 }

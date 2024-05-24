@@ -1,9 +1,10 @@
 import type {
   IBotConfiguration,
-  BotManager,
+  StrategyRunner,
   BotTemplate,
+  BotState,
 } from "@opentrader/bot-processor";
-import { BotProcessor } from "@opentrader/bot-processor";
+import { createStrategyRunner } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { logger, format } from "@opentrader/logger";
 import { fulfilledTable, gridTable } from "./debugging";
@@ -17,7 +18,10 @@ export class Backtesting<T extends IBotConfiguration<T>> {
   private marketSimulator: MarketSimulator;
   private store: MemoryStore;
   private exchange: MemoryExchange;
-  private processor: BotManager<T>;
+  private processor: StrategyRunner<T>;
+  private botState: BotState = {};
+  private botTemplate: BotTemplate<T>;
+  private botConfig: T;
 
   constructor(options: { botConfig: T; botTemplate: BotTemplate<T> }) {
     const { botConfig, botTemplate } = options;
@@ -25,8 +29,10 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     this.marketSimulator = new MarketSimulator();
     this.store = new MemoryStore(this.marketSimulator);
     this.exchange = new MemoryExchange(this.marketSimulator);
+    this.botTemplate = botTemplate;
+    this.botConfig = botConfig;
 
-    this.processor = BotProcessor.create({
+    this.processor = createStrategyRunner({
       store: this.store,
       exchange: this.exchange,
       botConfig,
@@ -34,7 +40,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     });
   }
 
-  async run(candlesticks: ICandlestick[]): Promise<ReportResult> {
+  async run(candlesticks: ICandlestick[]): Promise<string> {
     for (const [index, candle] of candlesticks.entries()) {
       this.marketSimulator.nextCandle(candle);
 
@@ -46,29 +52,35 @@ export class Backtesting<T extends IBotConfiguration<T>> {
 
       const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
 
-      if (anyOrderFulfilled) {
-        console.log("Fulfilled Table");
-        console.table(fulfilledTable(this.store.getSmartTrades()));
-      }
+      // if (anyOrderFulfilled) {
+      //   console.log("Fulfilled Table");
+      //   console.table(fulfilledTable(this.store.getSmartTrades()));
+      // }
 
       if (index === 0) {
-        await this.processor.start();
+        await this.processor.start(this.botState);
       } else if (index === candlesticks.length - 1) {
         // last candle
-        await this.processor.stop();
+        await this.processor.stop(this.botState);
       } else {
-        await this.processor.process();
+        await this.processor.process(this.botState, {
+          candle,
+          candles: candlesticks.slice(0, index + 1),
+        });
       }
 
       const anyOrderPlaced = this.marketSimulator.placeOrders();
-      if (anyOrderPlaced) {
-        console.log("Placed Table");
-        console.table(gridTable(this.store.getSmartTrades()));
-      }
+      // if (anyOrderPlaced) {
+      //   console.log("Placed Table");
+      //   console.table(gridTable(this.store.getSmartTrades()));
+      // }
     }
 
     const report = new BacktestingReport(
+      candlesticks,
       this.marketSimulator.smartTrades,
+      this.botConfig,
+      this.botTemplate,
     ).create();
 
     return report;

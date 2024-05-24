@@ -1,5 +1,6 @@
-import type { UseSmartTradePayload } from "../../effects/common/types/use-smart-trade-effect";
-import type { SmartTrade } from "../smart-trade/smart-trade.type";
+import type { IExchange } from "@opentrader/exchanges";
+import type { UseSmartTradePayload } from "../../effects";
+import type { SmartTrade } from "../smart-trade";
 
 export interface IBotControl {
   /**
@@ -8,6 +9,11 @@ export interface IBotControl {
   stop: () => Promise<void>;
 
   getSmartTrade: (ref: string) => Promise<SmartTrade | null>;
+
+  updateSmartTrade: (
+    ref: string,
+    payload: Pick<UseSmartTradePayload, "sell">,
+  ) => Promise<SmartTrade | null>;
 
   createSmartTrade: (
     ref: string,
@@ -22,4 +28,6 @@ export interface IBotControl {
   replaceSmartTrade: (ref: string, payload: SmartTrade) => Promise<SmartTrade>;
 
   cancelSmartTrade: (ref: string) => Promise<boolean>;
+
+  getExchange: (label: string) => Promise<IExchange | null>;
 }

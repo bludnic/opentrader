@@ -1,2 +1,1 @@
-export * from "./types";
-export * from "./compute-indicators";
+export * from "./indicators";

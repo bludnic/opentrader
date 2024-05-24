@@ -22,6 +22,8 @@ import type {
   IPlaceStopOrderResponse,
   ExchangeCode,
   IWatchCandlesRequest,
+  IPlaceMarketOrderRequest,
+  IPlaceMarketOrderResponse,
 } from "@opentrader/types";
 import type { Dictionary, Market, Exchange } from "ccxt";
 
@@ -38,6 +40,9 @@ export interface IExchange {
   placeLimitOrder: (
     body: IPlaceLimitOrderRequest,
   ) => Promise<IPlaceLimitOrderResponse>;
+  placeMarketOrder: (
+    boyd: IPlaceMarketOrderRequest,
+  ) => Promise<IPlaceMarketOrderResponse>;
   cancelLimitOrder: (
     body: ICancelLimitOrderRequest,
   ) => Promise<ICancelLimitOrderResponse>;

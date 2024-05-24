@@ -1,10 +1,15 @@
-import type { IBotConfiguration } from "@opentrader/bot-processor";
-import { BotProcessor } from "@opentrader/bot-processor";
+import type {
+  BotState,
+  IBotConfiguration,
+  MarketData,
+} from "@opentrader/bot-processor";
+import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findTemplate } from "@opentrader/bot-templates";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import { SmartTradeProcessor } from "../smart-trade";
+import { logger } from "@opentrader/logger";
+import { SmartTradeExecutor } from "../executors";
 import { BotStoreAdapter } from "./bot-store-adapter";
 
 export class BotProcessing {
@@ -68,8 +73,16 @@ export class BotProcessing {
     });
   }
 
-  async processCommand(command: "start" | "stop" | "process") {
-    console.log(`🤖 Bot #${this.bot.id} command=${command}`);
+  async processCommand(
+    command: "start" | "stop" | "process",
+    market?: MarketData,
+  ) {
+    console.log(`🤖 Exec "${command}" command`, {
+      context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0}`,
+      bot: `id=${this.bot.id} name="${this.bot.name}"`,
+    });
+    const t0 = Date.now();
+
     if (this.isBotProcessing()) {
       console.warn(
         `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
@@ -78,15 +91,16 @@ export class BotProcessing {
     }
 
     const processor = await this.getProcessor();
+    const botState = this.bot.state as BotState;
 
     await xprisma.bot.setProcessing(true, this.bot.id);
     try {
       if (command === "start") {
-        await processor.start();
+        await processor.start(botState);
       } else if (command === "stop") {
-        await processor.stop();
+        await processor.stop(botState);
       } else if (command === "process") {
-        await processor.process();
+        await processor.process(botState, market);
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);
@@ -95,7 +109,15 @@ export class BotProcessing {
     }
 
     await xprisma.bot.setProcessing(false, this.bot.id);
-    console.log(`🤖 Bot #${this.bot.id} command=${command} finished`);
+    await xprisma.bot.updateState(botState, this.bot.id);
+
+    const t1 = Date.now();
+    const duration = (t1 - t0) / 1000;
+
+    console.log(`🤖 Exec "${command}" command finished in ${duration}s`, {
+      botId: this.bot.id,
+      botName: this.bot.name,
+    });
   }
 
   async processStartCommand() {
@@ -106,8 +128,8 @@ export class BotProcessing {
     await this.processCommand("stop");
   }
 
-  async process() {
-    await this.processCommand("process");
+  async process(market?: MarketData) {
+    await this.processCommand("process", market);
   }
 
   isBotRunning() {
@@ -150,7 +172,7 @@ export class BotProcessing {
     const storeAdapter = new BotStoreAdapter(() => this.stop());
     const botTemplate = findTemplate(this.bot.template);
 
-    const processor = BotProcessor.create({
+    const processor = createStrategyRunner({
       store: storeAdapter,
       exchange,
       botConfig: configuration,
@@ -161,9 +183,6 @@ export class BotProcessing {
   }
 
   async placePendingOrders() {
-    console.log(
-      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() start",
-    );
     const smartTrades = await xprisma.smartTrade.findMany({
       where: {
         type: "Trade",
@@ -182,18 +201,22 @@ export class BotProcessing {
       },
     });
 
+    logger.info(
+      `BotProcessing: Found ${smartTrades.length} pending orders for placement`,
+    );
+
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
 
-      const smartTradeService = new SmartTradeProcessor(
+      logger.info(
+        `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.exchangeSymbolId}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
+      );
+
+      const smartTradeExecutor = SmartTradeExecutor.create(
         smartTrade,
         exchangeAccount,
       );
-      await smartTradeService.placeNext();
+      await smartTradeExecutor.next();
     }
-
-    console.log(
-      "🤖 @opentrader/processing: BotProcessing.placePendingOrders() end",
-    );
   }
 }

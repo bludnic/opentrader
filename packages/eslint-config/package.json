@@ -11,9 +11,9 @@
     "next.js"
   ],
   "devDependencies": {
-    "@vercel/style-guide": "^5.2.0",
-    "eslint-config-turbo": "^1.13.3",
-    "typescript": "^5.2.2"
+    "@vercel/style-guide": "5.2.0",
+    "eslint-config-turbo": "1.13.3",
+    "typescript": "5.2.2"
   },
   "keywords": [
     "tsconfig",

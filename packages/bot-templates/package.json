@@ -16,12 +16,11 @@
     "@opentrader/types": "workspace:*",
     "@types/node": "^20.12.11",
     "eslint": "8.54.0",
-    "typescript": "^5.2.2"
+    "typescript": "5.2.2"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
-    "@opentrader/indicators": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "zod": "3.22.4"

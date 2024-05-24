@@ -22,6 +22,7 @@ import type {
   IWatchCandlesResponse,
   IWatchOrdersRequest,
   IWatchOrdersResponse,
+  IPlaceMarketOrderRequest,
   ExchangeCode,
 } from "@opentrader/types";
 import { pro } from "ccxt";
@@ -93,6 +94,13 @@ export class CCXTExchange implements IExchange {
     const data = await this.ccxt.createLimitOrder(...args);
 
     return normalize.placeLimitOrder.response(data);
+  }
+
+  async placeMarketOrder(params: IPlaceMarketOrderRequest) {
+    const args = normalize.placeMarketOrder.request(params);
+    const data = await this.ccxt.createMarketOrder(...args);
+
+    return normalize.placeMarketOrder.response(data);
   }
 
   async placeStopOrder(
@@ -175,7 +183,7 @@ export class CCXTExchange implements IExchange {
     const markets = await this.loadMarkets();
 
     const spotMarkets = Object.entries(markets)
-      .filter(([_currency, market]) => market.type === type)
+      .filter(([_currency, market]) => market?.type === type)
       .reduce<Dictionary<Market>>((acc, [currency, market]) => {
         return {
           ...acc,

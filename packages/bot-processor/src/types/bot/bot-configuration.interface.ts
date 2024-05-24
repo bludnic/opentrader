@@ -6,5 +6,4 @@ export type IBotConfiguration<T = any> = {
   quoteCurrency: string;
   exchangeCode: ExchangeCode;
   settings: T;
-  label?: string;
 };

@@ -10,25 +10,24 @@ export function candle({ open, high, low, close }: ICandlestick) {
   const L = c.green("L");
   const C = c.green("C");
 
-  return (
-    `${O} ${pad(open, 8)}  ` +
-    `${H} ${pad(high, 8)}  ` +
-    `${L} ${pad(low, 8)}  ` +
-    `${C} ${pad(close, 8)}`
-  );
+  return `${O} ${open} ${H} ${high} ${L} ${low} ${C} ${close}`;
 }
 
-export function candletime(dateOrTimestamp: Date | number) {
+export function datetime(timestamp: number | Date, resetSeconds = false) {
   const pad = (number: number) => number.toString().padStart(2, "0");
 
-  const date = new Date(dateOrTimestamp);
+  const date = new Date(timestamp);
 
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1);
   const day = pad(date.getDate());
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
-  const seconds = "00"; // there is no timeframe with seconds
+  const seconds = resetSeconds ? "00" : pad(date.getSeconds());
 
-  return c.gray(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`);
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
+export function candletime(dateOrTimestamp: Date | number) {
+  return datetime(dateOrTimestamp, true);
 }

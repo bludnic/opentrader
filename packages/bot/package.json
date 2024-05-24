@@ -18,17 +18,18 @@
     "@types/node": "^20.12.11",
     "@types/node-cron": "^3.0.11",
     "eslint": "8.54.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.2.2"
+    "ts-node": "10.9.2",
+    "typescript": "5.2.2"
   },
   "dependencies": {
+    "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "async": "^3.2.5",
-    "ccxt": "4.1.48",
+    "ccxt": "4.3.27",
     "node-cron": "^3.0.3"
   }
 }

@@ -6,6 +6,6 @@ export function buyOrder(smartTrade: SmartTrade): ActiveOrder {
   return {
     side: OrderSideEnum.Buy,
     quantity: smartTrade.quantity,
-    price: smartTrade.buy.price,
+    price: smartTrade.buy.filledPrice || smartTrade.buy.price,
   };
 }

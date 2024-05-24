@@ -23,13 +23,22 @@ type EntryOrderBuilder<EntryType extends $Enums.EntryType> =
       };
 
 type TakeProfitOrderBuilder<TakeProfitType extends $Enums.TakeProfitType> =
-  TakeProfitType extends "Order"
+  TakeProfitType extends "None"
     ? {
-        takeProfitOrder: OrderEntity;
+        takeProfitOrder: null;
       }
-    : {
-        takeProfitOrders: OrderEntity[];
-      };
+    : TakeProfitType extends "Order"
+      ? {
+          takeProfitOrder: OrderEntity;
+        }
+      : {
+          takeProfitOrders: OrderEntity[];
+        };
+
+export type SmartTradeEntity_Order_None = SmartTradeEntityBuilder<
+  "Order",
+  "None"
+>;
 
 export type SmartTradeEntity_Order_Order = SmartTradeEntityBuilder<
   "Order",
@@ -49,6 +58,7 @@ export type SmartTradeEntity_Ladder_Ladder = SmartTradeEntityBuilder<
 >;
 
 export type SmartTradeEntity =
+  | SmartTradeEntity_Order_None
   | SmartTradeEntity_Order_Order
   | SmartTradeEntity_Order_Ladder
   | SmartTradeEntity_Ladder_Order
@@ -92,7 +102,19 @@ export function toSmartTradeEntity(
       .map(toOrderEntity);
   };
 
-  if (entryType === "Order" && takeProfitType === "Order") {
+  if (entryType === "Order" && takeProfitType === "None") {
+    return {
+      ...other,
+      orders,
+
+      type,
+      entryType,
+      takeProfitType,
+
+      entryOrder: findSingleEntryOrder(),
+      takeProfitOrder: null,
+    };
+  } else if (entryType === "Order" && takeProfitType === "Order") {
     return {
       ...other,
       orders,

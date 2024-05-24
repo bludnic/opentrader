@@ -11,7 +11,7 @@ export interface IClosedOrder {
   /**
    * Client-supplied order ID
    */
-  clientOrderId: string;
+  clientOrderId?: string;
   side: OrderSide;
   /**
    * Quantity to buy or sell.

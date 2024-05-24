@@ -41,15 +41,15 @@ export class ExchangeAccountsWatcher {
     exchangeOrder: IWatchOrder,
     order: OrderWithSmartTrade,
   ) {
+    logger.info(
+      `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
+    );
     await xprisma.order.updateStatusToFilled({
       orderId: order.id,
       filledPrice: exchangeOrder.filledPrice,
-      filledAt: new Date(exchangeOrder.lastTradeTimestamp),
+      filledAt: new Date(exchangeOrder.lastTradeTimestamp || Date.now()),
       fee: exchangeOrder.fee,
     });
-    logger.info(
-      `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice}`,
-    );
 
     const bot = await BotProcessing.fromSmartTradeId(order.smartTrade.id);
 
