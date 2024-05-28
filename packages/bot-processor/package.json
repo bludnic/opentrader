@@ -24,6 +24,7 @@
   "dependencies": {
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/indicators": "workspace:*",
-    "@opentrader/tools": "workspace:*"
+    "@opentrader/tools": "workspace:*",
+    "zod": "3.22.4"
   }
 }
