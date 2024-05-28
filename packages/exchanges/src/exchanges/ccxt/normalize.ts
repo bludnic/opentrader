@@ -1,4 +1,3 @@
-import { ExchangeCode } from "@opentrader/types";
 import { composeSymbolIdFromPair, getExponentAbs } from "@opentrader/tools";
 import type { Normalize } from "../../types/normalize.interface";
 import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
@@ -134,10 +133,10 @@ const getCandlesticks: Normalize["getCandlesticks"] = {
 
 const getSymbol: Normalize["getSymbol"] = {
   request: (params) => [params.currencyPair],
-  response: (market) => ({
-    symbolId: composeSymbolIdFromPair(ExchangeCode.OKX, market!.symbol),
+  response: (market, exchangeCode) => ({
+    symbolId: composeSymbolIdFromPair(exchangeCode, market!.symbol),
     currencyPair: market!.symbol,
-    exchangeCode: ExchangeCode.OKX,
+    exchangeCode,
     exchangeSymbolId: market!.id,
 
     baseCurrency: market!.base,
@@ -159,9 +158,9 @@ const getSymbol: Normalize["getSymbol"] = {
 };
 
 const getSymbols: Normalize["getSymbols"] = {
-  response: (markets) =>
+  response: (markets, exchangeCode) =>
     Object.entries(markets).map(([_symbol, market]) =>
-      getSymbol.response(market),
+      getSymbol.response(market, exchangeCode),
     ),
 };
 

@@ -24,6 +24,7 @@ import type {
   IWatchCandlesResponse,
   IPlaceMarketOrderRequest,
   IPlaceMarketOrderResponse,
+  ExchangeCode,
 } from "@opentrader/types";
 import type {
   Balances,
@@ -110,12 +111,15 @@ export type Normalize = {
 
   getSymbol: {
     request: (params: IGetSymbolInfoRequest) => Parameters<Exchange["market"]>;
-    response: (data: Market) => ISymbolInfo;
+    response: (data: Market, exchangeCode: ExchangeCode) => ISymbolInfo;
   };
 
   getSymbols: {
     // request: (params: never) => void; // no params
-    response: (data: Dictionary<Market>) => ISymbolInfo[];
+    response: (
+      data: Dictionary<Market>,
+      exchangeCode: ExchangeCode,
+    ) => ISymbolInfo[];
   };
 
   watchOrders: {

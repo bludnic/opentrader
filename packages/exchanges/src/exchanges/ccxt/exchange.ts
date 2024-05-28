@@ -191,7 +191,7 @@ export class CCXTExchange implements IExchange {
     // const data: Market = await this.ccxt.market(...args);
     const data: Market = markets[args[0]];
 
-    return normalize.getSymbol.response(data); // @todo refactor
+    return normalize.getSymbol.response(data, this.exchangeCode); // @todo refactor
   }
 
   async getSymbols(
@@ -208,7 +208,7 @@ export class CCXTExchange implements IExchange {
         };
       }, {});
 
-    return normalize.getSymbols.response(spotMarkets);
+    return normalize.getSymbols.response(spotMarkets, this.exchangeCode);
   }
 
   async watchOrders(
