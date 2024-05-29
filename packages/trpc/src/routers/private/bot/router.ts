@@ -17,6 +17,8 @@ import { manualProcessGridBot } from "./manual-process/handler";
 import { ZManualProcessGridBotInputSchema } from "./manual-process/schema";
 import { getActiveSmartTrades } from "./get-active-smart-trades/handler";
 import { ZGetActiveSmartTradesInputSchema } from "./get-active-smart-trades/schema";
+import { getOpenSmartTrades } from "./get-open-smart-trades/handler";
+import { ZGetOpenSmartTradesInputSchema } from "./get-open-smart-trades/schema";
 import { getPendingSmartTrades } from "./get-pending-smart-trades/handler";
 import { ZGetPendingSmartTradesInputSchema } from "./get-pending-smart-trades/schema";
 import { getCompletedSmartTrades } from "./get-completed-smart-trades/handler";
@@ -52,6 +54,9 @@ export const botRouter = router({
   activeSmartTrades: authorizedProcedure
     .input(ZGetActiveSmartTradesInputSchema)
     .query(getActiveSmartTrades),
+  openSmartTrades: authorizedProcedure
+    .input(ZGetOpenSmartTradesInputSchema)
+    .query(getOpenSmartTrades),
   pendingSmartTrades: authorizedProcedure
     .input(ZGetPendingSmartTradesInputSchema)
     .query(getPendingSmartTrades),
