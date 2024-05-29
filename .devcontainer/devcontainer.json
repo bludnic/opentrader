@@ -1,0 +1,11 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/pnpm:2": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/turborepo-npm:1": {
+      "version": "latest"
+    }
+  }
+}
