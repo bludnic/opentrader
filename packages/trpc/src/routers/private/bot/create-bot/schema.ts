@@ -9,6 +9,7 @@ export const ZCreateBotInputSchema = z.object({
     quoteCurrency: true,
     settings: true,
     template: true,
+    timeframe: true,
   }),
 });
 
