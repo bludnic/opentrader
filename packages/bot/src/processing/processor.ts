@@ -26,7 +26,7 @@ export class Processor {
     await this.exchangeAccountsWatcher.addExchangeAccount(exchangeAccount);
   }
 
-  async onBotCreated(bot: TBot) {
+  async onBotStarted(bot: TBot) {
     await this.candlesProcessor.addBot(bot);
   }
 

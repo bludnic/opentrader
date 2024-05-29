@@ -1,4 +1,5 @@
 import { BotProcessing } from "@opentrader/processing";
+import { eventBus } from "../../../../event-bus";
 import { BotService } from "../../../../services/bot.service";
 import type { Context } from "../../../../utils/context";
 import type { TStartGridBotInputSchema } from "./schema";
@@ -23,6 +24,8 @@ export async function startGridBot({ input }: Options) {
   await botService.start();
 
   await botProcessor.placePendingOrders();
+
+  eventBus.botStarted(botId);
 
   return {
     ok: true,

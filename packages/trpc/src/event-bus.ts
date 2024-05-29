@@ -1,9 +1,10 @@
-import { ExchangeAccountWithCredentials, TBot } from "@opentrader/db";
+import { ExchangeAccountWithCredentials, TBot, xprisma } from "@opentrader/db";
 import { EventEmitter } from "node:events";
 
 export const EVENT = {
   onExchangeAccountCreated: "onExchangeAccountCreated",
   onBotCreated: "onBotCreated",
+  onBotStarted: "onBotStarted",
 } as const;
 
 /**
@@ -20,6 +21,21 @@ class EventBus extends EventEmitter {
 
   botCreated(bot: TBot) {
     this.emit(EVENT.onBotCreated, bot);
+  }
+
+  botStarted(botId: number) {
+    xprisma.bot
+      .findUniqueOrThrow({
+        where: {
+          id: botId,
+        },
+      })
+      .then((bot) => {
+        this.emit(EVENT.onBotStarted, bot);
+      })
+      .catch((error) => {
+        console.error("EventBuss: Error in botStarted", error);
+      });
   }
 }
 
