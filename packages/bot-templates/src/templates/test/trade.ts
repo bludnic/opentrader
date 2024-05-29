@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { useTrade, cancelSmartTrade } from "@opentrader/bot-processor";
 import type { TradeService, TBotContext } from "@opentrader/bot-processor";
 import { logger } from "@opentrader/logger";
@@ -31,3 +32,5 @@ export function* testTrade(ctx: TBotContext<any>) {
     logger.info("[TestTrade] Trade completed");
   }
 }
+
+testTrade.schema = z.object({});

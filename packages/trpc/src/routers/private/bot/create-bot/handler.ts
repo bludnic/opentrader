@@ -1,3 +1,5 @@
+import { BotTemplate } from "@opentrader/bot-processor";
+import { findTemplate } from "@opentrader/bot-templates";
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
 import type { Context } from "../../../../utils/context";
@@ -26,6 +28,24 @@ export async function createBot({ ctx, input }: Options) {
     throw new TRPCError({
       message: "Exchange Account doesn't exists",
       code: "NOT_FOUND",
+    });
+  }
+
+  let strategy: BotTemplate<any>;
+  try {
+    strategy = findTemplate(data.template);
+  } catch (err) {
+    throw new TRPCError({
+      message: `Strategy ${data.template} not found`,
+      code: "NOT_FOUND",
+    });
+  }
+
+  const parsed = strategy.schema.safeParse(data.settings);
+  if (!parsed.success) {
+    throw new TRPCError({
+      message: `Invalid strategy params: ${parsed.error.message}`,
+      code: "PARSE_ERROR",
     });
   }
 

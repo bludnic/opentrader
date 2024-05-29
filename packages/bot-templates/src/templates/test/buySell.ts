@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   buy,
   cancelSmartTrade,
@@ -40,3 +41,5 @@ export function* testBuySell(ctx: TBotContext<any>) {
     logger.info("[TestBuySell] Executed sell");
   }
 }
+
+testBuySell.schema = z.object({});

@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
 import type { MarketData, TBotContext } from "@opentrader/bot-processor";
 import { useMarket, useCandle, useExchange } from "@opentrader/bot-processor";
@@ -26,3 +27,5 @@ export function* testCandle(ctx: TBotContext<any>) {
 
   logger.info(`[CandleStrategy] Bot template executed successfully`);
 }
+
+testCandle.schema = z.object({});

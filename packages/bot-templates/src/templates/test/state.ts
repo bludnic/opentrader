@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { TBotContext } from "@opentrader/bot-processor";
 import { logger } from "@opentrader/logger";
 
@@ -24,3 +25,4 @@ export function* testState(ctx: TBotContext<any>) {
 }
 
 testState.displayName = "Test State";
+testState.schema = z.object({});

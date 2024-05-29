@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { TBotContext } from "@opentrader/bot-processor";
 import { useRSI } from "@opentrader/bot-processor";
 import { logger } from "@opentrader/logger";
@@ -27,3 +28,4 @@ export function* testRsi(ctx: TBotContext<any>) {
 
 testRsi.displayName = "Test RSI";
 testRsi.requiredHistory = 15;
+testRsi.schema = z.object({});
