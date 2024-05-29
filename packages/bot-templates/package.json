@@ -24,6 +24,6 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "zod": "3.22.4"
+    "zod": "3.23.8"
   }
 }

@@ -26,8 +26,8 @@
     "@opentrader/types": "workspace:*",
     "@prisma/client": "5.13.0",
     "prisma": "5.13.0",
-    "zod": "3.22.4",
-    "zod-prisma-types": "3.1.6"
+    "zod": "3.23.8",
+    "zod-prisma-types": "3.1.8"
   },
   "prisma": {
     "schema": "src/schema.prisma",
