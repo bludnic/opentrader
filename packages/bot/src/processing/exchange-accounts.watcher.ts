@@ -19,15 +19,19 @@ export class ExchangeAccountsWatcher {
 
   async create() {
     for (const exchangeAccount of this.exchangeAccounts) {
-      const ordersWatcher = new OrderSynchronizer(exchangeAccount);
-      this.ordersWatchers.push(ordersWatcher);
-
-      ordersWatcher.subscribe("onFilled", this.onOrderFilled.bind(this));
-      ordersWatcher.subscribe("onCanceled", this.onOrderCanceled.bind(this));
-      ordersWatcher.subscribe("onPlaced", this.onOrderPlaced.bind(this));
-
-      await ordersWatcher.enable();
+      await this.addExchangeAccount(exchangeAccount);
     }
+  }
+
+  async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    const ordersWatcher = new OrderSynchronizer(exchangeAccount);
+    this.ordersWatchers.push(ordersWatcher);
+
+    ordersWatcher.subscribe("onFilled", this.onOrderFilled.bind(this));
+    ordersWatcher.subscribe("onCanceled", this.onOrderCanceled.bind(this));
+    ordersWatcher.subscribe("onPlaced", this.onOrderPlaced.bind(this));
+
+    await ordersWatcher.enable();
   }
 
   async destroy() {

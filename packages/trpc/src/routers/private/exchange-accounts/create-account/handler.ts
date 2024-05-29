@@ -1,4 +1,5 @@
 import { xprisma } from "@opentrader/db";
+import { eventBus } from "../../../../event-bus";
 import type { Context } from "../../../../utils/context";
 import type { TCreateExchangeAccountInputSchema } from "./schema";
 
@@ -20,6 +21,7 @@ export async function createExchangeAccount({ input, ctx }: Options) {
       },
     },
   });
+  eventBus.exchangeAccountCreated(exchangeAccount);
 
   return exchangeAccount;
 }

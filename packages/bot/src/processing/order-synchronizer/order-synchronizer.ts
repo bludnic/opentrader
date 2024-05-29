@@ -26,7 +26,7 @@ export class OrderSynchronizer {
   private wsWatcher: OrderSynchronizerWsWatcher;
   private pollingWatcher: OrderSynchronizerPollingWatcher;
 
-  constructor(exchangeAccount: ExchangeAccountWithCredentials) {
+  constructor(public exchangeAccount: ExchangeAccountWithCredentials) {
     this.wsWatcher = new OrderSynchronizerWsWatcher(exchangeAccount);
     this.pollingWatcher = new OrderSynchronizerPollingWatcher(exchangeAccount);
   }

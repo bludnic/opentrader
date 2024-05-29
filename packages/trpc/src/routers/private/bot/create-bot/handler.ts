@@ -2,6 +2,7 @@ import { BotTemplate } from "@opentrader/bot-processor";
 import { findTemplate } from "@opentrader/bot-templates";
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
+import { eventBus } from "../../../../event-bus";
 import type { Context } from "../../../../utils/context";
 import type { TCreateBotInputSchema } from "./schema";
 
@@ -65,6 +66,7 @@ export async function createBot({ ctx, input }: Options) {
       },
     },
   });
+  eventBus.botCreated(bot);
 
   return bot;
 }

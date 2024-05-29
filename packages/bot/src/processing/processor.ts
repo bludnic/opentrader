@@ -20,6 +20,16 @@ export class Processor {
     this.candlesProcessor = new CandlesProcessor(bots);
   }
 
+  async onExchangeAccountCreated(
+    exchangeAccount: ExchangeAccountWithCredentials,
+  ) {
+    await this.exchangeAccountsWatcher.addExchangeAccount(exchangeAccount);
+  }
+
+  async onBotCreated(bot: TBot) {
+    await this.candlesProcessor.addBot(bot);
+  }
+
   async onApplicationBootstrap() {
     logger.info("[Processor] OrdersProcessor created");
     await this.exchangeAccountsWatcher.create();

@@ -22,49 +22,51 @@ export class CandlesProcessor {
     );
 
     for (const bot of this.bots) {
-      const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
-        where: {
-          id: bot.exchangeAccountId,
-        },
-      });
-      const exchange = exchangeProvider.fromAccount(exchangeAccount);
-
-      let channel = this.channels.find(
-        (channel) => channel.exchangeCode === exchange.exchangeCode,
-      );
-      if (!channel) {
-        channel = new CandlesChannel(exchange);
-        this.channels.push(channel);
-
-        logger.info(
-          `CandlesProcessor: Created channel for ${exchange.exchangeCode}`,
-        );
-
-        // @todo type
-        channel.on("candle", (data: CandleEvent) => {
-          void this.handleCandle(data);
-        });
-      }
-
-      const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
-
-      if (bot.timeframe === null) {
-        logger.warn(
-          `CandlesProcessor: Bot ${bot.id} is not timeframe based. Skip adding to channel.`,
-        );
-        continue;
-      }
-
-      const template = findTemplate(bot.template);
-      await channel.add(
-        symbol,
-        bot.timeframe as BarSize,
-        template.requiredHistory,
-      );
+      await this.addBot(bot);
     }
   }
 
-  // @todo reload(bots: TBot[]) method for subscribing to new channel when new bot is created
+  async addBot(bot: TBot) {
+    const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
+      where: {
+        id: bot.exchangeAccountId,
+      },
+    });
+    const exchange = exchangeProvider.fromAccount(exchangeAccount);
+
+    let channel = this.channels.find(
+      (channel) => channel.exchangeCode === exchange.exchangeCode,
+    );
+    if (!channel) {
+      channel = new CandlesChannel(exchange);
+      this.channels.push(channel);
+
+      logger.info(
+        `CandlesProcessor: Created channel for ${exchange.exchangeCode}`,
+      );
+
+      // @todo type
+      channel.on("candle", (data: CandleEvent) => {
+        void this.handleCandle(data);
+      });
+    }
+
+    const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
+
+    if (bot.timeframe === null) {
+      logger.warn(
+        `CandlesProcessor: Bot ${bot.id} is not timeframe based. Skip adding to channel.`,
+      );
+      return;
+    }
+
+    const template = findTemplate(bot.template);
+    await channel.add(
+      symbol,
+      bot.timeframe as BarSize,
+      template.requiredHistory,
+    );
+  }
 
   // @todo maybe queue
   private async handleCandle(data: CandleEvent) {
