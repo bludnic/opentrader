@@ -7,6 +7,7 @@ import {
   smartTradeRouter,
   symbolsRouter,
 } from "./private";
+import { publicRouter } from "./public";
 
 export const appRouter = trpc.router({
   exchangeAccount: exchangeAccountsRouter,
@@ -15,6 +16,7 @@ export const appRouter = trpc.router({
   gridBot: gridBotRouter,
   smartTrade: smartTradeRouter,
   cron: cronRouter,
+  public: publicRouter,
 });
 
 export type AppRouter = typeof appRouter;
