@@ -19,7 +19,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.12.11",
     "ts-node": "10.9.2",
-    "typescript": "5.2.2"
+    "typescript": "5.4.5"
   },
   "dependencies": {
     "@opentrader/tools": "workspace:*",

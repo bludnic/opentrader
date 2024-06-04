@@ -16,7 +16,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "eslint": "8.54.0",
-    "typescript": "5.2.2"
+    "typescript": "5.4.5"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",

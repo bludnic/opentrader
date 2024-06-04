@@ -19,5 +19,7 @@ export async function getGridBot({ ctx, input: id }: Options) {
     },
   });
 
+  bot.settings
+
   return bot;
 }
