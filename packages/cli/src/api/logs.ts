@@ -4,13 +4,11 @@ import {
   readFileSync,
   createReadStream,
   watchFile,
-  read,
 } from "fs";
 import { createInterface } from "readline";
-import { CommandResult } from "../types";
+import { prettyLog } from "../utils/pretty-log";
 import { logPath } from "../utils/app-path";
-
-logger;
+import { CommandResult } from "../types";
 
 type Options = {
   follow: boolean;
@@ -43,7 +41,10 @@ export async function logs(options: Options): Promise<CommandResult> {
 
     // Print the last 10 lines
     for (const line of logsLines.slice(-10)) {
-      console.log(line);
+      const isBreak = line === "";
+      if (!isBreak) {
+        prettyLog(line);
+      }
     }
 
     // Keep track of the last file size
@@ -58,7 +59,7 @@ export async function logs(options: Options): Promise<CommandResult> {
         const rl = createInterface({ input: stream });
 
         rl.on("line", (line) => {
-          console.log(line);
+          prettyLog(line);
         });
 
         rl.on("close", () => {
@@ -71,7 +72,10 @@ export async function logs(options: Options): Promise<CommandResult> {
     const logsLines = logsData.split("\n");
 
     for (const line of logsLines) {
-      console.log(line);
+      const isBreak = line === "";
+      if (!isBreak) {
+        prettyLog(line);
+      }
     }
   }
 
