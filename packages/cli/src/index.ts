@@ -15,11 +15,19 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-import { Command } from "commander";
+
+import { logPath } from "./utils/app-path";
+process.env.LOG_FILE = logPath;
+
+import { Command, Option } from "commander";
 import { addStopCommand } from "./commands/stop";
 import { addBacktestCommand } from "./commands/backtest";
 import { addGridLinesCommand } from "./commands/grid-lines";
 import { addTradeCommand } from "./commands/trade";
+import { addUpCommand } from "./commands/up";
+import { addDownCommand } from "./commands/down";
+import { addLogsCommand } from "./commands/logs";
+import { Client } from "jayson/promise";
 
 const program = new Command();
 
@@ -32,5 +40,8 @@ addBacktestCommand(program);
 addGridLinesCommand(program);
 addTradeCommand(program);
 addStopCommand(program);
+addUpCommand(program);
+addDownCommand(program);
+addLogsCommand(program);
 
 program.parse();

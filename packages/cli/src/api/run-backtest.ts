@@ -7,6 +7,8 @@ import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 import type { BarSize, ExchangeCode, ICandlestick } from "@opentrader/types";
 import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig } from "../config";
+import { existsSync } from "fs";
+import { join } from "path";
 
 type Options = {
   config: ConfigName;
@@ -24,8 +26,16 @@ export async function runBacktest(
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
+  let strategyFn;
+  const isCustomStrategyFile = existsSync(join(process.cwd(), strategyName));
   const strategyExists = strategyName in templates;
-  if (!strategyExists) {
+
+  if (isCustomStrategyFile) {
+    const { default: fn } = await import(join(process.cwd(), strategyName));
+    strategyFn = fn;
+  } else if (strategyExists) {
+    strategyFn = templates[strategyName];
+  } else {
     const availableStrategies = Object.keys(templates).join(", ");
     logger.info(
       `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,
@@ -55,7 +65,7 @@ export async function runBacktest(
       exchangeCode: options.exchange,
       settings: botConfig.settings,
     },
-    botTemplate: templates[botTemplate],
+    botTemplate: strategyFn,
   });
 
   return new Promise((resolve) => {
