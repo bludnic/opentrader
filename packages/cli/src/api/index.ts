@@ -5,3 +5,4 @@ export * from "./stop-command";
 export * from "./up/index";
 export * from "./down";
 export * from "./logs";
+export * from "./version";
