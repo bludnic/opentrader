@@ -1,5 +1,7 @@
 import { pro as ccxt } from "ccxt";
 import { templates } from "@opentrader/bot-templates";
+import { findStrategy } from "@opentrader/bot-templates/server";
+import { BotTemplate } from "@opentrader/bot-processor";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
@@ -7,8 +9,6 @@ import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 import type { BarSize, ExchangeCode, ICandlestick } from "@opentrader/types";
 import type { CommandResult, ConfigName } from "../types";
 import { readBotConfig } from "../config";
-import { existsSync } from "fs";
-import { join } from "path";
 
 type Options = {
   config: ConfigName;
@@ -26,27 +26,18 @@ export async function runBacktest(
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
-  let strategyFn;
-  const isCustomStrategyFile = existsSync(join(process.cwd(), strategyName));
-  const strategyExists = strategyName in templates;
+  let strategyFn: BotTemplate<any>;
 
-  if (isCustomStrategyFile) {
-    const { default: fn } = await import(join(process.cwd(), strategyName));
-    strategyFn = fn;
-  } else if (strategyExists) {
-    strategyFn = templates[strategyName];
-  } else {
-    const availableStrategies = Object.keys(templates).join(", ");
-    logger.info(
-      `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,
-    );
+  try {
+    strategyFn = await findStrategy(strategyName);
+  } catch (err) {
+    logger.info((err as Error).message);
 
     return {
       result: undefined,
     };
   }
 
-  const botTemplate = strategyName || botConfig.template;
   const botTimeframe = options.timeframe || botConfig.timeframe || null;
   const botPair = options.pair || botConfig.pair;
   const [baseCurrency, quoteCurrency] = botPair.split("/");
