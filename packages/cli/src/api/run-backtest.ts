@@ -1,7 +1,6 @@
 import { pro as ccxt } from "ccxt";
 import { templates } from "@opentrader/bot-templates";
 import { findStrategy } from "@opentrader/bot-templates/server";
-import { BotTemplate } from "@opentrader/bot-processor";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
@@ -26,10 +25,9 @@ export async function runBacktest(
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
-  let strategyFn: BotTemplate<any>;
-
+  let strategy: Awaited<ReturnType<typeof findStrategy>>;
   try {
-    strategyFn = await findStrategy(strategyName);
+    strategy = await findStrategy(strategyName);
   } catch (err) {
     logger.info((err as Error).message);
 
@@ -56,7 +54,7 @@ export async function runBacktest(
       exchangeCode: options.exchange,
       settings: botConfig.settings,
     },
-    botTemplate: strategyFn,
+    botTemplate: strategy.strategyFn,
   });
 
   return new Promise((resolve) => {

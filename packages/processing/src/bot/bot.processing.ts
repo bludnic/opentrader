@@ -4,7 +4,7 @@ import type {
   MarketData,
 } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
-import { findTemplate } from "@opentrader/bot-templates";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
@@ -170,13 +170,13 @@ export class BotProcessing {
     };
 
     const storeAdapter = new BotStoreAdapter(() => this.stop());
-    const botTemplate = findTemplate(this.bot.template);
+    const { strategyFn } = await findStrategy(this.bot.template);
 
     const processor = createStrategyRunner({
       store: storeAdapter,
       exchange,
       botConfig: configuration,
-      botTemplate,
+      botTemplate: strategyFn,
     });
 
     return processor;

@@ -1,10 +1,10 @@
 import { Server } from "jayson/promise";
-
 import { Processor } from "@opentrader/bot";
-import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
+import type { ExchangeAccountWithCredentials } from "@opentrader/db";
+import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { BarSize } from "@opentrader/types";
-import { templates } from "@opentrader/bot-templates";
+import type { BarSize } from "@opentrader/types";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import { readBotConfig, readExchangesConfig } from "../../config";
 import {
   createOrUpdateBot,
@@ -13,7 +13,7 @@ import {
   startBot,
   stopBot,
 } from "../../utils/bot";
-import { ConfigName } from "../../types";
+import type { ConfigName } from "../../types";
 
 let app: App | null = null;
 
@@ -102,12 +102,11 @@ const server = Server({
     const exchangesConfig = readExchangesConfig(options.config);
     logger.debug(exchangesConfig, "Parsed exchanges config");
 
-    const strategyExists = strategyName in templates;
-    if (!strategyExists) {
-      const availableStrategies = Object.keys(templates).join(", ");
-      logger.info(
-        `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,
-      );
+    let strategy: Awaited<ReturnType<typeof findStrategy>>;
+    try {
+      strategy = await findStrategy(strategyName);
+    } catch (err) {
+      logger.info((err as Error).message);
 
       return false;
     }
@@ -116,7 +115,7 @@ const server = Server({
     const exchangeAccounts: ExchangeAccountWithCredentials[] =
       await createOrUpdateExchangeAccounts(exchangesConfig);
     const bot = await createOrUpdateBot(
-      strategyName,
+      strategy.isCustom ? strategy.strategyFilePath : strategyName,
       options,
       config,
       exchangeAccounts,
@@ -168,12 +167,10 @@ const server = Server({
       return false;
     }
 
-    const strategyExists = bot.template in templates;
-    if (!strategyExists) {
-      const availableStrategies = Object.keys(templates).join(", ");
-      logger.info(
-        `Strategy "${bot.template}" does not exists. Available strategies: ${availableStrategies}`,
-      );
+    try {
+      await findStrategy(bot.template);
+    } catch (err) {
+      logger.info((err as Error).message);
 
       return false;
     }

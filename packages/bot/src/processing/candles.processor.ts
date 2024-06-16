@@ -4,7 +4,7 @@ import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import type { BarSize } from "@opentrader/types";
-import { findTemplate } from "@opentrader/bot-templates";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import type { CandleEvent } from "../channels";
 import { CandlesChannel } from "../channels";
 
@@ -60,11 +60,11 @@ export class CandlesProcessor {
       return;
     }
 
-    const template = findTemplate(bot.template);
+    const { strategyFn } = await findStrategy(bot.template);
     await channel.add(
       symbol,
       bot.timeframe as BarSize,
-      template.requiredHistory,
+      strategyFn.requiredHistory,
     );
   }
 
