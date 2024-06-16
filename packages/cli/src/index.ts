@@ -27,7 +27,7 @@ import { addTradeCommand } from "./commands/trade";
 import { addUpCommand } from "./commands/up";
 import { addDownCommand } from "./commands/down";
 import { addLogsCommand } from "./commands/logs";
-import { Client } from "jayson/promise";
+import { addVersionCommand } from "./commands/version";
 
 const program = new Command();
 
@@ -43,5 +43,6 @@ addStopCommand(program);
 addUpCommand(program);
 addDownCommand(program);
 addLogsCommand(program);
+addVersionCommand(program);
 
 program.parse();
