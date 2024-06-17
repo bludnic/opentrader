@@ -5,8 +5,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "build:webpack": "webpack",
+    "build": "webpack",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
