@@ -5,5 +5,6 @@ module.exports = {
   rules: {
     "import/namespace": "off",
     "@typescript-eslint/no-var-requires": "off",
+    "import/first": "off",
   },
 };
