@@ -19,7 +19,7 @@
 import { logPath } from "./utils/app-path";
 process.env.LOG_FILE = logPath;
 
-import { Command, Option } from "commander";
+import { Command } from "commander";
 import { addStopCommand } from "./commands/stop";
 import { addBacktestCommand } from "./commands/backtest";
 import { addGridLinesCommand } from "./commands/grid-lines";
