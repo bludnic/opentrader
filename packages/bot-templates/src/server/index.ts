@@ -1,6 +1,7 @@
 import { join } from "node:path";
 import type { BotTemplate } from "@opentrader/bot-processor";
-import * as templates from "./templates";
+import * as templates from "../templates";
+import dynamicImport from "./dynamic-import";
 
 type FindStrategyResult = {
   strategyFn: BotTemplate<any>;
@@ -21,8 +22,7 @@ export async function findStrategy(
   const strategyExists = strategyNameOrFile in templates;
 
   if (isCustomStrategyFile) {
-    const { default: fn } = await import(customStrategyFilePath);
-    strategyFn = fn;
+    strategyFn = dynamicImport(customStrategyFilePath);
   } else if (strategyExists) {
     strategyFn = templates[strategyNameOrFile as keyof typeof templates];
   } else {

@@ -4,5 +4,6 @@ module.exports = {
   extends: ["@opentrader/eslint-config/module.js"],
   rules: {
     "import/namespace": "off",
+    "@typescript-eslint/no-var-requires": "off",
   },
 };

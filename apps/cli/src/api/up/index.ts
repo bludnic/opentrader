@@ -1,11 +1,11 @@
-import { join } from "path";
-import { spawn } from "child_process";
-import { Processor } from "@opentrader/bot";
-import { xprisma } from "@opentrader/db";
+import { join } from "node:path";
+import { spawn } from "node:child_process";
 import { logger } from "@opentrader/logger";
-import { CommandResult } from "../../types";
+import type { CommandResult } from "../../types";
 import { appPath } from "../../utils/app-path";
 import { getPid, savePid } from "../../utils/pid";
+
+const isDevelopment = process.env.NODE_ENV !== "production";
 
 type Options = {
   detach: boolean;
@@ -22,10 +22,15 @@ export async function up(options: Options): Promise<CommandResult> {
     };
   }
 
-  const daemonProcess = spawn("ts-node", [join(__dirname, "daemon.ts")], {
-    detached: options.detach,
-    stdio: options.detach ? "ignore" : undefined,
-  });
+  const daemonProcess = isDevelopment
+    ? spawn("ts-node", [join(__dirname, "daemon.ts")], {
+        detached: options.detach,
+        stdio: options.detach ? "ignore" : undefined,
+      })
+    : spawn("node", [join(__dirname, "daemon.js")], {
+        detached: options.detach,
+        stdio: options.detach ? "ignore" : undefined,
+      });
 
   if (daemonProcess.pid === undefined) {
     throw new Error("Failed to start daemon process");
