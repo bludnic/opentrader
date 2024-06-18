@@ -1,5 +1,5 @@
-import { templates } from "@opentrader/bot-templates";
-import { xprisma } from "@opentrader/db/dist";
+import { findStrategy } from "@opentrader/bot-templates/server";
+import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { BotProcessing } from "@opentrader/processing";
 import type { CommandResult, ConfigName } from "../types";
@@ -30,12 +30,11 @@ export async function stopCommand(options: {
     };
   }
 
-  const strategyExists = bot.template in templates;
-  if (!strategyExists) {
-    const availableStrategies = Object.keys(templates).join(", ");
-    logger.info(
-      `Strategy "${bot.template}" does not exists. Available strategies: ${availableStrategies}`,
-    );
+  // check if bot strategy file exists
+  try {
+    await findStrategy(bot.template);
+  } catch (err) {
+    logger.info((err as Error).message);
 
     return {
       result: undefined,

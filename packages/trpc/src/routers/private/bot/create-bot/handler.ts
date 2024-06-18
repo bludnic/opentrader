@@ -1,5 +1,4 @@
-import { BotTemplate } from "@opentrader/bot-processor";
-import { findTemplate } from "@opentrader/bot-templates";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
 import { eventBus } from "../../../../event-bus";
@@ -32,9 +31,9 @@ export async function createBot({ ctx, input }: Options) {
     });
   }
 
-  let strategy: BotTemplate<any>;
+  let strategy: Awaited<ReturnType<typeof findStrategy>>;
   try {
-    strategy = findTemplate(data.template);
+    strategy = await findStrategy(data.template);
   } catch (err) {
     throw new TRPCError({
       message: `Strategy ${data.template} not found`,
@@ -42,7 +41,7 @@ export async function createBot({ ctx, input }: Options) {
     });
   }
 
-  const parsed = strategy.schema.safeParse(data.settings);
+  const parsed = strategy.strategyFn.schema.safeParse(data.settings);
   if (!parsed.success) {
     throw new TRPCError({
       message: `Invalid strategy params: ${parsed.error.message}`,

@@ -26,6 +26,7 @@
     "debug": "ts-node --transpile-only packages/cli/src/index.ts trade debug"
   },
   "bin": {
+    "dev": "./bin/dev.sh",
     "opentrader": "./bin/opentrader.sh"
   }
 }

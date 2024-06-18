@@ -1,5 +1,6 @@
 import { pro as ccxt } from "ccxt";
 import { templates } from "@opentrader/bot-templates";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
@@ -24,19 +25,17 @@ export async function runBacktest(
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
-  const strategyExists = strategyName in templates;
-  if (!strategyExists) {
-    const availableStrategies = Object.keys(templates).join(", ");
-    logger.info(
-      `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,
-    );
+  let strategy: Awaited<ReturnType<typeof findStrategy>>;
+  try {
+    strategy = await findStrategy(strategyName);
+  } catch (err) {
+    logger.info((err as Error).message);
 
     return {
       result: undefined,
     };
   }
 
-  const botTemplate = strategyName || botConfig.template;
   const botTimeframe = options.timeframe || botConfig.timeframe || null;
   const botPair = options.pair || botConfig.pair;
   const [baseCurrency, quoteCurrency] = botPair.split("/");
@@ -55,7 +54,7 @@ export async function runBacktest(
       exchangeCode: options.exchange,
       settings: botConfig.settings,
     },
-    botTemplate: templates[botTemplate],
+    botTemplate: strategy.strategyFn,
   });
 
   return new Promise((resolve) => {

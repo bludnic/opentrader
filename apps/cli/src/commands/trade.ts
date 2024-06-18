@@ -9,7 +9,7 @@ export function addTradeCommand(program: Command) {
   program
     .command("trade")
     .description("Live trading")
-    .addArgument(new Argument("<strategy>", "Strategy name"))
+    .addArgument(new Argument("<strategy>", "Strategy name").argOptional())
     .addOption(
       new Option("-c, --config <config>", "Config file").default(
         DEFAULT_CONFIG_NAME,

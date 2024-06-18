@@ -1,89 +1,14 @@
-import { templates } from "@opentrader/bot-templates";
+import { ExchangeAccountWithCredentials, TBot, xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { Processor } from "@opentrader/bot";
-import { xprisma } from "@opentrader/db";
-import type { TBot, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { BarSize } from "@opentrader/types";
-import type {
-  BotConfig,
-  CommandResult,
-  ConfigName,
-  ExchangeConfig,
-} from "../types";
-import { readBotConfig, readExchangesConfig } from "../config";
-
-type Options = {
-  config: ConfigName;
-  pair?: string;
-  exchange?: string;
-  timeframe?: BarSize;
-};
-
-export async function runTrading(
-  strategyName: keyof typeof templates,
-  options: Options,
-): Promise<CommandResult> {
-  const config = readBotConfig(options.config);
-  logger.debug(config, "Parsed bot config");
-
-  const exchangesConfig = readExchangesConfig(options.config);
-  logger.debug(exchangesConfig, "Parsed exchanges config");
-
-  const strategyExists = strategyName in templates;
-  if (!strategyExists) {
-    const availableStrategies = Object.keys(templates).join(", ");
-    logger.info(
-      `Strategy "${strategyName}" does not exists. Available strategies: ${availableStrategies}`,
-    );
-
-    return {
-      result: undefined,
-    };
-  }
-
-  // Saving exchange accounts to DB if not exists
-  const exchangeAccounts: ExchangeAccountWithCredentials[] =
-    await createOrUpdateExchangeAccounts(exchangesConfig);
-  const bot = await createOrUpdateBot(
-    strategyName,
-    options,
-    config,
-    exchangeAccounts,
-  );
-
-  const processor = new Processor(exchangeAccounts, [bot]);
-  await processor.onApplicationBootstrap();
-
-  if (bot.enabled) {
-    logger.info(
-      `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
-    );
-    await stopBot(bot.id);
-    logger.info(`The bot state was cleared`);
-  }
-
-  if (bot.processing) {
-    logger.warn(
-      `Bot "${bot.label}" is already processing. It could happen because previous process was interrupted.`,
-    );
-    await resetProcessing(bot.id);
-    logger.warn(`The bot processing state was cleared`);
-  }
-
-  await startBot(bot.id);
-  logger.info(`Bot "${bot.label}" started`);
-
-  return {
-    result: undefined,
-  };
-}
+import { BotConfig, ConfigName, ExchangeConfig } from "../types";
 
 /**
  * Save exchange accounts to DB if not exists
  * @param exchangesConfig - Exchange accounts configuration
  */
-async function createOrUpdateExchangeAccounts(
+export async function createOrUpdateExchangeAccounts(
   exchangesConfig: Record<string, ExchangeConfig>,
 ) {
   const exchangeAccounts: ExchangeAccountWithCredentials[] = [];
@@ -142,9 +67,16 @@ async function createOrUpdateExchangeAccounts(
   return exchangeAccounts;
 }
 
-async function createOrUpdateBot<T = any>(
+type CreateOrUpdateBotOptions = {
+  config: ConfigName;
+  pair?: string;
+  exchange?: string;
+  timeframe?: BarSize;
+};
+
+export async function createOrUpdateBot<T = any>(
   strategyName: string,
-  options: Options,
+  options: CreateOrUpdateBotOptions,
   botConfig: BotConfig<T>,
   exchangeAccounts: ExchangeAccountWithCredentials[],
 ): Promise<TBot> {
@@ -234,7 +166,7 @@ async function createOrUpdateBot<T = any>(
   return bot;
 }
 
-async function startBot(botId: number) {
+export async function startBot(botId: number) {
   const botProcessor = await BotProcessing.fromId(botId);
   await botProcessor.processStartCommand();
 
@@ -243,7 +175,7 @@ async function startBot(botId: number) {
   await botProcessor.placePendingOrders();
 }
 
-async function enableBot(botId: number) {
+export async function enableBot(botId: number) {
   await xprisma.bot.custom.update({
     where: {
       id: botId,
@@ -254,14 +186,14 @@ async function enableBot(botId: number) {
   });
 }
 
-async function stopBot(botId: number) {
+export async function stopBot(botId: number) {
   const botProcessor = await BotProcessing.fromId(botId);
   await botProcessor.processStopCommand();
 
   await disableBot(botId);
 }
 
-async function disableBot(botId: number) {
+export async function disableBot(botId: number) {
   await xprisma.bot.custom.update({
     where: {
       id: botId,
@@ -272,7 +204,7 @@ async function disableBot(botId: number) {
   });
 }
 
-async function resetProcessing(botId: number) {
+export async function resetProcessing(botId: number) {
   await xprisma.bot.custom.update({
     where: {
       id: botId,

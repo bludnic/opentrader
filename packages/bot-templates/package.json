@@ -4,19 +4,29 @@
   "description": "",
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server/index.ts",
+    "./dist": "./src/index.ts"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --quiet",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "jest"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",
     "eslint": "8.54.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "typescript": "5.4.5"
   },
   "dependencies": {
