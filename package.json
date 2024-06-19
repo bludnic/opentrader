@@ -10,11 +10,11 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@9.2.0",
+  "packageManager": "pnpm@9.4.0",
   "devDependencies": {
     "prettier": "^3.2.5",
     "ts-node": "10.9.2",
-    "turbo": "^1.13.3"
+    "turbo": "^2.0.4"
   },
   "scripts": {
     "lint": "turbo run lint",
