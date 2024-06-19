@@ -17,9 +17,9 @@
  */
 import { rsi } from "@opentrader/indicators";
 import { OrderStatusEnum, OrderType } from "@opentrader/types";
-import { TradeService, SmartTradeService } from "./types";
-import type { TBotContext } from "./types";
-import type { BaseEffect, EffectType } from "./effects/types";
+import { TradeService, SmartTradeService } from "./types/index.js";
+import type { TBotContext } from "./types/index.js";
+import type { BaseEffect, EffectType } from "./effects/types/index.js";
 import type {
   buy,
   useTrade,
@@ -33,7 +33,7 @@ import type {
   useMarket,
   useCandle,
   useRSI,
-} from "./effects";
+} from "./effects/index.js";
 import {
   BUY,
   CANCEL_SMART_TRADE,
@@ -48,7 +48,7 @@ import {
   USE_MARKET,
   USE_CANDLE,
   USE_RSI_INDICATOR,
-} from "./effects";
+} from "./effects/index.js";
 
 export const effectRunnerMap: Record<
   EffectType,

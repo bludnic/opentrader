@@ -1,6 +1,6 @@
 import type { IExchange } from "@opentrader/exchanges";
-import type { UseSmartTradePayload } from "../../effects";
-import type { SmartTrade } from "../smart-trade";
+import type { UseSmartTradePayload } from "../../effects/index.js";
+import type { SmartTrade } from "../smart-trade/index.js";
 
 export interface IStore {
   stopBot: (botId: number) => Promise<void>;

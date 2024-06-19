@@ -1,11 +1,11 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import type { UseSmartTradePayload } from "./effects";
+import type { UseSmartTradePayload } from "./effects/index.js";
 import type {
   IBotConfiguration,
   IBotControl,
   SmartTrade,
   IStore,
-} from "./types";
+} from "./types/index.js";
 
 export class BotControl<T extends IBotConfiguration> implements IBotControl {
   constructor(

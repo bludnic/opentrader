@@ -15,7 +15,7 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./effects";
-export * from "./types";
-export * from "./strategy-runner";
-export * from "./bot-control";
+export * from "./effects/index.js";
+export * from "./types/index.js";
+export * from "./strategy-runner.js";
+export * from "./bot-control.js";
