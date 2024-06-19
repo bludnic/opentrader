@@ -15,10 +15,10 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.14.5",
     "eslint": "8.54.0",
     "ts-node": "10.9.2",
-    "tslib": "^2.6.2",
+    "tslib": "^2.6.3",
     "typescript": "5.4.5"
   },
   "dependencies": {

@@ -16,7 +16,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.24",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.14.5",
     "@types/node-cron": "^3.0.11",
     "eslint": "8.54.0",
     "ts-node": "10.9.2",

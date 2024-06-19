@@ -12,7 +12,7 @@
   },
   "packageManager": "pnpm@9.4.0",
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.2",
     "ts-node": "10.9.2",
     "turbo": "^2.0.4"
   },
