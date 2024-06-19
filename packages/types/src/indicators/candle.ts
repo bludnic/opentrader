@@ -1,4 +1,4 @@
-import type { IndicatorName, IndicatorsResult } from "./indicators";
+import { IndicatorName, IndicatorsResult } from "./indicators.js";
 
 export type Candle = {
   timestamp: number;

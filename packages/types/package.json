@@ -2,10 +2,11 @@
   "name": "@opentrader/types",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.cts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsup --dts",
     "lint": "eslint . --quiet"
   },
   "author": "bludnic",
@@ -14,6 +15,7 @@
     "@opentrader/eslint-config": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "eslint": "8.54.0",
+    "tsup": "^8.1.0",
     "typescript": "5.4.5"
   }
 }
