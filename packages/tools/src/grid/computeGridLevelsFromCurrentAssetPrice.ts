@@ -1,7 +1,8 @@
 import type { IGridBotLevel, IGridLine } from "@opentrader/types";
 import { OrderStatusEnum } from "@opentrader/types";
-import { isWaitingGridLine } from "./isWaitingGridLine";
-import { nextGridLinePrice } from "./nextGridLinePrice";
+
+import { isWaitingGridLine } from "./isWaitingGridLine.js";
+import { nextGridLinePrice } from "./nextGridLinePrice.js";
 
 /**
  * Computes initial grid levels based on current asset price.

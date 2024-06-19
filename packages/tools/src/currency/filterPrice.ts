@@ -1,6 +1,6 @@
 import type { ISymbolFilter } from "@opentrader/types";
 import Big from "big.js";
-import { countDecimalPlaces } from "./common/countDecimalPlaces";
+import { countDecimalPlaces } from "./common/countDecimalPlaces.js";
 
 /**
  * Filters order price (quote currency)

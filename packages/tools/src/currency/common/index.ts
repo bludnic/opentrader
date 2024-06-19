@@ -1,2 +1,2 @@
-export * from "./countDecimalPlaces";
-export * from "./getExponentAbs";
+export * from "./countDecimalPlaces.js";
+export * from "./getExponentAbs.js";

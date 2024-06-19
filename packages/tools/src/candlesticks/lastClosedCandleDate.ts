@@ -1,5 +1,5 @@
 import type { BarSize } from "@opentrader/types";
-import { barSizeToDuration } from "./barSizeToDuration";
+import { barSizeToDuration } from "./barSizeToDuration.js";
 
 /**
  * Calculate the start time of the last closed candle.

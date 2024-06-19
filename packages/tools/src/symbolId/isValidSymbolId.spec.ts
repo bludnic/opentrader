@@ -1,4 +1,4 @@
-import { isValidSymbolId } from "./isValidSymbolId";
+import { isValidSymbolId } from "./isValidSymbolId.js";
 
 describe("isValidSymbolId", () => {
   it("test existing exchange with a valid currency pair", () => {

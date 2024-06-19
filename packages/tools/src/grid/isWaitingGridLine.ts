@@ -23,7 +23,7 @@ export function isWaitingGridLine(
   const nextGridLine: IGridLine | undefined = gridLines[gridLineIndex + 1];
 
   const targetGridLinePriceDiff = big(currentAssetPrice)
-    .minus(targetGridLine.price)
+    .minus(targetGridLine!.price)
     .abs();
 
   if (prevGridLine) {
