@@ -9,11 +9,13 @@ export type BuyTransaction = {
     fee: number; // fee in quote currency
     updatedAt: number;
   };
-  sell?: {
-    price: number;
-    fee: number; // fee in quote currency
-    updatedAt: number;
-  };
+  sell?:
+    | {
+        price: number;
+        fee: number; // fee in quote currency
+        updatedAt: number;
+      }
+    | undefined;
   profit: number;
 };
 
@@ -35,3 +37,15 @@ export type SellTransaction = {
 };
 
 export type Transaction = BuyTransaction | SellTransaction;
+
+export type ActiveOrder = {
+  side: OrderSideEnum;
+  quantity: number;
+  price?: number;
+};
+
+export type ReportResult = {
+  transactions: Transaction[];
+  activeOrders: ActiveOrder[];
+  totalProfit: number;
+};

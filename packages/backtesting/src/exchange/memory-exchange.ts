@@ -25,7 +25,7 @@ import type {
   IPlaceMarketOrderResponse,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
-import type { MarketSimulator } from "../market-simulator";
+import type { MarketSimulator } from "../market-simulator.js";
 
 export class MemoryExchange implements IExchange {
   ccxt = {} as any;

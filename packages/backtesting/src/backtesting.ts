@@ -24,12 +24,10 @@ import type {
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { logger, format } from "@opentrader/logger";
-import { fulfilledTable, gridTable } from "./debugging";
-import { BacktestingReport } from "./backtesting-report";
-import type { ReportResult } from "./types";
-import { MarketSimulator } from "./market-simulator";
-import { MemoryExchange } from "./exchange/memory-exchange";
-import { MemoryStore } from "./store/memory-store";
+import { BacktestingReport } from "./backtesting-report.js";
+import { MarketSimulator } from "./market-simulator.js";
+import { MemoryExchange } from "./exchange/memory-exchange.js";
+import { MemoryStore } from "./store/memory-store.js";
 
 export class Backtesting<T extends IBotConfiguration<T>> {
   private marketSimulator: MarketSimulator;
@@ -67,7 +65,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
         )}`,
       );
 
-      const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
+      // const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
 
       // if (anyOrderFulfilled) {
       //   console.log("Fulfilled Table");
@@ -86,7 +84,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
         });
       }
 
-      const anyOrderPlaced = this.marketSimulator.placeOrders();
+      // const anyOrderPlaced = this.marketSimulator.placeOrders();
       // if (anyOrderPlaced) {
       //   console.log("Placed Table");
       //   console.table(gridTable(this.store.getSmartTrades()));

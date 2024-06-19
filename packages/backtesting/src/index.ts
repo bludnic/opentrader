@@ -15,6 +15,6 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./backtesting";
-export * from "./market-simulator";
-export * from "./types";
+export * from "./backtesting.js";
+export * from "./market-simulator.js";
+export * from "./types/index.js";
