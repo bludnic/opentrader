@@ -4,5 +4,10 @@
     "@tsconfig/node20/tsconfig.json",
     "@tsconfig/strictest/tsconfig.json"
   ],
-  "compilerOptions": {}
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
 }
