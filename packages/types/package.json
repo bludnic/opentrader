@@ -7,12 +7,13 @@
   "types": "dist/index.d.cts",
   "scripts": {
     "build": "tsup --dts",
-    "lint": "eslint . --quiet"
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "eslint": "8.54.0",
     "tsup": "^8.1.0",
