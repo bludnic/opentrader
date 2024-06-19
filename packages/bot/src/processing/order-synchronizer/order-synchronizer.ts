@@ -16,9 +16,9 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
-import { OrderSynchronizerPollingWatcher } from "./order-synchronizer-polling.watcher";
-import { OrderSynchronizerWsWatcher } from "./order-synchronizer-ws.watcher";
-import type { Event, Subscription } from "./types";
+import { OrderSynchronizerPollingWatcher } from "./order-synchronizer-polling.watcher.js";
+import { OrderSynchronizerWsWatcher } from "./order-synchronizer-ws.watcher.js";
+import type { Event, Subscription } from "./types.js";
 
 export class OrderSynchronizer {
   private consumers: Subscription[] = [];

@@ -1,1 +1,1 @@
-export * from "./order-synchronizer";
+export * from "./order-synchronizer.js";

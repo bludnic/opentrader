@@ -1,2 +1,2 @@
-export * from "./candles.channel";
-export * from "./types";
+export * from "./candles.channel.js";
+export * from "./types.js";

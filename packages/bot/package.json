@@ -2,17 +2,18 @@
   "name": "@opentrader/bot",
   "version": "0.0.1",
   "description": "",
+  "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.24",
@@ -20,6 +21,7 @@
     "@types/node-cron": "^3.0.11",
     "eslint": "8.54.0",
     "ts-node": "10.9.2",
+    "tsup": "^8.1.0",
     "typescript": "5.4.5"
   },
   "dependencies": {
