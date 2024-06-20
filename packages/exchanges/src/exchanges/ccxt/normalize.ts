@@ -1,7 +1,7 @@
 import { composeSymbolIdFromPair, getExponentAbs } from "@opentrader/tools";
-import type { Normalize } from "../../types/normalize.interface";
-import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus";
 import { OrderSide } from "@opentrader/types";
+import type { Normalize } from "../../types/normalize.interface.js";
+import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus.js";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>

@@ -44,11 +44,11 @@ import type {
 } from "@opentrader/types";
 import { pro } from "ccxt";
 import type { Dictionary, Market, Exchange } from "ccxt";
-import type { IExchange, IExchangeCredentials } from "../../types";
-import { cache } from "../../cache";
-import { fetcher } from "../../utils/next/fetcher";
-import { normalize } from "./normalize";
-import { exchangeCodeMapCCXT } from "./constants";
+import type { IExchange, IExchangeCredentials } from "../../types/index.js";
+import { cache } from "../../cache.js";
+import { fetcher } from "../../utils/next/fetcher.js";
+import { normalize } from "./normalize.js";
+import { exchangeCodeMapCCXT } from "./constants.js";
 
 export class CCXTExchange implements IExchange {
   public exchangeCode: ExchangeCode;

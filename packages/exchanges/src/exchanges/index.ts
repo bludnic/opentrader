@@ -1,6 +1,6 @@
 import { ExchangeCode } from "@opentrader/types";
-import { createExchange } from "./ccxt/factory";
-import { exchangeCodeMapCCXT } from "./ccxt/constants";
+import { createExchange } from "./ccxt/factory.js";
+import { exchangeCodeMapCCXT } from "./ccxt/constants.js";
 
 export const exchanges: Record<
   ExchangeCode,

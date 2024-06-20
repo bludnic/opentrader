@@ -17,8 +17,8 @@
  */
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import type { ExchangeCode } from "@opentrader/types";
-import { exchanges } from "./exchanges";
-import type { IExchange } from "./types";
+import { exchanges } from "./exchanges/index.js";
+import type { IExchange } from "./types/index.js";
 
 type ExchangeAccountId = number;
 
