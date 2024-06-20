@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { gridBotModel } from "./extension/models/grid-bot.model";
-import { orderModel } from "./extension/models/order.model";
-import { smartTradeModel } from "./extension/models/smart-trade.model";
-import { customBotModel } from "./extension/models/custom-bot.model";
+import { gridBotModel } from "./extension/models/grid-bot.model.js";
+import { orderModel } from "./extension/models/order.model.js";
+import { smartTradeModel } from "./extension/models/smart-trade.model.js";
+import { customBotModel } from "./extension/models/custom-bot.model.js";
 
 function newPrismaClientInstance() {
   console.log("❕ DB: Created new instance of PrismaClient");
