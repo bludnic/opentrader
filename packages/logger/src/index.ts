@@ -15,5 +15,5 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * as format from "./formatters";
-export { logger } from "./logger";
+export * as format from "./formatters.js";
+export { logger } from "./logger.js";
