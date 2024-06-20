@@ -15,9 +15,5 @@
   "bugs": {
     "url": "https://github.com/Open-Trader/opentrader/issues"
   },
-  "homepage": "https://github.com/Open-Trader/opentrader/tree/master/packages/tsconfig",
-  "devDependencies": {
-    "@tsconfig/node20": "^20.1.4",
-    "@tsconfig/strictest": "^2.0.5"
-  }
+  "homepage": "https://github.com/Open-Trader/opentrader/tree/master/packages/tsconfig"
 }
