@@ -1,13 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": [
-    "@tsconfig/node20/tsconfig.json",
-    "@tsconfig/strictest/tsconfig.json"
+    "@tsconfig/node20/tsconfig.json"
   ],
   "compilerOptions": {
-    "exactOptionalPropertyTypes": false,
-    "strictNullChecks": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "strict": true
   }
 }

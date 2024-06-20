@@ -16,9 +16,9 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import type { BotTemplate } from "@opentrader/bot-processor";
-import * as templates from "./templates";
+import * as templates from "./templates/index.js";
 
-export * from "./templates";
+export * from "./templates/index.js";
 
 export function findTemplate(template: string): BotTemplate<any> {
   if (template in templates) {
