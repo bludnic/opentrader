@@ -4,8 +4,8 @@ import type {
 } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
-import type { ISmartTradeExecutor } from "./smart-trade-executor.interface";
-import { TradeExecutor } from "./trade/trade.executor";
+import type { ISmartTradeExecutor } from "./smart-trade-executor.interface.js";
+import { TradeExecutor } from "./trade/trade.executor.js";
 
 /**
  * Combine all type of SmartTrades into one executor.

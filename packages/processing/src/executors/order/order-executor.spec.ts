@@ -5,8 +5,8 @@ import {
 } from "@opentrader/db";
 import { exchangeProvider, IExchange } from "@opentrader/exchanges";
 import { Order } from "@opentrader/db";
-import { OrderExecutor } from "./order.executor";
-import { createTrade, getExchangeAccount } from "../../utils/test";
+import { OrderExecutor } from "./order.executor.js";
+import { createTrade, getExchangeAccount } from "../../utils/test.js";
 
 describe("OrderExecutor", () => {
   let exchangeAccount: ExchangeAccountWithCredentials;

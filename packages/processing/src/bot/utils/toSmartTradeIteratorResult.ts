@@ -1,6 +1,6 @@
 import type { SmartTrade as ProcessorSmartTrade } from "@opentrader/bot-processor";
 import type { SmartTradeEntity } from "@opentrader/db";
-import { toProcessorOrderStatus } from "./order-status";
+import { toProcessorOrderStatus } from "./toProcessorOrderStatus.js";
 
 /**
  * Convert `ISmartTrade` entity into `SmartTrade` iterator result

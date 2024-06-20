@@ -1,6 +1,6 @@
 import type { $Enums, Prisma } from "@opentrader/db";
 import { OrderStatusEnum, OrderType } from "@opentrader/types";
-import { toPrismaOrderStatus } from "../order-status";
+import { toPrismaOrderStatus } from "./toPrismaOrderStatus.js";
 
 export function toPrismaOrder(
   order: {
