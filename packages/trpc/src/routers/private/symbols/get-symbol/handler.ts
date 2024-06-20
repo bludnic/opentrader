@@ -1,7 +1,7 @@
 import { exchangeProvider } from "@opentrader/exchanges";
 import { decomposeSymbolId } from "@opentrader/tools";
-import type { Context } from "../../../../utils/context";
-import type { TGetSymbolInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TGetSymbolInputSchema } from "./schema.js";
 
 type Options = {
   ctx: Context;

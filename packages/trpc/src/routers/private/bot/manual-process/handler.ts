@@ -1,7 +1,7 @@
 import { BotProcessing } from "@opentrader/processing";
-import { BotService } from "../../../../services/bot.service";
-import type { Context } from "../../../../utils/context";
-import type { TManualProcessGridBotInputSchema } from "./schema";
+import { BotService } from "../../../../services/bot.service.js";
+import type { Context } from "../../../../utils/context.js";
+import type { TManualProcessGridBotInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

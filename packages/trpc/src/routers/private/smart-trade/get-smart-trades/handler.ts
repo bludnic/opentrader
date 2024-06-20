@@ -1,6 +1,6 @@
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
-import type { TGetSmartTradesSchema } from "./schema";
-import type { Context } from "../../../../utils/context";
+import type { TGetSmartTradesSchema } from "./schema.js";
+import type { Context } from "../../../../utils/context.js";
 
 type Options = {
   ctx: {

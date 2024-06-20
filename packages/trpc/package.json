@@ -2,20 +2,23 @@
   "name": "@opentrader/trpc",
   "version": "0.0.1",
   "description": "",
+  "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "@types/node": "^20.14.5",
     "eslint": "8.54.0",
+    "tsup": "^8.1.0",
     "typescript": "5.4.5"
   },
   "dependencies": {
