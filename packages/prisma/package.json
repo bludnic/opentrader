@@ -1,6 +1,7 @@
 {
   "name": "@opentrader/prisma",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "main": "src/index.ts",
   "types": "src/index.ts",

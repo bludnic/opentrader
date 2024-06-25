@@ -5,15 +5,15 @@ import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import type { BarSize } from "@opentrader/types";
 import { findStrategy } from "@opentrader/bot-templates/server";
-import { readBotConfig, readExchangesConfig } from "../../config";
+import { readBotConfig, readExchangesConfig } from "../../config.js";
 import {
   createOrUpdateBot,
   createOrUpdateExchangeAccounts,
   resetProcessing,
   startBot,
   stopBot,
-} from "../../utils/bot";
-import type { ConfigName } from "../../types";
+} from "../../utils/bot.js";
+import type { ConfigName } from "../../types.js";
 
 let app: App | null = null;
 

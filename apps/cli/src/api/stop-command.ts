@@ -2,8 +2,8 @@ import { findStrategy } from "@opentrader/bot-templates/server";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { BotProcessing } from "@opentrader/processing";
-import type { CommandResult, ConfigName } from "../types";
-import { readBotConfig, readExchangesConfig } from "../config";
+import type { CommandResult, ConfigName } from "../types.js";
+import { readBotConfig, readExchangesConfig } from "../config.js";
 
 export async function stopCommand(options: {
   config: ConfigName;

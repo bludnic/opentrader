@@ -1,12 +1,13 @@
 {
   "name": "@opentrader/logger",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsup",
+    "?build": "Internal package",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
@@ -19,7 +20,6 @@
     "@types/node": "^20.14.5",
     "eslint": "8.54.0",
     "ts-node": "10.9.2",
-    "tsup": "^8.1.0",
     "typescript": "5.4.5"
   },
   "dependencies": {

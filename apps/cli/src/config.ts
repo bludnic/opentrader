@@ -1,8 +1,12 @@
 import * as fs from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "url";
 import JSON5 from "json5";
 import { logger } from "@opentrader/logger";
-import { BotConfig, ConfigName, ExchangeConfig } from "./types";
+import { BotConfig, ConfigName, ExchangeConfig } from "./types.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const rootDir = join(__dirname, "..");
 

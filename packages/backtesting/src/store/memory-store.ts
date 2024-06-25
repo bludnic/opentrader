@@ -6,7 +6,7 @@ import {
 } from "@opentrader/bot-processor";
 import type { IExchange } from "@opentrader/exchanges";
 import { OrderStatusEnum, OrderType } from "@opentrader/types";
-import uniqueId from "lodash/uniqueId";
+import { uniqueId } from "lodash";
 import type { MarketSimulator } from "../market-simulator.js";
 
 export class MemoryStore implements IStore {

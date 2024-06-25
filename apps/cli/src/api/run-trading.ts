@@ -1,7 +1,7 @@
 import { templates } from "@opentrader/bot-templates";
 import { BarSize } from "@opentrader/types";
 import { Client } from "jayson/promise";
-import type { CommandResult, ConfigName } from "../types";
+import type { CommandResult, ConfigName } from "../types.js";
 
 type Options = {
   config: ConfigName;
