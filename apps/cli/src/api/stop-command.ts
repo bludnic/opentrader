@@ -1,16 +1,15 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { BotProcessing } from "@opentrader/processing";
 import type { CommandResult, ConfigName } from "../types.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
 import { createClient } from "../server.js";
 
+const daemon = createClient();
+
 export async function stopCommand(options: {
   config: ConfigName;
 }): Promise<CommandResult> {
-  const daemon = createClient();
-
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 

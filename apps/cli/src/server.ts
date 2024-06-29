@@ -42,6 +42,9 @@ const cliRouter = router({
 
       return true;
     }),
+  healthcheck: procedure.query(async () => {
+    return true;
+  }),
 });
 
 // created for each request

@@ -2,10 +2,10 @@ import { templates } from "@opentrader/bot-templates";
 import { BarSize } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 import { findStrategy } from "@opentrader/bot-templates/server";
+import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
 import type { CommandResult, ConfigName } from "../types.js";
 import { createClient } from "../server.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
-import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
 import {
   createOrUpdateBot,
   createOrUpdateExchangeAccounts,
@@ -20,12 +20,12 @@ type Options = {
   timeframe?: BarSize;
 };
 
+const daemon = createClient();
+
 export async function runTrading(
   strategyName: keyof typeof templates,
   options: Options,
 ): Promise<CommandResult> {
-  const daemon = createClient();
-
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 
@@ -49,13 +49,15 @@ export async function runTrading(
     },
   });
 
-  if (bot?.enabled) {
+  const isDaemonRunning = await checkDaemonHealth();
+  if (!isDaemonRunning) {
     logger.info(
-      `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
+      "Daemon is not running. Please start it before running the bot",
     );
-    await tServer.bot.stop({ botId: bot.id });
 
-    logger.info(`The bot was stoped`);
+    return {
+      result: undefined,
+    };
   }
 
   if (bot?.processing) {
@@ -64,6 +66,15 @@ export async function runTrading(
     );
     await resetProcessing(bot.id);
     logger.warn(`The bot processing state was cleared`);
+  }
+
+  if (bot?.enabled) {
+    logger.info(
+      `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
+    );
+    await tServer.bot.stop({ botId: bot.id });
+
+    logger.info(`The bot was stoped`);
   }
 
   const exchangeAccounts: ExchangeAccountWithCredentials[] =
@@ -86,4 +97,14 @@ export async function runTrading(
   return {
     result: undefined,
   };
+}
+
+async function checkDaemonHealth() {
+  try {
+    await daemon.healthcheck.query();
+
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
