@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "description": "",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/main.mjs",
   "types": "src/index.ts",
   "scripts": {
     "build": "tsup",
+    "build:packageJson": "node build.mjs",
+    "pack": "ncc build dist/main.js -o app/main && ncc build dist/daemon.js -o app/daemon",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
@@ -16,6 +18,8 @@
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "@trpc/client": "^10.45.2",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.14.5",
     "eslint": "8.54.0",
     "ts-loader": "^9.5.1",
@@ -36,12 +40,20 @@
     "@opentrader/logger": "workspace:*",
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
+    "@opentrader/trpc": "workspace:*",
     "@prisma/client": "5.15.0",
+    "@trpc/server": "^10.45.2",
     "ccxt": "4.3.27",
     "commander": "^12.1.0",
-    "jayson": "^4.1.0",
+    "express": "^4.19.2",
     "json5": "^2.2.3",
     "pino": "^9.2.0",
-    "pino-pretty": "^11.2.1"
+    "pino-pretty": "^11.2.1",
+    "zod": "3.23.8"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/ccxt/**/*"
+    ]
   }
 }
