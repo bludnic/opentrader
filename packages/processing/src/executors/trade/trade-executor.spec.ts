@@ -4,12 +4,12 @@ import {
   xprisma,
 } from "@opentrader/db";
 import { exchangeProvider, IExchange } from "@opentrader/exchanges";
-import { TradeExecutor } from "./trade.executor";
+import { TradeExecutor } from "./trade.executor.js";
 import {
   createTrade,
   getExchangeAccount,
   updateEntryOrder,
-} from "../../utils/test";
+} from "../../utils/test.js";
 
 describe("TradeExecutor", () => {
   let exchangeAccount: ExchangeAccountWithCredentials;

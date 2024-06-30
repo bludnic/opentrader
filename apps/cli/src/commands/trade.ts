@@ -1,9 +1,9 @@
 import type { Command } from "commander";
 import { Argument, Option } from "commander";
-import { DEFAULT_CONFIG_NAME } from "../config";
-import { validatePair, validateTimeframe } from "../utils/validate";
-import { handle } from "../utils/command";
-import * as api from "../api";
+import { DEFAULT_CONFIG_NAME } from "../config.js";
+import { validatePair, validateTimeframe } from "../utils/validate.js";
+import { handle } from "../utils/command.js";
+import { runTrading } from "../api/run-trading.js";
 
 export function addTradeCommand(program: Command) {
   program
@@ -24,5 +24,5 @@ export function addTradeCommand(program: Command) {
         .argParser(validateTimeframe)
         .default(null),
     )
-    .action(handle(api.runTrading));
+    .action(handle(runTrading));
 }

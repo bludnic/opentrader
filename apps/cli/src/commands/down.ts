@@ -1,6 +1,6 @@
 import { Command, Option } from "commander";
-import { handle } from "../utils/command";
-import { down } from "../api";
+import { handle } from "../utils/command.js";
+import { down } from "../api/down.js";
 
 export function addDownCommand(program: Command) {
   program

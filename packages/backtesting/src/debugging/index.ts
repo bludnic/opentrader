@@ -1,2 +1,2 @@
-export * from "./fulfilledTable";
-export * from "./gridTable";
+export * from "./fulfilledTable.js";
+export * from "./gridTable.js";

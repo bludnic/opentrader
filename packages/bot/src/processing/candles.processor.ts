@@ -5,8 +5,8 @@ import { xprisma } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import type { BarSize } from "@opentrader/types";
 import { findStrategy } from "@opentrader/bot-templates/server";
-import type { CandleEvent } from "../channels";
-import { CandlesChannel } from "../channels";
+import type { CandleEvent } from "../channels/index.js";
+import { CandlesChannel } from "../channels/index.js";
 
 export class CandlesProcessor {
   private channels: CandlesChannel[] = [];

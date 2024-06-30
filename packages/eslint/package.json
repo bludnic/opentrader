@@ -1,0 +1,31 @@
+{
+  "name": "@opentrader/eslint",
+  "description": "ESLint configuration from OpenTrader",
+  "version": "0.0.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bludnic/opentrader.git"
+  },
+  "files": [
+    "module.js",
+    "next.js"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
+    "eslint": "^8.57.0",
+    "typescript": "5.4.5",
+    "typescript-eslint": "^7.13.1"
+  },
+  "keywords": [
+    "tsconfig",
+    "opentrader"
+  ],
+  "author": "bludnic",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bludnic/opentrader/issues"
+  },
+  "homepage": "https://github.com/bludnic/opentrader/tree/master/packages/eslint-config"
+}

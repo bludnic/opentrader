@@ -1,4 +1,4 @@
-import { countDecimalPlaces } from "./countDecimalPlaces";
+import { countDecimalPlaces } from "./countDecimalPlaces.js";
 
 describe(countDecimalPlaces.name, () => {
   it("with trailing zeros", () => {

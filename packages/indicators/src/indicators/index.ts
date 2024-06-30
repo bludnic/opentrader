@@ -1,1 +1,1 @@
-export * from "./rsi";
+export * from "./rsi.js";

@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
-import type { Context } from "../../../../utils/context";
-import type { TUpdateBotInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TUpdateBotInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

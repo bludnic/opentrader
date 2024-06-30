@@ -15,7 +15,7 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./exchanges";
-export * from "./types";
-export * from "./cache";
-export * from "./exchange.provider";
+export * from "./exchanges/index.js";
+export * from "./types/index.js";
+export * from "./cache.js";
+export * from "./exchange.provider.js";

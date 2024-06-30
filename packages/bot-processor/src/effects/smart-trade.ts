@@ -1,13 +1,13 @@
 import type { OrderStatusEnum, OrderType } from "@opentrader/types";
-import type { SmartTrade } from "../types";
+import type { SmartTrade } from "../types/index.js";
 import {
   GET_SMART_TRADE,
   CANCEL_SMART_TRADE,
   CREATE_SMART_TRADE,
   REPLACE_SMART_TRADE,
   USE_SMART_TRADE,
-} from "./types";
-import { makeEffect } from "./utils";
+} from "./types/index.js";
+import { makeEffect } from "./utils/index.js";
 
 // Default smart trade reference
 const DEFAULT_REF = "0";

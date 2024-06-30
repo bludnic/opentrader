@@ -24,7 +24,7 @@ export function countDecimalPlaces(
   }
 
   if (number.includes(".")) {
-    return number.split(".")[1].length;
+    return number.split(".")[1]!.length;
   }
 
   // String Does Not Contain Decimal

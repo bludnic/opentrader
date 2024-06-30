@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ICandlestick } from "@opentrader/types";
 
-import { rsi } from "./rsi";
+import { rsi } from "./rsi.js";
 
 const loadCandles = (filename: string): ICandlestick[] => {
   return JSON.parse(

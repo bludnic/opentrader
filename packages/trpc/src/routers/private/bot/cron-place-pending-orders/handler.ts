@@ -1,7 +1,7 @@
 import { xprisma } from "@opentrader/db";
 import { SmartTradeExecutor } from "@opentrader/processing";
-import type { Context } from "../../../../utils/context";
-import type { TCronPlacePendingOrdersInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TCronPlacePendingOrdersInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

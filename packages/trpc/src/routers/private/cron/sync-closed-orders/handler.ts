@@ -3,7 +3,7 @@ import {
   ExchangeAccountProcessor,
 } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
-import type { Context } from "../../../../utils/context";
+import type { Context } from "../../../../utils/context.js";
 
 type Options = {
   ctx: {

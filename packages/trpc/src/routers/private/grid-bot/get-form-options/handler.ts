@@ -1,8 +1,8 @@
 import { exchangeProvider } from "@opentrader/exchanges";
 import { decomposeSymbolId } from "@opentrader/tools";
 import type { ExchangeCode } from "@opentrader/types";
-import type { Context } from "../../../../utils/context";
-import type { TGetGridBotFormOptionsInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TGetGridBotFormOptionsInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

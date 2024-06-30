@@ -17,7 +17,7 @@
  */
 import type { ICandlestick } from "@opentrader/types";
 import { RSI } from "technicalindicators";
-import { IndicatorError } from "../utils/indicator.error";
+import { IndicatorError } from "../utils/indicator.error.js";
 
 type RsiParams = {
   periods: number;

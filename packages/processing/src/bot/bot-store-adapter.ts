@@ -6,8 +6,8 @@ import type {
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import { SmartTradeExecutor } from "../executors";
-import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils";
+import { SmartTradeExecutor } from "../executors/index.js";
+import { toPrismaSmartTrade, toSmartTradeIteratorResult } from "./utils/index.js";
 
 export class BotStoreAdapter implements IStore {
   constructor(private stopBotFn: (botId: number) => Promise<void>) {}

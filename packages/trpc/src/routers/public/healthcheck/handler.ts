@@ -1,4 +1,4 @@
-import type { Context } from "../../../utils/context";
+import type { Context } from "../../../utils/context.js";
 
 type Options = {
   ctx: Context;

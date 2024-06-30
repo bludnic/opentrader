@@ -1,2 +1,2 @@
-export * from "./orders.synchronizer";
-export * from "./exchange-account.processor";
+export * from "./orders.synchronizer.js";
+export * from "./exchange-account.processor.js";

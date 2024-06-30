@@ -4,8 +4,8 @@ import {
   GetFindResult,
   InternalArgs,
 } from "@prisma/client/runtime/library";
-import type { TBotSettings, TBotState } from "../../types";
-import { ZBotSettings } from "../../types";
+import type { TBotSettings, TBotState } from "../../types/index.js";
+import { ZBotSettings } from "../../types/index.js";
 
 type NarrowBotType<ExtArgs extends InternalArgs, T> = Omit<
   Awaited<GetFindResult<Prisma.$BotPayload<ExtArgs>, T>>,

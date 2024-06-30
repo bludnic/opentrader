@@ -1,4 +1,4 @@
-import type { OrderStatusEnum } from "../smart-trade";
+import type { OrderStatusEnum } from "../smart-trade/enums.js";
 
 export interface IGridBotLevel {
   buy: {

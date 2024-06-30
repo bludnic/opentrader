@@ -49,6 +49,7 @@ async function main() {
       secretKey: "YOUR_EXCHANGE_API_SECRET_KEY",
       password: "YOU_EXCHANGE_API_PASSPHRASE",
       isDemoAccount: true,
+      label: "DEFAULT",
       owner: {
         connect: {
           id: user.id,

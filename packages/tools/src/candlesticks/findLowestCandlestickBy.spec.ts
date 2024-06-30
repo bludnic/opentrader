@@ -1,5 +1,5 @@
-import { CANDLESTICKS } from "src/mocks/candlesticks";
-import { findLowestCandlestickBy } from "./findLowestCandlestickBy";
+import { CANDLESTICKS } from "../mocks/candlesticks.js";
+import { findLowestCandlestickBy } from "./findLowestCandlestickBy.js";
 
 describe("findLowestCandlestickBy", () => {
   it("lowest by close", () => {

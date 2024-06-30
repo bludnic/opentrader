@@ -1,4 +1,4 @@
-import { getExponentAbs } from "./getExponentAbs";
+import { getExponentAbs } from "./getExponentAbs.js";
 
 describe("getExponentAbs", () => {
   it("with trailing zeros", () => {

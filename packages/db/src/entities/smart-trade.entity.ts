@@ -1,7 +1,7 @@
 import type { $Enums } from "@prisma/client";
-import type { SmartTradeWithOrders } from "../types/smart-trade";
-import type { OrderEntity } from "./order.entity";
-import { toOrderEntity } from "./order.entity";
+import type { SmartTradeWithOrders } from "../types/smart-trade/index.js";
+import type { OrderEntity } from "./order.entity.js";
+import { toOrderEntity } from "./order.entity.js";
 
 export type SmartTradeEntityBuilder<
   EntryType extends $Enums.EntryType,

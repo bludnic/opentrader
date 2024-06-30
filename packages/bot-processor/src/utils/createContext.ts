@@ -5,7 +5,7 @@ import type {
   IBotControl,
   MarketData,
   TBotContext,
-} from "../types";
+} from "../types/index.js";
 
 export function createContext<T extends IBotConfiguration>(
   control: IBotControl,

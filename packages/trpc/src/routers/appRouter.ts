@@ -1,4 +1,4 @@
-import { trpc } from "../trpc"; // @todo relative path
+import { trpc } from "../trpc.js";
 import {
   botRouter,
   cronRouter,
@@ -6,8 +6,8 @@ import {
   gridBotRouter,
   smartTradeRouter,
   symbolsRouter,
-} from "./private";
-import { publicRouter } from "./public";
+} from "./private/router.js";
+import { publicRouter } from "./public/router.js";
 
 export const appRouter = trpc.router({
   exchangeAccount: exchangeAccountsRouter,

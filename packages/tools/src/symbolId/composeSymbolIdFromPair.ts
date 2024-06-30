@@ -1,5 +1,5 @@
 import type { ExchangeCode } from "@opentrader/types";
-import { EXCHANGE_CODE_DELIMITER } from "./constants";
+import { EXCHANGE_CODE_DELIMITER } from "./constants.js";
 
 export function composeSymbolIdFromPair(
   exchangeCode: ExchangeCode,

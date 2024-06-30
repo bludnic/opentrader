@@ -1,5 +1,5 @@
 import { calcGridLines } from "@opentrader/tools";
-import type { CommandResult } from "../types";
+import type { CommandResult } from "../types.js";
 
 export function buildGridLines(
   maxPrice: number,

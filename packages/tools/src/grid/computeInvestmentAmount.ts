@@ -1,7 +1,7 @@
 import type { IGridLine, ISymbolInfo } from "@opentrader/types";
-import { filterPrice, filterQuantity } from "../currency";
-import { calculateInvestment } from "./calculateInvestment";
-import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice";
+import { filterPrice, filterQuantity } from "../currency/index.js";
+import { calculateInvestment } from "./calculateInvestment.js";
+import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice.js";
 
 export function computeInvestmentAmount(
   symbol: ISymbolInfo,

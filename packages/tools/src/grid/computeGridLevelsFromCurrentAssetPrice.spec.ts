@@ -3,9 +3,9 @@ import {
   CURRENT_ASSET_PRICE,
   GRID_LINES,
   GRID_LEVELS,
-} from "src/mocks/grid-bot";
-import { calcGridLines } from "./calcGridLines";
-import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice";
+} from "../mocks/grid-bot.js";
+import { calcGridLines } from "./calcGridLines.js";
+import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice.js";
 
 describe("computeGridLevelsFromCurrentAssetPrice", () => {
   it("should calculate initial grid levels", () => {

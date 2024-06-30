@@ -16,18 +16,18 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 
-import { logPath } from "./utils/app-path";
+import { logPath } from "./utils/app-path.js";
 process.env.LOG_FILE = logPath;
 
 import { Command } from "commander";
-import { addStopCommand } from "./commands/stop";
-import { addBacktestCommand } from "./commands/backtest";
-import { addGridLinesCommand } from "./commands/grid-lines";
-import { addTradeCommand } from "./commands/trade";
-import { addUpCommand } from "./commands/up";
-import { addDownCommand } from "./commands/down";
-import { addLogsCommand } from "./commands/logs";
-import { addVersionCommand } from "./commands/version";
+import { addStopCommand } from "./commands/stop.js";
+import { addBacktestCommand } from "./commands/backtest.js";
+import { addGridLinesCommand } from "./commands/grid-lines.js";
+import { addTradeCommand } from "./commands/trade.js";
+import { addUpCommand } from "./commands/up.js";
+import { addDownCommand } from "./commands/down.js";
+import { addLogsCommand } from "./commands/logs.js";
+import { addVersionCommand } from "./commands/version.js";
 
 const program = new Command();
 

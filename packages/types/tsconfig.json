@@ -1,5 +1,5 @@
 {
-  "extends": "@opentrader/tsconfig/module.json",
+  "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist"

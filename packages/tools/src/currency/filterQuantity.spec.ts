@@ -1,5 +1,5 @@
-import { ETH_SYMBOL_FILTER } from "src/mocks/symbols";
-import { filterQuantity } from "./filterQuantity";
+import { ETH_SYMBOL_FILTER } from "../mocks/symbols.js";
+import { filterQuantity } from "./filterQuantity.js";
 
 describe("filterQuantity", () => {
   it("should filter to stepSize", () => {

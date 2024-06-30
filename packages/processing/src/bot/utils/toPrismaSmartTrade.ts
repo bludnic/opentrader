@@ -1,7 +1,7 @@
 import type { UseSmartTradePayload } from "@opentrader/bot-processor";
 import type { Prisma } from "@opentrader/db";
 import { $Enums } from "@opentrader/db";
-import { toPrismaOrder } from "./order";
+import { toPrismaOrder } from "./toPrismaOrder.js";
 
 /**
  * Convert `SmartTrade` iterator result into `ISmartTrade` entity

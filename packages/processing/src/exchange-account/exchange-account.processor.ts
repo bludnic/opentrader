@@ -8,7 +8,7 @@ import { xprisma } from "@opentrader/db";
 import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
-import { toDbStatus } from "../utils";
+import { toDbStatus } from "../utils/index.js";
 
 type SymbolId = string;
 

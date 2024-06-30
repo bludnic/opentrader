@@ -9,8 +9,8 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { SmartTradeExecutor } from "../executors";
-import { BotStoreAdapter } from "./bot-store-adapter";
+import { SmartTradeExecutor } from "../executors/index.js";
+import { BotStoreAdapter } from "./bot-store-adapter.js";
 
 export class BotProcessing {
   constructor(private bot: TBot) {}

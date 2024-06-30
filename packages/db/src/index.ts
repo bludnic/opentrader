@@ -15,8 +15,8 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./xprisma";
-export * from "./types";
-export * from "./entities";
-export * from "./asserts";
+export * from "./xprisma.js";
+export * from "./types/index.js";
+export * from "./entities/index.js";
+export * from "./asserts/index.js";
 export * from "@prisma/client"; // forward export of Prisma types

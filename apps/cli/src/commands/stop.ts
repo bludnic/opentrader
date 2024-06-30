@@ -1,8 +1,8 @@
 import type { Command } from "commander";
 import { Option } from "commander";
-import { DEFAULT_CONFIG_NAME } from "../config";
-import { handle } from "../utils/command";
-import * as api from "../api";
+import { DEFAULT_CONFIG_NAME } from "../config.js";
+import { handle } from "../utils/command.js";
+import { stopCommand } from "../api/stop-command.js";
 
 export function addStopCommand(program: Command) {
   program
@@ -13,5 +13,5 @@ export function addStopCommand(program: Command) {
         DEFAULT_CONFIG_NAME,
       ),
     )
-    .action(handle(api.stopCommand));
+    .action(handle(stopCommand));
 }

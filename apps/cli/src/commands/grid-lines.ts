@@ -1,7 +1,7 @@
 import type { Command } from "commander";
 import { Argument, Option } from "commander";
-import { handle } from "../utils/command";
-import * as api from "../api";
+import { handle } from "../utils/command.js";
+import { buildGridLines } from "../api/grid-lines.js";
 
 export function addGridLinesCommand(program: Command) {
   program
@@ -19,5 +19,5 @@ export function addGridLinesCommand(program: Command) {
         .argParser(parseFloat)
         .default(1),
     )
-    .action(handle(api.buildGridLines));
+    .action(handle(buildGridLines));
 }

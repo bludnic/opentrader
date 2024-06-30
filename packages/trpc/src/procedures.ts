@@ -1,5 +1,5 @@
-import { trpc } from "./trpc";
-import { isLoggedIn } from "./common/middlewares/isLoggedIn";
+import { trpc } from "./trpc.js";
+import { isLoggedIn } from "./common/middlewares/isLoggedIn.js";
 
 export const publicProcedure = trpc.procedure;
 export const authorizedProcedure = publicProcedure.use(isLoggedIn);

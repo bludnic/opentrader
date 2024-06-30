@@ -1,5 +1,5 @@
-import { CANDLESTICKS } from "src/mocks/candlesticks";
-import { findHighestCandlestickBy } from "./findHighestCandlestickBy";
+import { CANDLESTICKS } from "../mocks/candlesticks.js";
+import { findHighestCandlestickBy } from "./findHighestCandlestickBy.js";
 
 describe("findHighestCandlestickBy", () => {
   it("highest by close", () => {

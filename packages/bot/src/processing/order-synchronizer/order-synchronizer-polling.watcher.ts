@@ -18,7 +18,7 @@
 import { NetworkError, RequestTimeout } from "ccxt";
 import { ExchangeAccountProcessor } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
-import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
+import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract.js";
 
 /**
  * This is a fallback for `OrderSynchronizerWsWatcher`.

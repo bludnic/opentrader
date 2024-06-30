@@ -1,7 +1,7 @@
 import { zt } from "@opentrader/prisma";
 import type { z } from "zod";
-import { ZGridBotSettings } from "./grid-bot-settings.schema";
-import { ZBotState } from "../bot/bot-state.schema";
+import { ZGridBotSettings } from "./grid-bot-settings.schema.js";
+import { ZBotState } from "../bot/bot-state.schema.js";
 
 export const ZGridBot = zt.BotSchema.extend({
   settings: ZGridBotSettings,

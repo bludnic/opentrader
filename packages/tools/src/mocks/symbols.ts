@@ -12,14 +12,9 @@ export const ETH_SYMBOL_FILTER: ISymbolFilter = {
   limits: {
     amount: {
       min: 0.00001,
-      max: undefined,
     },
-    price: {
-      min: undefined,
-      max: undefined,
-    },
+    price: {},
     cost: {
-      min: undefined,
       max: 1000000,
     },
     leverage: {

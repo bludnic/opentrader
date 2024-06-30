@@ -6,8 +6,8 @@ import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
 import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 import type { BarSize, ExchangeCode, ICandlestick } from "@opentrader/types";
-import type { CommandResult, ConfigName } from "../types";
-import { readBotConfig } from "../config";
+import type { CommandResult, ConfigName } from "../types.js";
+import { readBotConfig } from "../config.js";
 
 type Options = {
   config: ConfigName;

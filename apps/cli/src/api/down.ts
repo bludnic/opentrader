@@ -1,6 +1,6 @@
 import { logger } from "@opentrader/logger";
-import { CommandResult } from "../types";
-import { getPid, clearPid } from "../utils/pid";
+import { CommandResult } from "../types.js";
+import { getPid, clearPid } from "../utils/pid.js";
 
 type Options = {
   force: boolean;

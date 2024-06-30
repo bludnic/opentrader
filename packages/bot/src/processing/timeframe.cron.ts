@@ -1,7 +1,6 @@
 import { BotProcessing } from "@opentrader/processing";
 import { xprisma } from "@opentrader/db";
-import type { ScheduledTask } from "node-cron";
-import { schedule } from "node-cron";
+import { CronJob } from "cron";
 import { logger } from "@opentrader/logger";
 
 type Timeframe = "1m" | "5m" | "10m" | "15m" | "30m" | "1h" | "4h" | "1d";
@@ -18,12 +17,12 @@ const CronExpression: Record<Timeframe, string> = {
 };
 
 export class TimeframeCron {
-  tasks: ScheduledTask[] = [];
+  tasks: CronJob[] = [];
 
   create() {
     for (const [timeframe, cronExpression] of Object.entries(CronExpression)) {
       this.tasks.push(
-        schedule(cronExpression, async () => {
+        new CronJob(cronExpression, async () => {
           await this.execTemplate(timeframe as Timeframe);
         }),
       );

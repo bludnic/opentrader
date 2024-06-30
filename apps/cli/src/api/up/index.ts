@@ -1,10 +1,13 @@
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { spawn } from "node:child_process";
 import { logger } from "@opentrader/logger";
-import type { CommandResult } from "../../types";
-import { appPath } from "../../utils/app-path";
-import { getPid, savePid } from "../../utils/pid";
+import type { CommandResult } from "../../types.js";
+import { appPath } from "../../utils/app-path.js";
+import { getPid, savePid } from "../../utils/pid.js";
+import { fileURLToPath } from "node:url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 type Options = {

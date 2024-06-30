@@ -1,6 +1,6 @@
 import type { ExchangeCode } from "@opentrader/types";
-import { BUY } from "./types";
-import { makeEffect } from "./utils";
+import { BUY } from "./types/index.js";
+import { makeEffect } from "./utils/index.js";
 
 export type BuyPayload = {
   exchange?: ExchangeCode; // not implemented

@@ -19,7 +19,7 @@ import type { IExchange } from "@opentrader/exchanges";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import type { Subscription, Event } from "./types";
+import type { Subscription, Event } from "./types.js";
 
 export abstract class OrderSynchronizerWatcher {
   private consumers: Subscription[] = [];

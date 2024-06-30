@@ -1,4 +1,4 @@
-import type { BaseEffect, EffectType } from "../types";
+import type { BaseEffect, EffectType } from "../types/index.js";
 
 export const makeEffect = <T extends EffectType, P = undefined, R = undefined>(
   type: T,

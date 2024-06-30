@@ -1,7 +1,7 @@
 import { xprisma } from "@opentrader/db";
-import { eventBus } from "../../../../event-bus";
-import type { Context } from "../../../../utils/context";
-import type { TCreateExchangeAccountInputSchema } from "./schema";
+import { eventBus } from "../../../../event-bus.js";
+import type { Context } from "../../../../utils/context.js";
+import type { TCreateExchangeAccountInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

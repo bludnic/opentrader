@@ -1,7 +1,7 @@
 import { xprisma } from "@opentrader/db";
-import { BotService } from "../../../../services/bot.service";
-import type { Context } from "../../../../utils/context";
-import type { TDeleteBotInputSchema } from "./schema";
+import { BotService } from "../../../../services/bot.service.js";
+import type { Context } from "../../../../utils/context.js";
+import type { TDeleteBotInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

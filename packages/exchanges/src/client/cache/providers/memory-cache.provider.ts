@@ -17,7 +17,7 @@
  */
 import type { Dictionary, Exchange, Market } from "ccxt";
 import type { ExchangeCode } from "@opentrader/types";
-import type { ICacheProvider } from "../../../types/cache/cache-provider.interface";
+import type { ICacheProvider } from "../../../types/cache/cache-provider.interface.js";
 
 export class MemoryCacheProvider implements ICacheProvider {
   /**

@@ -1,1 +1,1 @@
-export * from "./bot.processing";
+export * from "./bot.processing.js";

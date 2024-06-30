@@ -1,1 +1,1 @@
-export * from "./exchange-account-with-credentials";
+export * from "./exchange-account-with-credentials.js";

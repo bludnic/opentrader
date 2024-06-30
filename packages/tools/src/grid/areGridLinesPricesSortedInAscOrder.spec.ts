@@ -1,4 +1,4 @@
-import { areGridLinesPricesSortedInAscOrder } from "src/grid/areGridLinesPricesSortedInAscOrder";
+import { areGridLinesPricesSortedInAscOrder } from "./areGridLinesPricesSortedInAscOrder.js";
 
 describe("areGridLinesPricesSortedInAscOrder", () => {
   it("should return `true` when array is empty", () => {

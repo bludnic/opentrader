@@ -1,14 +1,9 @@
 import { logger } from "@opentrader/logger";
-import {
-  existsSync,
-  readFileSync,
-  createReadStream,
-  watchFile,
-} from "fs";
+import { existsSync, readFileSync, createReadStream, watchFile } from "fs";
 import { createInterface } from "readline";
-import { prettyLog } from "../utils/pretty-log";
-import { logPath } from "../utils/app-path";
-import { CommandResult } from "../types";
+import { prettyLog } from "../utils/pretty-log.js";
+import { logPath } from "../utils/app-path.js";
+import { CommandResult } from "../types.js";
 
 type Options = {
   follow: boolean;

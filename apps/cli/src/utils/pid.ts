@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { appPath } from "./app-path";
+import { appPath } from "./app-path.js";
 
 /**
  * Save daemon process PID to file

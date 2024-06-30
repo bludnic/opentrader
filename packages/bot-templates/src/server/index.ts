@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import type { BotTemplate } from "@opentrader/bot-processor";
-import * as templates from "../templates";
-import dynamicImport from "./dynamic-import";
+import * as templates from "../templates/index.js";
+import dynamicImport from "./dynamic-import.js";
 
 type FindStrategyResult = {
   strategyFn: BotTemplate<any>;

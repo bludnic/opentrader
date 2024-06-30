@@ -1,8 +1,9 @@
 import { EventEmitter } from "node:events";
 import { type Exchange, type OHLCV } from "ccxt";
 import type { BarSize, ICandlestick } from "@opentrader/types";
-import type { ICandlesProvider } from "./candles-provider.interface";
 import { logger, format } from "@opentrader/logger";
+
+import type { ICandlesProvider } from "./candles-provider.interface.js";
 
 export class CCXTCandlesProvider
   extends EventEmitter

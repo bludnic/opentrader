@@ -1,1 +1,1 @@
-export * from "./order-with-smart-trade";
+export * from "./order-with-smart-trade.js";

@@ -2,8 +2,8 @@ import {
   BASE_CURRENCY_INVESTMENT,
   GRID_LEVELS,
   QUOTE_CURRENCY_INVESTMENT,
-} from "src/mocks/grid-bot";
-import { calculateInvestment } from "./calculateInvestment";
+} from "../mocks/grid-bot.js";
+import { calculateInvestment } from "./calculateInvestment.js";
 
 describe("calculateInvestment", () => {
   it("should calculate investment", () => {

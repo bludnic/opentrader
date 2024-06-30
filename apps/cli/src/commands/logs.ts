@@ -1,6 +1,6 @@
 import { Command, Option } from "commander";
-import { handle } from "../utils/command";
-import { logs } from "../api";
+import { handle } from "../utils/command.js";
+import { logs } from "../api/logs.js";
 
 export function addLogsCommand(program: Command) {
   program

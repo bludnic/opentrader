@@ -6,8 +6,8 @@ import type {
 } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { processingQueue } from "./processing.queue";
-import { OrderSynchronizer } from "./order-synchronizer";
+import { processingQueue } from "./processing.queue.js";
+import { OrderSynchronizer } from "./order-synchronizer/index.js";
 
 export class ExchangeAccountsWatcher {
   private ordersWatchers: OrderSynchronizer[] = [];

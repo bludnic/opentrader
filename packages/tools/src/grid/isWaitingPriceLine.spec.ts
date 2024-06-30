@@ -1,4 +1,4 @@
-import { isWaitingPriceLine } from "./isWaitingPriceLine";
+import { isWaitingPriceLine } from "./isWaitingPriceLine.js";
 
 const priceLines = [1, 3, 2, 4, 5];
 

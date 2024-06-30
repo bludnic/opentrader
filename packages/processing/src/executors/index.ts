@@ -1,1 +1,1 @@
-export * from "./smart-trade.executor";
+export * from "./smart-trade.executor.js";

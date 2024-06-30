@@ -1,6 +1,6 @@
 import type { ExchangeCode, OrderSide, OrderType } from "@opentrader/types";
-import { makeEffect } from "./utils";
-import { USE_TRADE } from "./types";
+import { makeEffect } from "./utils/index.js";
+import { USE_TRADE } from "./types/index.js";
 
 type UseTradePayload = {
   quantity: number;

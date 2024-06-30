@@ -1,6 +1,9 @@
 import { ExchangeCode } from "@opentrader/types";
-import { CURRENCY_PAIR_DELIMITER, EXCHANGE_CODE_DELIMITER } from "./constants";
-import { isValidSymbolId } from "./isValidSymbolId";
+import {
+  CURRENCY_PAIR_DELIMITER,
+  EXCHANGE_CODE_DELIMITER,
+} from "./constants.js";
+import { isValidSymbolId } from "./isValidSymbolId.js";
 
 export type DecomposeSymbolIdResult = {
   exchangeCode: ExchangeCode;
@@ -17,14 +20,14 @@ export function decomposeSymbolId(symbolId: string): DecomposeSymbolIdResult {
   const [exchangeCodeKey, currencyPairSymbol] = symbolId.split(
     EXCHANGE_CODE_DELIMITER,
   );
-  const [baseCurrency, quoteCurrency] = currencyPairSymbol.split(
+  const [baseCurrency, quoteCurrency] = currencyPairSymbol!.split(
     CURRENCY_PAIR_DELIMITER,
   );
 
   return {
     exchangeCode: ExchangeCode[exchangeCodeKey as keyof typeof ExchangeCode],
-    currencyPairSymbol,
-    baseCurrency,
-    quoteCurrency,
+    currencyPairSymbol: currencyPairSymbol!,
+    baseCurrency: baseCurrency!,
+    quoteCurrency: quoteCurrency!,
   };
 }

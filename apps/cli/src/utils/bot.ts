@@ -2,7 +2,7 @@ import { ExchangeAccountWithCredentials, TBot, xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { BotProcessing } from "@opentrader/processing";
 import { BarSize } from "@opentrader/types";
-import { BotConfig, ConfigName, ExchangeConfig } from "../types";
+import { BotConfig, ConfigName, ExchangeConfig } from "../types.js";
 
 /**
  * Save exchange accounts to DB if not exists

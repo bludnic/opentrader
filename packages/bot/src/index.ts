@@ -15,6 +15,6 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./channels";
-export { CCXTCandlesProvider } from "./market-data/ccxt-candles.provider";
-export { Processor } from "./processing";
+export * from "./channels/index.js";
+export { CCXTCandlesProvider } from "./market-data/ccxt-candles.provider.js";
+export { Processor } from "./processing/index.js";

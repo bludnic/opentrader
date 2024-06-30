@@ -1,5 +1,5 @@
-import type { ICacheProvider } from "./types/cache/cache-provider.interface";
-import { MemoryCacheProvider } from "./client/cache/providers/memory-cache.provider";
+import type { ICacheProvider } from "./types/cache/cache-provider.interface.js";
+import { MemoryCacheProvider } from "./client/cache/providers/memory-cache.provider.js";
 
 type Cache = {
   cacheProvider: ICacheProvider;

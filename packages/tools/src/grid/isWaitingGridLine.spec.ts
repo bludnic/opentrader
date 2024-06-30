@@ -1,5 +1,5 @@
 import type { IGridLine } from "@opentrader/types";
-import { isWaitingGridLine } from "./isWaitingGridLine";
+import { isWaitingGridLine } from "./isWaitingGridLine.js";
 
 const gridLines: IGridLine[] = [
   {

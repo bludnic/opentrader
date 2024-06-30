@@ -1,14 +1,13 @@
 import type { ICandlestick } from "@opentrader/types";
-import c from "chalk";
 
 const pad = (value: string | number, length: number) =>
   value.toString().padEnd(length);
 
 export function candle({ open, high, low, close }: ICandlestick) {
-  const O = c.green("O");
-  const H = c.green("H");
-  const L = c.green("L");
-  const C = c.green("C");
+  const O = "O";
+  const H = "H";
+  const L = "L";
+  const C = "C";
 
   return `${O} ${open} ${H} ${high} ${L} ${low} ${C} ${close}`;
 }

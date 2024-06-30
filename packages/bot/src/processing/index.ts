@@ -1,1 +1,1 @@
-export { Processor } from "./processor";
+export { Processor } from "./processor.js";
