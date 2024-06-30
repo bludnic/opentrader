@@ -1,5 +1,8 @@
 import { defineConfig } from "tsup";
 
+import { copyPrismaSchemaPlugin } from "./plugins/copy-prisma-schema-plugin.js";
+import { generatePackageJsonPlugin } from "./plugins/generate-package-json-plugin.js";
+
 export default defineConfig({
   entry: {
     main: "./src/index.ts",
@@ -43,4 +46,5 @@ export default defineConfig({
       `,
     };
   },
+  esbuildPlugins: [generatePackageJsonPlugin(), copyPrismaSchemaPlugin()],
 });

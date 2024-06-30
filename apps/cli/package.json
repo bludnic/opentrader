@@ -7,8 +7,7 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsup",
-    "build:packageJson": "node build.mjs",
-    "pack": "ncc build dist/main.js -o app/main && ncc build dist/daemon.js -o app/daemon",
+    "build:release": "tsup -d release/dist",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
@@ -50,10 +49,5 @@
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
     "zod": "3.23.8"
-  },
-  "pkg": {
-    "assets": [
-      "node_modules/ccxt/**/*"
-    ]
   }
 }
