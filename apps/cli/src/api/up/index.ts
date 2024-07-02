@@ -30,7 +30,7 @@ export async function up(options: Options): Promise<CommandResult> {
         detached: options.detach,
         stdio: options.detach ? "ignore" : undefined,
       })
-    : spawn("node", [join(__dirname, "daemon.js")], {
+    : spawn("node", [join(__dirname, "daemon.mjs")], {
         detached: options.detach,
         stdio: options.detach ? "ignore" : undefined,
       });
