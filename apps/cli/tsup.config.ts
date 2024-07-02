@@ -26,7 +26,7 @@ export default defineConfig({
   // noExternal: [/(.*)/],
   noExternal: [/@opentrader/], // Include node_modules in the bundle
   outExtension: ({ format }) => {
-    if (format === "esm") return { js: ".js" };
+    if (format === "esm") return { js: ".mjs" };
     if (format === "cjs") return { js: ".cjs" };
     return { js: ".js" };
   },

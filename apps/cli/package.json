@@ -7,7 +7,7 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsup",
-    "build:release": "tsup -d release/dist",
+    "build:release": "tsup -d release/dist && cp -r ./bin ./release/bin",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
@@ -49,5 +49,8 @@
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
     "zod": "3.23.8"
+  },
+  "bin": {
+    "opentrader": "./bin/cli.sh"
   }
 }
