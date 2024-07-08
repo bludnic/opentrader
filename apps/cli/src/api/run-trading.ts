@@ -4,7 +4,7 @@ import { logger } from "@opentrader/logger";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
 import type { CommandResult, ConfigName } from "../types.js";
-import { createClient } from "../server.js";
+import { createClient } from "../daemon.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
 import {
   createOrUpdateBot,
@@ -86,7 +86,7 @@ export async function runTrading(
     exchangeAccounts,
   );
 
-  const result = await daemon.startBot.mutate({ botId: bot.id });
+  const result = await daemon.bot.start.mutate({ botId: bot.id });
 
   if (result) {
     logger.info(`Bot "${bot.label}" started succesfully`);
@@ -101,7 +101,7 @@ export async function runTrading(
 
 async function checkDaemonHealth() {
   try {
-    await daemon.healthcheck.query();
+    await daemon.public.healhcheck.query();
 
     return true;
   } catch (err) {

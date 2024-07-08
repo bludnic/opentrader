@@ -3,7 +3,7 @@ import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import type { CommandResult, ConfigName } from "../types.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
-import { createClient } from "../server.js";
+import { createClient } from "../daemon.js";
 
 const daemon = createClient();
 
@@ -44,7 +44,7 @@ export async function stopCommand(options: {
   }
 
   logger.info(`Stopping bot "${bot.label}"...`);
-  await daemon.stopBot.mutate({ botId: bot.id });
+  await daemon.bot.stop.mutate({ botId: bot.id });
   logger.info(`Bot "${bot.label}" stopped successfully`);
 
   return {
