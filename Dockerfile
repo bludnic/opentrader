@@ -73,7 +73,7 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY --from=installer /app/pro/frontend/out ./pro/frontend/out
+COPY --from=installer /app/pro/frontend/dist ./pro/frontend/dist
 COPY --from=installer /app/pro/processor ./pro/processor
 COPY --from=installer /app/package.json ./package.json
 COPY --from=installer /app/pnpm-lock.yaml ./pnpm-lock.yaml
@@ -93,7 +93,7 @@ RUN addgroup --system --gid 1001 expressjs
 RUN adduser --system --uid 1001 expressjs
 USER expressjs
 
-COPY --from=optimizer /app/pro/frontend/out ./pro/frontend/out
+COPY --from=optimizer /app/pro/frontend/dist ./pro/frontend/dist
 COPY --from=optimizer /app/pro/processor ./pro/processor
 COPY --from=optimizer /app/node_modules ./node_modules
 
