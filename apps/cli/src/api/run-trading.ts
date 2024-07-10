@@ -43,6 +43,20 @@ export async function runTrading(
     };
   }
 
+  // Validate strategy params
+  const { success: isValidSchema, error } =
+    strategy.strategyFn.schema.safeParse(config.settings);
+  if (!isValidSchema) {
+    logger.error(error.message);
+    logger.error(
+      `The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`,
+    );
+
+    return {
+      result: undefined,
+    };
+  }
+
   let bot = await xprisma.bot.custom.findUnique({
     where: {
       label: config.label || "default",

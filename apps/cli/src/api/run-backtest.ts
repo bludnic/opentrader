@@ -36,6 +36,20 @@ export async function runBacktest(
     };
   }
 
+  // Validate strategy params
+  const { success: isValidSchema, error } =
+    strategy.strategyFn.schema.safeParse(botConfig.settings);
+  if (!isValidSchema) {
+    logger.error(error.message);
+    logger.error(
+      `The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`,
+    );
+
+    return {
+      result: undefined,
+    };
+  }
+
   const botTimeframe = options.timeframe || botConfig.timeframe || null;
   const botPair = options.pair || botConfig.pair;
   const [baseCurrency, quoteCurrency] = botPair.split("/");
