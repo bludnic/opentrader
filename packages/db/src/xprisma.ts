@@ -5,7 +5,7 @@ import { smartTradeModel } from "./extension/models/smart-trade.model.js";
 import { customBotModel } from "./extension/models/custom-bot.model.js";
 
 function newPrismaClientInstance() {
-  console.log("❕ DB: Created new instance of PrismaClient");
+  // console.log("❕ DB: Created new instance of PrismaClient");
   return new PrismaClient();
 }
 
