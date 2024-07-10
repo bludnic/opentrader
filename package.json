@@ -27,6 +27,6 @@
   },
   "bin": {
     "dev": "./bin/dev.sh",
-    "devtrader": "./bin/devtrader.sh"
+    "cli": "./bin/cli.sh"
   }
 }
