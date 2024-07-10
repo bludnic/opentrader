@@ -33,7 +33,7 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Copy Prisma Schema as it is not included in `/json` dir
 COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
-RUN pnpm install --offline
+RUN pnpm install --prefer-offline
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
@@ -98,4 +98,4 @@ COPY --from=optimizer /app/pro/processor ./pro/processor
 COPY --from=optimizer /app/node_modules ./node_modules
 
 WORKDIR /app/pro/processor
-CMD node dist/main.js
+CMD node dist/main.mjs

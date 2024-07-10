@@ -110,4 +110,4 @@ COPY --from=optimizer /app/pro/processor ./pro/processor
 COPY --from=optimizer /app/node_modules ./node_modules
 
 WORKDIR /app/pro/processor
-CMD node dist/main.js
+CMD node dist/main.mjs
