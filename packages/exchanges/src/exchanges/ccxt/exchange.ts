@@ -72,6 +72,7 @@ export class CCXTExchange implements IExchange {
     // #88 Fixes: 'e instanceof this.AbortError' is not an object
     this.ccxt.FetchError = TypeError; // when fetch request failed (network error)
     this.ccxt.AbortError = DOMException; // when fetch request aborted
+    this.ccxt.verbose = process.env.CCXT_VERBOSE === "true";
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
