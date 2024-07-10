@@ -20,6 +20,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@types/node": "^20.14.10",
     "ts-node": "10.9.2",
+    "tsx": "^4.16.2",
     "typescript": "5.5.3"
   },
   "dependencies": {
@@ -32,6 +33,6 @@
   },
   "prisma": {
     "schema": "src/schema.prisma",
-    "seed": "ts-node seed.ts"
+    "seed": "tsx seed.ts"
   }
 }
