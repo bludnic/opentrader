@@ -27,6 +27,6 @@
   },
   "bin": {
     "dev": "./bin/dev.sh",
-    "opentrader": "./bin/opentrader.sh"
+    "devtrader": "./bin/devtrader.sh"
   }
 }
