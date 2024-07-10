@@ -17,6 +17,7 @@
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.5",
     "eslint": "8.54.0",
@@ -30,6 +31,7 @@
     "@opentrader/trpc": "workspace:*",
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "zod": "3.23.8"
   }
