@@ -1,6 +1,7 @@
 import * as trpcExpress from "@trpc/server/adapters/express";
 import type { Express } from "express";
 import express from "express";
+import cors from "cors";
 import { appRouter } from "@opentrader/trpc";
 
 // created for each request
@@ -21,7 +22,7 @@ const createContext = ({
       },
     };
   }
-
+  ``;
   return {
     user: null,
   };
@@ -38,6 +39,7 @@ export function useTrpc(app: Express) {
 }
 
 export const app = express();
+app.use(cors());
 useTrpc(app);
 
 export const createServer = () => {
