@@ -23,8 +23,7 @@ export default defineConfig({
   env: {
     NODE_ENV: "production",
   },
-  // noExternal: [/(.*)/],
-  noExternal: [/@opentrader/], // Include node_modules in the bundle
+  noExternal: [/@opentrader/], // Include internal packages into the bundle
   outExtension: ({ format }) => {
     if (format === "esm") return { js: ".mjs" };
     if (format === "cjs") return { js: ".cjs" };
