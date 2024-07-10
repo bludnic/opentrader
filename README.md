@@ -58,10 +58,10 @@ $ cp .env.example .env
 $ pnpm install
 ```
 
-2. Build `/packages/**`
+2. Build packages
 
 ```bash
-$ turbo run build --filter='./packages/*'
+$ turbo run build
 ```
 
 3. Run db migrations
@@ -108,27 +108,49 @@ Create the strategy configuration file `config.dev.json5`. We will use the `grid
 
 ## Run a backtest
 
-Command: `pnpm opentrader backtest <strategy> --from <date> --to <date> -t <timeframe>`
+Command: `./bin/cli.sh backtest <strategy> --from <date> --to <date> -t <timeframe>`
 
 Example running a `grid` strategy on `1h` timeframe.
 
 ```bash
-$ pnpm opentrader backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
+$ bin/cli.sh backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
 ```
 
 > To get more accurate results, use a smaller timeframe, e.g. 1m, however, it will take more time to download OHLC data from the exchange.
 
 ## Live trading
 
-Command: `pnpm opentrader trade <strategy>`
+## Starting the daemon
+
+Before running live trading, you need to start the daemon:
+
+```bash
+$ bin/cli.sh up
+```
+
+Now the daemon is ready to listen for incoming commands.
+
+> Tip: To run the daemon in the background, use: `bin/cli.sh up -d`
+
+## Running a Live Trading
+
+Command: `bin/cli.sh trade <strategy>`
 
 Example running a live trading with `grid` strategy.
 
 ```bash
-$ pnpm opentrader trade grid
+$ bin/cli.sh trade grid
 ```
 
-> After `Ctrl+C`, the orders created by the bot will remain on the exchange. To cancel them, use the `pnpm opentrader stop` command.
+> To stop the live trading, run `bin/cli.sh stop`
+
+## Stop the daemon
+
+To stop the daemon, run the following command:
+
+```bash
+$ bin/cli.sh down
+```
 
 # UI
 
@@ -148,7 +170,7 @@ Run frontend app:
 
 ```shell
 $ pnpm i
-$ turbo run build --filter='./packages/*'
+$ turbo run build
 $ turbo run dev
 ```
 
