@@ -54,8 +54,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/trpc
       '@prisma/client':
-        specifier: 5.16.2
-        version: 5.16.2(prisma@5.15.0)
+        specifier: 5.15.0
+        version: 5.15.0(prisma@5.15.0)
       '@trpc/client':
         specifier: ^10.45.2
         version: 10.45.2(@trpc/server@10.45.2)
@@ -1355,15 +1355,6 @@ packages:
 
   '@prisma/client@5.15.0':
     resolution: {integrity: sha512-wPTeTjbd2Q0abOeffN7zCDCbkp9C9cF+e9HPiI64lmpehyq2TepgXE+sY7FXr7Rhbb21prLMnhXX27/E11V09w==}
-    engines: {node: '>=16.13'}
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
-
-  '@prisma/client@5.16.2':
-    resolution: {integrity: sha512-+1lmkhR9gHWcTC5oghm2ZKpWljyWdzfazCVlLKUWXVmwHSf52g81aZ8qb6Km5Bs025yBi7puLp3qSLEvktoUtw==}
     engines: {node: '>=16.13'}
     peerDependencies:
       prisma: '*'
@@ -4414,10 +4405,6 @@ snapshots:
     optional: true
 
   '@prisma/client@5.15.0(prisma@5.15.0)':
-    optionalDependencies:
-      prisma: 5.15.0
-
-  '@prisma/client@5.16.2(prisma@5.15.0)':
     optionalDependencies:
       prisma: 5.15.0
 
