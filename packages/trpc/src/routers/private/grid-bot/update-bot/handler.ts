@@ -19,7 +19,10 @@ export async function updateGridBot({ ctx, input }: Options) {
         id: ctx.user.id,
       },
     },
-    data,
+    data: {
+      ...data,
+      settings: JSON.stringify(data.settings),
+    },
   });
 
   return bot;

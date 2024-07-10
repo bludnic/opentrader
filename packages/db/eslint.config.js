@@ -4,7 +4,7 @@ export default [
   ...EslintConfig,
   {
     rules: {
-      // overriding rules here
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];

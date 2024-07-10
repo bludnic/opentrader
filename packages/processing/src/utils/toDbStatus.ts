@@ -1,11 +1,10 @@
-import type { OrderStatus } from "@opentrader/types";
-import type { $Enums } from "@opentrader/db";
+import type { OrderStatus, XOrderStatus } from "@opentrader/types";
 
 /**
  * Map Exchange order status to DB order status
  * @param status - Order status
  */
-export function toDbStatus(status: OrderStatus): $Enums.OrderStatus {
+export function toDbStatus(status: OrderStatus): XOrderStatus {
   switch (status) {
     case "open":
       return "Placed";

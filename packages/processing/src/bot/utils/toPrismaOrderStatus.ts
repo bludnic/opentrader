@@ -1,9 +1,8 @@
-import { OrderStatusEnum } from "@opentrader/types";
-import type { $Enums } from "@opentrader/db";
+import { OrderStatusEnum, XOrderStatus } from "@opentrader/types";
 
 const map: Record<
   OrderStatusEnum,
-  Extract<$Enums.OrderStatus, "Idle" | "Placed" | "Filled">
+  Extract<XOrderStatus, "Idle" | "Placed" | "Filled">
 > = {
   [OrderStatusEnum.Idle]: "Idle",
   [OrderStatusEnum.Placed]: "Placed",
@@ -12,6 +11,6 @@ const map: Record<
 
 export function toPrismaOrderStatus(
   orderStatus: OrderStatusEnum,
-): $Enums.OrderStatus {
+): XOrderStatus {
   return map[orderStatus];
 }

@@ -9,6 +9,7 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
+import type { ExchangeCode } from "@opentrader/types";
 import { SmartTradeExecutor } from "../executors/index.js";
 import { BotStoreAdapter } from "./bot-store-adapter.js";
 
@@ -166,7 +167,7 @@ export class BotProcessing {
       baseCurrency: this.bot.baseCurrency,
       quoteCurrency: this.bot.quoteCurrency,
       settings: this.bot.settings,
-      exchangeCode: exchangeAccount.exchangeCode,
+      exchangeCode: exchangeAccount.exchangeCode as ExchangeCode,
     };
 
     const storeAdapter = new BotStoreAdapter(() => this.stop());

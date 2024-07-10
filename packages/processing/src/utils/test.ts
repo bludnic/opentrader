@@ -1,16 +1,21 @@
 // Only for testing purposes. Don't export this file.
 import type {
-  $Enums,
   ExchangeAccountWithCredentials,
   SmartTradeWithOrders,
 } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
+import type {
+  XEntityType,
+  XOrderSide,
+  XOrderStatus,
+  XOrderType,
+} from "@opentrader/types";
 
 export const TEST_ACCOUNT_LABEL = "TEST";
 
 type OrderParams = {
-  type: $Enums.OrderType;
-  side: $Enums.OrderSide;
+  type: XOrderType;
+  side: XOrderSide;
   price: number;
   quantity: number;
 };
@@ -35,7 +40,7 @@ export async function createTrade(
   });
 
   // @todo Array
-  const orders: (OrderParams & { entityType: $Enums.EntityType })[] = [];
+  const orders: (OrderParams & { entityType: XEntityType })[] = [];
   orders.push({
     entityType: "EntryOrder",
     ...entry,
@@ -98,13 +103,13 @@ type UpdateOrderParams = {
   filledPrice?: number;
   filledAt?: Date;
   quantity?: number;
-  status?: $Enums.OrderStatus;
+  status?: XOrderStatus;
 };
 
 export async function updateOrder(
   params: UpdateOrderParams,
   trade: SmartTradeWithOrders,
-  entityType: $Enums.EntityType,
+  entityType: XEntityType,
 ) {
   const entryOrder = trade.orders.find(
     (order) => order.entityType === "EntryOrder",

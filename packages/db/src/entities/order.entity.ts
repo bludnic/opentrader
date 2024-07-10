@@ -1,4 +1,5 @@
-import type { $Enums, Order as OrderModel } from "@prisma/client";
+import { XOrderStatus, XOrderType } from "@opentrader/types";
+import type { Order as OrderModel } from "@prisma/client";
 
 type GenericOrderProps =
   | "type"
@@ -9,8 +10,8 @@ type GenericOrderProps =
   | "placedAt";
 
 type OrderEntityBuilder<
-  OrderType extends $Enums.OrderType,
-  OrderStatus extends $Enums.OrderStatus,
+  OrderType extends XOrderType,
+  OrderStatus extends XOrderStatus,
   O extends OrderModel = OrderModel,
 > = {
   type: OrderType;

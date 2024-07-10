@@ -1,11 +1,11 @@
-import type { $Enums } from "@prisma/client";
+import { XEntryType, XTakeProfitType } from "@opentrader/types";
 import type { SmartTradeWithOrders } from "../types/smart-trade/index.js";
 import type { OrderEntity } from "./order.entity.js";
 import { toOrderEntity } from "./order.entity.js";
 
 export type SmartTradeEntityBuilder<
-  EntryType extends $Enums.EntryType,
-  TakeProfitType extends $Enums.TakeProfitType,
+  EntryType extends XEntryType,
+  TakeProfitType extends XTakeProfitType,
 > = SmartTradeWithOrders & {
   // tradeType: `${EntryType}_${TakeProfitType},`;
   entryType: EntryType;
@@ -13,7 +13,7 @@ export type SmartTradeEntityBuilder<
 } & EntryOrderBuilder<EntryType> &
   TakeProfitOrderBuilder<TakeProfitType>;
 
-type EntryOrderBuilder<EntryType extends $Enums.EntryType> =
+type EntryOrderBuilder<EntryType extends XEntryType> =
   EntryType extends "Order"
     ? {
         entryOrder: OrderEntity;
@@ -22,7 +22,7 @@ type EntryOrderBuilder<EntryType extends $Enums.EntryType> =
         entryOrders: OrderEntity[];
       };
 
-type TakeProfitOrderBuilder<TakeProfitType extends $Enums.TakeProfitType> =
+type TakeProfitOrderBuilder<TakeProfitType extends XTakeProfitType> =
   TakeProfitType extends "None"
     ? {
         takeProfitOrder: null;

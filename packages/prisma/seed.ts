@@ -74,9 +74,9 @@ async function main() {
       type: "GridBot",
       template: "gridBot",
 
-      settings: {
-        gridLines: gridLines as any,
-      },
+      settings: JSON.stringify({
+        gridLines,
+      }),
 
       exchangeAccount: {
         connect: {

@@ -42,7 +42,7 @@ const xprismaClient = prismaClient.$extends({
             id: botId,
           },
           data: {
-            state,
+            state: JSON.stringify(state),
           },
         });
       },

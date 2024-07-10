@@ -146,7 +146,7 @@ export async function createOrUpdateBot<T = any>(
         timeframe: botTimeframe,
         baseCurrency,
         quoteCurrency,
-        settings: botConfig.settings as object,
+        settings: JSON.stringify(botConfig.settings),
         exchangeAccount: {
           connect: {
             id: exchangeAccount.id,

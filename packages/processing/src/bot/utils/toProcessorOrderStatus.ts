@@ -1,7 +1,6 @@
-import type { $Enums } from "@opentrader/db";
-import { OrderStatusEnum } from "@opentrader/types";
+import { OrderStatusEnum, XOrderStatus } from "@opentrader/types";
 
-const map: Record<$Enums.OrderStatus, OrderStatusEnum> = {
+const map: Record<XOrderStatus, OrderStatusEnum> = {
   Idle: OrderStatusEnum.Idle,
   Placed: OrderStatusEnum.Placed,
   Filled: OrderStatusEnum.Filled,
@@ -15,7 +14,7 @@ const map: Record<$Enums.OrderStatus, OrderStatusEnum> = {
 };
 
 export function toProcessorOrderStatus(
-  orderStatus: $Enums.OrderStatus,
+  orderStatus: XOrderStatus,
 ): OrderStatusEnum {
   return map[orderStatus];
 }

@@ -52,6 +52,7 @@ export async function createBot({ ctx, input }: Options) {
   const bot = await xprisma.bot.custom.create({
     data: {
       ...data,
+      settings: JSON.stringify(data.settings),
       type: "Bot",
       exchangeAccount: {
         connect: {

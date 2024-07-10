@@ -1,6 +1,5 @@
 import type { Dictionary, Exchange, Market } from "ccxt";
 import type { ExchangeCode } from "@opentrader/types";
-import type { Prisma } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import type { ICacheProvider } from "../../../types/cache/cache-provider.interface.js";
 
@@ -46,7 +45,7 @@ export class PrismaCacheProvider implements ICacheProvider {
       data: {
         exchangeCode,
 
-        markets: markets as any as Prisma.InputJsonValue,
+        markets: JSON.stringify(markets),
       },
     });
     return markets;

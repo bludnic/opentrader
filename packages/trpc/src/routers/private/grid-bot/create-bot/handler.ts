@@ -1,3 +1,4 @@
+import { gridBot } from "@opentrader/bot-templates";
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
 import type { Context } from "../../../../utils/context.js";
@@ -29,9 +30,18 @@ export async function createGridBot({ ctx, input }: Options) {
     });
   }
 
+  const parsed = gridBot.schema.safeParse(data.settings);
+  if (!parsed.success) {
+    throw new TRPCError({
+      message: `Invalid strategy params: ${parsed.error.message}`,
+      code: "PARSE_ERROR",
+    });
+  }
+
   const bot = await xprisma.bot.grid.create({
     data: {
       ...data,
+      settings: JSON.stringify(data.settings),
       type: "GridBot",
       template: "gridBot",
       exchangeAccount: {

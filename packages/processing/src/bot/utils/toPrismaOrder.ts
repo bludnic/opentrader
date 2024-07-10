@@ -1,5 +1,5 @@
-import type { $Enums, Prisma } from "@opentrader/db";
-import { OrderStatusEnum, OrderType } from "@opentrader/types";
+import type { Prisma } from "@opentrader/db";
+import { OrderStatusEnum, OrderType, XEntityType, XOrderSide } from "@opentrader/types";
 import { toPrismaOrderStatus } from "./toPrismaOrderStatus.js";
 
 export function toPrismaOrder(
@@ -9,8 +9,8 @@ export function toPrismaOrder(
     price?: number;
   },
   quantity: number,
-  side: $Enums.OrderSide,
-  entityType: $Enums.EntityType,
+  side: XOrderSide,
+  entityType: XEntityType,
 ): Prisma.OrderCreateManySmartTradeInput {
   return {
     status: toPrismaOrderStatus(order.status || OrderStatusEnum.Idle),
