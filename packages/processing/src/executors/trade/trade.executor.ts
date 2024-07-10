@@ -6,8 +6,8 @@ import type {
 import type { IExchange } from "@opentrader/exchanges";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import type { ISmartTradeExecutor } from "../smart-trade-executor.interface";
-import { OrderExecutor } from "../order/order.executor";
+import type { ISmartTradeExecutor } from "../smart-trade-executor.interface.js";
+import { OrderExecutor } from "../order/order.executor.js";
 
 export class TradeExecutor implements ISmartTradeExecutor {
   smartTrade: SmartTradeWithOrders;

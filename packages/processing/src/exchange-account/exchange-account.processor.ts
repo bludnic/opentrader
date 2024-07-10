@@ -2,13 +2,12 @@ import { OrderNotFound } from "ccxt";
 import type {
   ExchangeAccountWithCredentials,
   OrderWithSmartTrade,
-  $Enums,
 } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { exchangeProvider, type IExchange } from "@opentrader/exchanges";
-import type { IGetLimitOrderResponse } from "@opentrader/types";
+import type { IGetLimitOrderResponse, XOrderStatus } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
-import { toDbStatus } from "../utils";
+import { toDbStatus } from "../utils/index.js";
 
 type SymbolId = string;
 
@@ -121,7 +120,7 @@ export class ExchangeAccountProcessor {
   private async updateStatus(
     order: OrderWithSmartTrade,
     exchangeOrder: IGetLimitOrderResponse,
-    status: $Enums.OrderStatus,
+    status: XOrderStatus,
   ) {
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check -- "Idle" | "Placed" | "Revoked" doesn't require to be processed
     switch (status) {

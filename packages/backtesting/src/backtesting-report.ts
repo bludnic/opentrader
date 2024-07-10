@@ -6,12 +6,12 @@ import type {
   SmartTrade,
 } from "@opentrader/bot-processor";
 import { ICandlestick, OrderStatusEnum } from "@opentrader/types";
-import { format, logger } from "@opentrader/logger";
-import { buyOrder } from "./report/buyOrder";
-import { buyTransaction } from "./report/buyTransaction";
-import { sellOrder } from "./report/sellOrder";
-import { sellTransaction } from "./report/sellTransaction";
-import type { ActiveOrder, ReportResult, Transaction } from "./types";
+import { format } from "@opentrader/logger";
+import { buyOrder } from "./report/buyOrder.js";
+import { buyTransaction } from "./report/buyTransaction.js";
+import { sellOrder } from "./report/sellOrder.js";
+import { sellTransaction } from "./report/sellTransaction.js";
+import type { ActiveOrder, Transaction } from "./types/index.js";
 
 type OrderInfo = Order & {
   side: "buy" | "sell";
@@ -27,9 +27,9 @@ export class BacktestingReport {
   ) {}
 
   create(): string {
-    const startDate = format.datetime(this.candlesticks[0].timestamp);
+    const startDate = format.datetime(this.candlesticks[0]!.timestamp);
     const endDate = format.datetime(
-      this.candlesticks[this.candlesticks.length - 1].timestamp,
+      this.candlesticks[this.candlesticks.length - 1]!.timestamp,
     );
 
     const strategyParams = JSON.stringify(this.botConfig.settings, null, 2);

@@ -1,7 +1,9 @@
 {
   "name": "@opentrader/exchanges",
   "version": "0.0.1",
+  "private": true,
   "description": "",
+  "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
@@ -11,23 +13,23 @@
     "./dist": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc",
+    "?build": "Internal package",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.12.11",
-    "eslint": "8.54.0",
-    "typescript": "5.4.5"
+    "@types/node": "^20.14.10",
+    "eslint": "8.57.0",
+    "typescript": "5.5.3"
   },
   "dependencies": {
     "@opentrader/db": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "ccxt": "4.3.27"
+    "ccxt": "4.3.59"
   }
 }

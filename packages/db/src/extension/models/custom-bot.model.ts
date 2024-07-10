@@ -1,11 +1,11 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
-import {
+import type {
   DefaultArgs,
   GetFindResult,
   InternalArgs,
 } from "@prisma/client/runtime/library";
-import type { TBotSettings, TBotState } from "../../types";
-import { ZBotSettings } from "../../types";
+import type { TBotSettings, TBotState } from "../../types/index.js";
+import { ZBotSettings } from "../../types/index.js";
 
 type NarrowBotType<ExtArgs extends InternalArgs, T> = Omit<
   Awaited<GetFindResult<Prisma.$BotPayload<ExtArgs>, T>>,
@@ -24,6 +24,13 @@ export const customBotModel = <ExtArgs extends InternalArgs = DefaultArgs>(
     const bot = await prisma.bot.findFirst<T>(args);
     if (!bot) return null;
 
+    if ("settings" in bot) {
+      (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+    }
+    if ("state" in bot) {
+      (bot as any).state = JSON.parse(bot.state) as TBotState;
+    }
+
     return bot as NarrowBotType<ExtArgs, T>;
   },
   async findUnique<T extends Prisma.BotFindUniqueArgs<ExtArgs>>(
@@ -32,21 +39,35 @@ export const customBotModel = <ExtArgs extends InternalArgs = DefaultArgs>(
     const bot = await prisma.bot.findUnique<T>(args);
     if (!bot) return null;
 
-    return bot as NarrowBotType<ExtArgs, T>;
+    return bot as unknown as NarrowBotType<ExtArgs, T>;
   },
   async findUniqueOrThrow<T extends Prisma.BotFindUniqueOrThrowArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindUniqueOrThrowArgs>,
   ) {
     const bot = await prisma.bot.findUniqueOrThrow<T>(args);
 
-    return bot as NarrowBotType<ExtArgs, T>;
+    if ("settings" in bot) {
+      (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+    }
+    if ("state" in bot) {
+      (bot as any).state = JSON.parse(bot.state) as TBotState;
+    }
+
+    return bot as unknown as NarrowBotType<ExtArgs, T>;
   },
   async findFirstOrThrow<T extends Prisma.BotFindFirstOrThrowArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindFirstOrThrowArgs>,
   ) {
     const bot = await prisma.bot.findFirstOrThrow<T>(args);
 
-    return bot as NarrowBotType<ExtArgs, T>;
+    if ("settings" in bot) {
+      (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+    }
+    if ("state" in bot) {
+      (bot as any).state = JSON.parse(bot.state) as TBotState;
+    }
+
+    return bot as unknown as NarrowBotType<ExtArgs, T>;
   },
   async findMany<T extends Prisma.BotFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotFindManyArgs>,
@@ -54,13 +75,20 @@ export const customBotModel = <ExtArgs extends InternalArgs = DefaultArgs>(
     const bots = await prisma.bot.findMany<T>(args);
 
     return bots.map((bot) => {
-      return bot as NarrowBotType<ExtArgs, T>;
+      if ("settings" in bot) {
+        (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+      }
+      if ("state" in bot) {
+        (bot as any).state = JSON.parse(bot.state) as TBotState;
+      }
+
+      return bot as unknown as NarrowBotType<ExtArgs, T>;
     });
   },
   async create<T extends Prisma.BotCreateArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotCreateArgs>,
   ) {
-    ZBotSettings.parse(args.data.settings);
+    ZBotSettings.parse(JSON.parse(args.data.settings));
 
     const bot = await prisma.bot.create<T>({
       ...args,
@@ -69,13 +97,20 @@ export const customBotModel = <ExtArgs extends InternalArgs = DefaultArgs>(
       },
     });
 
-    return bot as NarrowBotType<ExtArgs, T>;
+    if ("settings" in bot) {
+      (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+    }
+    if ("state" in bot) {
+      (bot as any).state = JSON.parse(bot.state) as TBotState;
+    }
+
+    return bot as unknown as NarrowBotType<ExtArgs, T>;
   },
   async update<T extends Prisma.BotUpdateArgs>(
     args: Prisma.SelectSubset<T, Prisma.BotUpdateArgs>,
   ) {
-    if (args.data.settings) {
-      ZBotSettings.parse(args.data.settings);
+    if (typeof args.data.settings === "string") {
+      ZBotSettings.parse(JSON.parse(args.data.settings));
     }
 
     const bot = await prisma.bot.update<T>({
@@ -85,7 +120,14 @@ export const customBotModel = <ExtArgs extends InternalArgs = DefaultArgs>(
       },
     });
 
-    return bot as NarrowBotType<ExtArgs, T>;
+    if ("settings" in bot) {
+      (bot as any).settings = ZBotSettings.parse(JSON.parse(bot.settings));
+    }
+    if ("state" in bot) {
+      (bot as any).state = JSON.parse(bot.state) as TBotState;
+    }
+
+    return bot as unknown as NarrowBotType<ExtArgs, T>;
   },
   async setProcessing(value: boolean, botId: number) {
     return prisma.bot.update({

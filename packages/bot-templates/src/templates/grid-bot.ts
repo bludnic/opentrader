@@ -1,9 +1,10 @@
 import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
 import type {
+  BotTemplate,
   IBotConfiguration,
   SmartTradeService,
-  TBotContext,
+  TBotContext
 } from "@opentrader/bot-processor";
 import {
   cancelSmartTrade,

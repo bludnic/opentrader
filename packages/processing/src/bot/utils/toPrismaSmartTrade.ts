@@ -1,7 +1,7 @@
 import type { UseSmartTradePayload } from "@opentrader/bot-processor";
 import type { Prisma } from "@opentrader/db";
-import { $Enums } from "@opentrader/db";
-import { toPrismaOrder } from "./order";
+import { XEntityType, XOrderSide, XSmartTradeType } from "@opentrader/types";
+import { toPrismaOrder } from "./toPrismaOrder.js";
 
 /**
  * Convert `SmartTrade` iterator result into `ISmartTrade` entity
@@ -36,16 +36,16 @@ export function toPrismaSmartTrade(
   const buyOrderData = toPrismaOrder(
     buy,
     quantity,
-    $Enums.OrderSide.Buy,
-    $Enums.EntityType.EntryOrder,
+    XOrderSide.Buy,
+    XEntityType.EntryOrder,
   );
 
   const sellOrderData = sell
     ? toPrismaOrder(
         sell,
         quantity,
-        $Enums.OrderSide.Sell,
-        $Enums.EntityType.TakeProfitOrder,
+        XOrderSide.Sell,
+        XEntityType.TakeProfitOrder,
       )
     : undefined;
 
@@ -54,7 +54,7 @@ export function toPrismaSmartTrade(
     takeProfitType: sell ? "Order" : "None",
 
     ref,
-    type: $Enums.SmartTradeType.Trade,
+    type: XSmartTradeType.Trade,
     exchangeSymbolId,
     baseCurrency,
     quoteCurrency,

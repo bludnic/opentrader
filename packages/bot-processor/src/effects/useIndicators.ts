@@ -1,6 +1,6 @@
 import type { IndicatorBarSize, IndicatorName } from "@opentrader/types";
-import { makeEffect } from "./utils";
-import { USE_INDICATORS } from "./types";
+import { makeEffect } from "./utils/index.js";
+import { USE_INDICATORS } from "./types/index.js";
 
 export function useIndicators<I extends IndicatorName>(
   indicators: IndicatorName[],

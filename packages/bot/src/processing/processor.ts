@@ -1,8 +1,9 @@
 import type { ExchangeAccountWithCredentials, TBot } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { CandlesProcessor } from "./candles.processor";
-import { TimeframeCron } from "./timeframe.cron";
-import { ExchangeAccountsWatcher } from "./exchange-accounts.watcher";
+
+import { CandlesProcessor } from "./candles.processor.js";
+import { TimeframeCron } from "./timeframe.cron.js";
+import { ExchangeAccountsWatcher } from "./exchange-accounts.watcher.js";
 
 export class Processor {
   private exchangeAccountsWatcher: ExchangeAccountsWatcher;

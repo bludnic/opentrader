@@ -15,8 +15,8 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export * from "./common";
-export * from "./exchanges";
-export * from "./grid-bot";
-export * from "./smart-trade";
-export * from "./indicators";
+export * from "./common/index.js";
+export * from "./exchange/index.js";
+export * from "./grid-bot/index.js";
+export * from "./smart-trade/enums.js";
+export * from "./indicators/index.js";

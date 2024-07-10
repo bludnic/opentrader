@@ -1,2 +1,2 @@
-export * from "./base-effect";
-export * from "./effect-types";
+export * from "./base-effect.js";
+export * from "./effect-types.js";

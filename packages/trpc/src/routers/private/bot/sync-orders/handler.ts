@@ -6,8 +6,8 @@ import {
 import type { OrderEntity } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import type { IGetLimitOrderResponse } from "@opentrader/types";
-import type { Context } from "../../../../utils/context";
-import type { TSyncGridBotOrdersInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TSyncGridBotOrdersInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

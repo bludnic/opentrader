@@ -10,3 +10,4 @@ config.prod.json5
 exchanges.dev.json5
 exchanges.prod.json5
 .vercel
+dev.db

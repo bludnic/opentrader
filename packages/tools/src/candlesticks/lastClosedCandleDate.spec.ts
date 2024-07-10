@@ -1,4 +1,4 @@
-import { lastClosedCandleDate } from "./lastClosedCandleDate";
+import { lastClosedCandleDate } from "./lastClosedCandleDate.js";
 
 describe("lastClosedCandleDate", () => {
   it("should return the correct date for each bar size", () => {

@@ -6,8 +6,8 @@ import { CCXTCandlesProvider } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
 import { exchangeCodeMapCCXT } from "@opentrader/exchanges";
 import type { BarSize, ExchangeCode, ICandlestick } from "@opentrader/types";
-import type { CommandResult, ConfigName } from "../types";
-import { readBotConfig } from "../config";
+import type { CommandResult, ConfigName } from "../types.js";
+import { readBotConfig } from "../config.js";
 
 type Options = {
   config: ConfigName;
@@ -30,6 +30,20 @@ export async function runBacktest(
     strategy = await findStrategy(strategyName);
   } catch (err) {
     logger.info((err as Error).message);
+
+    return {
+      result: undefined,
+    };
+  }
+
+  // Validate strategy params
+  const { success: isValidSchema, error } =
+    strategy.strategyFn.schema.safeParse(botConfig.settings);
+  if (!isValidSchema) {
+    logger.error(error.message);
+    logger.error(
+      `The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`,
+    );
 
     return {
       result: undefined,

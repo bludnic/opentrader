@@ -1,1 +1,1 @@
-export * from "./smart-trade.synchronizer";
+export * from "./smart-trade.synchronizer.js";

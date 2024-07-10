@@ -21,7 +21,7 @@ import { logger } from "@opentrader/logger";
 import { barSizeToDuration } from "@opentrader/tools";
 import { BarSize } from "@opentrader/types";
 import type { ICandlestick } from "@opentrader/types";
-import type { CandlesWatcher } from "./candles.watcher";
+import type { CandlesWatcher } from "./candles.watcher.js";
 
 /**
  * Aggregates 1m candles to higher timeframes.

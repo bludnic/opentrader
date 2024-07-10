@@ -1,9 +1,11 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { BotProcessing } from "@opentrader/processing";
-import type { CommandResult, ConfigName } from "../types";
-import { readBotConfig, readExchangesConfig } from "../config";
+import type { CommandResult, ConfigName } from "../types.js";
+import { readBotConfig, readExchangesConfig } from "../config.js";
+import { createClient } from "../daemon.js";
+
+const daemon = createClient();
 
 export async function stopCommand(options: {
   config: ConfigName;
@@ -41,29 +43,11 @@ export async function stopCommand(options: {
     };
   }
 
-  logger.info(`Processing stop command for bot "${bot.label}"...`);
-  await stopBot(bot.id);
-  logger.info(`Command stop processed successfully for bot "${bot.label}"`);
+  logger.info(`Stopping bot "${bot.label}"...`);
+  await daemon.bot.stop.mutate({ botId: bot.id });
+  logger.info(`Bot "${bot.label}" stopped successfully`);
 
   return {
     result: undefined,
   };
-}
-
-async function stopBot(botId: number) {
-  const botProcessor = await BotProcessing.fromId(botId);
-  await botProcessor.processStopCommand();
-
-  await disableBot(botId);
-}
-
-async function disableBot(botId: number) {
-  await xprisma.bot.custom.update({
-    where: {
-      id: botId,
-    },
-    data: {
-      enabled: false,
-    },
-  });
 }

@@ -1,11 +1,11 @@
-import { router } from "../../../trpc";
-import { authorizedProcedure } from "../../../procedures";
-import { getSymbols } from "./get-symbols/handler";
-import { ZGetSymbolsInputSchema } from "./get-symbols/schema";
-import { getSymbol } from "./get-symbol/handler";
-import { ZGetSymbolInputSchema } from "./get-symbol/schema";
-import { getSymbolPrice } from "./get-symbol-price/handler";
-import { ZGetSymbolPriceInputSchema } from "./get-symbol-price/schema";
+import { router } from "../../../trpc.js";
+import { authorizedProcedure } from "../../../procedures.js";
+import { getSymbols } from "./get-symbols/handler.js";
+import { ZGetSymbolsInputSchema } from "./get-symbols/schema.js";
+import { getSymbol } from "./get-symbol/handler.js";
+import { ZGetSymbolInputSchema } from "./get-symbol/schema.js";
+import { getSymbolPrice } from "./get-symbol-price/handler.js";
+import { ZGetSymbolPriceInputSchema } from "./get-symbol-price/schema.js";
 
 export const symbolsRouter = router({
   list: authorizedProcedure.input(ZGetSymbolsInputSchema).query(getSymbols),

@@ -1,4 +1,4 @@
-import type { OrderEntity } from "../entities";
+import type { OrderEntity } from "../entities/index.js";
 
 type RequiredNotNull<T, K extends keyof T> = T & {
   [P in K]: NonNullable<T[P]>;

@@ -1,7 +1,7 @@
 import Big from "big.js";
 import type { IGridLine, ISymbolFilter } from "@opentrader/types";
-import { filterPrice } from "../currency";
-import { calcGridLines } from "./calcGridLines";
+import { filterPrice } from "../currency/index.js";
+import { calcGridLines } from "./calcGridLines.js";
 
 export function calcGridLinesWithPriceFilter(
   highPrice: number,

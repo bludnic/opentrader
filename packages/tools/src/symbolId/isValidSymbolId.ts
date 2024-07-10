@@ -1,5 +1,5 @@
 import { ExchangeCode } from "@opentrader/types";
-import { CURRENCY_PAIR_DELIMITER, EXCHANGE_CODE_DELIMITER } from "./constants";
+import { CURRENCY_PAIR_DELIMITER, EXCHANGE_CODE_DELIMITER } from "./constants.js";
 
 export function isValidSymbolId(symbolId: string) {
   const exchangeCodes = Object.keys(ExchangeCode);

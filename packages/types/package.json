@@ -2,18 +2,21 @@
   "name": "@opentrader/types",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint . --quiet"
+    "build": "tsup --dts",
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
-    "eslint": "8.54.0",
-    "typescript": "5.4.5"
+    "eslint": "8.57.0",
+    "tsup": "^8.1.0",
+    "typescript": "5.5.3"
   }
 }

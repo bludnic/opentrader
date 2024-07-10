@@ -1,6 +1,6 @@
 import type { SmartTradeWithSell } from "@opentrader/bot-processor";
 import { OrderSideEnum } from "@opentrader/types";
-import type { SellTransaction } from "../types";
+import type { SellTransaction } from "../types/index.js";
 
 export function sellTransaction(
   smartTrade: SmartTradeWithSell,

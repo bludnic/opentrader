@@ -10,11 +10,11 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@9.2.0",
+  "packageManager": "pnpm@9.5.0",
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.2",
     "ts-node": "10.9.2",
-    "turbo": "^1.13.3"
+    "turbo": "^2.0.6"
   },
   "scripts": {
     "lint": "turbo run lint",
@@ -27,6 +27,6 @@
   },
   "bin": {
     "dev": "./bin/dev.sh",
-    "opentrader": "./bin/opentrader.sh"
+    "cli": "./bin/cli.sh"
   }
 }

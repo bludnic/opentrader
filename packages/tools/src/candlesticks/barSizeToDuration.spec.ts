@@ -1,4 +1,4 @@
-import { barSizeToDuration } from "./barSizeToDuration";
+import { barSizeToDuration } from "./barSizeToDuration.js";
 
 describe("barSizeToDuration function", () => {
   it("should return the correct duration for each bar size", () => {

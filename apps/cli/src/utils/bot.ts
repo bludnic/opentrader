@@ -2,7 +2,7 @@ import { ExchangeAccountWithCredentials, TBot, xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { BotProcessing } from "@opentrader/processing";
 import { BarSize } from "@opentrader/types";
-import { BotConfig, ConfigName, ExchangeConfig } from "../types";
+import { BotConfig, ConfigName, ExchangeConfig } from "../types.js";
 
 /**
  * Save exchange accounts to DB if not exists
@@ -146,7 +146,7 @@ export async function createOrUpdateBot<T = any>(
         timeframe: botTimeframe,
         baseCurrency,
         quoteCurrency,
-        settings: botConfig.settings as object,
+        settings: JSON.stringify(botConfig.settings),
         exchangeAccount: {
           connect: {
             id: exchangeAccount.id,

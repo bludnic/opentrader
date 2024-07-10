@@ -96,9 +96,9 @@ export class OrdersSynchronizer {
           affectedBotsIds.push(order.smartTrade.botId);
 
           if (exchangeOrder.status === "filled") {
-            params?.onFilled?.(exchangeOrder, order);
+            params?.onFilled?.(exchangeOrder as IClosedOrder, order);
           } else if (exchangeOrder.status === "canceled") {
-            params?.onCanceled?.(exchangeOrder, order);
+            params?.onCanceled?.(exchangeOrder as IClosedOrder, order);
           }
         } else {
           console.log(

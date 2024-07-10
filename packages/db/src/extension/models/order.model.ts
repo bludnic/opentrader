@@ -1,4 +1,5 @@
-import type { PrismaClient, $Enums } from "@prisma/client";
+import { XOrderStatus } from "@opentrader/types";
+import type { PrismaClient } from "@prisma/client";
 
 export const orderModel = (prisma: PrismaClient) => ({
   async findByExchangeOrderId(exchangeOrderId: string) {
@@ -31,7 +32,7 @@ export const orderModel = (prisma: PrismaClient) => ({
    * synchronizing with the Exchange.
    */
   async updateStatus(
-    status: Extract<$Enums.OrderStatus, "Canceled" | "Revoked" | "Deleted">,
+    status: Extract<XOrderStatus, "Canceled" | "Revoked" | "Deleted">,
     orderId: number,
   ) {
     const resetSmartTradeRef = {

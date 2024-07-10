@@ -1,1 +1,0 @@
-export { publicRouter } from "./router";

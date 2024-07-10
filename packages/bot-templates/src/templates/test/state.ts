@@ -15,11 +15,11 @@ export function* testState(ctx: TBotContext<any>) {
     return;
   }
 
-  if (ctx.state.counter === undefined) {
-    ctx.state.counter = 0;
+  if (ctx.state['counter'] === undefined) {
+    ctx.state['counter'] = 0;
   }
 
-  ctx.state.counter += 1;
+  ctx.state['counter'] += 1;
 
   logger.info(ctx.state, `[TestState] State is`);
 }

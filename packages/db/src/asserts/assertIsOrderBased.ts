@@ -1,7 +1,7 @@
 import type {
   SmartTradeEntity,
   SmartTradeEntity_Order_Order,
-} from "../entities";
+} from "../entities/index.js";
 
 /**
  * Asserts that SmartTrade uses orders for entry and exit

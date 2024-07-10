@@ -1,5 +1,5 @@
-import { USE_EXCHANGE } from "./types";
-import { makeEffect } from "./utils";
+import { USE_EXCHANGE } from "./types/index.js";
+import { makeEffect } from "./utils/index.js";
 
 /**
  * If no label is provided, the default exchange linked to the bot will be used.

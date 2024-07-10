@@ -1,10 +1,10 @@
 import { ExchangeCode } from "@opentrader/types";
 import type { Command } from "commander";
 import { Argument, Option } from "commander";
-import { DEFAULT_CONFIG_NAME } from "../config";
-import { validateExchange, validatePair } from "../utils/validate";
-import { handle } from "../utils/command";
-import * as api from "../api";
+import { DEFAULT_CONFIG_NAME } from "../config.js";
+import { validateExchange, validatePair } from "../utils/validate.js";
+import { handle } from "../utils/command.js";
+import { runBacktest } from "../api/run-backtest.js";
 
 export function addBacktestCommand(program: Command) {
   program
@@ -37,5 +37,5 @@ export function addBacktestCommand(program: Command) {
         .argParser(validateExchange)
         .default(ExchangeCode.OKX),
     )
-    .action(handle(api.runBacktest));
+    .action(handle(runBacktest));
 }

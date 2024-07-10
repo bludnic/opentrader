@@ -1,5 +1,5 @@
 import { ExchangeCode } from "@opentrader/types";
-import { isValidExchangeCode } from "./isValidExchangeCode";
+import { isValidExchangeCode } from "./isValidExchangeCode.js";
 
 describe("isValidExchangeCode", () => {
   it("test valid `exchangeCode`", () => {

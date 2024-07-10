@@ -16,9 +16,9 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import type { IExchange } from "@opentrader/exchanges";
-import { BotControl } from "./bot-control";
-import { effectRunnerMap } from "./effect-runner";
-import { isEffect } from "./effects";
+import { BotControl } from "./bot-control.js";
+import { effectRunnerMap } from "./effect-runner.js";
+import { isEffect } from "./effects/index.js";
 import type {
   BotState,
   BotTemplate,
@@ -27,8 +27,8 @@ import type {
   IStore,
   MarketData,
   TBotContext,
-} from "./types";
-import { createContext } from "./utils/createContext";
+} from "./types/index.js";
+import { createContext } from "./utils/createContext.js";
 
 export class StrategyRunner<T extends IBotConfiguration> {
   constructor(

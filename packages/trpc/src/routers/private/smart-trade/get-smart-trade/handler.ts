@@ -3,8 +3,8 @@ import type {
   SmartTradeEntity_Order_Order,
 } from "@opentrader/db";
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
-import type { Context } from "../../../../utils/context";
-import type { TGetSmartTradeInputSchema } from "./schema";
+import type { Context } from "../../../../utils/context.js";
+import type { TGetSmartTradeInputSchema } from "./schema.js";
 
 type Options = {
   ctx: {

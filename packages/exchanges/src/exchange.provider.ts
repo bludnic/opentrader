@@ -17,8 +17,8 @@
  */
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import type { ExchangeCode } from "@opentrader/types";
-import { exchanges } from "./exchanges";
-import type { IExchange } from "./types";
+import { exchanges } from "./exchanges/index.js";
+import type { IExchange } from "./types/index.js";
 
 type ExchangeAccountId = number;
 
@@ -51,9 +51,9 @@ export class ExchangeProvider {
     }
 
     // Create new exchange instance
-    const newExchange = exchanges[exchangeCode]({
+    const newExchange = exchanges[exchangeCode as ExchangeCode]({
       ...credentials,
-      code: credentials.code,
+      code: credentials.code as ExchangeCode,
       password: credentials.password ?? "",
     });
 

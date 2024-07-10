@@ -15,6 +15,7 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-export { type AppRouter, appRouter } from "./routers/appRouter";
-export { createContext } from "./utils/context";
-export { eventBus, EVENT } from "./event-bus";
+export { trpc } from "./trpc.js";
+export { type AppRouter, appRouter } from "./routers/appRouter.js";
+export { createContext } from "./utils/context.js";
+export { eventBus, EVENT } from "./event-bus.js";

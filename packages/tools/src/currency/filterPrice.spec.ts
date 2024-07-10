@@ -1,5 +1,5 @@
-import { ETH_SYMBOL_FILTER } from "src/mocks/symbols";
-import { filterPrice } from "./filterPrice";
+import { ETH_SYMBOL_FILTER } from "../mocks/symbols.js";
+import { filterPrice } from "./filterPrice.js";
 
 describe("filterPrice", () => {
   it("should transform to fixed decimal points", () => {

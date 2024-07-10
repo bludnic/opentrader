@@ -17,78 +17,83 @@ generator zod {
   useTypeAssertions = true
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL") // uses connection pooling
+// datasource postgres {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL") // uses connection pooling
+// }
+
+datasource sqlite {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
-enum ExchangeCode {
-  OKX
-  BYBIT
-  BINANCE
-  KRAKEN
-  COINBASE
-  GATEIO
-}
-
-enum BotType {
-  Bot
-  GridBot
-}
-
-enum OrderSide {
-  Buy
-  Sell
-}
-
-enum OrderStatus {
-  Idle
-  Placed
-  Filled
-  Canceled
-  Revoked
-  Deleted
-}
-
-enum OrderType {
-  Limit
-  Market
-}
-
-enum UserRole {
-  User
-  Admin
-}
-
-enum SmartTradeType {
-  Trade
-  DCA
-}
-
-// SmartTrade enums
-enum EntryType {
-  Order
-  Ladder
-}
-
-enum TakeProfitType {
-  Order
-  Ladder
-  None
-}
-
-enum EntityType {
-  EntryOrder
-  TakeProfitOrder
-  StopLossOrder
-  SafetyOrder
-}
+// enum ExchangeCode {
+//   OKX
+//   BYBIT
+//   BINANCE
+//   KRAKEN
+//   COINBASE
+//   GATEIO
+// }
+//
+// enum BotType {
+//   Bot
+//   GridBot
+// }
+//
+// enum OrderSide {
+//   Buy
+//   Sell
+// }
+//
+// enum OrderStatus {
+//   Idle
+//   Placed
+//   Filled
+//   Canceled
+//   Revoked
+//   Deleted
+// }
+//
+// enum OrderType {
+//   Limit
+//   Market
+// }
+//
+// enum UserRole {
+//   User
+//   Admin
+// }
+//
+// enum SmartTradeType {
+//   Trade
+//   DCA
+// }
+//
+// // SmartTrade enums
+// enum EntryType {
+//   Order
+//   Ladder
+// }
+//
+// enum TakeProfitType {
+//   Order
+//   Ladder
+//   None
+// }
+//
+// enum EntityType {
+//   EntryOrder
+//   TakeProfitOrder
+//   StopLossOrder
+//   SafetyOrder
+// }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
+  id          Int     @id @default(autoincrement())
+  email       String  @unique
   displayName String?
-  role        UserRole @default(User)
+  role        String  @default("User")
   password    String
 
   exchangeAccounts ExchangeAccount[]
@@ -97,10 +102,10 @@ model User {
 }
 
 model ExchangeAccount {
-  id           Int          @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   name         String
-  label        String?      @unique
-  exchangeCode ExchangeCode // ExchangeCode
+  label        String? @unique
+  exchangeCode String // ExchangeCode
 
   // Credentials
   apiKey        String
@@ -119,9 +124,9 @@ model ExchangeAccount {
 model SmartTrade {
   id Int @id @default(autoincrement())
 
-  type           SmartTradeType
-  entryType      EntryType
-  takeProfitType TakeProfitType
+  type           String // SmartTradeType
+  entryType      String // EntryType
+  takeProfitType String // TakeProfitType
 
   baseCurrency     String
   quoteCurrency    String
@@ -144,11 +149,11 @@ model SmartTrade {
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
-  status      OrderStatus @default(Idle)
-  type        OrderType
-  entityType  EntityType
-  side        OrderSide
+  id          Int    @id @default(autoincrement())
+  status      String @default("Idle") // OrderStatus
+  type        String // OrderType
+  entityType  String // EntityType
+  side        String // OrderSide
   price       Float? // Market orders doesn't require price to be specified
   filledPrice Float?
   fee         Float?
@@ -169,7 +174,7 @@ model Order {
 
 model Bot {
   id            Int     @id @default(autoincrement())
-  type          BotType
+  type          String // BotType
   name          String
   label         String? @unique
   baseCurrency  String
@@ -192,8 +197,8 @@ model Bot {
 
   createdAt DateTime @default(now())
 
-  settings Json // @todo gridLines
-  state    Json @default("{}")
+  settings String // JSON stringified
+  state    String @default("{}") // JSON stringified
 
   smartTrades SmartTrade[]
 
@@ -207,16 +212,7 @@ model Bot {
 }
 
 model Markets {
-  exchangeCode ExchangeCode @id
-  markets      Json
-  updatedAt    DateTime     @updatedAt
+  exchangeCode String   @id // ExchangeCode
+  markets      String // JSON stringified
+  updatedAt    DateTime @updatedAt
 }
-
-// model BotState {
-//   id Int @id @default(autoincrement())
-//   type String // smartTradeRef
-//   key String // index provided by user
-//   value String // smartTrade.id
-//   bot Bot @relation(fields: [botId], references: [id])
-//   botId Int
-// }

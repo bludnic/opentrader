@@ -18,12 +18,12 @@
 import { xprisma } from "@opentrader/db";
 import { NetworkError, RequestTimeout } from "ccxt";
 import { logger } from "@opentrader/logger";
-import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract";
+import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract.js";
 
 export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
   protocol = "ws" as const;
 
-  async disable() {
+  override async disable() {
     await super.disable();
     await this.exchangeService.ccxt.close();
   }

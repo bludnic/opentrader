@@ -2,9 +2,9 @@ import { EventEmitter } from "node:events";
 import type { IExchange } from "@opentrader/exchanges";
 import type { BarSize, ICandlestick } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
-import type { CandleEvent } from "./types";
-import { CandlesWatcher } from "./candles.watcher";
-import { CandlesAggregator } from "./candles.aggregator";
+import type { CandleEvent } from "./types.js";
+import { CandlesWatcher } from "./candles.watcher.js";
+import { CandlesAggregator } from "./candles.aggregator.js";
 
 /**
  * Channel that subscribes to 1m candles and aggregate them to higher timeframes.

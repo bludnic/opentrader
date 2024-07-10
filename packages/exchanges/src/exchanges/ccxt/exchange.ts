@@ -44,11 +44,11 @@ import type {
 } from "@opentrader/types";
 import { pro } from "ccxt";
 import type { Dictionary, Market, Exchange } from "ccxt";
-import type { IExchange, IExchangeCredentials } from "../../types";
-import { cache } from "../../cache";
-import { fetcher } from "../../utils/next/fetcher";
-import { normalize } from "./normalize";
-import { exchangeCodeMapCCXT } from "./constants";
+import type { IExchange, IExchangeCredentials } from "../../types/index.js";
+import { cache } from "../../cache.js";
+import { fetcher } from "../../utils/next/fetcher.js";
+import { normalize } from "./normalize.js";
+import { exchangeCodeMapCCXT } from "./constants.js";
 
 export class CCXTExchange implements IExchange {
   public exchangeCode: ExchangeCode;
@@ -72,6 +72,7 @@ export class CCXTExchange implements IExchange {
     // #88 Fixes: 'e instanceof this.AbortError' is not an object
     this.ccxt.FetchError = TypeError; // when fetch request failed (network error)
     this.ccxt.AbortError = DOMException; // when fetch request aborted
+    this.ccxt.verbose = process.env.CCXT_VERBOSE === "true";
 
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
