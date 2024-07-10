@@ -7,7 +7,7 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsup",
-    "build:release": "tsup -d release/dist && cp -r ./bin ./release/bin",
+    "build:release": "rimraf ./release && tsup -d release/dist && cp -r ./bin ./release/bin && cp -r ./scripts ./release/scripts",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix"
   },
@@ -21,6 +21,7 @@
     "@types/node": "^20.14.10",
     "esbuild": "^0.23.0",
     "eslint": "8.57.0",
+    "rimraf": "^6.0.1",
     "ts-loader": "^9.5.1",
     "ts-node": "10.9.2",
     "tsup": "^8.1.0",
@@ -50,7 +51,9 @@
     "json5": "^2.2.3",
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
+    "random-words": "^2.0.1",
     "superjson": "^2.2.1",
+    "tsx": "^4.16.2",
     "zod": "3.23.8"
   },
   "bin": {
