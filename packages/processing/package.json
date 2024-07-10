@@ -16,15 +16,15 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@opentrader/eslint-config": "workspace:*",
+    "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.5",
-    "eslint": "8.54.0",
+    "@types/node": "^20.14.10",
+    "eslint": "8.57.0",
     "jest": "^29.7.0",
-    "ts-jest": "^29.1.5",
-    "typescript": "5.4.5"
+    "ts-jest": "^29.2.1",
+    "typescript": "5.5.3"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
@@ -33,6 +33,6 @@
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@prisma/client": "5.15.0",
-    "ccxt": "4.3.27"
+    "ccxt": "4.3.59"
   }
 }

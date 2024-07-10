@@ -14,7 +14,7 @@
   "devDependencies": {
     "prettier": "^3.3.2",
     "ts-node": "10.9.2",
-    "turbo": "^2.0.4"
+    "turbo": "^2.0.6"
   },
   "scripts": {
     "lint": "turbo run lint",

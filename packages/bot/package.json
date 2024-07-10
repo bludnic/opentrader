@@ -18,10 +18,10 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.24",
-    "@types/node": "^20.14.5",
-    "eslint": "8.54.0",
+    "@types/node": "^20.14.10",
+    "eslint": "8.57.0",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.3"
   },
   "dependencies": {
     "@opentrader/bot-templates": "workspace:*",
@@ -31,7 +31,7 @@
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
     "async": "^3.2.5",
-    "ccxt": "4.3.27",
+    "ccxt": "4.3.59",
     "cron": "^3.1.7"
   }
 }
