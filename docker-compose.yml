@@ -11,6 +11,7 @@ services:
         NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
         NEXT_PUBLIC_STATIC: "true"
         ADMIN_PASSWORD: opentrader
+        GITHUB_TOKEN: "github_classic_token"
     ports:
       - "5000:5000"
     environment:
