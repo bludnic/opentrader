@@ -7,6 +7,8 @@ import { createExchangeAccount } from "./create-account/handler.js";
 import { ZCreateExchangeAccountInputSchema } from "./create-account/schema.js";
 import { updateExchangeAccount } from "./update-account/handler.js";
 import { ZUpdateExchangeAccountInputSchema } from "./update-account/schema.js";
+import { deleteExchangeAccount } from "./delete-account/handler.js";
+import { ZDeleteExchangeAccountInputSchema } from "./delete-account/schema.js";
 
 export const exchangeAccountsRouter = router({
   list: authorizedProcedure.query(getExchangeAccounts),
@@ -22,4 +24,8 @@ export const exchangeAccountsRouter = router({
   update: authorizedProcedure
     .input(ZUpdateExchangeAccountInputSchema)
     .mutation(updateExchangeAccount),
+
+  delete: authorizedProcedure
+    .input(ZDeleteExchangeAccountInputSchema)
+    .mutation(deleteExchangeAccount),
 });

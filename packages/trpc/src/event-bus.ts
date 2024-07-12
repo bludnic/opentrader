@@ -3,6 +3,8 @@ import { EventEmitter } from "node:events";
 
 export const EVENT = {
   onExchangeAccountCreated: "onExchangeAccountCreated",
+  onExchangeAccountDeleted: "onExchangeAccountDeleted",
+  onExchangeAccountUpdated: "onExchangeAccountUpdated",
   onBotCreated: "onBotCreated",
   onBotStarted: "onBotStarted",
 } as const;
@@ -17,6 +19,14 @@ export const EVENT = {
 class EventBus extends EventEmitter {
   exchangeAccountCreated(exchangeAccount: ExchangeAccountWithCredentials) {
     this.emit(EVENT.onExchangeAccountCreated, exchangeAccount);
+  }
+
+  exchangeAccountDeleted(exchangeAccount: ExchangeAccountWithCredentials) {
+    this.emit(EVENT.onExchangeAccountDeleted, exchangeAccount);
+  }
+
+  exchangeAccountUpdated(exchangeAccount: ExchangeAccountWithCredentials) {
+    this.emit(EVENT.onExchangeAccountUpdated, exchangeAccount);
   }
 
   botCreated(bot: TBot) {
