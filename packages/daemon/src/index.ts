@@ -34,7 +34,7 @@ export class Daemon {
 
     eventBus.on(EVENT.onExchangeAccountCreated, (exchangeAccount) => {
       console.log("EventBus: Exchange account created", exchangeAccount);
-      void processor.onExchangeAccountCreated(exchangeAccount);
+      void processor.addExchangeAccount(exchangeAccount);
     });
   }
 
