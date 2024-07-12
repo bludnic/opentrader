@@ -10,4 +10,7 @@ config.prod.json5
 exchanges.dev.json5
 exchanges.prod.json5
 .vercel
+
+# Prisma SQLite database files
 dev.db
+dev.db-journal
