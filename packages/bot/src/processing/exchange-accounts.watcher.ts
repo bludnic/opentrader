@@ -11,19 +11,29 @@ import { OrderSynchronizer } from "./order-synchronizer/index.js";
 
 export class ExchangeAccountsWatcher {
   private ordersWatchers: OrderSynchronizer[] = [];
-  private exchangeAccounts: ExchangeAccountWithCredentials[];
+  private initialExchangeAccounts: ExchangeAccountWithCredentials[];
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[]) {
-    this.exchangeAccounts = exchangeAccounts;
+    this.initialExchangeAccounts = exchangeAccounts;
   }
 
   async create() {
-    for (const exchangeAccount of this.exchangeAccounts) {
+    for (const exchangeAccount of this.initialExchangeAccounts) {
       await this.addExchangeAccount(exchangeAccount);
     }
   }
 
   async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    const watcherExists = this.ordersWatchers.find(
+      (watcher) => watcher.exchangeAccount.id === exchangeAccount.id,
+    );
+    if (watcherExists) {
+      logger.error(
+        `❗ Exchange account #${exchangeAccount.id} already exists in the ordersWatchers`,
+      );
+      return;
+    }
+
     const ordersWatcher = new OrderSynchronizer(exchangeAccount);
     this.ordersWatchers.push(ordersWatcher);
 
@@ -32,6 +42,40 @@ export class ExchangeAccountsWatcher {
     ordersWatcher.subscribe("onPlaced", this.onOrderPlaced.bind(this));
 
     await ordersWatcher.enable();
+
+    logger.info(
+      `🔋 Exchange account #${exchangeAccount.id} added to the ordersWatchers`,
+    );
+  }
+
+  async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    const ordersWatcher = this.ordersWatchers.find(
+      (watcher) => watcher.exchangeAccount.id === exchangeAccount.id,
+    );
+
+    if (!ordersWatcher) {
+      logger.error(
+        `❗ Exchange account #${exchangeAccount.id} not found in the ordersWatchers`,
+      );
+      return;
+    }
+
+    ordersWatcher.unsubscribeAll();
+    await ordersWatcher.disable();
+
+    // exclude the watcher from the list
+    this.ordersWatchers = this.ordersWatchers.filter(
+      (watcher) => watcher.exchangeAccount.id !== exchangeAccount.id,
+    );
+
+    logger.info(
+      `🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`,
+    );
+  }
+
+  async updateExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    await this.removeExchangeAccount(exchangeAccount);
+    await this.addExchangeAccount(exchangeAccount);
   }
 
   async destroy() {

@@ -1,6 +1,7 @@
 import { xprisma } from "@opentrader/db";
 import type { Context } from "../../../../utils/context.js";
 import type { TUpdateExchangeAccountInputSchema } from "./schema.js";
+import { eventBus } from "../../../../event-bus.js";
 
 type Options = {
   ctx: {
@@ -17,6 +18,7 @@ export async function updateExchangeAccount({ input, ctx }: Options) {
     },
     data: input.body,
   });
+  eventBus.exchangeAccountUpdated(exchangeAccount);
 
   return exchangeAccount;
 }

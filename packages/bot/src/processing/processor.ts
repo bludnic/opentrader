@@ -21,10 +21,16 @@ export class Processor {
     this.candlesProcessor = new CandlesProcessor(bots);
   }
 
-  async onExchangeAccountCreated(
-    exchangeAccount: ExchangeAccountWithCredentials,
-  ) {
+  async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
     await this.exchangeAccountsWatcher.addExchangeAccount(exchangeAccount);
+  }
+
+  async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    await this.exchangeAccountsWatcher.removeExchangeAccount(exchangeAccount);
+  }
+
+  async updateExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    await this.exchangeAccountsWatcher.updateExchangeAccount(exchangeAccount);
   }
 
   async onBotStarted(bot: TBot) {
