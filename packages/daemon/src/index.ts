@@ -29,12 +29,22 @@ export class Daemon {
   ) {
     eventBus.on(EVENT.onBotStarted, (bot) => {
       console.log("EventBus: Bot started", bot);
-      void this.processor.onBotStarted(bot);
+      void processor.onBotStarted(bot);
     });
 
     eventBus.on(EVENT.onExchangeAccountCreated, (exchangeAccount) => {
       console.log("EventBus: Exchange account created", exchangeAccount);
       void processor.addExchangeAccount(exchangeAccount);
+    });
+
+    eventBus.on(EVENT.onExchangeAccountDeleted, (exchangeAccount) => {
+      console.log("EventBus: Exchange account deleted", exchangeAccount);
+      void processor.removeExchangeAccount(exchangeAccount);
+    });
+
+    eventBus.on(EVENT.onExchangeAccountUpdated, (exchangeAccount) => {
+      console.log("EventBus: Exchange account updated", exchangeAccount);
+      void processor.updateExchangeAccount(exchangeAccount);
     });
   }
 
