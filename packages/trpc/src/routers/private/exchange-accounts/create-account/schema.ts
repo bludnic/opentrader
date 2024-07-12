@@ -4,6 +4,7 @@ import type { z } from "zod";
 export const ZCreateExchangeAccountInputSchema = zt.ExchangeAccountSchema.pick({
   exchangeCode: true,
   name: true,
+  label: true,
   apiKey: true,
   secretKey: true,
   password: true,

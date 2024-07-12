@@ -20,6 +20,8 @@ import { logPath } from "./utils/app-path.js";
 process.env.LOG_FILE = logPath;
 
 import { Command } from "commander";
+import { addExchangeAccountCommand } from "./commands/exchange/add.js";
+import { updateExchangeAccountCommand } from "./commands/exchange/update.js";
 import { addStopCommand } from "./commands/stop.js";
 import { addBacktestCommand } from "./commands/backtest.js";
 import { addGridLinesCommand } from "./commands/grid-lines.js";
@@ -36,6 +38,8 @@ program
   .description("CLI for OpenTrader")
   .version("0.0.1");
 
+addExchangeAccountCommand(program);
+updateExchangeAccountCommand(program);
 addBacktestCommand(program);
 addGridLinesCommand(program);
 addTradeCommand(program);
