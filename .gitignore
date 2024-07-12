@@ -14,3 +14,6 @@ exchanges.prod.json5
 # Prisma SQLite database files
 dev.db
 dev.db-journal
+
+# pnpm prune
+/out
