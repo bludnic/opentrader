@@ -1,5 +1,6 @@
 import type { ExchangeAccountWithCredentials, TBot } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
+import { exchangeProvider } from "@opentrader/exchanges";
 
 import { CandlesProcessor } from "./candles.processor.js";
 import { TimeframeCron } from "./timeframe.cron.js";
@@ -27,9 +28,11 @@ export class Processor {
 
   async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
     await this.exchangeAccountsWatcher.removeExchangeAccount(exchangeAccount);
+    exchangeProvider.removeByAccountId(exchangeAccount.id);
   }
 
   async updateExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
+    exchangeProvider.removeByAccountId(exchangeAccount.id);
     await this.exchangeAccountsWatcher.updateExchangeAccount(exchangeAccount);
   }
 

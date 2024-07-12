@@ -87,6 +87,23 @@ export class ExchangeProvider {
 
     return newExchange;
   }
+
+  removeByAccountId(id: ExchangeAccountId) {
+    const exchange = this.privateExchanges[id];
+    if (!exchange) {
+      console.warn(
+        `ExchangeProvider: Cannot remove exchange instance with ID: ${id}. Reason: not found.`,
+      );
+      return;
+    }
+
+    void exchange.ccxt.close();
+    delete this.privateExchanges[id];
+
+    console.log(
+      `ExchangeProvider: Removed private instance of ${exchange.exchangeCode} (ID: ${id})`,
+    );
+  }
 }
 
 export const exchangeProvider = new ExchangeProvider();
