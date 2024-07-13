@@ -12,6 +12,7 @@ RUN corepack enable
 WORKDIR /app
 RUN pnpm add turbo -g
 COPY . .
+
 RUN turbo prune --scope=processor --scope=frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
@@ -33,7 +34,8 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 # Copy Prisma Schema as it is not included in `/json` dir
 COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
-RUN pnpm install --prefer-offline
+# Overriding the lockfile may not be necessary because the current image doesn't include additional dependencies from the pro module
+RUN pnpm install --prefer-offline --lockfile
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .

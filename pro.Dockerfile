@@ -15,6 +15,7 @@ RUN corepack enable
 WORKDIR /app
 RUN pnpm add turbo -g
 COPY . .
+
 # Install opentrader-pro git submodule
 # Configure Git to use the token for GitHub
 ARG GITHUB_TOKEN
@@ -22,8 +23,6 @@ RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "htt
 RUN rm -rf pro
 RUN git clone https://github.com/bludnic/opentrader-pro.git pro
 
-# Lockfile is required to prune. This will override the param from .npmrc
-RUN pnpm install --lockfile
 RUN turbo prune --scope=processor --scope=frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
@@ -40,16 +39,11 @@ RUN pnpm add turbo -g
 
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-# Copy Prisma Schema as it is not included in `/json` dir
-COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
-RUN pnpm install --prefer-offline
-
-# Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
-COPY turbo.json turbo.json
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
+# The param --lockfile is required to write pro module dependencies to pnpm-lock.yaml
+# This overrides the param from .npmrc
+RUN pnpm install --prefer-offline --lockfile
 
 # ENV vars
 ARG DATABASE_URL
