@@ -12,6 +12,7 @@
   },
   "packageManager": "pnpm@9.5.0",
   "devDependencies": {
+    "execa": "^9.3.0",
     "prettier": "^3.3.2",
     "ts-node": "10.9.2",
     "turbo": "^2.0.6"
@@ -23,6 +24,7 @@
     "front": "turbo run dev --filter=frontend",
     "postinstall": "pnpm link --global",
     "build:packages": "turbo run build --filter='./packages/*'",
+    "release": "./scripts/release.mjs",
     "debug": "ts-node --transpile-only packages/cli/src/index.ts trade debug"
   },
   "bin": {

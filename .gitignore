@@ -9,6 +9,9 @@ config.json5
 exchanges.json5
 .vercel
 
+# Release build for publishing on NPM
+/release
+
 # Prisma SQLite database files
 dev.db
 dev.db-journal
