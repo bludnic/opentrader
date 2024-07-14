@@ -24,6 +24,10 @@ console.log("Copied ./migrations");
 await $`cp apps/cli/seed.ts release/seed.ts`;
 console.log("Copied ./seed.ts");
 
+// Copy frontend app
+await $`cp -r pro/frontend/dist release/frontend`;
+console.log("Copied ./frontend");
+
 // Generate package.json with all dependencies
 generatePackageJson("./release");
 console.log(

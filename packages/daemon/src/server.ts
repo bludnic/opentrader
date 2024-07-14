@@ -1,3 +1,5 @@
+import path from "node:path";
+import serveHandler from "serve-handler";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import type { Express } from "express";
 import express from "express";
@@ -39,8 +41,13 @@ export function useTrpc(app: Express) {
 }
 
 export const app = express();
+
 app.use(cors());
 useTrpc(app);
+
+// Serve frontend app
+const staticDir = path.resolve(__dirname, "../frontend");
+app.get("*", (req, res) => serveHandler(req, res, { public: staticDir }));
 
 export const createServer = () => {
   let server: ReturnType<typeof app.listen> | null = null;
