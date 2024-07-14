@@ -119,8 +119,8 @@ export async function createOrUpdateBot<T = any>(
         timeframe: botTimeframe,
         baseCurrency,
         quoteCurrency,
-        settings: botConfig.settings as object,
-        state: {}, // resets bot state
+        settings: JSON.stringify(botConfig.settings),
+        state: JSON.stringify({}), // resets bot state
         exchangeAccount: {
           connect: {
             id: exchangeAccount.id,
