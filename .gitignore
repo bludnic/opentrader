@@ -5,10 +5,8 @@ node_modules
 playground
 .env
 .env.production
-config.dev.json5
-config.prod.json5
-exchanges.dev.json5
-exchanges.prod.json5
+config.json5
+exchanges.json5
 .vercel
 
 # Prisma SQLite database files

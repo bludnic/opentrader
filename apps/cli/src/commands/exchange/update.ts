@@ -33,10 +33,6 @@ export function updateExchangeAccountCommand(program: Command) {
       new Option("-l, --label <label>", "Exchange label").default("DEFAULT"),
     )
     .addOption(new Option("-n, --name <name>", "Exchange name").default(null))
-    .addOption(
-      new Option("-c, --config <config>", "Config file").default(
-        DEFAULT_CONFIG_NAME,
-      ),
-    )
+    .addOption(new Option("-c, --config <config>", "Config file"))
     .action(handle(updateExchangeAccount));
 }

@@ -1,7 +1,5 @@
 import type { ExchangeAccount, Bot } from "@prisma/client";
 
-export type ConfigName = "default" | "dev" | "prod";
-
 export type CommandResult<T = unknown> = {
   result: T;
 };

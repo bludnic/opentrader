@@ -3,7 +3,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "url";
 import JSON5 from "json5";
 import { logger } from "@opentrader/logger";
-import { BotConfig, ConfigName, ExchangeConfig } from "./types.js";
+import { BotConfig, ExchangeConfig } from "./types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,32 +11,25 @@ const __dirname = dirname(__filename);
 const rootDir = join(__dirname, "..");
 const currDir = process.cwd();
 
-const PROD_CONFIG =
-  fs.existsSync(`${currDir}/config.prod.json5`) ||
-  fs.existsSync(`${rootDir}/config.prod.json5`)
-    ? "prod"
-    : undefined;
-const DEV_CONFIG =
-  fs.existsSync(`${currDir}/config.dev.json5`) ||
-  fs.existsSync(`${rootDir}/config.dev.json5`)
-    ? "dev"
-    : undefined;
-
-export const DEFAULT_CONFIG_NAME: ConfigName =
-  PROD_CONFIG || DEV_CONFIG || "default";
+const getConfigFilePath = (path: string, config: string) =>
+  fs.existsSync(`${path}/${config}`) ? `${path}/${config}` : false;
 
 /**
  * Read a bot configuration file
- * @param configName - Config name. Example: dev, prod, default. Will be converted to `config.<configName>.json5`
+ * @param configName - Custom config file name
  * @returns Parsed JSON5 config file
  */
 export function readBotConfig<T = any>(
-  configName: ConfigName = DEFAULT_CONFIG_NAME,
+  configName = "config.json5",
 ): BotConfig<T> {
-  const configFileName = `config.${configName}.json5`;
-  const configPath = fs.existsSync(`${currDir}/${configFileName}`)
-    ? `${currDir}/${configFileName}`
-    : `${rootDir}/${configFileName}`;
+  const currDirConfigPath = getConfigFilePath(currDir, configName);
+  const rootDirConfigPath = getConfigFilePath(rootDir, configName);
+
+  const configPath = currDirConfigPath || rootDirConfigPath;
+
+  if (!configPath) {
+    throw new Error(`Missing ${configName} file in current or root directory`);
+  }
 
   logger.info(`Using bot config file: ${configPath}`);
   const config = JSON5.parse<BotConfig<T>>(fs.readFileSync(configPath, "utf8"));
@@ -44,13 +37,21 @@ export function readBotConfig<T = any>(
   return config;
 }
 
+/**
+ * Read exchange accounts configuration file
+ * @param configName - Custom config file name
+ * @returns Parsed JSON5 config file
+ */
 export function readExchangesConfig(
-  configName: ConfigName = "default",
+  configName = "exchanges.json5",
 ): Record<string, ExchangeConfig> {
-  const configFileName = `exchanges.${configName}.json5`;
-  const configPath = fs.existsSync(`${currDir}/${configFileName}`)
-    ? `${currDir}/${configFileName}`
-    : `${rootDir}/${configFileName}`;
+  const currDirConfigPath = getConfigFilePath(currDir, configName);
+  const rootDirConfigPath = getConfigFilePath(rootDir, configName);
+  const configPath = currDirConfigPath || rootDirConfigPath;
+
+  if (!configPath) {
+    throw new Error(`Missing ${configName} file in current or root directory`);
+  }
 
   logger.info(`Using exchanges config file: ${configPath}`);
   const config = JSON5.parse<Record<string, ExchangeConfig>>(

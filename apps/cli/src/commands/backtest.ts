@@ -1,7 +1,6 @@
 import { ExchangeCode } from "@opentrader/types";
 import type { Command } from "commander";
 import { Argument, Option } from "commander";
-import { DEFAULT_CONFIG_NAME } from "../config.js";
 import { validateExchange, validatePair } from "../utils/validate.js";
 import { handle } from "../utils/command.js";
 import { runBacktest } from "../api/run-backtest.js";
@@ -27,11 +26,7 @@ export function addBacktestCommand(program: Command) {
     .addOption(
       new Option("-t, --timeframe <timeframe>", "Timeframe").default("1h"),
     )
-    .addOption(
-      new Option("-c, --config <config>", "Config file").default(
-        DEFAULT_CONFIG_NAME,
-      ),
-    )
+    .addOption(new Option("-c, --config <config>", "Config file"))
     .addOption(
       new Option("-e, --exchange <exchange>", "Exchange")
         .argParser(validateExchange)
