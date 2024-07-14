@@ -23,7 +23,7 @@
 ## Requirements
 
 ```bash
-# NodeJS v18 or higher
+# NodeJS v20 or higher
 $ node -v
 
 # `pnpm` must be installed
