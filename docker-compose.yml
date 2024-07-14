@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: pro.Dockerfile
       args:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        DATABASE_URL: file:../../../dev.db
         NEXT_PUBLIC_PROCESSOR_URL: http://localhost:5000
         NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
         NEXT_PUBLIC_STATIC: "true"
@@ -15,7 +15,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@database:5432/postgres
+      DATABASE_URL: file:../../../dev.db
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:5000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       NEXT_PUBLIC_STATIC: "true"
