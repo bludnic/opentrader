@@ -82,13 +82,13 @@ $ turbo run prisma:seed
 
 ## Connect an exchange
 
-Copy the `exchanges.default.json5` file to `exchanges.dev.json5` and add your API keys.
+Copy the `exchanges.sample.json5` file to `exchanges.json5` and add your API keys.
 
 > Supported exchanges: OKX, BYBIT, BINANCE, KRAKEN, COINBASE, GATEIO
 
 ## Choose a strategy
 
-Create the strategy configuration file `config.dev.json5`. We will use the `grid` strategy as an example.
+Create the strategy configuration file `config.json5`. We will use the `grid` strategy as an example.
 
 ```json5
 {
