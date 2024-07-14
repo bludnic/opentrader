@@ -3,7 +3,7 @@ import { BarSize } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
-import type { CommandResult, ConfigName } from "../types.js";
+import type { CommandResult } from "../types.js";
 import { createClient } from "../daemon.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
 import {
@@ -14,7 +14,7 @@ import {
 import { tServer } from "../trpc.js";
 
 type Options = {
-  config: ConfigName;
+  config: string;
   pair?: string;
   exchange?: string;
   timeframe?: BarSize;

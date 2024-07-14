@@ -1,10 +1,10 @@
 import { ExchangeCode } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
-import type { CommandResult, ConfigName } from "../../types.js";
+import type { CommandResult } from "../../types.js";
 import { createClient } from "../../daemon.js";
 
 type Options = {
-  config: ConfigName;
+  config: string;
   /**
    * Exchange name.
    */
