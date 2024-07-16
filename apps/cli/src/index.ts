@@ -29,6 +29,7 @@ import { addGridLinesCommand } from "./commands/grid-lines.js";
 import { addTradeCommand } from "./commands/trade.js";
 import { addUpCommand } from "./commands/up.js";
 import { addDownCommand } from "./commands/down.js";
+import { dbCommands } from "./commands/db.js";
 import { addLogsCommand } from "./commands/logs.js";
 import { addVersionCommand } from "./commands/version.js";
 
@@ -48,6 +49,7 @@ addTradeCommand(program);
 addStopCommand(program);
 addUpCommand(program);
 addDownCommand(program);
+dbCommands(program);
 addLogsCommand(program);
 addVersionCommand(program);
 

@@ -71,6 +71,9 @@ importers:
       commander:
         specifier: ^12.1.0
         version: 12.1.0
+      execa:
+        specifier: ^9.3.0
+        version: 9.3.0
       express:
         specifier: ^4.19.2
         version: 4.19.2
