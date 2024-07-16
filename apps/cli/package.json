@@ -25,10 +25,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "10.9.2",
     "tsup": "^8.1.0",
-    "typescript": "5.5.3",
-    "webpack": "^5.92.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-node-externals": "^3.0.0"
+    "typescript": "5.5.3"
   },
   "dependencies": {
     "@opentrader/backtesting": "workspace:*",
