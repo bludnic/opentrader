@@ -1,7 +1,6 @@
 import { join } from "node:path";
 import type { BotTemplate } from "@opentrader/bot-processor";
 import * as templates from "../templates/index.js";
-import dynamicImport from "./dynamic-import.js";
 
 type FindStrategyResult = {
   strategyFn: BotTemplate<any>;
@@ -14,15 +13,17 @@ export async function findStrategy(
 ): Promise<FindStrategyResult> {
   let strategyFn;
 
-  const isCustomStrategyFile = strategyNameOrFile.endsWith(".js");
+  const isCustomStrategyFile = strategyNameOrFile.endsWith(".mjs");
   const customStrategyFilePath = strategyNameOrFile.startsWith("/")
     ? strategyNameOrFile
     : join(process.cwd(), strategyNameOrFile);
 
   const strategyExists = strategyNameOrFile in templates;
+  console.log(`Strategy file: ${customStrategyFilePath}`);
 
   if (isCustomStrategyFile) {
-    strategyFn = dynamicImport(customStrategyFilePath);
+    const { default: fn } = await import(customStrategyFilePath);
+    strategyFn = fn;
   } else if (strategyExists) {
     strategyFn = templates[strategyNameOrFile as keyof typeof templates];
   } else {
