@@ -4,7 +4,7 @@ import { logger } from "@opentrader/logger";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
 import type { CommandResult } from "../types.js";
-import { createClient } from "../daemon.js";
+import { createDaemonRpcClient } from "../daemon-rpc.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
 import {
   createOrUpdateBot,
@@ -20,7 +20,7 @@ type Options = {
   timeframe?: BarSize;
 };
 
-const daemon = createClient();
+const daemonRpc = createDaemonRpcClient();
 
 export async function runTrading(
   strategyName: keyof typeof templates,
@@ -100,7 +100,7 @@ export async function runTrading(
     exchangeAccounts,
   );
 
-  const result = await daemon.bot.start.mutate({ botId: bot.id });
+  const result = await daemonRpc.bot.start.mutate({ botId: bot.id });
 
   if (result) {
     logger.info(`Bot "${bot.label}" started succesfully`);
@@ -115,7 +115,7 @@ export async function runTrading(
 
 async function checkDaemonHealth() {
   try {
-    await daemon.public.healhcheck.query();
+    await daemonRpc.public.healhcheck.query();
 
     return true;
   } catch (err) {

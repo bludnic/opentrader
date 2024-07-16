@@ -3,9 +3,9 @@ import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import type { CommandResult } from "../types.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
-import { createClient } from "../daemon.js";
+import { createDaemonRpcClient } from "../daemon-rpc.js";
 
-const daemon = createClient();
+const daemonRpc = createDaemonRpcClient();
 
 export async function stopCommand(options: {
   config: string;
@@ -44,7 +44,7 @@ export async function stopCommand(options: {
   }
 
   logger.info(`Stopping bot "${bot.label}"...`);
-  await daemon.bot.stop.mutate({ botId: bot.id });
+  await daemonRpc.bot.stop.mutate({ botId: bot.id });
   logger.info(`Bot "${bot.label}" stopped successfully`);
 
   return {

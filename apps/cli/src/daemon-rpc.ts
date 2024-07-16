@@ -4,7 +4,7 @@ import { appRouter } from "@opentrader/trpc";
 
 const DAEMON_URL = "http://localhost:8000/api/trpc";
 
-export const createClient = () => {
+export const createDaemonRpcClient = () => {
   return createTRPCProxyClient<typeof appRouter>({
     transformer: superjson,
     links: [

@@ -1,7 +1,7 @@
 import { ExchangeCode } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 import type { CommandResult } from "../../types.js";
-import { createClient } from "../../daemon.js";
+import { createDaemonRpcClient } from "../../daemon-rpc.js";
 
 type Options = {
   config: string;
@@ -23,12 +23,12 @@ type Options = {
   demo: boolean;
 };
 
-const daemon = createClient();
+const daemonRpc = createDaemonRpcClient();
 
 export async function updateExchangeAccount(
   options: Options,
 ): Promise<CommandResult> {
-  const exchangeAccounts = await daemon.exchangeAccount.list.query();
+  const exchangeAccounts = await daemonRpc.exchangeAccount.list.query();
   const exchangeAccount = exchangeAccounts.find(
     (account) => account.label === options.label,
   );
@@ -42,7 +42,7 @@ export async function updateExchangeAccount(
     };
   }
 
-  await daemon.exchangeAccount.update.mutate({
+  await daemonRpc.exchangeAccount.update.mutate({
     id: exchangeAccount.id,
     body: {
       name: options.name || exchangeAccount.name,

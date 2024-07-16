@@ -1,6 +1,6 @@
 import { ExchangeCode } from "@opentrader/types";
 import type { CommandResult } from "../../types.js";
-import { createClient } from "../../daemon.js";
+import { createDaemonRpcClient } from "../../daemon-rpc.js";
 
 type Options = {
   config: string;
@@ -22,12 +22,12 @@ type Options = {
   demo: boolean;
 };
 
-const daemon = createClient();
+const daemonRpc = createDaemonRpcClient();
 
 export async function addExchangeAccount(
   options: Options,
 ): Promise<CommandResult> {
-  await daemon.exchangeAccount.create.mutate({
+  await daemonRpc.exchangeAccount.create.mutate({
     name: options.name || options.label,
     label: options.label,
     exchangeCode: options.code,
