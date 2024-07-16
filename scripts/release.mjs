@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { $ } from "execa";
-import { generatePackageJson } from "./generate-package-json.mjs";
+import { generatePackageJson } from "./utils/generate-package-json.mjs";
 
 // Clean up the release directory
 await $`rm -rf release`;
@@ -30,6 +30,27 @@ console.log("Copied ./frontend");
 
 // Generate package.json with all dependencies
 generatePackageJson("./release");
+
+// Generate shrinkwrap file
+console.log("Running `npm install --package-lock-only --ignore-scripts`");
+const { stdout: projectDir } = await $`pwd`;
+const npmInstallProcess = $(
+  "npm install --package-lock-only --ignore-scripts",
+  {
+    shell: true,
+    cwd: `${projectDir}/release`,
+  },
+);
+npmInstallProcess.stdout.pipe(process.stdout);
+npmInstallProcess.stderr.pipe(process.stderr);
+await npmInstallProcess;
+
+await $(`npm shrinkwrap`, {
+  shell: true,
+  cwd: `${projectDir}/release`,
+});
+console.log("Generated shrinkwrap.json");
+
 console.log(
   "Release is ready. Run `cd release && npm publish` to publish to NPM.",
 );

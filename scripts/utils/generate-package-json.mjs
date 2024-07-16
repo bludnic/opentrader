@@ -5,9 +5,13 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ROOT_DIR = path.resolve(__dirname, "../");
+const ROOT_DIR = path.resolve(__dirname, "../../");
 const CLI_DIR = path.resolve(ROOT_DIR, "./apps/cli");
 const PACKAGES_DIR = path.resolve(ROOT_DIR, "./packages");
+
+console.log("ROOT_DIR", ROOT_DIR);
+console.log("CLI_DIR", CLI_DIR);
+console.log("PACKAGES_DIR", PACKAGES_DIR);
 
 export function generatePackageJson(outDir) {
   const mainPackageJson = JSON.parse(
