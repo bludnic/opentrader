@@ -77,7 +77,7 @@ export function generatePackageJson(outDir) {
 
   // Add postinstall script
   newPackageJson.scripts.postinstall =
-    'prisma generate && DATABASE_URL="file:${HOME}/.opentrader/dev.db" prisma migrate dev && node scripts/postinstall.mjs';
+    'prisma generate && DATABASE_URL="file:${HOME}/.opentrader/dev.db" prisma migrate dev --skip-generate && node scripts/postinstall.mjs';
 
   // Write to new package.json file
   newPackageJson.prisma = {
