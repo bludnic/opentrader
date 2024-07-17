@@ -16,77 +16,55 @@
 - [x] [RSI](packages/bot-templates/src/templates/rsi.ts): A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
 - [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
 
-**Supported exchanges:** `OKX`, `BYBIT`, `BINANCE`, `KRAKEN`, `COINBASE`, `GATEIO`
-
 # Quick start
 
-## Requirements
-
-```bash
-# NodeJS v20 or higher
-$ node -v
-
-# `pnpm` must be installed
-$ pnpm -v
-
-# Install Turborepo globally
-$ pnpm install turbo --global
-
-# Docker (optional)
-$ docker -v
-```
-
-## Environment variables
-
-The project uses a single `.env` file in the root directory.
-Frameworks such as Next.js require the `.env` file to be located directly in the project directory.
-To address this, some `apps/packages` might include a symlink pointing to the root `.env` file.
-
-1. Create environment file `.env` in the root directory
-
-```bash
-$ cp .env.example .env
-```
-
-2. Replace the `DATABASE_URL` if your URL is different from the actual one.
+Get started with OpenTrader in just a few steps. Follow this quick guide to install, configure, and run your crypto trading bot.
 
 ## Installation
 
-1. Install dependencies
+Install OpenTrader globally using npm:
 
 ```bash
-$ pnpm install
+npm install -g opentrader
 ```
 
-2. Build packages
+## Configuration
+
+Set an admin password for later accessing the OpenTrader UI:
 
 ```bash
-$ turbo run build
+opentrader set-password <password>
 ```
 
-3. Run db migrations
+## Running the app
+
+Start the OpenTrader:
 
 ```bash
-$ turbo run prisma:migrate
+opentrader up
 ```
 
-4. Seed the database
+The app will start the RPC server and listen on port 8000.
 
-```bash
-$ turbo run prisma:seed
-```
+> **Tip**: Use `opentrader up -d` to start the app as a daemon. To stop it, run `opentrader down`.
 
-> ⚠️ **Note**: Since the packages do not have a dev server, running the `build` command is mandatory on the first run.
+# Usage
 
-# Basic usage
+## UI
 
-## Connect an exchange
+The user interface allows managing multiple bots and strategies, viewing backtest results, and monitoring live trading.
+
+You can access the OpenTrader UI on: http://localhost:8000
+
+## CLI
+
+### Connect an exchange
 
 Copy the `exchanges.sample.json5` file to `exchanges.json5` and add your API keys.
 
-> Supported exchanges: OKX, BYBIT, BINANCE, KRAKEN, COINBASE, GATEIO
+> Available exchanges: OKX, BYBIT, BINANCE, KRAKEN, COINBASE, GATEIO
 
-## Choose a strategy
+### Choose a strategy
 
 Create the strategy configuration file `config.json5`. We will use the `grid` strategy as an example.
 
@@ -106,76 +84,31 @@ Create the strategy configuration file `config.json5`. We will use the `grid` st
 
 > Currently supported strategies: `grid`, `rsi`
 
-## Run a backtest
+### Run a backtest
 
-Command: `./bin/cli.sh backtest <strategy> --from <date> --to <date> -t <timeframe>`
+Command: `opentrader backtest <strategy> --from <date> --to <date> -t <timeframe>`
 
 Example running a `grid` strategy on `1h` timeframe.
 
 ```bash
-$ bin/cli.sh backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
+opentrader backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
 ```
 
 > To get more accurate results, use a smaller timeframe, e.g. 1m, however, it will take more time to download OHLC data from the exchange.
 
-## Live trading
-
-## Starting the daemon
-
-Before running live trading, you need to start the daemon:
-
-```bash
-$ bin/cli.sh up
-```
-
-Now the daemon is ready to listen for incoming commands.
-
-> Tip: To run the daemon in the background, use: `bin/cli.sh up -d`
+### Live trading
 
 ## Running a Live Trading
 
-Command: `bin/cli.sh trade <strategy>`
+Command: `opentrader trade <strategy>`
 
 Example running a live trading with `grid` strategy.
 
 ```bash
-$ bin/cli.sh trade grid
+$ opentrader trade grid
 ```
 
-> To stop the live trading, run `bin/cli.sh stop`
-
-## Stop the daemon
-
-To stop the daemon, run the following command:
-
-```bash
-$ bin/cli.sh down
-```
-
-# UI
-
-The user interface allows managing multiple bots and strategies, viewing backtest results, and monitoring live trading.
-
-![UI Preview](.github/images/ui.png)
-
-Currently, the UI is under development. For early access, please email me at contact@opentrader.pro
-
-After getting the access, run the following command to pull the UI into monorepo:
-
-```shell
-$ git submodule update --init
-```
-
-Run frontend app:
-
-```shell
-$ pnpm i
-$ turbo run build
-$ turbo run dev
-```
-
-- Frontend: http://localhost:3000
-- API: http://localhost:4000
+> To stop the live trading, run `opentrader stop`
 
 # Project structure
 

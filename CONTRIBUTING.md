@@ -1,7 +1,7 @@
 # Requirements
 
 ```bash
-# NodeJS v18 or higher
+# NodeJS v20 or higher
 $ node -v
 
 # `pnpm` must be installed
@@ -26,32 +26,7 @@ To solve this some apps/packages may contain a symlink to the root `.env`.
 $ cp .env.example .env
 ```
 
-2. Replace the `DATABASE_URL` if your URL is different from the actual one.
-
-> 💡 **Tip**: You can run PostgreSQL inside a Docker container with `docker compose up -d database`. See details below.
-
-# Docker (optional)
-
-1. If you want to use PostgreSQL within a Docker container use the following commands:
-
-```bash
-$ docker compose up -d database # start service
-$ docker compose stop database # stop service
-```
-
-2. Or, if you are using WebStorm, just open `docker-compose.yml` and click ▶️ near the service name.
-
-# Processing app (optional)
-
-The `apps/processor` is a separate NodeJS app that synchronizes orders with the Exchange faster by using WebSockets.
-
-Features:
-
-- Sync orders statuses with the Exchange by using WebSockets
-- Fallback to REST API by polling every 60s
-- Runs the bot template if any order was filled
-- Place pending orders on the Exchange
-- Async queue (in case two or more orders were filled at the same time)
+2. Update the `ADMIN_PASSWORD`. The password is required to authorize later in the Opentrader UI.
 
 # Installation
 
@@ -111,3 +86,9 @@ $ pnpm run dev
 
 - Frontend: http://localhost:3000
 - Processor: http://localhost:4000
+
+# Project structure
+
+- Strategies dir: [packages/bot-templates](/packages/bot-templates/src/templates)
+- Indicators: [packages/indicators](/packages/indicators/src/indicators)
+- Exchange connectors: [packages/exchanges](/packages/exchanges/src/exchanges)
