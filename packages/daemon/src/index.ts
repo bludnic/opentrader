@@ -55,6 +55,8 @@ export class Daemon {
     const server = createServer().listen(8000);
     logger.info("RPC Server started on port 8000");
 
+    logger.info("OpenTrader UI: http://localhost:8000");
+
     return new Daemon(processor, server);
   }
 
