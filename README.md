@@ -94,9 +94,7 @@ opentrader backtest grid --from 2024-03-01 --to 2024-06-01 -t 1h
 
 > To get more accurate results, use a smaller timeframe, e.g. 1m, however, it will take more time to download OHLC data from the exchange.
 
-### Live trading
-
-## Running a Live Trading
+### Running a Live Trading
 
 Command: `opentrader trade <strategy>`
 
