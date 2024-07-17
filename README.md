@@ -22,23 +22,19 @@ Get started with OpenTrader in just a few steps. Follow this quick guide to inst
 
 ## Installation
 
-Install OpenTrader globally using npm:
+1. Install OpenTrader globally using npm:
 
 ```bash
 npm install -g opentrader
 ```
 
-## Configuration
-
-Set an admin password for later accessing the OpenTrader UI:
+2. Set an admin password for later accessing the OpenTrader UI:
 
 ```bash
 opentrader set-password <password>
 ```
 
-## Running the app
-
-Start the OpenTrader:
+2. Start the OpenTrader app
 
 ```bash
 opentrader up
@@ -53,6 +49,8 @@ The app will start the RPC server and listen on port 8000.
 ## UI
 
 The user interface allows managing multiple bots and strategies, viewing backtest results, and monitoring live trading.
+
+![UI Preview](.github/images/ui.png)
 
 You can access the OpenTrader UI on: http://localhost:8000
 
