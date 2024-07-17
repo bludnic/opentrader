@@ -101,7 +101,7 @@ Command: `opentrader trade <strategy>`
 Example running a live trading with `grid` strategy.
 
 ```bash
-$ opentrader trade grid
+opentrader trade grid
 ```
 
 > To stop the live trading, run `opentrader stop`
