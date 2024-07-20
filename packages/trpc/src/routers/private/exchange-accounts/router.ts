@@ -9,6 +9,8 @@ import { updateExchangeAccount } from "./update-account/handler.js";
 import { ZUpdateExchangeAccountInputSchema } from "./update-account/schema.js";
 import { deleteExchangeAccount } from "./delete-account/handler.js";
 import { ZDeleteExchangeAccountInputSchema } from "./delete-account/schema.js";
+import { checkExchangeAccount } from "./check-account/handler.js";
+import { ZCheckExchangeAccountInputSchema } from "./check-account/schema.js";
 
 export const exchangeAccountsRouter = router({
   list: authorizedProcedure.query(getExchangeAccounts),
@@ -28,4 +30,8 @@ export const exchangeAccountsRouter = router({
   delete: authorizedProcedure
     .input(ZDeleteExchangeAccountInputSchema)
     .mutation(deleteExchangeAccount),
+
+  check: authorizedProcedure
+    .input(ZCheckExchangeAccountInputSchema)
+    .mutation(checkExchangeAccount),
 });

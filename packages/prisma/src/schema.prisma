@@ -116,9 +116,12 @@ model ExchangeAccount {
   owner     User     @relation(fields: [ownerId], references: [id])
   ownerId   Int
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   smartTrades SmartTrade[]
   bots        Bot[]
+
+  expired Boolean @default(false)
 }
 
 model SmartTrade {
