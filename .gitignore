@@ -18,3 +18,5 @@ dev.db-journal
 
 # pnpm prune
 /out
+
+/k8s
