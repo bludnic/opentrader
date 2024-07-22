@@ -13,6 +13,14 @@
   },
   "author": "bludnic",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bludnic/opentrader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bludnic/opentrader/issues"
+  },
+  "homepage": "https://github.com/bludnic/opentrader#readme",
   "devDependencies": {
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
