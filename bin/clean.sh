@@ -3,7 +3,7 @@
 # Function to remove specified directories
 remove_directories() {
     local dir=$1
-    local dirs_to_remove=("node_modules" "dist" ".turbo")
+    local dirs_to_remove=("node_modules" "dist" ".turbo" "out")
     for sub_dir in "${dirs_to_remove[@]}"; do
         if [ -d "$dir/$sub_dir" ]; then
             echo "Removing ${dir%/}/$sub_dir..."
