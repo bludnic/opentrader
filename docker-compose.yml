@@ -23,8 +23,8 @@ services:
       NEXT_PUBLIC_STATIC: "true"
       ADMIN_PASSWORD: opentrader
       PORT: 5000
-    depends_on:
-      - database
+#    depends_on:
+#      - database
 #    platform: linux/amd64 # works slow when building on Mac M1
   processor:
     build:
@@ -37,8 +37,8 @@ services:
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader
-    depends_on:
-      - database
+#    depends_on:
+#      - database
   frontend:
     build:
       context: .
@@ -56,8 +56,8 @@ services:
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader
-    depends_on:
-      - database
+#    depends_on:
+#      - database
   database:
     image: postgres:latest
     environment:
