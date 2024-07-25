@@ -6,7 +6,6 @@ services:
       context: .
       dockerfile: pro.Dockerfile
       args:
-        DATABASE_URL: file:/opentrader/data/dev.db
         NEXT_PUBLIC_PROCESSOR_URL: http://localhost:5000
         NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
         NEXT_PUBLIC_STATIC: "true"
@@ -33,7 +32,6 @@ services:
     ports:
       - "4000:4000"
     environment:
-      DATABASE_URL: file:/opentrader/data/dev.db
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader
@@ -44,7 +42,6 @@ services:
       context: .
       dockerfile: apps/frontend/Dockerfile
       args:
-        DATABASE_URL: file:/opentrader/data/dev.db
         NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
         NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
         ADMIN_PASSWORD: opentrader
@@ -52,7 +49,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: file:/opentrader/data/dev.db
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader

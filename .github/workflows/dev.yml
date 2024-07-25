@@ -22,7 +22,6 @@ jobs:
       - name: Build Docker Image
         run: >-
           docker build
-          --build-arg DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
           --build-arg NEXT_PUBLIC_PROCESSOR_URL=https://dev.opentrader.dev
           --build-arg NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC=true
           --build-arg NEXT_PUBLIC_STATIC=true
