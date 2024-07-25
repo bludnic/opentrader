@@ -22,16 +22,12 @@ export class CandlesWatcher extends EventEmitter {
 
   enable() {
     if (this.enabled) {
-      logger.warn(
-        `[CandlesWatcher] Watcher on ${this.exchange.exchangeCode}:${this.symbol} is already enabled`,
-      );
+      logger.warn(`[CandlesWatcher] Watcher on ${this.exchange.exchangeCode}:${this.symbol} is already enabled`);
       return;
     }
 
     this.enabled = true;
-    logger.info(
-      `[CandlesWatcher] Watcher on ${this.exchange.exchangeCode}:${this.symbol} was enabled`,
-    );
+    logger.info(`[CandlesWatcher] Watcher on ${this.exchange.exchangeCode}:${this.symbol} was enabled`);
     void this.watch();
   }
 
@@ -59,15 +55,11 @@ export class CandlesWatcher extends EventEmitter {
       } catch (err) {
         if (err instanceof NetworkError) {
           logger.warn(
-            err,
-            `[CandlesWatcher] NetworkError occurred on ${this.exchange.exchangeCode}:${this.symbol}. Reconnecting in 3s...`,
+            `[CandlesWatcher] NetworkError occurred on ${this.exchange.exchangeCode}:${this.symbol}. Error: ${err.message}. Reconnecting in 3s...`,
           );
           await new Promise((resolve) => setTimeout(resolve, 3000)); // prevents infinite cycle
         } else if (err instanceof RequestTimeout) {
-          logger.warn(
-            err,
-            `[CandlesWatcher] RequestTimeout occurred on ${this.exchange.exchangeCode}:${this.symbol}.`,
-          );
+          logger.warn(err, `[CandlesWatcher] RequestTimeout occurred on ${this.exchange.exchangeCode}:${this.symbol}.`);
         } else {
           logger.error(
             err,
