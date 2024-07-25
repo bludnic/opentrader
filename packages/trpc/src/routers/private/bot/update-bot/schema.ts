@@ -3,13 +3,15 @@ import { z } from "zod";
 
 export const ZUpdateBotInputSchema = z.object({
   botId: z.number(),
-  data: ZBot.omit({
-    id: true,
-    ownerId: true,
+  data: ZBot.pick({
+    name: true,
+    baseCurrency: true,
+    quoteCurrency: true,
+    settings: true,
+    template: true,
+    timeframe: true,
     exchangeAccountId: true,
-    type: true,
-    enabled: true,
-  }).partial(),
+  }),
 });
 
 export type TUpdateBotInputSchema = z.infer<typeof ZUpdateBotInputSchema>;
