@@ -174,7 +174,7 @@ export class CandlesAggregator extends EventEmitter {
         low: lastCandle.close,
         close: lastCandle.close,
       });
-      logger.info(`[${this.symbol}#${this.timeframe}] Filled gap at ${new Date(timestamp).toISOString()}`);
+      logger.info(`[${this.symbol}#${this.timeframe}] Filled gap for ${new Date(timestamp).toISOString()} candle`);
     }
   }
 
@@ -203,7 +203,7 @@ export class CandlesAggregator extends EventEmitter {
 
       const firstCandle = candles[0];
       const lastCandle = candles[candles.length - 1];
-      logger.info(
+      logger.debug(
         `[${this.symbol}#${this.timeframe}] Fetched history candles ${firstCandle ? new Date(firstCandle.timestamp).toISOString() : null} to ${lastCandle ? new Date(lastCandle.timestamp).toISOString() : null}`,
       );
 
