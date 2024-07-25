@@ -38,30 +38,23 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
             `Websocket: OrderID ${exchangeOrder.exchangeOrderId}: Price: ${exchangeOrder.price}: Status: ${exchangeOrder.status}`,
           );
 
-          const order = await xprisma.order.findByExchangeOrderId(
-            exchangeOrder.exchangeOrderId,
-          );
+          const order = await xprisma.order.findByExchangeOrderId(exchangeOrder.exchangeOrderId);
 
           if (!order) {
-            logger.info(
-              `Order "${exchangeOrder.exchangeOrderId}" is not linked to any SmartTrade`,
-            );
+            logger.info(`Order "${exchangeOrder.exchangeOrderId}" is not linked to any SmartTrade`);
             continue;
           }
 
           const { smartTrade } = order;
 
-          logger.debug(
-            `Order #${order.id} is linked to SmartTrade with ID: ${smartTrade.id}`,
-          );
+          logger.debug(`Order #${order.id} is linked to SmartTrade with ID: ${smartTrade.id}`);
 
           if (exchangeOrder.status === "open") {
             // get the actual status of the order (it may be stalled, if was filled immediately)
-            const actualExchangeOrder =
-              await this.exchangeService.getLimitOrder({
-                orderId: exchangeOrder.exchangeOrderId,
-                symbol: smartTrade.exchangeSymbolId,
-              });
+            const actualExchangeOrder = await this.exchangeService.getLimitOrder({
+              orderId: exchangeOrder.exchangeOrderId,
+              symbol: smartTrade.exchangeSymbolId,
+            });
 
             this.emit("onPlaced", [actualExchangeOrder, order]);
           } else if (exchangeOrder.status === "filled") {
@@ -80,18 +73,15 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
         }
       } catch (err) {
         if (err instanceof NetworkError) {
-          logger.info(`❕ NetworkError: ${err.message}. Timeout: 3s`);
+          logger.warn(`[OrderSynchronizerWs] NetworkError occurred: ${err.message}. Timeout: 3s`);
           await new Promise((resolve) => setTimeout(resolve, 3000)); // prevents infinite cycle
           // https://github.com/ccxt/ccxt/issues/7951
           // if the connection is dropped, you should catch the NetworkError exception
           // and your next call should reconnect in the background
         } else if (err instanceof RequestTimeout) {
-          logger.error(err, `❗ RequestTimeout: ${err.message}`);
+          logger.warn(err, `[OrderSynchronizerWs] RequestTimeout occurred: ${err.message}`);
         } else {
-          logger.error(
-            err,
-            "‼️ Unhandled error occurred. Disabling WS connection.",
-          );
+          logger.error(err, "[OrderSynchronizerWs] ‼️ Unhandled error occurred. Disabling WS connection.");
           await this.disable();
           break;
         }
