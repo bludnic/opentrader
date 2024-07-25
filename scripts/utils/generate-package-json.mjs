@@ -77,6 +77,7 @@ export function generatePackageJson(outDir) {
 
   // Add postinstall script
   newPackageJson.scripts.postinstall =
+    "prisma generate --generator client && " + // Generate only @prisma/client (it will skip Zod generator)
     'DATABASE_URL="file:${HOME}/.opentrader/dev.db" prisma migrate deploy && ' +
     'DATABASE_URL="file:${HOME}/.opentrader/dev.db" tsx seed.ts && ' +
     "node scripts/postinstall.mjs";
