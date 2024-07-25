@@ -96,5 +96,14 @@ COPY --from=optimizer /app/pro/frontend/dist ./pro/frontend/dist
 COPY --from=optimizer /app/pro/processor ./pro/processor
 COPY --from=optimizer /app/node_modules ./node_modules
 
+# Copy Prisma schema, migrations, and seed script
+COPY --from=optimizer /app/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
+COPY --from=optimizer /app/packages/prisma/src/migrations ./packages/prisma/src/migrations
+COPY --from=optimizer /app/packages/prisma/seed.mjs ./packages/prisma/seed.mjs
+
+# Copy the entrypoint script to run migrations before starting the app
+COPY bin/docker-entry.sh /app/bin/docker-entry.sh
+ENTRYPOINT ["/app/bin/docker-entry.sh"]
+
 WORKDIR /app/pro/processor
 CMD node dist/main.mjs
