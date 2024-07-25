@@ -90,9 +90,9 @@ export class CandlesAggregator extends EventEmitter {
     if (lastTimestamp && candle.timestamp !== lastTimestamp + 60000) {
       const missedCandlesCount = (candle.timestamp - lastTimestamp) / 60000 - 1;
       logger.warn(
-        `[${this.symbol}#${this.timeframe}] Missed ${missedCandlesCount} 1-minute candles, likely due unstable WS connection.` +
-          `  Last candle in the bucket: ${new Date(lastTimestamp).toISOString()}` +
-          `  Recent candle: ${new Date(candle.timestamp).toISOString()}`,
+        `[${this.symbol}#${this.timeframe}] Missed ${missedCandlesCount} × 1-minute candles, likely due unstable WS connection. ` +
+          `Last candle in the bucket: ${new Date(lastTimestamp).toISOString()}. ` +
+          `Recent candle: ${new Date(candle.timestamp).toISOString()}.`,
       );
 
       this.fillGaps(lastCandle, candle);
