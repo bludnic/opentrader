@@ -20,8 +20,6 @@ services:
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       NEXT_PUBLIC_STATIC: "true"
       ADMIN_PASSWORD: opentrader
-      NEXT_PUBLIC_CANDLES_SERVICE_API_URL: http://localhost:5001
-      NEXT_PUBLIC_CANDLES_SERVICE_API_KEY: opentrader
       PORT: 5000
     depends_on:
       - database
@@ -37,8 +35,6 @@ services:
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader
-      NEXT_PUBLIC_CANDLES_SERVICE_API_URL: http://localhost:5001
-      NEXT_PUBLIC_CANDLES_SERVICE_API_KEY: opentrader
     depends_on:
       - database
   frontend:
@@ -58,8 +54,6 @@ services:
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:4000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       ADMIN_PASSWORD: opentrader
-      NEXT_PUBLIC_CANDLES_SERVICE_API_URL: http://localhost:5001
-      NEXT_PUBLIC_CANDLES_SERVICE_API_KEY: opentrader
     depends_on:
       - database
   database:
