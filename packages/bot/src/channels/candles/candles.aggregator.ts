@@ -48,11 +48,7 @@ export class CandlesAggregator extends EventEmitter {
   private candlesWatcher: CandlesWatcher;
   private enabled = false;
 
-  constructor(
-    timeframe: BarSize,
-    candlesWatcher: CandlesWatcher,
-    exchange: IExchange,
-  ) {
+  constructor(timeframe: BarSize, candlesWatcher: CandlesWatcher, exchange: IExchange) {
     super();
 
     this.exchange = exchange;
@@ -66,20 +62,6 @@ export class CandlesAggregator extends EventEmitter {
   private handleCandle(candle: ICandlestick) {
     if (!this.enabled) {
       console.log("Waiting until initialized");
-      return;
-    }
-
-    // The `this.bucketSize + 1` is used to confirm that the last candle has fully closed
-    // before proceeding with aggregation.
-    if (this.bucket.length >= this.bucketSize + 1) {
-      const candle = this.aggregate();
-      this.candlesHistory.push(candle);
-
-      logger.info(
-        `[${this.symbol}#${this.timeframe}] Aggregated candle: O: ${candle.open}, H: ${candle.high}, L: ${candle.low}, C: ${candle.close} at ${new Date(candle.timestamp).toISOString()}`,
-      );
-      this.emit("candle", candle, this.candlesHistory);
-
       return;
     }
 
@@ -104,14 +86,29 @@ export class CandlesAggregator extends EventEmitter {
       return;
     }
 
-    const lastTimestamp = this.bucket[this.bucket.length - 1]?.timestamp;
+    const lastTimestamp = lastCandle?.timestamp;
     if (lastTimestamp && candle.timestamp !== lastTimestamp + 60000) {
-      const expectedNextTimestamp = lastTimestamp + 60000;
-
-      logger.error(
-        `[${this.symbol}#${this.timeframe}] candle timestamp ${new Date(candle.timestamp).toISOString()} is not equal to expected next timestamp ${new Date(expectedNextTimestamp).toISOString()}. There is a gap in the data.`,
+      const missedCandlesCount = (candle.timestamp - lastTimestamp) / 60000 - 1;
+      logger.warn(
+        `[${this.symbol}#${this.timeframe}] Missed ${missedCandlesCount} 1-minute candles, likely due unstable WS connection.` +
+          `  Last candle in the bucket: ${new Date(lastTimestamp).toISOString()}` +
+          `  Recent candle: ${new Date(candle.timestamp).toISOString()}`,
       );
-      throw new Error("Not implemented"); // @todo fill gaps
+
+      this.fillGaps(lastCandle, candle);
+      this.bucket.push(candle); // push the recent candle to the bucket after filling the gaps
+
+      while (this.bucket.length >= this.bucketSize + 1) {
+        const aggregatedCandle = this.aggregate();
+        this.candlesHistory.push(aggregatedCandle);
+        this.emit("candle", candle, this.candlesHistory); // emit for every missed candle
+
+        logger.info(
+          `[${this.symbol}#${this.timeframe}] Aggregated a candle (from gaps): O: ${aggregatedCandle.open}, H: ${aggregatedCandle.high}, L: ${aggregatedCandle.low}, C: ${aggregatedCandle.close} at ${new Date(aggregatedCandle.timestamp).toISOString()}`,
+        );
+      }
+
+      return;
     }
 
     const isFirstCandle = candle.timestamp % (this.bucketSize * 60000) === 0;
@@ -121,10 +118,27 @@ export class CandlesAggregator extends EventEmitter {
       );
 
       this.bucket.push(candle);
+      this.aggregateAndEmit();
     } else {
       logger.info(
         `[${this.symbol}#${this.timeframe}] Candle ${new Date(candle.timestamp).toISOString()} is not divisible by ${this.timeframe} bucket. Skipping.`,
       );
+    }
+  }
+
+  private aggregateAndEmit() {
+    // The `this.bucketSize + 1` is used to confirm that the last candle has fully closed
+    // before proceeding with aggregation.
+    if (this.bucket.length >= this.bucketSize + 1) {
+      const candle = this.aggregate();
+      this.candlesHistory.push(candle);
+
+      logger.info(
+        `[${this.symbol}#${this.timeframe}] Aggregated candle: O: ${candle.open}, H: ${candle.high}, L: ${candle.low}, C: ${candle.close} at ${new Date(candle.timestamp).toISOString()}`,
+      );
+      this.emit("candle", candle, this.candlesHistory);
+
+      return;
     }
   }
 
@@ -145,14 +159,34 @@ export class CandlesAggregator extends EventEmitter {
   }
 
   /**
+   * Populate the gaps in the bucket with closed price of the last candle.
+   * @param lastCandle Last candle in the bucket
+   * @param recentCandle Recent candle received from watcher
+   * @private
+   */
+  private fillGaps(lastCandle: ICandlestick, recentCandle: ICandlestick) {
+    for (let timestamp = lastCandle.timestamp + 60000; timestamp < recentCandle.timestamp; timestamp += 60000) {
+      // Using the close price of the last candle to fill the gaps
+      this.bucket.push({
+        timestamp,
+        open: lastCandle.close,
+        high: lastCandle.close,
+        low: lastCandle.close,
+        close: lastCandle.close,
+      });
+      logger.info(`[${this.symbol}#${this.timeframe}] Filled gap at ${new Date(timestamp).toISOString()}`);
+    }
+  }
+
+  /**
    * Download and aggregated last closed candle.
+   * E.g., if timeframe is 1d, it will download 1m candles for the last day and aggregate them to 1d candle.
+   * It will start downloading from the past.
    */
   async downloadLastCandle() {
     let minuteCandles: ICandlestick[] = [];
 
-    const lastClosedCandleTimestamp = getLastClosedCandleTimestamp(
-      this.bucketSize,
-    );
+    const lastClosedCandleTimestamp = getLastClosedCandleTimestamp(this.bucketSize);
     let since = lastClosedCandleTimestamp;
     let done = false;
 
@@ -169,7 +203,7 @@ export class CandlesAggregator extends EventEmitter {
 
       const firstCandle = candles[0];
       const lastCandle = candles[candles.length - 1];
-      logger.debug(
+      logger.info(
         `[${this.symbol}#${this.timeframe}] Fetched history candles ${firstCandle ? new Date(firstCandle.timestamp).toISOString() : null} to ${lastCandle ? new Date(lastCandle.timestamp).toISOString() : null}`,
       );
 
@@ -198,12 +232,8 @@ export class CandlesAggregator extends EventEmitter {
 
     logger.info(
       {
-        candlesHistory: this.candlesHistory.map((candle) =>
-          new Date(candle.timestamp).toISOString(),
-        ),
-        bucket: this.bucket.map((candle) =>
-          new Date(candle.timestamp).toISOString(),
-        ),
+        candlesHistory: this.candlesHistory.map((candle) => new Date(candle.timestamp).toISOString()),
+        bucket: this.bucket.map((candle) => new Date(candle.timestamp).toISOString()),
       },
       `[${this.symbol}#${this.timeframe}] Download history candles completed`,
     );
@@ -213,16 +243,12 @@ export class CandlesAggregator extends EventEmitter {
 
   async warmup(requiredHistory: number) {
     if (this.candlesHistory.length >= requiredHistory) {
-      logger.info(
-        `[${this.symbol}#${this.timeframe}] Already warmed up. Skipping.`,
-      );
+      logger.info(`[${this.symbol}#${this.timeframe}] Already warmed up. Skipping.`);
       return;
     }
 
-    const lastClosedCandleTimestamp =
-      this.candlesHistory[this.candlesHistory.length - 1].timestamp;
-    const since =
-      lastClosedCandleTimestamp - 60000 * this.bucketSize * requiredHistory;
+    const lastClosedCandleTimestamp = this.candlesHistory[this.candlesHistory.length - 1].timestamp;
+    const since = lastClosedCandleTimestamp - 60000 * this.bucketSize * requiredHistory;
     let start = since;
 
     logger.info(
@@ -257,9 +283,7 @@ export class CandlesAggregator extends EventEmitter {
     logger.info(
       `[${this.symbol}#${this.timeframe}] Downloaded candles from ${firstCandle ? new Date(firstCandle.timestamp).toISOString() : null} to ${lastCandle ? new Date(lastCandle.timestamp).toISOString() : null}`,
     );
-    minuteCandles = minuteCandles.filter(
-      (candle) => candle.timestamp < lastClosedCandleTimestamp,
-    );
+    minuteCandles = minuteCandles.filter((candle) => candle.timestamp < lastClosedCandleTimestamp);
 
     firstCandle = minuteCandles[0];
     lastCandle = minuteCandles[minuteCandles.length - 1];
