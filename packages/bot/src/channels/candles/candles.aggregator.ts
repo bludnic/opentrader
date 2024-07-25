@@ -101,7 +101,7 @@ export class CandlesAggregator extends EventEmitter {
       while (this.bucket.length >= this.bucketSize + 1) {
         const aggregatedCandle = this.aggregate();
         this.candlesHistory.push(aggregatedCandle);
-        this.emit("candle", candle, this.candlesHistory); // emit for every missed candle
+        this.emit("candle", aggregatedCandle, this.candlesHistory); // emit for every missed candle
 
         logger.info(
           `[${this.symbol}#${this.timeframe}] Aggregated a candle (from gaps): O: ${aggregatedCandle.open}, H: ${aggregatedCandle.high}, L: ${aggregatedCandle.low}, C: ${aggregatedCandle.close} at ${new Date(aggregatedCandle.timestamp).toISOString()}`,
