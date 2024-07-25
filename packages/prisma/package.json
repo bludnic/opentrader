@@ -18,7 +18,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@opentrader/tsconfig": "workspace:*",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.12",
     "ts-node": "10.9.2",
     "tsx": "^4.16.2",
     "typescript": "5.5.3"
