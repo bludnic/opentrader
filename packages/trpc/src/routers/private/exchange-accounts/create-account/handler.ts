@@ -1,4 +1,5 @@
 import { xprisma } from "@opentrader/db";
+import { checkExchangeCredentials } from "../../../../utils/exchange-account.js";
 import { eventBus } from "../../../../event-bus.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TCreateExchangeAccountInputSchema } from "./schema.js";
@@ -11,7 +12,7 @@ type Options = {
 };
 
 export async function createExchangeAccount({ input, ctx }: Options) {
-  const exchangeAccount = await xprisma.exchangeAccount.create({
+  let exchangeAccount = await xprisma.exchangeAccount.create({
     data: {
       ...input,
       owner: {
@@ -21,6 +22,17 @@ export async function createExchangeAccount({ input, ctx }: Options) {
       },
     },
   });
+
+  const { valid } = await checkExchangeCredentials(exchangeAccount);
+  exchangeAccount = await xprisma.exchangeAccount.update({
+    where: {
+      id: exchangeAccount.id,
+    },
+    data: {
+      expired: !valid,
+    },
+  });
+
   eventBus.exchangeAccountCreated(exchangeAccount);
 
   return exchangeAccount;
