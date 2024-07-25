@@ -75,7 +75,7 @@ export class BotService {
   assertIsNotAlreadyRunning() {
     if (this.bot.enabled) {
       throw new TRPCError({
-        message: "Bot already running",
+        message: "Bot already running. Please stop the bot first.",
         code: "CONFLICT",
       });
     }

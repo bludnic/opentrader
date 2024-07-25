@@ -1,4 +1,5 @@
 import { xprisma } from "@opentrader/db";
+import { BotService } from "../../../../services/bot.service.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TUpdateGridBotInputSchema } from "./schema.js";
 
@@ -11,6 +12,10 @@ type Options = {
 
 export async function updateGridBot({ ctx, input }: Options) {
   const { botId, data } = input;
+
+  const botService = await BotService.fromId(botId);
+  botService.assertIsNotAlreadyRunning();
+  botService.assertIsNotProcessing();
 
   const bot = await xprisma.bot.grid.update({
     where: {

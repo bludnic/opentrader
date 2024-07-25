@@ -3,12 +3,12 @@ import { z } from "zod";
 
 export const ZUpdateGridBotInputSchema = z.object({
   botId: z.number(),
-  data: ZGridBot.omit({
-    id: true,
-    ownerId: true,
+  data: ZGridBot.pick({
+    name: true,
+    baseCurrency: true,
+    quoteCurrency: true,
+    settings: true,
     exchangeAccountId: true,
-    type: true,
-    enabled: true,
   }),
 });
 
