@@ -1,6 +1,5 @@
-import { AuthenticationError, InvalidNonce } from "ccxt";
 import { xprisma } from "@opentrader/db";
-import { exchangeProvider } from "@opentrader/exchanges";
+import { checkExchangeCredentials } from "../../../../utils/exchange-account.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TCheckExchangeAccountInputSchema } from "./schema.js";
 
@@ -22,13 +21,9 @@ export async function checkExchangeAccount({ input, ctx }: Options) {
     },
   });
 
-  const exchange = exchangeProvider.fromAccount(exchangeAccount);
+  const { valid, message } = await checkExchangeCredentials(exchangeAccount);
 
-  try {
-    // to check account credentials validity
-    // any private endpoint is fine
-    await exchange.accountAssets();
-
+  if (valid) {
     await xprisma.exchangeAccount.update({
       where: {
         id: exchangeAccount.id,
@@ -37,28 +32,24 @@ export async function checkExchangeAccount({ input, ctx }: Options) {
         expired: false,
       },
     });
-  } catch (err) {
-    if (err instanceof AuthenticationError || err instanceof InvalidNonce) {
-      await xprisma.exchangeAccount.update({
-        where: {
-          id: exchangeAccount.id,
-        },
-        data: {
-          expired: true,
-        },
-      });
 
-      return {
-        valid: false,
-        error: err.message,
-      };
-    }
+    return {
+      valid: true,
+      message: "Exchange accounts credentials are valid",
+    };
+  } else {
+    await xprisma.exchangeAccount.update({
+      where: {
+        id: exchangeAccount.id,
+      },
+      data: {
+        expired: true,
+      },
+    });
 
-    throw err;
+    return {
+      valid: false,
+      error: message,
+    };
   }
-
-  return {
-    valid: true,
-    message: "Exchange accounts credentials are valid",
-  };
 }
