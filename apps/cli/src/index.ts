@@ -20,6 +20,7 @@ import { logPath } from "./utils/app-path.js";
 process.env.LOG_FILE = logPath;
 
 import { Command } from "commander";
+import packageJSON from "../package.json";
 import { setPasswordCommand } from "./commands/set-password.js";
 import { addExchangeAccountCommand } from "./commands/exchange/add.js";
 import { updateExchangeAccountCommand } from "./commands/exchange/update.js";
@@ -31,14 +32,17 @@ import { addUpCommand } from "./commands/up.js";
 import { addDownCommand } from "./commands/down.js";
 import { dbCommands } from "./commands/db.js";
 import { addLogsCommand } from "./commands/logs.js";
-import { addVersionCommand } from "./commands/version.js";
 
 const program = new Command();
 
 program
   .name("@opentrader/cli")
   .description("CLI for OpenTrader")
-  .version("0.0.1");
+  .version(
+    packageJSON.version,
+    "-v, --version",
+    "Output the OpenTrader version",
+  );
 
 setPasswordCommand(program);
 addExchangeAccountCommand(program);
@@ -51,6 +55,5 @@ addUpCommand(program);
 addDownCommand(program);
 dbCommands(program);
 addLogsCommand(program);
-addVersionCommand(program);
 
 program.parse();
