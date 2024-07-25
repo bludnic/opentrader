@@ -23,7 +23,7 @@
     "@types/serve-handler": "^6.1.4",
     "eslint": "8.57.0",
     "ts-node": "10.9.2",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   },
   "dependencies": {
     "@opentrader/bot": "workspace:*",

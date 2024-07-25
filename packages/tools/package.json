@@ -23,7 +23,7 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.2.3",
     "tsup": "^8.2.3",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   },
   "dependencies": {
     "@opentrader/types": "workspace:*",

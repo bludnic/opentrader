@@ -17,6 +17,6 @@
     "@opentrader/tsconfig": "workspace:*",
     "eslint": "8.57.0",
     "tsup": "^8.2.3",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   }
 }

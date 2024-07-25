@@ -33,7 +33,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "10.9.2",
     "tsup": "^8.2.3",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   },
   "dependencies": {
     "@opentrader/backtesting": "workspace:*",

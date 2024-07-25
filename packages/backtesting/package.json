@@ -20,7 +20,7 @@
     "@types/lodash": "^4.17.7",
     "@types/node": "^20.14.12",
     "eslint": "8.57.0",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",
