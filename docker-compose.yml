@@ -14,9 +14,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./opentrader_data:/opentrader/data
+      - ./opentrader_data:/app/data
     environment:
-      DATABASE_URL: file:/opentrader/data/dev.db
+      DATABASE_URL: file:/app/data/dev.db
       NEXT_PUBLIC_PROCESSOR_URL: http://localhost:5000
       NEXT_PUBLIC_PROCESSOR_ENABLE_TRPC: "true"
       NEXT_PUBLIC_STATIC: "true"
