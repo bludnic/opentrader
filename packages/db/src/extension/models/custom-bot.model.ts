@@ -8,7 +8,7 @@ import type { TBotSettings, TBotState } from "../../types/index.js";
 import { ZBotSettings } from "../../types/index.js";
 
 type NarrowBotType<ExtArgs extends InternalArgs, T> = Omit<
-  Awaited<GetFindResult<Prisma.$BotPayload<ExtArgs>, T>>,
+  Awaited<GetFindResult<Prisma.$BotPayload<ExtArgs>, T, {}>>,
   "settings" | "state"
 > & {
   settings: TBotSettings;
