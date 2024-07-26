@@ -17,9 +17,8 @@ const createContext = ({
     return {
       user: {
         id: 1,
-        password: "huitebe",
-        email: "nu@nahui",
-        displayName: "Hui tebe",
+        email: "onboarding@opentrader.pro",
+        displayName: "OpenTrader",
         role: "Admin" as const,
       },
     };

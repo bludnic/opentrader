@@ -35,8 +35,8 @@ export const copyPrismaSchemaPlugin = (): Plugin => ({
       fs.copyFileSync(prismaSchemaPath, prismaSchemaDest);
 
       // Copy seed.ts
-      const prismaSeedPath = path.resolve(CLI_DIR, "seed.ts");
-      const prismaSeedDest = path.resolve(DIST_DIR, "../seed.ts");
+      const prismaSeedPath = path.resolve(PRISMA_DIR, "seed.mjs");
+      const prismaSeedDest = path.resolve(DIST_DIR, "../seed.mjs");
       fs.copyFileSync(prismaSeedPath, prismaSeedDest);
 
       // Copy migrations

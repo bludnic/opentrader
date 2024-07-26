@@ -19,8 +19,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Using `seed.mjs` is meant primarily for Docker image,
-// since the production build doesnt include `ts-node` to run `seed.ts`
 async function main() {
   const user = await prisma.user.upsert({
     where: {
@@ -29,14 +27,11 @@ async function main() {
     update: {},
     create: {
       email: "onboarding@opentrader.pro",
-      password: "onboarding",
       displayName: "Open Trader",
       role: "Admin",
     },
   });
-  console.log(
-    `👤 Created user "${user.email}" with password "${user.password}"`,
-  );
+  console.log(`👤 Created user "${user.email}"`);
 }
 
 main()

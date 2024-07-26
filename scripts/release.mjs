@@ -21,8 +21,8 @@ await $`cp packages/prisma/src/schema.prisma release/schema.prisma`;
 console.log("Copied ./schema.prisma");
 await $`cp -r packages/prisma/src/migrations release/`;
 console.log("Copied ./migrations");
-await $`cp apps/cli/seed.ts release/seed.ts`;
-console.log("Copied ./seed.ts");
+await $`cp packages/prisma/seed.mjs release/seed.mjs`;
+console.log("Copied ./seed.mjs");
 
 // Copy frontend app
 await $`cp -r pro/frontend/dist release/frontend`;

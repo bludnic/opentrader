@@ -94,7 +94,7 @@ export const generatePackageJsonPlugin = (): Plugin => ({
       // Write to new package.json file
       newPackageJson.prisma = {
         schema: "schema.prisma",
-        seed: "tsx seed.ts",
+        seed: "node seed.mjs",
       };
 
       const distPath = path.resolve(CLI_DIR, build.initialOptions.outdir!);

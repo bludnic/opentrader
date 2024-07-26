@@ -94,7 +94,6 @@ model User {
   email       String  @unique
   displayName String?
   role        String  @default("User")
-  password    String
 
   exchangeAccounts ExchangeAccount[]
   smartTrades      SmartTrade[]

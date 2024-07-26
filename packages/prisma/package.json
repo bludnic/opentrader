@@ -33,6 +33,6 @@
   },
   "prisma": {
     "schema": "src/schema.prisma",
-    "seed": "tsx seed.ts"
+    "seed": "node seed.mjs"
   }
 }

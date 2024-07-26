@@ -92,9 +92,6 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
-      tsx:
-        specifier: ^4.16.2
-        version: 4.16.2
       zod:
         specifier: 3.23.8
         version: 3.23.8
