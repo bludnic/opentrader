@@ -27,5 +27,6 @@ export function* testRsi(ctx: TBotContext<any>) {
 }
 
 testRsi.displayName = "Test RSI";
+testRsi.hidden = true;
 testRsi.requiredHistory = 15;
 testRsi.schema = z.object({});

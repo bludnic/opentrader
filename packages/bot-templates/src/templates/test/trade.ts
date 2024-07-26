@@ -34,3 +34,4 @@ export function* testTrade(ctx: TBotContext<any>) {
 }
 
 testTrade.schema = z.object({});
+testTrade.hidden = true;

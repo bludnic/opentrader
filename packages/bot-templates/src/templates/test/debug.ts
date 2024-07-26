@@ -12,17 +12,13 @@ export function* debug(ctx: TBotContext<DebugStrategyConfig>) {
   logger.debug("Hello world");
 
   if (onStart) {
-    logger.info(
-      `[DebugStrategy] Bot started. Using ${exchange.exchangeCode} exchange`,
-    );
+    logger.info(`[DebugStrategy] Bot started. Using ${exchange.exchangeCode} exchange`);
 
     if (bot.settings.fetchSymbols) {
       const symbols: ISymbolInfo[] = yield exchange.getSymbols();
       logger.info(`[DebugStrategy] Fetched ${symbols.length} symbols`);
     } else {
-      logger.info(
-        `[DebugStrategy] Skipping fetching symbols (fetchSymbols=false)`,
-      );
+      logger.info(`[DebugStrategy] Skipping fetching symbols (fetchSymbols=false)`);
     }
 
     return;
@@ -34,9 +30,7 @@ export function* debug(ctx: TBotContext<DebugStrategyConfig>) {
 
   logger.info(`[DebugStrategy] Run bot template`);
   logger.info(
-    ctx.market.candles.map((candle) =>
-      new Date(candle.timestamp).toISOString(),
-    ),
+    ctx.market.candles.map((candle) => new Date(candle.timestamp).toISOString()),
     `[DebugStrategy] Candles`,
   );
 
@@ -44,11 +38,10 @@ export function* debug(ctx: TBotContext<DebugStrategyConfig>) {
 }
 
 debug.displayName = "Debug Strategy";
+debug.hidden = true;
 debug.schema = z.object({
   fetchSymbols: z.boolean().optional(),
 });
 debug.requiredHistory = 15;
 
-export type DebugStrategyConfig = IBotConfiguration<
-  z.infer<typeof debug.schema>
->;
+export type DebugStrategyConfig = IBotConfiguration<z.infer<typeof debug.schema>>;

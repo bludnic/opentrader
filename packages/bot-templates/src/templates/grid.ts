@@ -33,6 +33,7 @@ export function* grid(ctx: TBotContext<GridBotLiteConfig>) {
 }
 
 grid.displayName = "Grid Bot Lite";
+grid.hidden = true;
 grid.schema = z.object({
   highPrice: z.number().positive().describe("Highest price of the grid"),
   lowPrice: z.number().positive().describe("Lowest price of the grid"),

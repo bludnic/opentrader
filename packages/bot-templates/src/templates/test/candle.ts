@@ -9,9 +9,7 @@ export function* testCandle(ctx: TBotContext<any>) {
   const exchange: IExchange = yield useExchange();
 
   if (onStart) {
-    logger.info(
-      `[CandleStrategy] Bot started. Using ${exchange.exchangeCode} exchange`,
-    );
+    logger.info(`[CandleStrategy] Bot started. Using ${exchange.exchangeCode} exchange`);
     return;
   }
   if (onStop) {
@@ -29,3 +27,4 @@ export function* testCandle(ctx: TBotContext<any>) {
 }
 
 testCandle.schema = z.object({});
+testCandle.hidden = true;
