@@ -32,6 +32,11 @@ export class Daemon {
       void processor.onBotStarted(bot);
     });
 
+    eventBus.on(EVENT.onBotStopped, (bot) => {
+      console.log("EventBus: Bot stopped", bot);
+      void processor.onBotStopped(bot);
+    });
+
     eventBus.on(EVENT.onExchangeAccountCreated, (exchangeAccount) => {
       console.log("EventBus: Exchange account created", exchangeAccount);
       void processor.addExchangeAccount(exchangeAccount);
