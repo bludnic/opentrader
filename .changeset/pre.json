@@ -22,5 +22,7 @@
     "frontend": "1.0.0-alpha.28",
     "processor": "1.0.0-alpha.28"
   },
-  "changesets": []
+  "changesets": [
+    "brave-poets-hang"
+  ]
 }
