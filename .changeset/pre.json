@@ -1,0 +1,26 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "opentrader": "1.0.0-alpha.28",
+    "@opentrader/backtesting": "0.0.0",
+    "@opentrader/bot": "0.0.0",
+    "@opentrader/bot-processor": "0.0.0",
+    "@opentrader/bot-templates": "0.0.0",
+    "@opentrader/daemon": "0.0.0",
+    "@opentrader/db": "0.0.0",
+    "@opentrader/eslint": "0.0.0",
+    "@opentrader/exchanges": "0.0.0",
+    "@opentrader/indicators": "0.0.0",
+    "@opentrader/logger": "0.0.0",
+    "@opentrader/prisma": "0.0.0",
+    "@opentrader/processing": "0.0.0",
+    "@opentrader/tools": "0.0.0",
+    "@opentrader/trpc": "0.0.0",
+    "@opentrader/tsconfig": "0.0.0",
+    "@opentrader/types": "0.0.0",
+    "frontend": "1.0.0-alpha.28",
+    "processor": "1.0.0-alpha.28"
+  },
+  "changesets": []
+}
