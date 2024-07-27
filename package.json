@@ -4,6 +4,7 @@
   "author": "bludnic",
   "license": "Apache-2.0",
   "workspaces": [
+    "apps/*",
     "packages/*",
     "pro/*"
   ],
