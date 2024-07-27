@@ -1,4 +1,5 @@
 import { BotProcessing } from "@opentrader/processing";
+import { eventBus } from "../../../../event-bus.js";
 import { BotService } from "../../../../services/bot.service.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TStopGridBotInputSchema } from "./schema.js";
@@ -21,6 +22,8 @@ export async function stopGridBot({ input }: Options) {
   await botProcessor.processStopCommand();
 
   await botService.stop();
+
+  eventBus.botStopped(botId);
 
   return {
     ok: true,

@@ -11,13 +11,8 @@ export class Processor {
   private timeframeCron: TimeframeCron;
   private candlesProcessor: CandlesProcessor;
 
-  constructor(
-    exchangeAccounts: ExchangeAccountWithCredentials[],
-    bots: TBot[],
-  ) {
-    this.exchangeAccountsWatcher = new ExchangeAccountsWatcher(
-      exchangeAccounts,
-    );
+  constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBot[]) {
+    this.exchangeAccountsWatcher = new ExchangeAccountsWatcher(exchangeAccounts);
     this.timeframeCron = new TimeframeCron();
     this.candlesProcessor = new CandlesProcessor(bots);
   }
@@ -38,6 +33,10 @@ export class Processor {
 
   async onBotStarted(bot: TBot) {
     await this.candlesProcessor.addBot(bot);
+  }
+
+  async onBotStopped(bot: TBot) {
+    await this.candlesProcessor.cleanStaleChannels();
   }
 
   async onApplicationBootstrap() {

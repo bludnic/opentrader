@@ -20,6 +20,7 @@ import type { IExchange } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
 import { barSizeToDuration } from "@opentrader/tools";
 import { BarSize } from "@opentrader/types";
+import { format } from "@opentrader/logger";
 import type { ICandlestick } from "@opentrader/types";
 import type { CandlesWatcher } from "./candles.watcher.js";
 
@@ -55,13 +56,15 @@ export class CandlesAggregator extends EventEmitter {
     this.timeframe = timeframe;
     this.bucketSize = barSizeToDuration(timeframe) / 60000; // convert ms to minutes
     this.candlesWatcher = candlesWatcher;
-
-    this.candlesWatcher.on("candle", this.handleCandle.bind(this));
   }
 
-  private handleCandle(candle: ICandlestick) {
+  private handleCandle = (candle: ICandlestick) => {
     if (!this.enabled) {
-      console.log("Waiting until initialized");
+      const { exchangeCode } = this.exchange;
+      const { symbol } = this.candlesWatcher;
+      logger.error(
+        `[CandlesAggregator] Cannot handle candle ${format.candle(candle)} for ${exchangeCode}:${symbol}#${this.timeframe}. Reason: Aggregator is disabled.`,
+      );
       return;
     }
 
@@ -124,7 +127,7 @@ export class CandlesAggregator extends EventEmitter {
         `[${this.symbol}#${this.timeframe}] Candle ${new Date(candle.timestamp).toISOString()} is not divisible by ${this.timeframe} bucket. Skipping.`,
       );
     }
-  }
+  };
 
   private aggregateAndEmit() {
     // The `this.bucketSize + 1` is used to confirm that the last candle has fully closed
@@ -156,6 +159,16 @@ export class CandlesAggregator extends EventEmitter {
     if (requiredHistory) {
       await this.warmup(requiredHistory);
     }
+  }
+
+  enable() {
+    this.candlesWatcher.on("candle", this.handleCandle);
+    this.enabled = true;
+  }
+
+  disable() {
+    this.candlesWatcher.off("candle", this.handleCandle);
+    this.enabled = false;
   }
 
   /**
@@ -237,8 +250,6 @@ export class CandlesAggregator extends EventEmitter {
       },
       `[${this.symbol}#${this.timeframe}] Download history candles completed`,
     );
-
-    this.enabled = true;
   }
 
   async warmup(requiredHistory: number) {

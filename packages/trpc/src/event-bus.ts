@@ -7,6 +7,7 @@ export const EVENT = {
   onExchangeAccountUpdated: "onExchangeAccountUpdated",
   onBotCreated: "onBotCreated",
   onBotStarted: "onBotStarted",
+  onBotStopped: "onBotStopped",
 } as const;
 
 /**
@@ -44,7 +45,22 @@ class EventBus extends EventEmitter {
         this.emit(EVENT.onBotStarted, bot);
       })
       .catch((error) => {
-        console.error("EventBuss: Error in botStarted", error);
+        console.error("EventBus: Error in botStarted", error);
+      });
+  }
+
+  botStopped(botId: number) {
+    xprisma.bot
+      .findUniqueOrThrow({
+        where: {
+          id: botId,
+        },
+      })
+      .then((bot) => {
+        this.emit(EVENT.onBotStopped, bot);
+      })
+      .catch((error) => {
+        console.error("EventBus: Error in botStopped", error);
       });
   }
 }
