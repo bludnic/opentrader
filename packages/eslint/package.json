@@ -1,7 +1,7 @@
 {
   "name": "@opentrader/eslint",
   "description": "ESLint configuration from OpenTrader",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "repository": {
     "type": "git",
