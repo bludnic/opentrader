@@ -1,6 +1,7 @@
-import type { ExchangeAccountWithCredentials, TBot } from "@opentrader/db";
+import { xprisma, type ExchangeAccountWithCredentials, type TBot } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { exchangeProvider } from "@opentrader/exchanges";
+import { BotProcessing } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
 
 import { CandlesProcessor } from "./candles.processor.js";
@@ -33,6 +34,8 @@ export class Processor {
   }
 
   async beforeApplicationShutdown() {
+    await this.stopAllBots();
+
     logger.info("[Processor] OrdersProcessor destroyed");
     await this.exchangeAccountsWatcher.destroy();
 
@@ -43,6 +46,26 @@ export class Processor {
     this.candlesProcessor.destroy();
 
     this.unsubscribeFromEventBus();
+  }
+
+  async stopAllBots() {
+    const bots = await xprisma.bot.custom.findMany({
+      where: { enabled: true },
+      include: { exchangeAccount: true },
+    });
+    logger.info(`[Processor] There a still ${bots.length} bots running, stopping them...`);
+
+    for (const bot of bots) {
+      const botProcessor = new BotProcessing(bot);
+      await botProcessor.processStopCommand();
+
+      await xprisma.bot.custom.update({
+        where: { id: bot.id },
+        data: { enabled: false },
+      });
+
+      logger.info(`[Processor] Bot stopped [id=${bot.id} name=${bot.name}]`);
+    }
   }
 
   /**

@@ -1,8 +1,4 @@
-import type {
-  BotState,
-  IBotConfiguration,
-  MarketData,
-} from "@opentrader/bot-processor";
+import type { BotState, IBotConfiguration, MarketData } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
@@ -74,10 +70,7 @@ export class BotProcessing {
     });
   }
 
-  async processCommand(
-    command: "start" | "stop" | "process",
-    market?: MarketData,
-  ) {
+  async processCommand(command: "start" | "stop" | "process", market?: MarketData) {
     console.log(`🤖 Exec "${command}" command`, {
       context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0}`,
       bot: `id=${this.bot.id} name="${this.bot.name}"`,
@@ -85,9 +78,7 @@ export class BotProcessing {
     const t0 = Date.now();
 
     if (this.isBotProcessing()) {
-      console.warn(
-        `Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`,
-      );
+      console.warn(`Cannot execute "${command}()" command. The bot is busy right now by the previous processing job.`);
       return;
     }
 
@@ -202,9 +193,7 @@ export class BotProcessing {
       },
     });
 
-    logger.info(
-      `BotProcessing: Found ${smartTrades.length} pending orders for placement`,
-    );
+    logger.info(`BotProcessing: Found ${smartTrades.length} pending orders for placement`);
 
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
@@ -213,10 +202,7 @@ export class BotProcessing {
         `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.exchangeSymbolId}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
       );
 
-      const smartTradeExecutor = SmartTradeExecutor.create(
-        smartTrade,
-        exchangeAccount,
-      );
+      const smartTradeExecutor = SmartTradeExecutor.create(smartTrade, exchangeAccount);
       await smartTradeExecutor.next();
     }
   }
