@@ -16,7 +16,7 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import { xprisma } from "@opentrader/db";
-import { NetworkError, RequestTimeout } from "ccxt";
+import { ExchangeClosedByUser, NetworkError, RequestTimeout } from "ccxt";
 import { logger } from "@opentrader/logger";
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract.js";
 
@@ -80,6 +80,10 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
           // and your next call should reconnect in the background
         } else if (err instanceof RequestTimeout) {
           logger.warn(err, `[OrderSynchronizerWs] RequestTimeout occurred: ${err.message}`);
+        } else if (err instanceof ExchangeClosedByUser) {
+          // This is an expected error when shutting down the daemon by running disable() method
+          logger.info("[OrderSynchronizerWs] ExchangeClosedByUser");
+          break; // is it necessary, when `this.enabled` is already `false`?
         } else {
           logger.error(err, "[OrderSynchronizerWs] ‼️ Unhandled error occurred. Disabling WS connection.");
           await this.disable();

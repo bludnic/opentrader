@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import { NetworkError, RequestTimeout } from "ccxt";
+import { ExchangeClosedByUser, NetworkError, RequestTimeout } from "ccxt";
 import { type IExchange } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
 
@@ -60,6 +60,10 @@ export class CandlesWatcher extends EventEmitter {
           await new Promise((resolve) => setTimeout(resolve, 3000)); // prevents infinite cycle
         } else if (err instanceof RequestTimeout) {
           logger.warn(err, `[CandlesWatcher] RequestTimeout occurred on ${this.exchange.exchangeCode}:${this.symbol}.`);
+        } else if (err instanceof ExchangeClosedByUser) {
+          // This is an expected error when shutting down the daemon by running disable() method
+          logger.info("[CandlesWatcher] ExchangeClosedByUser");
+          break; // is it necessary, when `this.enabled` is already `false`?
         } else {
           logger.error(
             err,
