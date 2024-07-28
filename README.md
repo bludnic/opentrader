@@ -15,6 +15,7 @@
 - [x] [Grid](packages/bot-templates/src/templates/grid-bot.ts): A grid trading strategy that profits from the price fluctuation of an asset.
 - [x] [RSI](packages/bot-templates/src/templates/rsi.ts): A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
 - [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
+- [ ] `ARB`: Arbitrage strategy that takes advantage of price differences through cross-exchange trading.
 
 # Quick start
 
