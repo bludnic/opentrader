@@ -23,5 +23,9 @@
     "frontend": "1.0.0-alpha.28",
     "processor": "1.0.0-alpha.28"
   },
-  "changesets": ["brave-poets-hang", "purple-numbers-try"]
+  "changesets": [
+    "brave-poets-hang",
+    "healthy-ducks-listen",
+    "purple-numbers-try"
+  ]
 }
