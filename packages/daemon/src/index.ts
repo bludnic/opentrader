@@ -18,7 +18,6 @@
 import { Server } from "node:http";
 import { Processor } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
-import { eventBus, EVENT } from "@opentrader/event-bus";
 import { createServer } from "./server.js";
 import { createProcessor } from "./processor.js";
 
@@ -26,32 +25,7 @@ export class Daemon {
   constructor(
     private processor: Processor,
     private server: Server,
-  ) {
-    eventBus.on(EVENT.onBotStarted, (bot) => {
-      console.log("EventBus: Bot started", bot);
-      void processor.onBotStarted(bot);
-    });
-
-    eventBus.on(EVENT.onBotStopped, (bot) => {
-      console.log("EventBus: Bot stopped", bot);
-      void processor.onBotStopped(bot);
-    });
-
-    eventBus.on(EVENT.onExchangeAccountCreated, (exchangeAccount) => {
-      console.log("EventBus: Exchange account created", exchangeAccount);
-      void processor.addExchangeAccount(exchangeAccount);
-    });
-
-    eventBus.on(EVENT.onExchangeAccountDeleted, (exchangeAccount) => {
-      console.log("EventBus: Exchange account deleted", exchangeAccount);
-      void processor.removeExchangeAccount(exchangeAccount);
-    });
-
-    eventBus.on(EVENT.onExchangeAccountUpdated, (exchangeAccount) => {
-      console.log("EventBus: Exchange account updated", exchangeAccount);
-      void processor.updateExchangeAccount(exchangeAccount);
-    });
-  }
+  ) {}
 
   static async create() {
     const processor = await createProcessor();

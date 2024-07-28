@@ -187,6 +187,9 @@ importers:
       '@opentrader/db':
         specifier: workspace:*
         version: link:../db
+      '@opentrader/event-bus':
+        specifier: workspace:*
+        version: link:../event-bus
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges
@@ -439,6 +442,34 @@ importers:
         specifier: ^7.17.0
         version: 7.17.0(eslint@8.57.0)(typescript@5.5.4)
 
+  packages/event-bus:
+    dependencies:
+      '@opentrader/db':
+        specifier: workspace:*
+        version: link:../db
+    devDependencies:
+      '@opentrader/eslint':
+        specifier: workspace:*
+        version: link:../eslint
+      '@opentrader/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@opentrader/types':
+        specifier: workspace:*
+        version: link:../types
+      '@types/node':
+        specifier: ^20.14.12
+        version: 20.14.12
+      eslint:
+        specifier: 8.57.0
+        version: 8.57.0
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+      vitest:
+        specifier: ^2.0.4
+        version: 2.0.4(@types/node@20.14.12)(terser@5.31.2)
+
   packages/exchanges:
     dependencies:
       '@opentrader/db':
@@ -687,6 +718,9 @@ importers:
       '@opentrader/db':
         specifier: workspace:*
         version: link:../db
+      '@opentrader/event-bus':
+        specifier: workspace:*
+        version: link:../event-bus
       '@opentrader/exchanges':
         specifier: workspace:*
         version: link:../exchanges

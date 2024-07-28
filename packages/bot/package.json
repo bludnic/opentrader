@@ -28,6 +28,7 @@
   "dependencies": {
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
+    "@opentrader/event-bus": "workspace:*",
     "@opentrader/exchanges": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/processing": "workspace:*",
