@@ -21,6 +21,8 @@ export class Processor {
   }
 
   async onApplicationBootstrap() {
+    await this.cleanOrphanedBots();
+
     logger.info("[Processor] OrdersProcessor created");
     await this.exchangeAccountsWatcher.create();
 
@@ -34,7 +36,7 @@ export class Processor {
   }
 
   async beforeApplicationShutdown() {
-    await this.stopAllBots();
+    await this.stopEnabledBots();
 
     logger.info("[Processor] OrdersProcessor destroyed");
     await this.exchangeAccountsWatcher.destroy();
@@ -48,12 +50,17 @@ export class Processor {
     this.unsubscribeFromEventBus();
   }
 
-  async stopAllBots() {
+  /**
+   * Stops enabled bots gracefully.
+   * Does execute "stop" command on each bot, and then sets the bot status as disabled.
+   */
+  async stopEnabledBots() {
     const bots = await xprisma.bot.custom.findMany({
       where: { enabled: true },
       include: { exchangeAccount: true },
     });
-    logger.info(`[Processor] There a still ${bots.length} bots running, stopping them...`);
+    if (bots.length === 0) return;
+    logger.info(`[Processor] Stopping ${bots.length} bots gracefully…`);
 
     for (const bot of bots) {
       const botProcessor = new BotProcessing(bot);
@@ -65,6 +72,22 @@ export class Processor {
       });
 
       logger.info(`[Processor] Bot stopped [id=${bot.id} name=${bot.name}]`);
+    }
+  }
+
+  /**
+   * When the app starts, check if there are any enabled bots and stop them gracefully.
+   * This is necessary because the previous process might have been interrupted,
+   * and there are open orders that need to be closed on the exchange.
+   */
+  async cleanOrphanedBots() {
+    const anyBotEnabled = await xprisma.bot.custom.findFirst({
+      where: { enabled: true },
+    });
+
+    if (anyBotEnabled) {
+      logger.warn(`[Processor] The previous process was interrupted, there are orphaned bots. Performing cleanup…`);
+      await this.stopEnabledBots();
     }
   }
 
