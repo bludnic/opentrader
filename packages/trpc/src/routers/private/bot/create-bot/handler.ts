@@ -1,7 +1,7 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { TRPCError } from "@trpc/server";
 import { xprisma } from "@opentrader/db";
-import { eventBus } from "../../../../event-bus.js";
+import { eventBus } from "@opentrader/event-bus";
 import type { Context } from "../../../../utils/context.js";
 import type { TCreateBotInputSchema } from "./schema.js";
 

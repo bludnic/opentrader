@@ -18,4 +18,3 @@
 export { trpc } from "./trpc.js";
 export { type AppRouter, appRouter } from "./routers/appRouter.js";
 export { createContext } from "./utils/context.js";
-export { eventBus, EVENT } from "./event-bus.js";

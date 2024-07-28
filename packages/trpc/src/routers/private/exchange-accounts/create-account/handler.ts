@@ -1,6 +1,6 @@
 import { xprisma } from "@opentrader/db";
 import { checkExchangeCredentials } from "../../../../utils/exchange-account.js";
-import { eventBus } from "../../../../event-bus.js";
+import { eventBus } from "@opentrader/event-bus";
 import type { Context } from "../../../../utils/context.js";
 import type { TCreateExchangeAccountInputSchema } from "./schema.js";
 

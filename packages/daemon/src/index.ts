@@ -18,7 +18,7 @@
 import { Server } from "node:http";
 import { Processor } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
-import { eventBus, EVENT } from "@opentrader/trpc";
+import { eventBus, EVENT } from "@opentrader/event-bus";
 import { createServer } from "./server.js";
 import { createProcessor } from "./processor.js";
 

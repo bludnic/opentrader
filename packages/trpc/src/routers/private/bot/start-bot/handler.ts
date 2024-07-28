@@ -1,5 +1,5 @@
 import { BotProcessing } from "@opentrader/processing";
-import { eventBus } from "../../../../event-bus.js";
+import { eventBus } from "@opentrader/event-bus";
 import { BotService } from "../../../../services/bot.service.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TStartGridBotInputSchema } from "./schema.js";

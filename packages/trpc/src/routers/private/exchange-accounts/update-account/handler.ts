@@ -2,7 +2,7 @@ import { xprisma } from "@opentrader/db";
 import { checkExchangeCredentials } from "../../../../utils/exchange-account.js";
 import type { Context } from "../../../../utils/context.js";
 import type { TUpdateExchangeAccountInputSchema } from "./schema.js";
-import { eventBus } from "../../../../event-bus.js";
+import { eventBus } from "@opentrader/event-bus";
 
 type Options = {
   ctx: {

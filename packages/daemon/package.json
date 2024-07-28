@@ -28,6 +28,7 @@
   "dependencies": {
     "@opentrader/bot": "workspace:*",
     "@opentrader/db": "workspace:*",
+    "@opentrader/event-bus": "workspace:*",
     "@opentrader/logger": "workspace:*",
     "@opentrader/trpc": "workspace:*",
     "@trpc/client": "^10.45.2",
