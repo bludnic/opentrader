@@ -8,9 +8,7 @@ type FindStrategyResult = {
   strategyFilePath: string; // empty string if not a custom strategy
 };
 
-export async function findStrategy(
-  strategyNameOrFile: string,
-): Promise<FindStrategyResult> {
+export async function findStrategy(strategyNameOrFile: string): Promise<FindStrategyResult> {
   let strategyFn;
 
   const isCustomStrategyFile = strategyNameOrFile.endsWith(".mjs");
@@ -19,7 +17,6 @@ export async function findStrategy(
     : join(process.cwd(), strategyNameOrFile);
 
   const strategyExists = strategyNameOrFile in templates;
-  console.log(`Strategy file: ${customStrategyFilePath}`);
 
   if (isCustomStrategyFile) {
     const { default: fn } = await import(customStrategyFilePath);
