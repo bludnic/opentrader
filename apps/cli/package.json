@@ -1,6 +1,6 @@
 {
   "name": "opentrader",
-  "version": "1.0.0-alpha.29",
+  "version": "1.0.0-alpha.30",
   "description": "",
   "type": "module",
   "main": "dist/main.mjs",
