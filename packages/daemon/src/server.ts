@@ -6,11 +6,11 @@ import express from "express";
 import cors from "cors";
 import { appRouter } from "@opentrader/trpc";
 
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
 // created for each request
-const createContext = ({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) => {
+const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
   const password = req.headers.authorization;
 
   if (password === process.env.ADMIN_PASSWORD) {
