@@ -137,26 +137,6 @@ export class CandlesChannel extends EventEmitter {
     }
   }
 
-  /**
-   * Destroy watchers and aggregators that are not used anymore.
-   * This method should be called periodically (on any bot stopped) to clean up stale watchers/aggregators.
-   */
-  // cleanStaleWatchers() {
-  //   for (const watcher of this.watchers) {
-  //     if (watcher.isEmpty()) {
-  //       watcher.disable();
-  //       this.watchers = this.watchers.filter((w) => w !== watcher);
-  //     }
-  //   }
-
-  //   for (const aggregator of this.aggregators) {
-  //     if (aggregator.isEmpty()) {
-  //       aggregator.destroy();
-  //       this.aggregators = this.aggregators.filter((a) => a !== aggregator);
-  //     }
-  //   }
-  // }
-
   get exchangeCode() {
     return this.exchange.exchangeCode;
   }
