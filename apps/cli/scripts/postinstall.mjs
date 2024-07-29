@@ -1,4 +1,5 @@
 import { homedir } from "node:os";
+import { execSync } from "node:child_process";
 import { writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { generate } from "random-words";
@@ -6,6 +7,21 @@ import { generate } from "random-words";
 const APP_DIR = ".opentrader";
 export const appPath = join(homedir(), APP_DIR);
 export const passFilePath = join(appPath, "pass");
+export const dbFilePath = join(appPath, "dev.db");
+
+function runMigrations() {
+  const commands = [
+    "prisma generate --generator client", // generate prisma client
+    `prisma migrate deploy`, // run migrations
+    `node seed.mjs`, // seed the database
+  ];
+
+  for (const command of commands) {
+    const env = { ...process.env, DATABASE_URL: `file:${dbFilePath}` };
+
+    execSync(command, { env, stdio: "inherit" });
+  }
+}
 
 function generatePassword(wordCount = 3, numberCount = 2) {
   // Generate random words
@@ -16,9 +32,7 @@ function generatePassword(wordCount = 3, numberCount = 2) {
   });
 
   // Generate random numbers
-  const numbers = Array.from({ length: numberCount }, () =>
-    Math.floor(Math.random() * 10),
-  ).join("");
+  const numbers = Array.from({ length: numberCount }, () => Math.floor(Math.random() * 10)).join("");
 
   // Combine words and numbers
   return words[0] + numbers;
@@ -37,10 +51,9 @@ function savePassword() {
     recursive: true,
   });
   console.log(`Generated new ADMIN PASSWORD in ${passFilePath}`);
-  console.log(
-    `Please keep this password safe. You will need it to access the admin panel.`,
-  );
+  console.log(`Please keep this password safe. You will need it to access the admin panel.`);
   console.log(`🔒 Password: ${password}`);
 }
 
+runMigrations();
 savePassword();

@@ -14,9 +14,7 @@ console.log("CLI_DIR", CLI_DIR);
 console.log("PACKAGES_DIR", PACKAGES_DIR);
 
 export function generatePackageJson(outDir) {
-  const mainPackageJson = JSON.parse(
-    fs.readFileSync(path.join(CLI_DIR, "package.json"), "utf-8"),
-  );
+  const mainPackageJson = JSON.parse(fs.readFileSync(path.join(CLI_DIR, "package.json"), "utf-8"));
   const dependencies = {};
 
   // Function to merge dependencies, excluding specified packages
@@ -26,9 +24,7 @@ export function generatePackageJson(outDir) {
         if (!target[key]) {
           target[key] = value;
         } else if (target[key] !== value) {
-          console.warn(
-            `Version conflict for ${key}: ${target[key]} vs ${value}`,
-          );
+          console.warn(`Version conflict for ${key}: ${target[key]} vs ${value}`);
         }
       }
     }
@@ -76,11 +72,7 @@ export function generatePackageJson(outDir) {
   };
 
   // Add postinstall script
-  newPackageJson.scripts.postinstall =
-    "prisma generate --generator client && " + // Generate only @prisma/client (it will skip Zod generator)
-    'DATABASE_URL="file:${HOME}/.opentrader/dev.db" prisma migrate deploy && ' +
-    'DATABASE_URL="file:${HOME}/.opentrader/dev.db" node seed.mjs && ' +
-    "node scripts/postinstall.mjs";
+  newPackageJson.scripts.postinstall = "node scripts/postinstall.mjs";
 
   // Write to new package.json file
   newPackageJson.prisma = {
@@ -95,10 +87,7 @@ export function generatePackageJson(outDir) {
     fs.mkdirSync(releaseDir, { recursive: true });
   }
 
-  fs.writeFileSync(
-    path.resolve(releaseDir, "./package.json"),
-    JSON.stringify(newPackageJson, null, 2),
-  );
+  fs.writeFileSync(path.resolve(releaseDir, "./package.json"), JSON.stringify(newPackageJson, null, 2));
 
   console.log(`Generated ${outDir}/package.json`);
 }
