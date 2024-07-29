@@ -14,6 +14,7 @@ export const appPath = join(homedir(), APP_DIR);
 
 // Path to the file containing the admin password
 const passwordFilePath = join(appPath, "pass");
+const dbFilePath = join(appPath, "dev.db");
 
 // Function to read the password file
 async function readPasswordFile(filePath) {
@@ -34,7 +35,7 @@ async function main() {
   const env = {
     ...process.env,
     ADMIN_PASSWORD: adminPassword,
-    DATABASE_URL: `file:${process.env.HOME}/.opentrader/dev.db`,
+    DATABASE_URL: `file:${dbFilePath}`,
   };
 
   // Run the Node.js script
