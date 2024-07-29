@@ -47,10 +47,6 @@ useTrpc(app);
 
 // Serve frontend app
 const staticDir = path.resolve(__dirname, "../frontend");
-console.log("import.meta.url", import.meta.url);
-console.log("__filename", __filename);
-console.log("__dirname", __dirname);
-console.log("staticDir", staticDir);
 app.get("*", (req, res) => serveHandler(req, res, { public: staticDir }));
 
 export const createServer = () => {
