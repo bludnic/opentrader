@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/bludnic/opentrader" title="OpenTrader">
-    <img src=".github/images/logo.png" alt="OpenTrader logo" width="300" />
+    <img src=".github/images/logo.png" alt="OpenTrader logo" width="128" />
   </a>
 </p>
 
