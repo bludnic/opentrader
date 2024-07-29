@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Order" ADD COLUMN     "fee" DOUBLE PRECISION;
