@@ -1,4 +1,5 @@
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import serveHandler from "serve-handler";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import type { Express } from "express";
@@ -6,7 +7,7 @@ import express from "express";
 import cors from "cors";
 import { appRouter } from "@opentrader/trpc";
 
-const __filename = new URL(import.meta.url).pathname;
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // created for each request
@@ -47,6 +48,7 @@ useTrpc(app);
 // Serve frontend app
 const staticDir = path.resolve(__dirname, "../frontend");
 console.log("import.meta.url", import.meta.url);
+console.log("__filename", __filename);
 console.log("__dirname", __dirname);
 console.log("staticDir", staticDir);
 app.get("*", (req, res) => serveHandler(req, res, { public: staticDir }));
