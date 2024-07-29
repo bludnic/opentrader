@@ -1,16 +1,19 @@
 #!/usr/bin/env node
 
-import { readFile } from "fs/promises";
-import { spawn } from "child_process";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+import { readFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+import { homedir } from "node:os";
 
-// Determine the script's directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const APP_DIR = ".opentrader";
+export const appPath = join(homedir(), APP_DIR);
+
 // Path to the file containing the admin password
-const passwordFile = `${process.env.HOME}/.opentrader/pass`;
+const passwordFilePath = join(appPath, "pass");
 
 // Function to read the password file
 async function readPasswordFile(filePath) {
@@ -25,7 +28,7 @@ async function readPasswordFile(filePath) {
 
 // Main function to run the script
 async function main() {
-  const adminPassword = await readPasswordFile(passwordFile);
+  const adminPassword = await readPasswordFile(passwordFilePath);
 
   // Set environment variables
   const env = {
