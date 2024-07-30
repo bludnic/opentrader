@@ -16,19 +16,19 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import { Server } from "node:http";
-import { Processor } from "@opentrader/bot";
+import { Platform } from "@opentrader/bot";
 import { logger } from "@opentrader/logger";
 import { createServer } from "./server.js";
-import { createProcessor } from "./processor.js";
+import { bootstrapPlatform } from "./platform.js";
 
 export class Daemon {
   constructor(
-    private processor: Processor,
+    private platform: Platform,
     private server: Server,
   ) {}
 
   static async create() {
-    const processor = await createProcessor();
+    const platform = await bootstrapPlatform();
     logger.info("Processor created");
 
     const server = createServer().listen(8000);
@@ -36,13 +36,13 @@ export class Daemon {
 
     logger.info("OpenTrader UI: http://localhost:8000");
 
-    return new Daemon(processor, server);
+    return new Daemon(platform, server);
   }
 
   async restart() {
-    await this.processor.beforeApplicationShutdown();
+    await this.platform.shutdown();
 
-    this.processor = await createProcessor();
+    this.platform = await bootstrapPlatform();
   }
 
   async shutdown() {
@@ -51,7 +51,7 @@ export class Daemon {
     this.server.close();
     logger.info("Express Server shutted down gracefully.");
 
-    await this.processor.beforeApplicationShutdown();
+    await this.platform.shutdown();
     logger.info("Processor shutted down gracefully.");
   }
 }

@@ -2,28 +2,7 @@ import { cargoQueue, QueueObject, ErrorCallback } from "async";
 import type { TBot } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
-import { ICandlestick } from "@opentrader/types";
-
-export const ExchangeEvent = {
-  onOrderFilled: "onOrderFilled",
-  onCandleClosed: "onCandleClosed",
-} as const;
-export type ExchangeEvent = (typeof ExchangeEvent)[keyof typeof ExchangeEvent];
-
-type OrderFilledEvent = {
-  type: typeof ExchangeEvent.onOrderFilled;
-  bot: TBot;
-  orderId: number;
-};
-
-type CandleClosedEvent = {
-  type: typeof ExchangeEvent.onCandleClosed;
-  bot: TBot;
-  candle: ICandlestick; // current closed candle
-  candles: ICandlestick[]; // previous candles history
-};
-
-type ProcessingEvent = OrderFilledEvent | CandleClosedEvent;
+import { ProcessingEvent } from "./types.js";
 
 async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Error>) {
   const event = tasks[tasks.length - 1]; // getting last task from the queue
@@ -36,9 +15,9 @@ async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Er
 
   const botProcessor = new BotProcessing(event.bot);
 
-  if (event.type === ExchangeEvent.onOrderFilled) {
+  if (event.type === "onOrderFilled") {
     await botProcessor.process();
-  } else if (event.type === ExchangeEvent.onCandleClosed) {
+  } else if (event.type === "onCandleClosed") {
     await botProcessor.process({
       candle: event.candle,
       candles: event.candles,
@@ -54,7 +33,7 @@ async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Er
 
 const createQueue = () => cargoQueue<ProcessingEvent>(queueHandler);
 
-class ProcessingQueue {
+class Queue {
   queues: Record<TBot["id"], QueueObject<ProcessingEvent>> = {};
 
   push(event: ProcessingEvent) {
@@ -69,4 +48,4 @@ class ProcessingQueue {
   }
 }
 
-export const processingQueue = new ProcessingQueue();
+export const processingQueue = new Queue();

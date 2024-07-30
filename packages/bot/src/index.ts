@@ -17,4 +17,4 @@
  */
 export * from "./channels/index.js";
 export { CCXTCandlesProvider } from "./market-data/ccxt-candles.provider.js";
-export { Processor } from "./processing/index.js";
+export { Platform } from "./platform.js";

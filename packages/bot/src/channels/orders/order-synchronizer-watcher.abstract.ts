@@ -19,7 +19,7 @@ import type { IExchange } from "@opentrader/exchanges";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import type { Subscription, Event } from "./types.js";
+import type { Subscription, OrderEvent } from "./types.js";
 
 export abstract class OrderSynchronizerWatcher {
   private consumers: Subscription[] = [];
@@ -60,14 +60,14 @@ export abstract class OrderSynchronizerWatcher {
   /**
    * Subscribe to filled/canceled order events.
    */
-  subscribe(event: Event, callback: Subscription["callback"]) {
+  subscribe(event: OrderEvent, callback: Subscription["callback"]) {
     this.consumers.push({
       event,
       callback,
     });
   }
 
-  unsubscribe(event: Event, callback: Subscription["callback"]) {
+  unsubscribe(event: OrderEvent, callback: Subscription["callback"]) {
     // remove consumer from array
     this.consumers = this.consumers.filter(
       (consumer) => consumer.callback !== callback,
@@ -78,7 +78,7 @@ export abstract class OrderSynchronizerWatcher {
     this.consumers = [];
   }
 
-  protected emit(event: Event, args: Parameters<Subscription["callback"]>) {
+  protected emit(event: OrderEvent, args: Parameters<Subscription["callback"]>) {
     const consumers = this.consumers.filter(
       (consumer) => consumer.event === event,
     );

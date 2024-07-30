@@ -3,11 +3,11 @@ import { BotProcessing } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import { processingQueue } from "./processing.queue.js";
-import { OrderSynchronizer } from "./order-synchronizer/index.js";
+import { OrdersChannel } from "../channels/index.js";
+import { processingQueue } from "../queue/index.js";
 
-export class ExchangeAccountsWatcher {
-  private ordersWatchers: OrderSynchronizer[] = [];
+export class OrdersConsumer {
+  private channels: OrdersChannel[] = [];
   private initialExchangeAccounts: ExchangeAccountWithCredentials[];
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[]) {
@@ -21,14 +21,14 @@ export class ExchangeAccountsWatcher {
   }
 
   async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
-    const watcherExists = this.ordersWatchers.find((watcher) => watcher.exchangeAccount.id === exchangeAccount.id);
+    const watcherExists = this.channels.find((channel) => channel.exchangeAccount.id === exchangeAccount.id);
     if (watcherExists) {
       logger.error(`❗ Exchange account #${exchangeAccount.id} already exists in the ordersWatchers`);
       return;
     }
 
-    const ordersWatcher = new OrderSynchronizer(exchangeAccount);
-    this.ordersWatchers.push(ordersWatcher);
+    const ordersWatcher = new OrdersChannel(exchangeAccount);
+    this.channels.push(ordersWatcher);
 
     ordersWatcher.subscribe("onFilled", this.onOrderFilled.bind(this));
     ordersWatcher.subscribe("onCanceled", this.onOrderCanceled.bind(this));
@@ -40,18 +40,18 @@ export class ExchangeAccountsWatcher {
   }
 
   async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
-    const ordersWatcher = this.ordersWatchers.find((watcher) => watcher.exchangeAccount.id === exchangeAccount.id);
+    const ordersChannel = this.channels.find((watcher) => watcher.exchangeAccount.id === exchangeAccount.id);
 
-    if (!ordersWatcher) {
+    if (!ordersChannel) {
       logger.error(`❗ Exchange account #${exchangeAccount.id} not found in the ordersWatchers`);
       return;
     }
 
-    ordersWatcher.unsubscribeAll();
-    await ordersWatcher.disable();
+    ordersChannel.unsubscribeAll();
+    await ordersChannel.disable();
 
     // exclude the watcher from the list
-    this.ordersWatchers = this.ordersWatchers.filter((watcher) => watcher.exchangeAccount.id !== exchangeAccount.id);
+    this.channels = this.channels.filter((channel) => channel.exchangeAccount.id !== exchangeAccount.id);
 
     logger.info(`🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`);
   }
@@ -62,7 +62,7 @@ export class ExchangeAccountsWatcher {
   }
 
   async destroy() {
-    for (const watcher of this.ordersWatchers) {
+    for (const watcher of this.channels) {
       watcher.unsubscribeAll();
       await watcher.disable();
     }

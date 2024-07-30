@@ -2,14 +2,13 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import { BotProcessing } from "@opentrader/processing";
 import type { BarSize } from "@opentrader/types";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import type { CandleEvent } from "../channels/index.js";
 import { CandlesChannel } from "../channels/index.js";
-import { processingQueue } from "./processing.queue.js";
+import { processingQueue } from "../queue/index.js";
 
-export class CandlesProcessor {
+export class CandlesConsumer {
   private channels: CandlesChannel[] = [];
   private bots: TBot[] = [];
 
@@ -158,19 +157,7 @@ export class CandlesProcessor {
     channel.off("candle", this.handleCandle);
     channel.destroy();
 
-    const channelLengsBefore = this.channels.length;
     this.channels = this.channels.filter((c) => c !== channel);
-
-    // @todo remove and add tests for this
-    if (channelLengsBefore === this.channels.length) {
-      logger.error(
-        {
-          channels: this.channels,
-          channel,
-        },
-        `[CandlesProcessor] Cannot remove ${channel.exchangeCode} channel. Reason: not found`,
-      );
-    }
   }
 
   destroy() {

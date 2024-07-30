@@ -1,8 +1,8 @@
 import { logger } from "@opentrader/logger";
 import { xprisma } from "@opentrader/db";
-import { Processor } from "@opentrader/bot";
+import { Platform } from "@opentrader/bot";
 
-export async function createProcessor() {
+export async function bootstrapPlatform() {
   const exchangeAccounts = await xprisma.exchangeAccount.findMany();
   logger.info(`Found ${exchangeAccounts.length} exchange accounts`);
 
@@ -13,8 +13,8 @@ export async function createProcessor() {
   });
   logger.info(`Found bot: ${bot ? bot.label : "none"}`);
 
-  const processor = new Processor(exchangeAccounts, bot ? [bot] : []);
-  await processor.onApplicationBootstrap();
+  const platform = new Platform(exchangeAccounts, bot ? [bot] : []);
+  await platform.bootstrap();
 
-  return processor;
+  return platform;
 }

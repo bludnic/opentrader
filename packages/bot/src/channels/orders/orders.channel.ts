@@ -18,9 +18,9 @@
 import type { ExchangeAccountWithCredentials } from "@opentrader/db";
 import { OrderSynchronizerPollingWatcher } from "./order-synchronizer-polling.watcher.js";
 import { OrderSynchronizerWsWatcher } from "./order-synchronizer-ws.watcher.js";
-import type { Event, Subscription } from "./types.js";
+import type { OrderEvent, Subscription } from "./types.js";
 
-export class OrderSynchronizer {
+export class OrdersChannel {
   private consumers: Subscription[] = [];
 
   private wsWatcher: OrderSynchronizerWsWatcher;
@@ -55,14 +55,14 @@ export class OrderSynchronizer {
   /**
    * Subscribe to filled/canceled order events.
    */
-  subscribe(event: Event, callback: Subscription["callback"]) {
+  subscribe(event: OrderEvent, callback: Subscription["callback"]) {
     this.consumers.push({
       event,
       callback,
     });
   }
 
-  unsubscribe(event: Event, callback: Subscription["callback"]) {
+  unsubscribe(event: OrderEvent, callback: Subscription["callback"]) {
     // remove consumer from array
     this.consumers = this.consumers.filter(
       (consumer) => consumer.callback !== callback,
@@ -78,7 +78,7 @@ export class OrderSynchronizer {
     await this.pollingWatcher.disable();
   }
 
-  private emit(event: Event, args: Parameters<Subscription["callback"]>) {
+  private emit(event: OrderEvent, args: Parameters<Subscription["callback"]>) {
     const consumers = this.consumers.filter(
       (consumer) => consumer.event === event,
     );

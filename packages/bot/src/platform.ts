@@ -4,48 +4,46 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import { BotProcessing } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
 
-import { CandlesProcessor } from "./candles.processor.js";
-import { TimeframeCron } from "./timeframe.cron.js";
-import { ExchangeAccountsWatcher } from "./exchange-accounts.watcher.js";
+import { CandlesConsumer } from "./consumers/candles.consumer.js";
+import { OrdersConsumer } from "./consumers/orders.consumer.js";
 
-export class Processor {
-  private exchangeAccountsWatcher: ExchangeAccountsWatcher;
-  private timeframeCron: TimeframeCron;
-  private candlesProcessor: CandlesProcessor;
+export class Platform {
+  private ordersConsumer: OrdersConsumer;
+  private candlesConsumer: CandlesConsumer;
+
   private unsubscribeFromEventBus = () => {};
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBot[]) {
-    this.exchangeAccountsWatcher = new ExchangeAccountsWatcher(exchangeAccounts);
-    this.timeframeCron = new TimeframeCron();
-    this.candlesProcessor = new CandlesProcessor(bots);
+    this.ordersConsumer = new OrdersConsumer(exchangeAccounts);
+    this.candlesConsumer = new CandlesConsumer(bots);
   }
 
-  async onApplicationBootstrap() {
+  async bootstrap() {
     await this.cleanOrphanedBots();
 
     logger.info("[Processor] OrdersProcessor created");
-    await this.exchangeAccountsWatcher.create();
+    await this.ordersConsumer.create();
 
     // logger.info("[Processor] TimeframeProcessor created");
     // this.timeframeCron.create();
 
     logger.info("[Processor] CandlesProcessor created");
-    await this.candlesProcessor.create();
+    await this.candlesConsumer.create();
 
     this.unsubscribeFromEventBus = this.subscribeToEventBus();
   }
 
-  async beforeApplicationShutdown() {
+  async shutdown() {
     await this.stopEnabledBots();
 
     logger.info("[Processor] OrdersProcessor destroyed");
-    await this.exchangeAccountsWatcher.destroy();
+    await this.ordersConsumer.destroy();
 
     // logger.info("[Processor] TimeframeProcessor destroyed");
     // this.timeframeCron.destroy();
 
     logger.info("[Processor] CandlesProcessor destroyed");
-    this.candlesProcessor.destroy();
+    this.candlesConsumer.destroy();
 
     this.unsubscribeFromEventBus();
   }
@@ -101,20 +99,20 @@ export class Processor {
    * - When an exchange account was updated → Resubcribe to orders channel with new credentials
    */
   private subscribeToEventBus() {
-    const onBotStarted = async (bot: TBot) => await this.candlesProcessor.addBot(bot);
-    const onBotStopped = async (bot: TBot) => await this.candlesProcessor.cleanStaleChannels();
+    const onBotStarted = async (bot: TBot) => await this.candlesConsumer.addBot(bot);
+    const onBotStopped = async (bot: TBot) => await this.candlesConsumer.cleanStaleChannels();
 
     const addExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) =>
-      await this.exchangeAccountsWatcher.addExchangeAccount(exchangeAccount);
+      await this.ordersConsumer.addExchangeAccount(exchangeAccount);
 
     const removeExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) => {
-      await this.exchangeAccountsWatcher.removeExchangeAccount(exchangeAccount);
+      await this.ordersConsumer.removeExchangeAccount(exchangeAccount);
       exchangeProvider.removeByAccountId(exchangeAccount.id);
     };
 
     const updateExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) => {
       exchangeProvider.removeByAccountId(exchangeAccount.id);
-      await this.exchangeAccountsWatcher.updateExchangeAccount(exchangeAccount);
+      await this.ordersConsumer.updateExchangeAccount(exchangeAccount);
     };
 
     eventBus.on("onBotStarted", onBotStarted);
