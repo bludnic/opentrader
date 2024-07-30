@@ -1,8 +1,8 @@
 {
   "mode": "pre",
-  "tag": "alpha",
+  "tag": "beta",
   "initialVersions": {
-    "opentrader": "1.0.0-alpha.28",
+    "opentrader": "1.0.0-alpha.38",
     "@opentrader/backtesting": "0.0.0",
     "@opentrader/bot": "0.0.0",
     "@opentrader/bot-processor": "0.0.0",
@@ -20,8 +20,8 @@
     "@opentrader/trpc": "0.0.0",
     "@opentrader/tsconfig": "0.0.0",
     "@opentrader/types": "0.0.0",
-    "frontend": "1.0.0-alpha.28",
-    "processor": "1.0.0-alpha.28"
+    "frontend": "1.0.0-alpha.38",
+    "processor": "1.0.0-alpha.38"
   },
   "changesets": [
     "brave-poets-hang",
