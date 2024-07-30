@@ -93,16 +93,11 @@ export class ExchangeAccountsWatcher {
       return;
     }
 
-    processingQueue.push(
-      {
-        type: "onOrderFilled",
-        bot: botProcessor.getBot(),
-        orderId: order.id,
-      },
-      () => {
-        logger.info(`Task processed, ST: ${order.smartTrade.id}`);
-      },
-    );
+    processingQueue.push({
+      type: "onOrderFilled",
+      bot: botProcessor.getBot(),
+      orderId: order.id,
+    });
   }
 
   private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {

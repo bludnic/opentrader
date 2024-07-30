@@ -1,6 +1,6 @@
+import { cargoQueue, QueueObject, ErrorCallback } from "async";
 import type { TBot } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
-import { cargoQueue } from "async";
 import { logger } from "@opentrader/logger";
 import { ICandlestick } from "@opentrader/types";
 
@@ -25,15 +25,14 @@ type CandleClosedEvent = {
 
 type ProcessingEvent = OrderFilledEvent | CandleClosedEvent;
 
-export const processingQueue = cargoQueue<ProcessingEvent>(async (tasks, callback) => {
-  if (tasks.length > 1) {
-    logger.info(`📠 Batching ${tasks.length} tasks`);
-  } else {
-    logger.info(`📠 Processing ${tasks.length} task`);
-  }
+async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Error>) {
+  const event = tasks[tasks.length - 1]; // getting last task from the queue
 
-  // getting last task from the queue
-  const event = tasks[tasks.length - 1];
+  if (tasks.length > 1) {
+    logger.info(`📠 Processing ${tasks.length} tasks of bot [id: ${event.bot.id} name: ${event.bot.name}]`);
+  } else {
+    logger.info(`📠 Processing ${tasks.length} task of bot [id: ${event.bot.id} name: ${event.bot.name}]`);
+  }
 
   const botProcessor = new BotProcessing(event.bot);
 
@@ -51,4 +50,23 @@ export const processingQueue = cargoQueue<ProcessingEvent>(async (tasks, callbac
   await botProcessor.placePendingOrders();
 
   callback();
-});
+}
+
+const createQueue = () => cargoQueue<ProcessingEvent>(queueHandler);
+
+class ProcessingQueue {
+  queues: Record<TBot["id"], QueueObject<ProcessingEvent>> = {};
+
+  push(event: ProcessingEvent) {
+    // Create a queue bot if it doesn't exist
+    if (!this.queues[event.bot.id]) {
+      this.queues[event.bot.id] = createQueue();
+      logger.info(`📠 Created queue for bot [id: ${event.bot.id} name: ${event.bot.name}]`);
+    }
+
+    const queue = this.queues[event.bot.id];
+    queue.push(event);
+  }
+}
+
+export const processingQueue = new ProcessingQueue();
