@@ -1,9 +1,6 @@
 import type { IWatchOrder } from "@opentrader/types";
 import { BotProcessing } from "@opentrader/processing";
-import type {
-  OrderWithSmartTrade,
-  ExchangeAccountWithCredentials,
-} from "@opentrader/db";
+import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { processingQueue } from "./processing.queue.js";
@@ -24,13 +21,9 @@ export class ExchangeAccountsWatcher {
   }
 
   async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
-    const watcherExists = this.ordersWatchers.find(
-      (watcher) => watcher.exchangeAccount.id === exchangeAccount.id,
-    );
+    const watcherExists = this.ordersWatchers.find((watcher) => watcher.exchangeAccount.id === exchangeAccount.id);
     if (watcherExists) {
-      logger.error(
-        `❗ Exchange account #${exchangeAccount.id} already exists in the ordersWatchers`,
-      );
+      logger.error(`❗ Exchange account #${exchangeAccount.id} already exists in the ordersWatchers`);
       return;
     }
 
@@ -43,20 +36,14 @@ export class ExchangeAccountsWatcher {
 
     await ordersWatcher.enable();
 
-    logger.info(
-      `🔋 Exchange account #${exchangeAccount.id} added to the ordersWatchers`,
-    );
+    logger.info(`🔋 Exchange account #${exchangeAccount.id} added to the ordersWatchers`);
   }
 
   async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
-    const ordersWatcher = this.ordersWatchers.find(
-      (watcher) => watcher.exchangeAccount.id === exchangeAccount.id,
-    );
+    const ordersWatcher = this.ordersWatchers.find((watcher) => watcher.exchangeAccount.id === exchangeAccount.id);
 
     if (!ordersWatcher) {
-      logger.error(
-        `❗ Exchange account #${exchangeAccount.id} not found in the ordersWatchers`,
-      );
+      logger.error(`❗ Exchange account #${exchangeAccount.id} not found in the ordersWatchers`);
       return;
     }
 
@@ -64,13 +51,9 @@ export class ExchangeAccountsWatcher {
     await ordersWatcher.disable();
 
     // exclude the watcher from the list
-    this.ordersWatchers = this.ordersWatchers.filter(
-      (watcher) => watcher.exchangeAccount.id !== exchangeAccount.id,
-    );
+    this.ordersWatchers = this.ordersWatchers.filter((watcher) => watcher.exchangeAccount.id !== exchangeAccount.id);
 
-    logger.info(
-      `🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`,
-    );
+    logger.info(`🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`);
   }
 
   async updateExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
@@ -85,10 +68,7 @@ export class ExchangeAccountsWatcher {
     }
   }
 
-  private async onOrderFilled(
-    exchangeOrder: IWatchOrder,
-    order: OrderWithSmartTrade,
-  ) {
+  private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
     logger.info(
       `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
     );
@@ -99,44 +79,41 @@ export class ExchangeAccountsWatcher {
       fee: exchangeOrder.fee,
     });
 
-    const bot = await BotProcessing.fromSmartTradeId(order.smartTrade.id);
+    const botProcessor = await BotProcessing.fromSmartTradeId(order.smartTrade.id);
 
-    if (bot.isBotStopped()) {
+    if (botProcessor.isBotStopped()) {
       logger.error("❗ Cannot run bot process when the bot is disabled");
       return;
     }
 
-    if (bot.getTimeframe()) {
+    if (botProcessor.getTimeframe()) {
       logger.error(
-        `❕ The bot #${bot.getId()} is timeframe-based: ${bot.getTimeframe()}. Skip processing`,
+        `❕ The bot #${botProcessor.getId()} is timeframe-based: ${botProcessor.getTimeframe()}. Skip processing`,
       );
       return;
     }
 
-    processingQueue.push(order.smartTrade.id, () => {
-      logger.info(`Task processed, ST: ${order.smartTrade.id}`);
-    });
+    processingQueue.push(
+      {
+        type: "onOrderFilled",
+        bot: botProcessor.getBot(),
+        orderId: order.id,
+      },
+      () => {
+        logger.info(`Task processed, ST: ${order.smartTrade.id}`);
+      },
+    );
   }
 
-  private async onOrderCanceled(
-    exchangeOrder: IWatchOrder,
-    order: OrderWithSmartTrade,
-  ) {
+  private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
     // Edge case: the user may cancel the order manually on the exchange
     await xprisma.order.updateStatus("Canceled", order.id);
-    logger.info(
-      `❌  onOrderCanceled: Order #${order.id}: ${order.exchangeOrderId} was canceled`,
-    );
+    logger.info(`❌  onOrderCanceled: Order #${order.id}: ${order.exchangeOrderId} was canceled`);
   }
 
-  private async onOrderPlaced(
-    exchangeOrder: IWatchOrder,
-    order: OrderWithSmartTrade,
-  ) {
+  private async onOrderPlaced(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
     // Edge case: the user could change the price of the order on the Exchange
-    logger.info(
-      `⬆️ onOrderPlaced: Order #${order.id}: ${order.exchangeOrderId}`,
-    );
+    logger.info(`⬆️ onOrderPlaced: Order #${order.id}: ${order.exchangeOrderId}`);
 
     // Order was possibly replaced.
     // This means that the user changed the order price on the Exchange.

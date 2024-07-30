@@ -136,6 +136,10 @@ export class BotProcessing {
     return this.bot.processing;
   }
 
+  getBot() {
+    return this.bot;
+  }
+
   getId() {
     return this.bot.id;
   }

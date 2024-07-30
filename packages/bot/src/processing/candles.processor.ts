@@ -7,6 +7,7 @@ import type { BarSize } from "@opentrader/types";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import type { CandleEvent } from "../channels/index.js";
 import { CandlesChannel } from "../channels/index.js";
+import { processingQueue } from "./processing.queue.js";
 
 export class CandlesProcessor {
   private channels: CandlesChannel[] = [];
@@ -121,13 +122,12 @@ export class CandlesProcessor {
     }
   }
 
-  // @todo maybe queue
   private handleCandle = async (data: CandleEvent) => {
     const { candle, history, symbol, timeframe } = data;
 
     logger.info(`CandlesProcessor: Received candle ${timeframe} for ${symbol}. Start processing.`);
 
-    const bots = await xprisma.bot.findMany({
+    const bots = await xprisma.bot.custom.findMany({
       where: {
         timeframe,
         enabled: true,
@@ -136,18 +136,17 @@ export class CandlesProcessor {
     logger.info(`CandlesProcessor: ${timeframe}. Found ${bots.length} bots`);
 
     for (const bot of bots) {
-      const botProcessor = await BotProcessing.fromId(bot.id);
-
-      if (botProcessor.isBotStopped()) {
+      if (!bot.enabled) {
         logger.warn("❗ Cannot run bot process when the bot is disabled");
         continue;
       }
 
-      await botProcessor.process({
+      processingQueue.push({
+        type: "onCandleClosed",
+        bot,
         candle,
         candles: history,
       });
-      await botProcessor.placePendingOrders();
     }
   };
 
