@@ -56,7 +56,7 @@ export class Processor {
    */
   async stopEnabledBots() {
     const bots = await xprisma.bot.custom.findMany({
-      where: { enabled: true },
+      where: { OR: [{ enabled: true }, { processing: true }] },
       include: { exchangeAccount: true },
     });
     if (bots.length === 0) return;
@@ -68,7 +68,7 @@ export class Processor {
 
       await xprisma.bot.custom.update({
         where: { id: bot.id },
-        data: { enabled: false },
+        data: { enabled: false, processing: false },
       });
 
       logger.info(`[Processor] Bot stopped [id=${bot.id} name=${bot.name}]`);
@@ -82,7 +82,7 @@ export class Processor {
    */
   async cleanOrphanedBots() {
     const anyBotEnabled = await xprisma.bot.custom.findFirst({
-      where: { enabled: true },
+      where: { OR: [{ enabled: true }, { processing: true }] },
     });
 
     if (anyBotEnabled) {
