@@ -28,19 +28,20 @@ console.log("Copied ./seed.mjs");
 await $`cp -r pro/frontend/dist release/frontend`;
 console.log("Copied ./frontend");
 
+// Copy README.md
+await $`cp README.md release/README.md`;
+console.log("Copied README.md");
+
 // Generate package.json with all dependencies
 generatePackageJson("./release");
 
 // Generate shrinkwrap file
 console.log("Running `npm install --package-lock-only --ignore-scripts`");
 const { stdout: projectDir } = await $`pwd`;
-const npmInstallProcess = $(
-  "npm install --package-lock-only --ignore-scripts",
-  {
-    shell: true,
-    cwd: `${projectDir}/release`,
-  },
-);
+const npmInstallProcess = $("npm install --package-lock-only --ignore-scripts", {
+  shell: true,
+  cwd: `${projectDir}/release`,
+});
 npmInstallProcess.stdout.pipe(process.stdout);
 npmInstallProcess.stderr.pipe(process.stderr);
 await npmInstallProcess;
@@ -51,6 +52,4 @@ await $(`npm shrinkwrap`, {
 });
 console.log("Generated shrinkwrap.json");
 
-console.log(
-  "Release is ready. Run `cd release && npm publish` to publish to NPM.",
-);
+console.log("Release is ready. Run `cd release && npm publish` to publish to NPM.");
