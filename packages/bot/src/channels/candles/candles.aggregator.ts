@@ -78,7 +78,7 @@ export class CandlesAggregator extends EventEmitter {
     }
 
     if (candle.timestamp === lastCandle?.timestamp) {
-      logger.info(
+      logger.debug(
         `[${this.symbol}#${this.timeframe}] Updated OHLCV of ${new Date(candle.timestamp).toISOString()} candle. Bucket length is ${this.bucket.length}/${this.bucketSize}`,
       );
       lastCandle.open = candle.open;
