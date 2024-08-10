@@ -1,13 +1,10 @@
 import type { IExchange } from "@opentrader/exchanges";
-import type { MarketData } from "../market/index.js";
+import type { MarketData } from "@opentrader/types";
 import type { IBotControl } from "./bot-control.interface.js";
 import type { IBotConfiguration } from "./bot-configuration.interface.js";
 import type { BotState } from "./bot.state.js";
 
-export type TBotContext<
-  T extends IBotConfiguration,
-  S extends BotState = BotState,
-> = {
+export type TBotContext<T extends IBotConfiguration, S extends BotState = BotState> = {
   /**
    * Default exchange instance.
    */

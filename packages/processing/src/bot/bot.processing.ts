@@ -1,25 +1,26 @@
-import type { BotState, IBotConfiguration, MarketData } from "@opentrader/bot-processor";
+import type { BotState, IBotConfiguration } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import type { ExchangeCode } from "@opentrader/types";
+import type { ExchangeCode, MarketData, StrategyTriggerEventType } from "@opentrader/types";
 import { SmartTradeExecutor } from "../executors/index.js";
 import { BotStoreAdapter } from "./bot-store-adapter.js";
+
+type ProcessParams = {
+  triggerEventType?: StrategyTriggerEventType;
+  market?: MarketData;
+};
 
 export class BotProcessing {
   constructor(private bot: TBot) {}
 
   static async fromId(id: number) {
     const bot = await xprisma.bot.custom.findUniqueOrThrow({
-      where: {
-        id,
-      },
-      include: {
-        exchangeAccount: true,
-      },
+      where: { id },
+      include: { exchangeAccount: true },
     });
 
     return new BotProcessing(bot);
@@ -29,14 +30,10 @@ export class BotProcessing {
     const bot = await xprisma.bot.custom.findFirstOrThrow({
       where: {
         smartTrades: {
-          some: {
-            id: smartTradeId,
-          },
+          some: { id: smartTradeId },
         },
       },
-      include: {
-        exchangeAccount: true,
-      },
+      include: { exchangeAccount: true },
     });
 
     return new BotProcessing(bot);
@@ -44,33 +41,23 @@ export class BotProcessing {
 
   private async start() {
     this.bot = await xprisma.bot.custom.update({
-      where: {
-        id: this.bot.id,
-      },
-      data: {
-        enabled: true,
-      },
-      include: {
-        exchangeAccount: true,
-      },
+      where: { id: this.bot.id },
+      data: { enabled: true },
+      include: { exchangeAccount: true },
     });
   }
 
   private async stop() {
     this.bot = await xprisma.bot.custom.update({
-      where: {
-        id: this.bot.id,
-      },
-      data: {
-        enabled: false,
-      },
-      include: {
-        exchangeAccount: true,
-      },
+      where: { id: this.bot.id },
+      data: { enabled: false },
+      include: { exchangeAccount: true },
     });
   }
 
-  async processCommand(command: "start" | "stop" | "process", market?: MarketData) {
+  private async processCommand(command: "start" | "stop" | "process", params: ProcessParams) {
+    const { market, triggerEventType } = params;
+
     console.log(`🤖 Exec "${command}" command`, {
       context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0}`,
       bot: `id=${this.bot.id} name="${this.bot.name}"`,
@@ -96,12 +83,32 @@ export class BotProcessing {
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);
+      await xprisma.botLog.log({
+        startedAt: new Date(t0),
+        endedAt: new Date(),
+        botId: this.bot.id,
+        context: market,
+        action: command,
+        triggerEventType,
+        error: {
+          message: (err as Error).message,
+          stack: (err as Error).stack,
+        },
+      });
 
       throw err;
     }
 
     await xprisma.bot.setProcessing(false, this.bot.id);
     await xprisma.bot.updateState(botState, this.bot.id);
+    await xprisma.botLog.log({
+      startedAt: new Date(t0),
+      endedAt: new Date(),
+      botId: this.bot.id,
+      context: market,
+      action: command,
+      triggerEventType,
+    });
 
     const t1 = Date.now();
     const duration = (t1 - t0) / 1000;
@@ -113,15 +120,15 @@ export class BotProcessing {
   }
 
   async processStartCommand() {
-    await this.processCommand("start");
+    await this.processCommand("start", {});
   }
 
   async processStopCommand() {
-    await this.processCommand("stop");
+    await this.processCommand("stop", {});
   }
 
-  async process(market?: MarketData) {
-    await this.processCommand("process", market);
+  async process(params: ProcessParams = {}) {
+    await this.processCommand("process", params);
   }
 
   isBotRunning() {

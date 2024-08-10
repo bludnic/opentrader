@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
-import type { MarketData, TBotContext } from "@opentrader/bot-processor";
+import type { MarketData } from "@opentrader/types";
+import type { TBotContext } from "@opentrader/bot-processor";
 import { useMarket, useCandle, useExchange } from "@opentrader/bot-processor";
 import { logger } from "@opentrader/logger";
 

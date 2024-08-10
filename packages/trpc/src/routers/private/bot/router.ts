@@ -29,6 +29,8 @@ import { cronPlacePendingOrders } from "./cron-place-pending-orders/handler.js";
 import { ZCronPlacePendingOrdersInputSchema } from "./cron-place-pending-orders/schema.js";
 import { syncOrders } from "./sync-orders/handler.js";
 import { ZSyncGridBotOrdersInputSchema } from "./sync-orders/schema.js";
+import { getBotLogs } from './get-bot-logs/handler.js';
+import { ZGetBotLogs } from './get-bot-logs/schema.js';
 
 export const botRouter = router({
   list: authorizedProcedure.query(getBots),
@@ -66,4 +68,7 @@ export const botRouter = router({
   orders: authorizedProcedure
     .input(ZGetGridBotOrdersInputSchema)
     .query(getGridBotOrders),
+  getBotLogs: authorizedProcedure
+    .input(ZGetBotLogs)
+    .query(getBotLogs),
 });

@@ -1,10 +1,10 @@
-import { cargoQueue, QueueObject, ErrorCallback } from "async";
+import { cargoQueue, QueueObject } from "async";
 import type { TBot } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
 import { ProcessingEvent } from "./types.js";
 
-async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Error>) {
+async function queueHandler(tasks: ProcessingEvent[]) {
   const event = tasks[tasks.length - 1]; // getting last task from the queue
 
   if (tasks.length > 1) {
@@ -16,19 +16,22 @@ async function queueHandler(tasks: ProcessingEvent[], callback: ErrorCallback<Er
   const botProcessor = new BotProcessing(event.bot);
 
   if (event.type === "onOrderFilled") {
-    await botProcessor.process();
+    await botProcessor.process({
+      triggerEventType: event.type,
+    });
   } else if (event.type === "onCandleClosed") {
     await botProcessor.process({
-      candle: event.candle,
-      candles: event.candles,
+      triggerEventType: event.type,
+      market: {
+        candle: event.candle,
+        candles: event.candles,
+      },
     });
   } else {
     throw new Error(`❗ Unknown event type: ${event}`);
   }
 
   await botProcessor.placePendingOrders();
-
-  callback();
 }
 
 const createQueue = () => cargoQueue<ProcessingEvent>(queueHandler);
@@ -40,11 +43,14 @@ class Queue {
     // Create a queue bot if it doesn't exist
     if (!this.queues[event.bot.id]) {
       this.queues[event.bot.id] = createQueue();
+      this.queues[event.bot.id].error((error) => {
+        logger.error(error, `An error occurred in the processing queue: ${error.message}`);
+      });
       logger.info(`📠 Created queue for bot [id: ${event.bot.id} name: ${event.bot.name}]`);
     }
 
     const queue = this.queues[event.bot.id];
-    queue.push(event);
+    void queue.push(event);
   }
 }
 

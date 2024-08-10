@@ -20,3 +20,4 @@ export * from "./exchange/index.js";
 export * from "./grid-bot/index.js";
 export * from "./smart-trade/enums.js";
 export * from "./indicators/index.js";
+export * from "./strategy-runner/context.js";

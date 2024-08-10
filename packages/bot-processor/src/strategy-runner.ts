@@ -16,18 +16,11 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import type { IExchange } from "@opentrader/exchanges";
+import type { MarketData } from "@opentrader/types";
 import { BotControl } from "./bot-control.js";
 import { effectRunnerMap } from "./effect-runner.js";
 import { isEffect } from "./effects/index.js";
-import type {
-  BotState,
-  BotTemplate,
-  IBotConfiguration,
-  IBotControl,
-  IStore,
-  MarketData,
-  TBotContext,
-} from "./types/index.js";
+import type { BotState, BotTemplate, IBotConfiguration, IBotControl, IStore, TBotContext } from "./types/index.js";
 import { createContext } from "./utils/createContext.js";
 
 export class StrategyRunner<T extends IBotConfiguration> {
@@ -39,38 +32,19 @@ export class StrategyRunner<T extends IBotConfiguration> {
   ) {}
 
   async start(state: BotState) {
-    const context = createContext(
-      this.control,
-      this.botConfig,
-      this.exchange,
-      "start",
-      state,
-    );
+    const context = createContext(this.control, this.botConfig, this.exchange, "start", state);
 
     await this.runTemplate(context);
   }
 
   async stop(state: BotState) {
-    const context = createContext(
-      this.control,
-      this.botConfig,
-      this.exchange,
-      "stop",
-      state,
-    );
+    const context = createContext(this.control, this.botConfig, this.exchange, "stop", state);
 
     await this.runTemplate(context);
   }
 
   async process(state: BotState, market?: MarketData) {
-    const context = createContext(
-      this.control,
-      this.botConfig,
-      this.exchange,
-      "process",
-      state,
-      market,
-    );
+    const context = createContext(this.control, this.botConfig, this.exchange, "process", state, market);
 
     await this.runTemplate(context);
   }

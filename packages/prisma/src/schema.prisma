@@ -207,10 +207,24 @@ model Bot {
   exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
   exchangeAccountId Int
 
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User     @relation(fields: [ownerId], references: [id])
   ownerId Int
+  logs    BotLog[]
 
   // @todo initialInvestment
+}
+
+model BotLog {
+  id               Int      @id @default(autoincrement())
+  action           String // type StrategyAction
+  triggerEventType String? // type StrategyTriggerEventType
+  context          String? // type MarketData, JSON stringified
+  error            String? // type StrategyError, An error occured during the strategy execution, JSON striginfied
+  startedAt        DateTime // start execution time
+  endedAt          DateTime // end execution time
+  createdAt        DateTime @default(now())
+  bot              Bot      @relation(fields: [botId], references: [id], onDelete: Cascade)
+  botId            Int
 }
 
 model Markets {

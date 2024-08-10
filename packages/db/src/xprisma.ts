@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { MarketData, StrategyAction, StrategyError, StrategyTriggerEventType } from "@opentrader/types";
 import { gridBotModel } from "./extension/models/grid-bot.model.js";
 import { orderModel } from "./extension/models/order.model.js";
 import { smartTradeModel } from "./extension/models/smart-trade.model.js";
@@ -43,6 +44,33 @@ const xprismaClient = prismaClient.$extends({
           },
           data: {
             state: JSON.stringify(state),
+          },
+        });
+      },
+    },
+    botLog: {
+      async log(params: {
+        startedAt: Date;
+        endedAt: Date;
+        botId: number;
+        action: StrategyAction;
+        triggerEventType?: StrategyTriggerEventType;
+        context?: MarketData;
+        error?: StrategyError;
+      }) {
+        return prismaClient.botLog.create({
+          data: {
+            action: params.action,
+            triggerEventType: params.triggerEventType,
+            context: JSON.stringify(params.context),
+            error: JSON.stringify(params.error),
+            startedAt: params.startedAt,
+            endedAt: params.endedAt,
+            bot: {
+              connect: {
+                id: params.botId,
+              },
+            },
           },
         });
       },
