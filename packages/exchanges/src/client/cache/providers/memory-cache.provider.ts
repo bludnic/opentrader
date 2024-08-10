@@ -30,9 +30,9 @@ export class MemoryCacheProvider implements ICacheProvider {
     const cachedMarkets = this.store[exchangeCode];
 
     if (cachedMarkets) {
-      console.info(
-        `MemoryCacheProvider: Fetched ${Object.keys(cachedMarkets).length} markets on ${exchangeCode} from cache`,
-      );
+      // console.info(
+      //   `MemoryCacheProvider: Fetched ${Object.keys(cachedMarkets).length} markets on ${exchangeCode} from cache`,
+      // );
 
       return cachedMarkets;
     }
@@ -49,10 +49,7 @@ export class MemoryCacheProvider implements ICacheProvider {
     return this.cacheMarkets(markets, exchangeCode);
   }
 
-  private async cacheMarkets(
-    markets: Dictionary<Market>,
-    exchangeCode: ExchangeCode,
-  ) {
+  private async cacheMarkets(markets: Dictionary<Market>, exchangeCode: ExchangeCode) {
     this.store[exchangeCode] = markets;
     return markets;
   }
