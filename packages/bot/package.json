@@ -19,11 +19,11 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.24",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.15",
     "eslint": "8.57.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4",
-    "vitest": "^2.0.4"
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "@opentrader/bot-templates": "workspace:*",

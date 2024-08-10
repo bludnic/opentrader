@@ -17,14 +17,14 @@
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.15",
     "eslint": "8.57.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "pino": "^9.3.1",
-    "pino-pretty": "^11.2.1"
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2"
   }
 }
