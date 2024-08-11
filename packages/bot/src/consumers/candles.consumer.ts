@@ -39,6 +39,13 @@ export class CandlesConsumer {
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
     const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
 
+    if (bot.timeframe === null) {
+      logger.warn(
+        `[CandlesProcessor]: Skip adding bot [${bot.id}:"${bot.name}"] to the ${exchange.exchangeCode}:${symbol} channel. Reason: The bot is not timeframe based.`,
+      );
+      return;
+    }
+
     let channel = this.channels.find((channel) => channel.exchangeCode === exchange.exchangeCode);
     if (!channel) {
       channel = new CandlesChannel(exchange);
@@ -48,13 +55,6 @@ export class CandlesConsumer {
 
       // @todo type
       channel.on("candle", this.handleCandle);
-    }
-
-    if (bot.timeframe === null) {
-      logger.warn(
-        `[CandlesProcessor]: Skip adding bot [${bot.id}:"${bot.name}"] to the ${exchange.exchangeCode}:${symbol} channel. Reason: The bot is not timeframe based.`,
-      );
-      return;
     }
 
     const { strategyFn } = await findStrategy(bot.template);
