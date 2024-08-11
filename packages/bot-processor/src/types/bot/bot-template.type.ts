@@ -25,7 +25,7 @@ export interface BotTemplate<T extends IBotConfiguration> {
   /**
    * Run policy for the bot.
    */
-  runPolicy: {
+  runPolicy?: {
     /**
      * List of pairs to watch for trades.
      */
