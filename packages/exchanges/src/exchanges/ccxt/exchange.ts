@@ -41,6 +41,8 @@ import type {
   IWatchOrdersResponse,
   IPlaceMarketOrderRequest,
   ExchangeCode,
+  IWatchTradesRequest,
+  IWatchTradesResponse,
 } from "@opentrader/types";
 import { pro } from "ccxt";
 import type { Dictionary, Market, Exchange } from "ccxt";
@@ -90,22 +92,16 @@ export class CCXTExchange implements IExchange {
     return normalize.accountAssets.response(data);
   }
 
-  async getLimitOrder(
-    params: IGetLimitOrderRequest,
-  ): Promise<IGetLimitOrderResponse> {
+  async getLimitOrder(params: IGetLimitOrderRequest): Promise<IGetLimitOrderResponse> {
     const args = normalize.getLimitOrder.request(params);
     const data = await this.ccxt.fetchOrder(...args);
 
     return normalize.getLimitOrder.response(data);
   }
 
-  async placeLimitOrder(
-    params: IPlaceLimitOrderRequest,
-  ): Promise<IPlaceLimitOrderResponse> {
+  async placeLimitOrder(params: IPlaceLimitOrderRequest): Promise<IPlaceLimitOrderResponse> {
     if ("clientOrderId" in params) {
-      throw new Error(
-        "Fetch limit order by `clientOrderId` is not supported yet",
-      );
+      throw new Error("Fetch limit order by `clientOrderId` is not supported yet");
     }
 
     const args = normalize.placeLimitOrder.request(params);
@@ -121,9 +117,7 @@ export class CCXTExchange implements IExchange {
     return normalize.placeMarketOrder.response(data);
   }
 
-  async placeStopOrder(
-    params: IPlaceStopOrderRequest,
-  ): Promise<IPlaceStopOrderResponse> {
+  async placeStopOrder(params: IPlaceStopOrderRequest): Promise<IPlaceStopOrderResponse> {
     if (params.type === "limit" && params.price === undefined) {
       throw new Error("Validation: `price` required for Limit order type");
     }
@@ -134,27 +128,21 @@ export class CCXTExchange implements IExchange {
     return normalize.placeStopOrder.response(data);
   }
 
-  async getOpenOrders(
-    params: IGetOpenOrdersRequest,
-  ): Promise<IGetOpenOrdersResponse> {
+  async getOpenOrders(params: IGetOpenOrdersRequest): Promise<IGetOpenOrdersResponse> {
     const args = normalize.getOpenOrders.request(params);
     const data = await this.ccxt.fetchOpenOrders(...args);
 
     return normalize.getOpenOrders.response(data);
   }
 
-  async getClosedOrders(
-    params: IGetClosedOrdersRequest,
-  ): Promise<IGetClosedOrdersResponse> {
+  async getClosedOrders(params: IGetClosedOrdersRequest): Promise<IGetClosedOrdersResponse> {
     const args = normalize.getClosedOrders.request(params);
     const data = await this.ccxt.fetchClosedOrders(...args);
 
     return normalize.getClosedOrders.response(data);
   }
 
-  async cancelLimitOrder(
-    params: ICancelLimitOrderRequest,
-  ): Promise<ICancelLimitOrderResponse> {
+  async cancelLimitOrder(params: ICancelLimitOrderRequest): Promise<ICancelLimitOrderResponse> {
     const args = normalize.cancelLimitOrder.request(params);
     // The response is not typed properly.
     // Probably cause not all exchanges
@@ -166,18 +154,14 @@ export class CCXTExchange implements IExchange {
     };
   }
 
-  async getMarketPrice(
-    params: IGetMarketPriceRequest,
-  ): Promise<IGetMarketPriceResponse> {
+  async getMarketPrice(params: IGetMarketPriceRequest): Promise<IGetMarketPriceResponse> {
     const args = normalize.getMarketPrice.request(params);
     const data = await this.ccxt.fetchTicker(...args);
 
     return normalize.getMarketPrice.response(data);
   }
 
-  async getCandlesticks(
-    params: IGetCandlesticksRequest,
-  ): Promise<ICandlestick[]> {
+  async getCandlesticks(params: IGetCandlesticksRequest): Promise<ICandlestick[]> {
     const args = normalize.getCandlesticks.request(params);
     const data = await this.ccxt.fetchOHLCV(...args);
 
@@ -195,9 +179,7 @@ export class CCXTExchange implements IExchange {
     return normalize.getSymbol.response(data, this.exchangeCode); // @todo refactor
   }
 
-  async getSymbols(
-    type: "spot" | "future" | "option" | "swap" = "spot",
-  ): Promise<ISymbolInfo[]> {
+  async getSymbols(type: "spot" | "future" | "option" | "swap" = "spot"): Promise<ISymbolInfo[]> {
     const markets = await this.loadMarkets();
 
     const spotMarkets = Object.entries(markets)
@@ -212,21 +194,24 @@ export class CCXTExchange implements IExchange {
     return normalize.getSymbols.response(spotMarkets, this.exchangeCode);
   }
 
-  async watchOrders(
-    params: IWatchOrdersRequest = {},
-  ): Promise<IWatchOrdersResponse> {
+  async watchOrders(params: IWatchOrdersRequest = {}): Promise<IWatchOrdersResponse> {
     const args = normalize.watchOrders.request(params);
     const data = await this.ccxt.watchOrders(...args);
 
     return normalize.watchOrders.response(data);
   }
 
-  async watchCandles(
-    params: IWatchCandlesRequest,
-  ): Promise<IWatchCandlesResponse> {
+  async watchCandles(params: IWatchCandlesRequest): Promise<IWatchCandlesResponse> {
     const args = normalize.watchCandles.request(params);
     const data = await this.ccxt.watchOHLCV(...args);
 
     return normalize.watchCandles.response(data);
+  }
+
+  async watchTrades(params: IWatchTradesRequest): Promise<IWatchTradesResponse> {
+    const args = normalize.watchTrades.request(params);
+    const data = await this.ccxt.watchTrades(...args);
+
+    return normalize.watchTrades.response(data);
   }
 }

@@ -59,7 +59,7 @@ export class BotProcessing {
     const { market, triggerEventType } = params;
 
     console.log(`🤖 Exec "${command}" command`, {
-      context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0}`,
+      context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0} trade=${JSON.stringify(market?.trade)}`,
       bot: `id=${this.bot.id} name="${this.bot.name}"`,
     });
     const t0 = Date.now();

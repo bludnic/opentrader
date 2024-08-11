@@ -1,5 +1,5 @@
 import type { TBot } from "@opentrader/db";
-import { ICandlestick, StrategyTriggerEventType } from "@opentrader/types";
+import { ICandlestick, ITrade, StrategyTriggerEventType } from "@opentrader/types";
 
 export type OrderFilledEvent = {
   type: typeof StrategyTriggerEventType.onOrderFilled;
@@ -14,4 +14,10 @@ export type CandleClosedEvent = {
   candles: ICandlestick[]; // previous candles history
 };
 
-export type ProcessingEvent = OrderFilledEvent | CandleClosedEvent;
+export type PublicTradeEvent = {
+  type: typeof StrategyTriggerEventType.onPublicTrade;
+  bot: TBot;
+  trade: ITrade;
+};
+
+export type ProcessingEvent = OrderFilledEvent | CandleClosedEvent | PublicTradeEvent;

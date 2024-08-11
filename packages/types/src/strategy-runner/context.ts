@@ -1,4 +1,4 @@
-import type { ICandlestick } from "../exchange/index.js";
+import type { ICandlestick, ITrade } from "../exchange/index.js";
 
 /**
  * Action that strategy should perform:
@@ -20,6 +20,7 @@ export type StrategyAction = (typeof StrategyAction)[keyof typeof StrategyAction
 export const StrategyTriggerEventType = {
   onOrderFilled: "onOrderFilled",
   onCandleClosed: "onCandleClosed",
+  onPublicTrade: "onPublicTrade",
 } as const;
 export type StrategyTriggerEventType = (typeof StrategyTriggerEventType)[keyof typeof StrategyTriggerEventType];
 
@@ -41,4 +42,8 @@ export interface MarketData {
    * Candles history. Last candle can be accessed by `candles[candles.length - 1]`
    */
   candles: ICandlestick[];
+  /**
+   * Last public trade
+   */
+  trade?: ITrade;
 }

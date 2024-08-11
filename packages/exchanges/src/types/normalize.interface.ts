@@ -25,16 +25,10 @@ import type {
   IPlaceMarketOrderRequest,
   IPlaceMarketOrderResponse,
   ExchangeCode,
+  IWatchTradesRequest,
+  IWatchTradesResponse,
 } from "@opentrader/types";
-import type {
-  Balances,
-  Exchange,
-  Order,
-  Dictionary,
-  Market,
-  OHLCV,
-  Ticker,
-} from "ccxt";
+import type { Balances, Exchange, Order, Dictionary, Market, OHLCV, Ticker, Trade } from "ccxt";
 
 export type Normalize = {
   accountAssets: {
@@ -43,69 +37,49 @@ export type Normalize = {
   };
 
   getLimitOrder: {
-    request: (
-      params: IGetLimitOrderRequest,
-    ) => Parameters<Exchange["fetchOrder"]>;
+    request: (params: IGetLimitOrderRequest) => Parameters<Exchange["fetchOrder"]>;
     response: (data: Order) => IGetLimitOrderResponse;
   };
 
   placeLimitOrder: {
-    request: (
-      params: IPlaceLimitOrderRequest,
-    ) => Parameters<Exchange["createLimitOrder"]>;
+    request: (params: IPlaceLimitOrderRequest) => Parameters<Exchange["createLimitOrder"]>;
     response: (data: Order) => IPlaceLimitOrderResponse;
   };
 
   placeMarketOrder: {
-    request: (
-      params: IPlaceMarketOrderRequest,
-    ) => Parameters<Exchange["createMarketOrder"]>;
+    request: (params: IPlaceMarketOrderRequest) => Parameters<Exchange["createMarketOrder"]>;
     response: (data: Order) => IPlaceMarketOrderResponse;
   };
 
   placeStopOrder: {
-    request: (
-      params: IPlaceStopOrderRequest,
-    ) => Parameters<Exchange["createStopOrder"]>;
+    request: (params: IPlaceStopOrderRequest) => Parameters<Exchange["createStopOrder"]>;
     response: (data: Order) => IPlaceStopOrderResponse;
   };
 
   cancelLimitOrder: {
-    request: (
-      params: ICancelLimitOrderRequest,
-    ) => Parameters<Exchange["cancelOrder"]>;
+    request: (params: ICancelLimitOrderRequest) => Parameters<Exchange["cancelOrder"]>;
     // data is not typed by `ccxt`
     // so add type manually
-    response: (
-      data: Pick<Order, "id" | "clientOrderId">,
-    ) => ICancelLimitOrderResponse;
+    response: (data: Pick<Order, "id" | "clientOrderId">) => ICancelLimitOrderResponse;
   };
 
   getOpenOrders: {
-    request: (
-      params: IGetOpenOrdersRequest,
-    ) => Parameters<Exchange["fetchOpenOrders"]>;
+    request: (params: IGetOpenOrdersRequest) => Parameters<Exchange["fetchOpenOrders"]>;
     response: (data: Order[]) => IGetOpenOrdersResponse;
   };
 
   getClosedOrders: {
-    request: (
-      params: IGetClosedOrdersRequest,
-    ) => Parameters<Exchange["fetchClosedOrders"]>;
+    request: (params: IGetClosedOrdersRequest) => Parameters<Exchange["fetchClosedOrders"]>;
     response: (data: Order[]) => IGetClosedOrdersResponse;
   };
 
   getMarketPrice: {
-    request: (
-      params: IGetMarketPriceRequest,
-    ) => Parameters<Exchange["fetchTicker"]>;
+    request: (params: IGetMarketPriceRequest) => Parameters<Exchange["fetchTicker"]>;
     response: (data: Ticker) => IGetMarketPriceResponse;
   };
 
   getCandlesticks: {
-    request: (
-      params: IGetCandlesticksRequest,
-    ) => Parameters<Exchange["fetchOHLCV"]>;
+    request: (params: IGetCandlesticksRequest) => Parameters<Exchange["fetchOHLCV"]>;
     response: (data: OHLCV[]) => ICandlestick[];
   };
 
@@ -116,23 +90,21 @@ export type Normalize = {
 
   getSymbols: {
     // request: (params: never) => void; // no params
-    response: (
-      data: Dictionary<Market>,
-      exchangeCode: ExchangeCode,
-    ) => ISymbolInfo[];
+    response: (data: Dictionary<Market>, exchangeCode: ExchangeCode) => ISymbolInfo[];
   };
 
   watchOrders: {
-    request: (
-      params: IWatchOrdersRequest,
-    ) => Parameters<Exchange["watchOrders"]>;
+    request: (params: IWatchOrdersRequest) => Parameters<Exchange["watchOrders"]>;
     response: (data: Order[]) => IWatchOrdersResponse;
   };
 
   watchCandles: {
-    request: (
-      params: IWatchCandlesRequest,
-    ) => Parameters<Exchange["watchOHLCV"]>;
+    request: (params: IWatchCandlesRequest) => Parameters<Exchange["watchOHLCV"]>;
     response: (data: OHLCV[]) => IWatchCandlesResponse;
+  };
+
+  watchTrades: {
+    request: (params: IWatchTradesRequest) => Parameters<Exchange["watchTrades"]>;
+    response: (data: Trade[]) => IWatchTradesResponse;
   };
 };

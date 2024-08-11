@@ -22,4 +22,13 @@ export interface BotTemplate<T extends IBotConfiguration> {
    * Mainly used for debug strategies.
    */
   hidden?: boolean;
+  /**
+   * Run policy for the bot.
+   */
+  runPolicy: {
+    /**
+     * List of pairs to watch for trades.
+     */
+    watchTrades?: string | string[] | ((botConfig: T) => string | string[]);
+  };
 }

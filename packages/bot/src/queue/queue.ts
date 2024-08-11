@@ -27,6 +27,14 @@ async function queueHandler(tasks: ProcessingEvent[]) {
         candles: event.candles,
       },
     });
+  } else if (event.type === "onPublicTrade") {
+    await botProcessor.process({
+      triggerEventType: event.type,
+      market: {
+        trade: event.trade,
+        candles: [],
+      },
+    });
   } else {
     throw new Error(`❗ Unknown event type: ${event}`);
   }

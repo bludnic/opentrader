@@ -24,6 +24,8 @@ import type {
   IWatchCandlesRequest,
   IPlaceMarketOrderRequest,
   IPlaceMarketOrderResponse,
+  IWatchTradesRequest,
+  IWatchTradesResponse,
 } from "@opentrader/types";
 import type { Dictionary, Market, Exchange } from "ccxt";
 
@@ -34,33 +36,18 @@ export interface IExchange {
   loadMarkets: () => Promise<Dictionary<Market>>; // forward to `ccxt.loadMarkets`
 
   accountAssets: () => Promise<IAccountAsset[]>;
-  getLimitOrder: (
-    body: IGetLimitOrderRequest,
-  ) => Promise<IGetLimitOrderResponse>;
-  placeLimitOrder: (
-    body: IPlaceLimitOrderRequest,
-  ) => Promise<IPlaceLimitOrderResponse>;
-  placeMarketOrder: (
-    boyd: IPlaceMarketOrderRequest,
-  ) => Promise<IPlaceMarketOrderResponse>;
-  cancelLimitOrder: (
-    body: ICancelLimitOrderRequest,
-  ) => Promise<ICancelLimitOrderResponse>;
-  placeStopOrder: (
-    body: IPlaceStopOrderRequest,
-  ) => Promise<IPlaceStopOrderResponse>;
-  getOpenOrders: (
-    body: IGetOpenOrdersRequest,
-  ) => Promise<IGetOpenOrdersResponse>;
-  getClosedOrders: (
-    body: IGetClosedOrdersRequest,
-  ) => Promise<IGetClosedOrdersResponse>;
-  getMarketPrice: (
-    params: IGetMarketPriceRequest,
-  ) => Promise<IGetMarketPriceResponse>;
+  getLimitOrder: (body: IGetLimitOrderRequest) => Promise<IGetLimitOrderResponse>;
+  placeLimitOrder: (body: IPlaceLimitOrderRequest) => Promise<IPlaceLimitOrderResponse>;
+  placeMarketOrder: (boyd: IPlaceMarketOrderRequest) => Promise<IPlaceMarketOrderResponse>;
+  cancelLimitOrder: (body: ICancelLimitOrderRequest) => Promise<ICancelLimitOrderResponse>;
+  placeStopOrder: (body: IPlaceStopOrderRequest) => Promise<IPlaceStopOrderResponse>;
+  getOpenOrders: (body: IGetOpenOrdersRequest) => Promise<IGetOpenOrdersResponse>;
+  getClosedOrders: (body: IGetClosedOrdersRequest) => Promise<IGetClosedOrdersResponse>;
+  getMarketPrice: (params: IGetMarketPriceRequest) => Promise<IGetMarketPriceResponse>;
   getCandlesticks: (params: IGetCandlesticksRequest) => Promise<ICandlestick[]>;
   getSymbols: () => Promise<ISymbolInfo[]>;
   getSymbol: (params: IGetSymbolInfoRequest) => Promise<ISymbolInfo>;
   watchOrders: (params?: IWatchOrdersRequest) => Promise<IWatchOrdersResponse>;
   watchCandles: (symbol: IWatchCandlesRequest) => Promise<ICandlestick[]>;
+  watchTrades: (symbol: IWatchTradesRequest) => Promise<IWatchTradesResponse>;
 }

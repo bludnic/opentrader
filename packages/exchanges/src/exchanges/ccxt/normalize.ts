@@ -31,12 +31,7 @@ const getLimitOrder: Normalize["getLimitOrder"] = {
 };
 
 const placeLimitOrder: Normalize["placeLimitOrder"] = {
-  request: (params) => [
-    params.symbol,
-    params.side,
-    params.quantity,
-    params.price,
-  ],
+  request: (params) => [params.symbol, params.side, params.quantity, params.price],
   response: (order) => ({
     orderId: order.id,
     clientOrderId: order.clientOrderId,
@@ -146,12 +141,8 @@ const getSymbol: Normalize["getSymbol"] = {
     filters: {
       precision: market!.precision,
       decimals: {
-        amount: market!.precision.amount
-          ? getExponentAbs(market!.precision.amount)
-          : undefined,
-        price: market!.precision.price
-          ? getExponentAbs(market!.precision.price)
-          : undefined,
+        amount: market!.precision.amount ? getExponentAbs(market!.precision.amount) : undefined,
+        price: market!.precision.price ? getExponentAbs(market!.precision.price) : undefined,
       },
       limits: market!.limits,
     },
@@ -160,9 +151,7 @@ const getSymbol: Normalize["getSymbol"] = {
 
 const getSymbols: Normalize["getSymbols"] = {
   response: (markets, exchangeCode) =>
-    Object.entries(markets).map(([_symbol, market]) =>
-      getSymbol.response(market, exchangeCode),
-    ),
+    Object.entries(markets).map(([_symbol, market]) => getSymbol.response(market, exchangeCode)),
 };
 
 const watchOrders: Normalize["watchOrders"] = {
@@ -195,6 +184,20 @@ const watchCandles: Normalize["watchCandles"] = {
     })),
 };
 
+const watchTrades: Normalize["watchTrades"] = {
+  request: (params) => [params.symbol],
+  response: (trades) =>
+    trades.map((trade) => ({
+      id: trade.id!,
+      amount: trade.amount!,
+      price: trade.price!,
+      timestamp: trade.timestamp!,
+      side: trade.side as OrderSide,
+      symbol: trade.symbol!,
+      takerOrMaker: trade.takerOrMaker,
+    })),
+};
+
 export const normalize: Normalize = {
   accountAssets,
   getLimitOrder,
@@ -210,4 +213,5 @@ export const normalize: Normalize = {
   getSymbols,
   watchOrders,
   watchCandles,
+  watchTrades,
 };
