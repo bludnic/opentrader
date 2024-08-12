@@ -5,17 +5,20 @@ import { BotProcessing } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
 
 import { CandlesConsumer } from "./consumers/candles.consumer.js";
+import { TradesConsumer } from "./consumers/trades.consumer.js";
 import { OrdersConsumer } from "./consumers/orders.consumer.js";
 
 export class Platform {
   private ordersConsumer: OrdersConsumer;
   private candlesConsumer: CandlesConsumer;
+  private tradesConsumer: TradesConsumer;
 
   private unsubscribeFromEventBus = () => {};
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBot[]) {
     this.ordersConsumer = new OrdersConsumer(exchangeAccounts);
     this.candlesConsumer = new CandlesConsumer(bots);
+    this.tradesConsumer = new TradesConsumer(bots);
   }
 
   async bootstrap() {
@@ -29,6 +32,9 @@ export class Platform {
 
     logger.info("[Processor] CandlesProcessor created");
     await this.candlesConsumer.create();
+
+    logger.info("[Processor] TradesProcessor created");
+    await this.tradesConsumer.create();
 
     this.unsubscribeFromEventBus = this.subscribeToEventBus();
   }
@@ -44,6 +50,9 @@ export class Platform {
 
     logger.info("[Processor] CandlesProcessor destroyed");
     this.candlesConsumer.destroy();
+
+    logger.info("[Processor] TradesProcessor destroyed");
+    this.tradesConsumer.destroy();
 
     this.unsubscribeFromEventBus();
   }
@@ -99,8 +108,14 @@ export class Platform {
    * - When an exchange account was updated → Resubcribe to orders channel with new credentials
    */
   private subscribeToEventBus() {
-    const onBotStarted = async (bot: TBot) => await this.candlesConsumer.addBot(bot);
-    const onBotStopped = async (bot: TBot) => await this.candlesConsumer.cleanStaleChannels();
+    const onBotStarted = async (bot: TBot) => {
+      await this.candlesConsumer.addBot(bot);
+      await this.tradesConsumer.addBot(bot);
+    };
+    const onBotStopped = async (bot: TBot) => {
+      await this.candlesConsumer.cleanStaleChannels();
+      await this.tradesConsumer.cleanStaleChannels();
+    };
 
     const addExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) =>
       await this.ordersConsumer.addExchangeAccount(exchangeAccount);
