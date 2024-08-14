@@ -37,8 +37,7 @@ export const XSmartTradeType = {
   DCA: "DCA",
 } as const;
 
-export type XSmartTradeType =
-  (typeof XSmartTradeType)[keyof typeof XSmartTradeType];
+export type XSmartTradeType = (typeof XSmartTradeType)[keyof typeof XSmartTradeType];
 
 export const XEntryType = {
   Order: "Order",
@@ -51,8 +50,7 @@ export const XTakeProfitType = {
   Ladder: "Ladder",
   None: "None",
 } as const;
-export type XTakeProfitType =
-  (typeof XTakeProfitType)[keyof typeof XTakeProfitType];
+export type XTakeProfitType = (typeof XTakeProfitType)[keyof typeof XTakeProfitType];
 
 export const XEntityType = {
   EntryOrder: "EntryOrder",
