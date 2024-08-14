@@ -15,6 +15,7 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
+import { ExchangeClosedByUser, NetworkError, RequestTimeout } from "ccxt";
 import {
   IAccountAsset,
   ICancelLimitOrderRequest,
@@ -74,41 +75,62 @@ export class PaperExchange extends CCXTExchange {
     this.matchingEnabled = true;
 
     while (this.enabled && this.symbols.length > 0) {
-      const tickers = await this.ccxt.watchTickers(this.symbols);
+      try {
+        const tickers = await this.ccxt.watchTickers(this.symbols);
 
-      for (const order of this.openOrders) {
-        const ticker = tickers[order.symbol];
+        for (const order of this.openOrders) {
+          const ticker = tickers[order.symbol];
 
-        if (order.side === "buy" && order.price! >= ticker.ask!) {
-          const filledOrder = await xprisma.paperOrder.update({
-            where: { id: order.id },
-            data: {
-              status: "filled" satisfies OrderStatus,
-              filledPrice: ticker.ask,
-              lastTradeTimestamp: new Date(),
-            },
-          });
-          this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
-          console.log(
-            `[${this.exchangeCode} Paper] BUY order ID:${order.id} filled at price ${ticker.ask} ${order.symbol}`,
+          if (order.side === "buy" && order.price! >= ticker.ask!) {
+            const filledOrder = await xprisma.paperOrder.update({
+              where: { id: order.id },
+              data: {
+                status: "filled" satisfies OrderStatus,
+                filledPrice: ticker.ask,
+                lastTradeTimestamp: new Date(),
+              },
+            });
+            this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
+            console.log(
+              `[${this.exchangeCode} Paper] BUY order ID:${order.id} filled at price ${ticker.ask} ${order.symbol}`,
+            );
+
+            this.emitOrder(filledOrder);
+          } else if (order.side === "sell" && order.price! <= ticker.bid!) {
+            const filledOrder = await xprisma.paperOrder.update({
+              where: { id: order.id },
+              data: {
+                status: "filled" satisfies OrderStatus,
+                filledPrice: ticker.bid,
+                lastTradeTimestamp: new Date(),
+              },
+            });
+            this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
+            console.log(
+              `[${this.exchangeCode} Paper] SELL order ID:${order.id} filled at price ${ticker.bid} ${order.symbol}`,
+            );
+
+            this.emitOrder(filledOrder);
+          }
+        }
+      } catch (err) {
+        if (err instanceof NetworkError) {
+          console.warn(`[PaperExchange ${this.exchangeCode}] NetworkError occurred: ${err.message}. Timeout: 3s`);
+          await new Promise((resolve) => setTimeout(resolve, 3000)); // prevents flooding microtasks
+        } else if (err instanceof RequestTimeout) {
+          console.warn(`[PaperExchange ${this.exchangeCode}] RequestTimeout occurred: ${err.message}`);
+        } else if (err instanceof ExchangeClosedByUser) {
+          // This is an expected error when destroying ccxt instance via ccxt.close()
+          console.info(`[PaperExchange ${this.exchangeCode}] ExchangeClosedByUser`);
+          break;
+        } else {
+          console.error(
+            `[PaperExchange ${this.exchangeCode}] ‼️ Unhandled error occurred. Disabling WS connection.`,
+            err,
           );
-
-          this.emitOrder(filledOrder);
-        } else if (order.side === "sell" && order.price! <= ticker.bid!) {
-          const filledOrder = await xprisma.paperOrder.update({
-            where: { id: order.id },
-            data: {
-              status: "filled" satisfies OrderStatus,
-              filledPrice: ticker.bid,
-              lastTradeTimestamp: new Date(),
-            },
-          });
-          this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
-          console.log(
-            `[${this.exchangeCode} Paper] SELL order ID:${order.id} filled at price ${ticker.bid} ${order.symbol}`,
-          );
-
-          this.emitOrder(filledOrder);
+          await this.destroy();
+          process.exit(1);
+          break;
         }
       }
     }
