@@ -1,7 +1,18 @@
 {
   "name": "opentrader",
   "version": "1.0.0-beta.2",
-  "description": "",
+  "description": "OpenTrader is a powerful open-source crypto trading bot designated to automate your trading strategies on various cryptocurrency exchanges.",
+  "keywords": [
+    "bot",
+    "crypto",
+    "trading",
+    "algotrading",
+    "technical-indicators",
+    "custom-strategy",
+    "dca-bot",
+    "grid-bot",
+    "rsi-strategy"
+  ],
   "type": "module",
   "main": "dist/main.mjs",
   "types": "src/index.ts",
