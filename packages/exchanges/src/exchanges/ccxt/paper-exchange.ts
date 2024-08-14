@@ -62,8 +62,8 @@ export class PaperExchange extends CCXTExchange {
   }
 
   /**
+   * Watch tickers and fill limit orders if the price matched.
    * @internal
-   * @todo match limit orders
    */
   private async match() {
     if (this.matchingEnabled) return;
@@ -116,8 +116,6 @@ export class PaperExchange extends CCXTExchange {
    * @internal
    */
   emitOrder(order: PaperOrder) {
-    console.log("emitOrder", order);
-
     this.resolve([order]);
     this.ordersStatusChanged = new Promise((resolve) => (this.resolve = resolve));
   }
@@ -141,12 +139,6 @@ export class PaperExchange extends CCXTExchange {
    */
   private get symbols() {
     return [...new Set(this.openOrders.map((order) => order.symbol))];
-  }
-
-  // @todo move to CCXTExchange
-  public async destroy() {
-    this.enabled = false;
-    await this.ccxt.close();
   }
 
   /**
