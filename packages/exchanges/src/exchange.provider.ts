@@ -97,7 +97,7 @@ export class ExchangeProvider {
       return;
     }
 
-    void exchange.ccxt.close();
+    void exchange.destroy();
     delete this.privateExchanges[id];
 
     console.log(

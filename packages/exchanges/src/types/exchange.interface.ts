@@ -33,6 +33,8 @@ export interface IExchange {
   ccxt: Exchange;
   exchangeCode: ExchangeCode;
 
+  destroy: () => Promise<void>;
+
   loadMarkets: () => Promise<Dictionary<Market>>; // forward to `ccxt.loadMarkets`
 
   accountAssets: () => Promise<IAccountAsset[]>;

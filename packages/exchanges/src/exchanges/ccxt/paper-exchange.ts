@@ -54,6 +54,14 @@ export class PaperExchange extends CCXTExchange {
   }
 
   /**
+   * @override
+   */
+  async destroy() {
+    this.enabled = false;
+    await this.ccxt.close();
+  }
+
+  /**
    * @internal
    * @todo match limit orders
    */

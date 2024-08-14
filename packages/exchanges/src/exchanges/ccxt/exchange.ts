@@ -81,6 +81,10 @@ export class CCXTExchange implements IExchange {
     }
   }
 
+  async destroy() {
+    await this.ccxt.close();
+  }
+
   async loadMarkets(): Promise<Dictionary<Market>> {
     const cacheProvider = cache.getCacheProvider();
     return cacheProvider.getMarkets(this.exchangeCode, this.ccxt);
