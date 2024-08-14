@@ -84,6 +84,7 @@ export class PaperExchange extends CCXTExchange {
               lastTradeTimestamp: new Date(),
             },
           });
+          this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
           console.log(
             `[${this.exchangeCode} Paper] BUY order ID:${order.id} filled at price ${ticker.ask} ${order.symbol}`,
           );
@@ -98,6 +99,7 @@ export class PaperExchange extends CCXTExchange {
               lastTradeTimestamp: new Date(),
             },
           });
+          this.openOrders = this.openOrders.filter((openOrder) => openOrder.id !== order.id); // remove from open orders
           console.log(
             `[${this.exchangeCode} Paper] SELL order ID:${order.id} filled at price ${ticker.bid} ${order.symbol}`,
           );
