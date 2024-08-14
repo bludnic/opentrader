@@ -111,6 +111,7 @@ model ExchangeAccount {
   secretKey     String
   password      String?
   isDemoAccount Boolean @default(false)
+  isPaperAccount Boolean @default(false)
 
   owner     User     @relation(fields: [ownerId], references: [id])
   ownerId   Int
@@ -231,4 +232,23 @@ model Markets {
   exchangeCode String   @id // ExchangeCode
   markets      String // JSON stringified
   updatedAt    DateTime @updatedAt
+}
+
+model PaperAsset {
+  currency   String @id
+  balance Float
+}
+
+model PaperOrder {
+  id Int @id @default(autoincrement())
+  type String // OrderType
+  symbol String
+  side String // OrderSide
+  quantity Float
+  price Float?
+  filledPrice Float?
+  lastTradeTimestamp DateTime @default(now())
+  status String @default("open") // OrderStatus
+  fee Float @default(0)
+  createdAt DateTime @default(now())
 }
