@@ -30,6 +30,8 @@ import type {
 import type { Dictionary, Market, Exchange } from "ccxt";
 
 export interface IExchange {
+  isPaper: boolean;
+
   ccxt: Exchange;
   exchangeCode: ExchangeCode;
 

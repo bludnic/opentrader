@@ -53,6 +53,7 @@ import { normalize } from "./normalize.js";
 import { exchangeCodeMapCCXT } from "../../client/constants.js";
 
 export class CCXTExchange implements IExchange {
+  public isPaper = false;
   public exchangeCode: ExchangeCode;
   public ccxt: Exchange;
 

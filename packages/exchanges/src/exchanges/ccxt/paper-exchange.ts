@@ -42,11 +42,15 @@ import { PaperOrder, xprisma } from "@opentrader/db";
 import { CCXTExchange } from "./exchange.js";
 
 export class PaperExchange extends CCXTExchange {
+  /**
+   * @override
+   */
+  public isPaper = true;
+
   private enabled = true;
   private openOrders: PaperOrder[] = [];
   private resolve = (orders: PaperOrder[]) => {};
   private ordersStatusChanged: Promise<PaperOrder[]> = new Promise((resolve) => (this.resolve = resolve));
-  public isPaper = true;
   public matchingEnabled = false;
 
   constructor(exchangeCode: ExchangeCode) {
