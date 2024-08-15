@@ -5,7 +5,7 @@ export function isValidSymbolId(symbolId: string) {
   const exchangeCodes = Object.keys(ExchangeCode);
   const symbolPattern = `^(${exchangeCodes.join(
     "|",
-  )})${EXCHANGE_CODE_DELIMITER}[A-Z0-9]+${CURRENCY_PAIR_DELIMITER}[A-Z]+$`;
+  )})${EXCHANGE_CODE_DELIMITER}[A-Z0-9]+${CURRENCY_PAIR_DELIMITER}[A-Z0-9]+$`;
 
   return new RegExp(symbolPattern).test(symbolId);
 }
