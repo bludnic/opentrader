@@ -50,9 +50,10 @@ import type { IExchange, IExchangeCredentials } from "../../types/index.js";
 import { cache } from "../../cache.js";
 import { fetcher } from "../../utils/next/fetcher.js";
 import { normalize } from "./normalize.js";
-import { exchangeCodeMapCCXT } from "./constants.js";
+import { exchangeCodeMapCCXT } from "../../client/constants.js";
 
 export class CCXTExchange implements IExchange {
+  public isPaper = false;
   public exchangeCode: ExchangeCode;
   public ccxt: Exchange;
 
@@ -79,6 +80,10 @@ export class CCXTExchange implements IExchange {
     if (credentials?.isDemoAccount) {
       this.ccxt.setSandboxMode(true);
     }
+  }
+
+  async destroy() {
+    await this.ccxt.close();
   }
 
   async loadMarkets(): Promise<Dictionary<Market>> {

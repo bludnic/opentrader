@@ -9,8 +9,7 @@ export const ZCreateExchangeAccountInputSchema = zt.ExchangeAccountSchema.pick({
   secretKey: true,
   password: true,
   isDemoAccount: true,
+  isPaperAccount: true,
 });
 
-export type TCreateExchangeAccountInputSchema = z.infer<
-  typeof ZCreateExchangeAccountInputSchema
->;
+export type TCreateExchangeAccountInputSchema = z.infer<typeof ZCreateExchangeAccountInputSchema>;

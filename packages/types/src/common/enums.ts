@@ -22,3 +22,10 @@ export const ExchangeCode = {
 } as const;
 
 export type ExchangeCode = (typeof ExchangeCode)[keyof typeof ExchangeCode];
+
+export const AccountType = {
+  Real: "Real",
+  Demo: "Demo",
+  Paper: "Paper",
+};
+export type AccountType = (typeof AccountType)[keyof typeof AccountType];

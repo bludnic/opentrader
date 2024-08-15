@@ -6,4 +6,5 @@ export interface IExchangeCredentials {
   secretKey: string;
   password: string; // or password (depends on the exchange)
   isDemoAccount: boolean;
+  isPaperAccount: boolean;
 }

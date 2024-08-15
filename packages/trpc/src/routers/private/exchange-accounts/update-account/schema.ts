@@ -10,9 +10,8 @@ export const ZUpdateExchangeAccountInputSchema = z.object({
     secretKey: true,
     password: true,
     isDemoAccount: true,
+    isPaperAccount: true,
   }),
 });
 
-export type TUpdateExchangeAccountInputSchema = z.infer<
-  typeof ZUpdateExchangeAccountInputSchema
->;
+export type TUpdateExchangeAccountInputSchema = z.infer<typeof ZUpdateExchangeAccountInputSchema>;

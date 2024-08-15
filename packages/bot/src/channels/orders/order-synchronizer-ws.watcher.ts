@@ -25,7 +25,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
 
   override async disable() {
     await super.disable();
-    await this.exchangeService.ccxt.close();
+    await this.exchangeService.destroy();
   }
 
   protected async watchOrders() {

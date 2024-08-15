@@ -30,8 +30,12 @@ import type {
 import type { Dictionary, Market, Exchange } from "ccxt";
 
 export interface IExchange {
+  isPaper: boolean;
+
   ccxt: Exchange;
   exchangeCode: ExchangeCode;
+
+  destroy: () => Promise<void>;
 
   loadMarkets: () => Promise<Dictionary<Market>>; // forward to `ccxt.loadMarkets`
 
