@@ -27,8 +27,10 @@ import type {
   ExchangeCode,
   IWatchTradesRequest,
   IWatchTradesResponse,
+  IOrderbook,
+  ITicker,
 } from "@opentrader/types";
-import type { Balances, Exchange, Order, Dictionary, Market, OHLCV, Ticker, Trade } from "ccxt";
+import type { Balances, Exchange, Order, Dictionary, Market, OHLCV, Ticker, Trade, OrderBook } from "ccxt";
 
 export type Normalize = {
   accountAssets: {
@@ -106,5 +108,15 @@ export type Normalize = {
   watchTrades: {
     request: (params: IWatchTradesRequest) => Parameters<Exchange["watchTrades"]>;
     response: (data: Trade[]) => IWatchTradesResponse;
+  };
+
+  watchOrderbook: {
+    request: (symbol: string) => Parameters<Exchange["watchOrderBook"]>;
+    response: (data: OrderBook) => IOrderbook;
+  };
+
+  watchTicker: {
+    request: (symbol: string) => Parameters<Exchange["watchTicker"]>;
+    response: (data: Ticker) => ITicker;
   };
 };

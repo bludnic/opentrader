@@ -198,6 +198,37 @@ const watchTrades: Normalize["watchTrades"] = {
     })),
 };
 
+const watchOrderbook: Normalize["watchOrderbook"] = {
+  request: (symbol) => [symbol],
+  response: (orderbook) => ({
+    symbol: orderbook.symbol!,
+    timestamp: orderbook.timestamp!,
+
+    bids: orderbook.bids.map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
+    asks: orderbook.asks.map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
+  }),
+};
+
+const watchTicker: Normalize["watchTicker"] = {
+  request: (symbol) => [symbol],
+  response: (ticker) => ({
+    symbol: ticker.symbol!,
+    timestamp: ticker.timestamp!,
+
+    bid: ticker.bid!,
+    ask: ticker.ask!,
+    last: ticker.last!,
+
+    open: ticker.open,
+    high: ticker.high,
+    low: ticker.low,
+    close: ticker.close,
+
+    baseVolume: ticker.baseVolume!,
+    quoteVolume: ticker.quoteVolume!,
+  }),
+};
+
 export const normalize: Normalize = {
   accountAssets,
   getLimitOrder,
@@ -214,4 +245,6 @@ export const normalize: Normalize = {
   watchOrders,
   watchCandles,
   watchTrades,
+  watchOrderbook,
+  watchTicker,
 };

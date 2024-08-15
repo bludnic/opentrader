@@ -1,4 +1,4 @@
-import type {
+import {
   IAccountAsset,
   IGetCandlesticksRequest,
   ICandlestick,
@@ -26,6 +26,8 @@ import type {
   IPlaceMarketOrderResponse,
   IWatchTradesRequest,
   IWatchTradesResponse,
+  IOrderbook,
+  ITicker,
 } from "@opentrader/types";
 import type { Dictionary, Market, Exchange } from "ccxt";
 
@@ -54,4 +56,6 @@ export interface IExchange {
   watchOrders: (params?: IWatchOrdersRequest) => Promise<IWatchOrdersResponse>;
   watchCandles: (symbol: IWatchCandlesRequest) => Promise<ICandlestick[]>;
   watchTrades: (symbol: IWatchTradesRequest) => Promise<IWatchTradesResponse>;
+  watchOrderbook: (symbol: string) => Promise<IOrderbook>;
+  watchTicker: (symbol: string) => Promise<ITicker>;
 }
