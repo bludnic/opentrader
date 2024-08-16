@@ -23,6 +23,9 @@ import type {
   IWatchCandlesResponse,
   IPlaceMarketOrderRequest,
   IPlaceMarketOrderResponse,
+  ITrade,
+  IOrderbook,
+  ITicker,
 } from "@opentrader/types";
 import { ExchangeCode } from "@opentrader/types";
 import type { MarketSimulator } from "../market-simulator.js";
@@ -30,11 +33,14 @@ import type { MarketSimulator } from "../market-simulator.js";
 export class MemoryExchange implements IExchange {
   ccxt = {} as any;
   exchangeCode = ExchangeCode.OKX;
+  isPaper = false;
 
   /**
    * @internal
    */
   constructor(private marketSimulator: MarketSimulator) {}
+
+  async destroy() {}
 
   async loadMarkets() {
     return {};
@@ -44,9 +50,7 @@ export class MemoryExchange implements IExchange {
     return [];
   }
 
-  async getLimitOrder(
-    _body: IGetLimitOrderRequest,
-  ): Promise<IGetLimitOrderResponse> {
+  async getLimitOrder(_body: IGetLimitOrderRequest): Promise<IGetLimitOrderResponse> {
     return {
       exchangeOrderId: "",
       clientOrderId: "",
@@ -61,44 +65,34 @@ export class MemoryExchange implements IExchange {
     };
   }
 
-  async placeLimitOrder(
-    _body: IPlaceLimitOrderRequest,
-  ): Promise<IPlaceLimitOrderResponse> {
+  async placeLimitOrder(_body: IPlaceLimitOrderRequest): Promise<IPlaceLimitOrderResponse> {
     return {
       orderId: "",
       clientOrderId: "",
     };
   }
 
-  async placeMarketOrder(
-    _body: IPlaceMarketOrderRequest,
-  ): Promise<IPlaceMarketOrderResponse> {
+  async placeMarketOrder(_body: IPlaceMarketOrderRequest): Promise<IPlaceMarketOrderResponse> {
     return {
       orderId: "",
       clientOrderId: "",
     };
   }
 
-  async placeStopOrder(
-    _body: IPlaceStopOrderRequest,
-  ): Promise<IPlaceStopOrderResponse> {
+  async placeStopOrder(_body: IPlaceStopOrderRequest): Promise<IPlaceStopOrderResponse> {
     return {
       orderId: "",
       clientOrderId: "",
     };
   }
 
-  async cancelLimitOrder(
-    _body: ICancelLimitOrderRequest,
-  ): Promise<ICancelLimitOrderResponse> {
+  async cancelLimitOrder(_body: ICancelLimitOrderRequest): Promise<ICancelLimitOrderResponse> {
     return {
       orderId: "",
     };
   }
 
-  async getMarketPrice(
-    params: IGetMarketPriceRequest,
-  ): Promise<IGetMarketPriceResponse> {
+  async getMarketPrice(params: IGetMarketPriceRequest): Promise<IGetMarketPriceResponse> {
     const candlestick = this.marketSimulator.currentCandle;
     const assetPrice = candlestick.close;
     const { symbol } = params;
@@ -110,15 +104,11 @@ export class MemoryExchange implements IExchange {
     };
   }
 
-  async getCandlesticks(
-    _params: IGetCandlesticksRequest,
-  ): Promise<ICandlestick[]> {
+  async getCandlesticks(_params: IGetCandlesticksRequest): Promise<ICandlestick[]> {
     return [];
   }
 
-  async getTradingFeeRates(
-    _params: IGetTradingFeeRatesRequest,
-  ): Promise<IGetTradingFeeRatesResponse> {
+  async getTradingFeeRates(_params: IGetTradingFeeRatesRequest): Promise<IGetTradingFeeRatesResponse> {
     return {
       makerFee: 0,
       takerFee: 0,
@@ -176,19 +166,23 @@ export class MemoryExchange implements IExchange {
     return [];
   }
 
-  async watchOrders(
-    _params?: IWatchOrdersRequest,
-  ): Promise<IWatchOrdersResponse> {
-    throw new Error(
-      "Not implemented. Backtesting doesn't require this method.",
-    );
+  async watchOrders(_params?: IWatchOrdersRequest): Promise<IWatchOrdersResponse> {
+    throw new Error("Not implemented. Backtesting doesn't require this method.");
   }
 
-  async watchCandles(
-    _params?: IWatchCandlesRequest,
-  ): Promise<IWatchCandlesResponse> {
-    throw new Error(
-      "Not implemented. Backtesting doesn't require this method.",
-    );
+  async watchCandles(_params?: IWatchCandlesRequest): Promise<IWatchCandlesResponse> {
+    throw new Error("Not implemented. Backtesting doesn't require this method.");
+  }
+
+  async watchTrades(): Promise<ITrade[]> {
+    throw new Error("Not implemented. Backtesting doesn't require this method.");
+  }
+
+  async watchOrderbook(): Promise<IOrderbook> {
+    throw new Error("Not implemented. Backtesting doesn't require this method.");
+  }
+
+  async watchTicker(): Promise<ITicker> {
+    throw new Error("Not implemented. Backtesting doesn't require this method.");
   }
 }
