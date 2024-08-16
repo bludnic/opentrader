@@ -2,9 +2,9 @@ import { cargoQueue, QueueObject } from "async";
 import type { TBot } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
-import { ProcessingEvent } from "./types.js";
+import { QueueEvent } from "./types.js";
 
-async function queueHandler(tasks: ProcessingEvent[]) {
+async function queueHandler(tasks: QueueEvent[]) {
   const event = tasks[tasks.length - 1]; // getting last task from the queue
 
   if (tasks.length > 1) {
@@ -15,39 +15,61 @@ async function queueHandler(tasks: ProcessingEvent[]) {
 
   const botProcessor = new BotProcessing(event.bot);
 
-  if (event.type === "onOrderFilled") {
-    await botProcessor.process({
-      triggerEventType: event.type,
-    });
-  } else if (event.type === "onCandleClosed") {
-    await botProcessor.process({
-      triggerEventType: event.type,
-      market: {
-        candle: event.candle,
-        candles: event.candles,
-      },
-    });
-  } else if (event.type === "onPublicTrade") {
-    await botProcessor.process({
-      triggerEventType: event.type,
-      market: {
-        trade: event.trade,
-        candles: [],
-      },
-    });
-  } else {
-    throw new Error(`❗ Unknown event type: ${event}`);
+  switch (event.type) {
+    case "onOrderFilled":
+      await botProcessor.process({
+        triggerEventType: event.type,
+      });
+      break;
+    case "onCandleClosed":
+      await botProcessor.process({
+        triggerEventType: event.type,
+        market: {
+          candle: event.candle,
+          candles: event.candles,
+        },
+      });
+      break;
+    case "onPublicTrade":
+      await botProcessor.process({
+        triggerEventType: event.type,
+        market: {
+          trade: event.trade,
+          candles: [],
+        },
+      });
+      break;
+    case "onOrderbookChange":
+      await botProcessor.process({
+        triggerEventType: event.type,
+        market: {
+          orderbook: event.orderbook,
+          candles: [],
+        },
+      });
+      break;
+    case "onTickerChange":
+      await botProcessor.process({
+        triggerEventType: event.type,
+        market: {
+          ticker: event.ticker,
+          candles: [],
+        },
+      });
+      break;
+    default:
+      throw new Error(`❗ Unknown event type: ${event}`);
   }
 
   await botProcessor.placePendingOrders();
 }
 
-const createQueue = () => cargoQueue<ProcessingEvent>(queueHandler);
+const createQueue = () => cargoQueue<QueueEvent>(queueHandler);
 
 class Queue {
-  queues: Record<TBot["id"], QueueObject<ProcessingEvent>> = {};
+  queues: Record<TBot["id"], QueueObject<QueueEvent>> = {};
 
-  push(event: ProcessingEvent) {
+  push(event: QueueEvent) {
     // Create a queue bot if it doesn't exist
     if (!this.queues[event.bot.id]) {
       this.queues[event.bot.id] = createQueue();

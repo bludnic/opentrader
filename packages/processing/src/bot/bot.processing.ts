@@ -79,7 +79,7 @@ export class BotProcessing {
       } else if (command === "stop") {
         await processor.stop(botState);
       } else if (command === "process") {
-        await processor.process(botState, market);
+        await processor.process(botState, triggerEventType, market);
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);

@@ -55,9 +55,8 @@ class EventBus extends EventEmitter {
   botStarted(botId: number) {
     xprisma.bot
       .findUniqueOrThrow({
-        where: {
-          id: botId,
-        },
+        where: { id: botId },
+        include: { exchangeAccount: true },
       })
       .then((bot) => {
         this.emit(EVENT.onBotStarted, bot);
@@ -70,9 +69,8 @@ class EventBus extends EventEmitter {
   botStopped(botId: number) {
     xprisma.bot
       .findUniqueOrThrow({
-        where: {
-          id: botId,
-        },
+        where: { id: botId },
+        include: { exchangeAccount: true },
       })
       .then((bot) => {
         this.emit(EVENT.onBotStopped, bot);

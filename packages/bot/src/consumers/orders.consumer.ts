@@ -1,5 +1,6 @@
+import { findStrategy } from "@opentrader/bot-templates/server";
 import type { IWatchOrder } from "@opentrader/types";
-import { BotProcessing } from "@opentrader/processing";
+import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
@@ -86,18 +87,16 @@ export class OrdersConsumer {
       return;
     }
 
-    if (botProcessor.getTimeframe()) {
-      logger.error(
-        `❕ The bot #${botProcessor.getId()} is timeframe-based: ${botProcessor.getTimeframe()}. Skip processing`,
-      );
-      return;
-    }
+    const bot = botProcessor.getBot();
+    const { strategyFn } = await findStrategy(bot.template);
 
-    processingQueue.push({
-      type: "onOrderFilled",
-      bot: botProcessor.getBot(),
-      orderId: order.id,
-    });
+    if (shouldRunStrategy(strategyFn, bot, "onOrderFilled")) {
+      processingQueue.push({
+        type: "onOrderFilled",
+        bot,
+        orderId: order.id,
+      });
+    }
   }
 
   private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {

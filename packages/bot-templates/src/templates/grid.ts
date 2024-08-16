@@ -38,10 +38,10 @@ grid.schema = z.object({
   highPrice: z.number().positive().describe("Highest price of the grid"),
   lowPrice: z.number().positive().describe("Lowest price of the grid"),
   gridLevels: z.number().positive().describe("Number of grid lines"),
-  quantityPerGrid: z
-    .number()
-    .positive()
-    .describe("Quantity of base currency per each grid"),
+  quantityPerGrid: z.number().positive().describe("Quantity of base currency per each grid"),
 });
+grid.runPolicy = {
+  onOrderFilled: true,
+};
 
 export type GridBotLiteConfig = IBotConfiguration<z.infer<typeof grid.schema>>;

@@ -1,13 +1,6 @@
-import { logger } from "@opentrader/logger";
 import { z } from "zod";
-import {
-  buy,
-  cancelSmartTrade,
-  IBotConfiguration,
-  sell,
-  TBotContext,
-  useRSI,
-} from "@opentrader/bot-processor";
+import { buy, cancelSmartTrade, IBotConfiguration, sell, TBotContext, useRSI } from "@opentrader/bot-processor";
+import { logger } from "@opentrader/logger";
 
 /**
  * Inspired by https://github.com/askmike/gekko/blob/develop/strategies/RSI.js
@@ -107,32 +100,21 @@ export function* rsi(ctx: TBotContext<RsiParams, RsiState>) {
 
 rsi.displayName = "RSI Strategy";
 rsi.schema = z.object({
-  high: z
-    .number()
-    .min(0)
-    .max(100)
-    .default(70)
-    .describe("Sell when RSI is above this value"),
-  low: z
-    .number()
-    .min(0)
-    .max(100)
-    .default(30)
-    .describe("Buy when RSI is below this value"),
+  high: z.number().min(0).max(100).default(70).describe("Sell when RSI is above this value"),
+  low: z.number().min(0).max(100).default(30).describe("Buy when RSI is below this value"),
   periods: z.number().positive().default(14).describe("RSI period"),
-  persistence: z
-    .number()
-    .positive()
-    .default(1)
-    .describe("Number of candles to persist in trend before buying/selling"),
-  quantity: z
-    .number()
-    .positive()
-    .default(0.0001)
-    .describe("Quantity to buy/sell"),
+  persistence: z.number().positive().default(1).describe("Number of candles to persist in trend before buying/selling"),
+  quantity: z.number().positive().default(0.0001).describe("Quantity to buy/sell"),
 });
 
 rsi.requiredHistory = 15;
+rsi.timeframe = ({ timeframe }: IBotConfiguration) => timeframe;
+rsi.runPolicy = {
+  onCandleClosed: true,
+};
+rsi.watchers = {
+  watchCandles: ({ baseCurrency, quoteCurrency }: IBotConfiguration) => `${baseCurrency}/${quoteCurrency}`,
+};
 
 type RsiState = {
   trend?: {

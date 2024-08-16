@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { logger } from "@opentrader/logger";
-import { buy, sell, TBotContext, useExchange } from "@opentrader/bot-processor";
+import { TBotContext } from "@opentrader/bot-processor";
 
 export function* testTrades(ctx: TBotContext<any>) {
   logger.info("[TRADES]: Strategy exec");
@@ -10,6 +10,6 @@ export function* testTrades(ctx: TBotContext<any>) {
 testTrades.displayName = "Trades Strategy";
 testTrades.hidden = true;
 testTrades.schema = z.object({});
-testTrades.runPolicy = {
+testTrades.watchers = {
   watchTrades: ["BTC/USDT", "ETH/USDT"],
 };

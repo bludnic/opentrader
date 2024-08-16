@@ -1,20 +1,20 @@
 import { EventEmitter } from "node:events";
+import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
+import { getTimeframe, getWatchers } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
 import type { TBot } from "@opentrader/db";
-import { getWatchers, getTimeframe } from "@opentrader/processing";
 import { decomposeSymbolId } from "@opentrader/tools";
 import { BarSize, ExchangeCode } from "@opentrader/types";
-import { findStrategy } from "@opentrader/bot-templates/server";
-import { CandleEvent } from "../channels/index.js";
-import { CandlesChannel } from "../channels/index.js";
+import type { TickerEvent } from "../channels/index.js";
+import { TickerChannel } from "../channels/index.js";
 
 /**
  * Emits:
- * - candle: CandleEvent
+ * - ticker: TickerEvent
  */
-export class CandlesConsumer extends EventEmitter {
-  private channels: CandlesChannel[] = [];
+export class TickerConsumer extends EventEmitter {
+  private channels: TickerChannel[] = [];
   private bots: TBot[] = [];
 
   constructor(bots: TBot[]) {
@@ -23,7 +23,7 @@ export class CandlesConsumer extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[CandlesProcessor] Creating candles channel for ${this.bots.length} timeframe based bots`);
+    logger.info(`[TickerConsumer] Creating ticker channel for ${this.bots.length} bots`);
 
     for (const bot of this.bots) {
       await this.addBot(bot);
@@ -31,30 +31,20 @@ export class CandlesConsumer extends EventEmitter {
   }
 
   /**
-   * Subscribes the bot to the candles channel.
+   * Subscribes the bot to the ticker channel.
    * It will create the channel if necessary or reusing it if it already exists.
-   * @param bot Bot to add
-   * @returns
    */
   async addBot(bot: TBot) {
     const { strategyFn } = await findStrategy(bot.template);
-    const { watchCandles: symbols } = getWatchers(strategyFn, bot);
-
-    const timeframe = getTimeframe(strategyFn, bot);
-    if (!timeframe) {
-      logger.warn(
-        `[CandlesProcessor]: Skip adding bot [${bot.id}:"${bot.name}"] to the candles channel. Reason: The bot has no timeframe defined.`,
-      );
-      return;
-    }
+    const { watchTicker: symbols } = getWatchers(strategyFn, bot);
 
     for (const symbolId of symbols) {
       const { exchangeCode, currencyPairSymbol: symbol } = decomposeSymbolId(symbolId);
 
       const channel = this.getChannel(exchangeCode);
-      await channel.add(symbol, timeframe, strategyFn.requiredHistory);
+      await channel.add(symbol);
       logger.info(
-        `[CandlesProcessor]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchangeCode}:${symbol} channel`,
+        `[TickerConsumer]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchangeCode}:${symbol} channel`,
       );
     }
   }
@@ -67,13 +57,13 @@ export class CandlesConsumer extends EventEmitter {
     if (!channel) {
       const exchange = exchangeProvider.fromCode(exchangeCode);
 
-      channel = new CandlesChannel(exchange);
+      channel = new TickerChannel(exchange);
       this.channels.push(channel);
 
-      logger.info(`[CandlesConsumer] Created ${exchangeCode} channel`);
+      logger.info(`[TickerConsumer] Created ${exchangeCode} channel`);
 
       // @todo type
-      channel.on("candle", this.handleCandle);
+      channel.on("ticker", this.handleTicker);
     }
 
     return channel;
@@ -100,9 +90,9 @@ export class CandlesConsumer extends EventEmitter {
       // Clean stale channels
       const isChannelUsedByAnyBot = botsInUse.some((bot) => bot.exchangeCodes.includes(channel.exchangeCode));
       if (!isChannelUsedByAnyBot) {
-        logger.info(`[CandlesProcessor] Removing stale channel ${channel.exchangeCode}`);
+        logger.info(`[TickerConsumer] Removing stale channel ${channel.exchangeCode}`);
         this.removeChannel(channel);
-        continue; // no need to check watchers and aggregators
+        continue; // no need to check watchers
       }
 
       // Clean up stale watchers
@@ -112,39 +102,22 @@ export class CandlesConsumer extends EventEmitter {
         );
 
         if (!isWatcherUsedByAnyBot) {
-          logger.info(`[CandlesProcessor] Removing stale watcher ${channel.exchangeCode}:${watcher.symbol}`);
+          logger.info(`[TickerConsumer] Removing stale watcher ${channel.exchangeCode}:${watcher.symbol}`);
           channel.removeWatcher(watcher);
-        }
-      }
-
-      // Clean stale aggregators
-      for (const aggregator of channel.getAggregators()) {
-        const isAggregatorUsedByAnyBot = botsInUse.some(
-          (bot) =>
-            bot.symbols.includes(`${channel.exchangeCode}/${aggregator.symbol}`) &&
-            bot.timeframe === aggregator.timeframe,
-        );
-
-        if (!isAggregatorUsedByAnyBot) {
-          logger.info(
-            `[CandlesProcessor] Removing stale aggregator ${channel.exchangeCode}:${aggregator.symbol}#${aggregator.timeframe}`,
-          );
-          channel.removeAggregator(aggregator);
         }
       }
     }
   }
 
-  private handleCandle = async (data: CandleEvent) => {
-    this.emit("candle", data);
+  private handleTicker = async (data: TickerEvent) => {
+    this.emit("ticker", data);
   };
 
   /**
    * Destroy and remove the channel from the list.
-   * @param exchangeCode
    */
-  private removeChannel(channel: CandlesChannel) {
-    channel.off("candle", this.handleCandle);
+  private removeChannel(channel: TickerChannel) {
+    channel.off("ticker", this.handleTicker);
     channel.destroy();
 
     this.channels = this.channels.filter((c) => c !== channel);

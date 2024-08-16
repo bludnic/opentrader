@@ -7,15 +7,15 @@ import { findStrategy } from "@opentrader/bot-templates/server";
 import { getWatchers, getTimeframe } from "@opentrader/processing";
 import { decomposeSymbolId } from "@opentrader/tools";
 import { BarSize, ExchangeCode } from "@opentrader/types";
-import type { TradeEvent } from "../channels/index.js";
-import { TradesChannel } from "../channels/index.js";
+import type { OrderbookEvent } from "../channels/index.js";
+import { OrderbookChannel } from "../channels/index.js";
 
 /**
  * Emits:
- * - trade: TradeEvent
+ * - orderbook: OrderbookEvent
  */
-export class TradesConsumer extends EventEmitter {
-  private channels: TradesChannel[] = [];
+export class OrderbookConsumer extends EventEmitter {
+  private channels: OrderbookChannel[] = [];
   private bots: TBot[] = [];
 
   constructor(bots: TBot[]) {
@@ -24,7 +24,7 @@ export class TradesConsumer extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[TradesConsumer] Creating trades channel for ${this.bots.length} bots`);
+    logger.info(`[OrderbookConsumer] Creating orderbook channel for ${this.bots.length} bots`);
 
     for (const bot of this.bots) {
       await this.addBot(bot);
@@ -32,7 +32,7 @@ export class TradesConsumer extends EventEmitter {
   }
 
   /**
-   * Subscribes the bot to the trades channel.
+   * Subscribes the bot to the orderbook channel.
    * It will create the channel if necessary or reusing it if it already exists.
    * @param bot Bot to add
    * @returns
@@ -48,18 +48,18 @@ export class TradesConsumer extends EventEmitter {
 
     let channel = this.channels.find((channel) => channel.exchangeCode === exchange.exchangeCode);
     if (!channel) {
-      channel = new TradesChannel(exchange);
+      channel = new OrderbookChannel(exchange);
       this.channels.push(channel);
 
-      logger.info(`[TradesConsumer] Created ${exchange.exchangeCode}:${symbol} channel`);
+      logger.info(`[OrderbookConsumer] Created ${exchange.exchangeCode}:${symbol} channel`);
 
       // @todo type
-      channel.on("trade", this.handleTrade);
+      channel.on("orderbook", this.handleOrderbook);
     }
 
     await channel.add(symbol);
     logger.info(
-      `[TradesConsumer]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchange.exchangeCode}:${symbol} channel`,
+      `[OrderbookConsumer]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchange.exchangeCode}:${symbol} channel`,
     );
   }
 
@@ -84,7 +84,7 @@ export class TradesConsumer extends EventEmitter {
       // Clean stale channels
       const isChannelUsedByAnyBot = botsInUse.some((bot) => bot.exchangeCodes.includes(channel.exchangeCode));
       if (!isChannelUsedByAnyBot) {
-        logger.info(`[TradesConsumer] Removing stale channel ${channel.exchangeCode}`);
+        logger.info(`[OrderbookConsumer] Removing stale channel ${channel.exchangeCode}`);
         this.removeChannel(channel);
         continue; // no need to check watchers
       }
@@ -96,22 +96,23 @@ export class TradesConsumer extends EventEmitter {
         );
 
         if (!isWatcherUsedByAnyBot) {
-          logger.info(`[TradesConsumer] Removing stale watcher ${channel.exchangeCode}:${watcher.symbol}`);
+          logger.info(`[OrderbookConsumer] Removing stale watcher ${channel.exchangeCode}:${watcher.symbol}`);
           channel.removeWatcher(watcher);
         }
       }
     }
   }
 
-  private handleTrade = async (data: TradeEvent) => {
-    this.emit("trade", data);
+  private handleOrderbook = async (data: OrderbookEvent) => {
+    this.emit("orderbook", data);
   };
 
   /**
    * Destroy and remove the channel from the list.
+   * @param exchangeCode
    */
-  private removeChannel(channel: TradesChannel) {
-    channel.off("trade", this.handleTrade);
+  private removeChannel(channel: OrderbookChannel) {
+    channel.off("orderbook", this.handleOrderbook);
     channel.destroy();
 
     this.channels = this.channels.filter((c) => c !== channel);
