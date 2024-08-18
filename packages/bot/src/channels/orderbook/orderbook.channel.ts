@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import type { IExchange } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import { IOrderbook } from "@opentrader/types";
+import { IOrderbook, MarketId } from "@opentrader/types";
 import type { OrderbookEvent } from "./types.js";
 import { OrderbookWatcher } from "./orderbook.watcher.js";
 
@@ -51,6 +51,8 @@ export class OrderbookChannel extends EventEmitter {
 
   handleOrderbook = (orderbook: IOrderbook) => {
     const event: OrderbookEvent = {
+      exchangeCode: this.exchangeCode,
+      marketId: `${this.exchangeCode}:${orderbook.symbol}` as MarketId,
       symbol: orderbook.symbol,
       orderbook,
     };

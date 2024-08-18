@@ -23,7 +23,7 @@ export async function stopGridBot({ input }: Options) {
 
   await botService.stop();
 
-  eventBus.botStopped(botId);
+  eventBus.botStopped(botService.bot);
 
   return {
     ok: true,

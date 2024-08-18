@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import type { TBot } from "@opentrader/db";
+import type { TBotWithExchangeAccount } from "@opentrader/db";
 import { getWatchers, getTimeframe } from "@opentrader/processing";
 import { decomposeSymbolId } from "@opentrader/tools";
 import { BarSize, ExchangeCode } from "@opentrader/types";
@@ -15,9 +15,9 @@ import { CandlesChannel } from "../channels/index.js";
  */
 export class CandlesConsumer extends EventEmitter {
   private channels: CandlesChannel[] = [];
-  private bots: TBot[] = [];
+  private bots: TBotWithExchangeAccount[] = [];
 
-  constructor(bots: TBot[]) {
+  constructor(bots: TBotWithExchangeAccount[]) {
     super();
     this.bots = bots;
   }
@@ -36,7 +36,7 @@ export class CandlesConsumer extends EventEmitter {
    * @param bot Bot to add
    * @returns
    */
-  async addBot(bot: TBot) {
+  async addBot(bot: TBotWithExchangeAccount) {
     const { strategyFn } = await findStrategy(bot.template);
     const { watchCandles: symbols } = getWatchers(strategyFn, bot);
 
@@ -83,7 +83,7 @@ export class CandlesConsumer extends EventEmitter {
    * Remove unused channels that are no longer used by any bots.
    * Triggered when any bot was stopped.
    */
-  async cleanStaleChannels(bots: TBot[]) {
+  async cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
       const { strategyFn } = await findStrategy(bot.template);

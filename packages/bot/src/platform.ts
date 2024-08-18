@@ -2,47 +2,26 @@ import { findStrategy } from "@opentrader/bot-templates/server";
 import { xprisma, type ExchangeAccountWithCredentials, TBotWithExchangeAccount } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { exchangeProvider } from "@opentrader/exchanges";
-import { BotProcessing, getWatchers, shouldRunStrategy } from "@opentrader/processing";
+import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
-import { CandleEvent, OrderbookEvent, TickerEvent, TradeEvent } from "./channels/index.js";
+import { store } from "@opentrader/bot-store";
+import { MarketEvent } from "@opentrader/types";
 import { processingQueue } from "./queue/index.js";
-import { ProcessingEvent } from "./queue/types.js";
 
-import { CandlesConsumer } from "./consumers/candles.consumer.js";
-import { TradesConsumer } from "./consumers/trades.consumer.js";
-import { OrderbookConsumer } from "./consumers/orderbook.consumer.js";
-import { TickerConsumer } from "./consumers/ticker.consumer.js";
+import { MarketsStream } from "./consumers/markets.stream.js";
 import { OrdersConsumer } from "./consumers/orders.consumer.js";
 
 export class Platform {
-  private ordersConsumer: OrdersConsumer;
-  private candlesConsumer: CandlesConsumer;
-  private tradesConsumer: TradesConsumer;
-  private orderbookConsumer: OrderbookConsumer;
-  private tickerConsumer: TickerConsumer;
+  private ordersConsumer;
+  private marketStream: MarketsStream;
   private unsubscribeFromEventBus = () => {};
   private enabledBots: TBotWithExchangeAccount[] = [];
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBotWithExchangeAccount[]) {
     this.ordersConsumer = new OrdersConsumer(exchangeAccounts);
 
-    this.candlesConsumer = new CandlesConsumer(bots);
-    this.candlesConsumer.on("candle", ({ candle, history }: CandleEvent) =>
-      this.handleProcess({ type: "onCandleClosed", candle, candles: history }),
-    );
-
-    this.tradesConsumer = new TradesConsumer(bots);
-    this.tradesConsumer.on("trade", ({ trade }: TradeEvent) => this.handleProcess({ type: "onPublicTrade", trade }));
-
-    this.orderbookConsumer = new OrderbookConsumer(bots);
-    this.orderbookConsumer.on("orderbook", ({ orderbook }: OrderbookEvent) =>
-      this.handleProcess({ type: "onOrderbookChange", orderbook }),
-    );
-
-    this.tickerConsumer = new TickerConsumer(bots);
-    this.tickerConsumer.on("ticker", ({ ticker }: TickerEvent) =>
-      this.handleProcess({ type: "onTickerChange", ticker }),
-    );
+    this.marketStream = new MarketsStream(this.enabledBots);
+    this.marketStream.on("market", this.handleMarketEvent);
   }
 
   async bootstrap() {
@@ -51,17 +30,8 @@ export class Platform {
     logger.info("[Processor] OrdersProcessor created");
     await this.ordersConsumer.create();
 
-    logger.info("[Processor] CandlesProcessor created");
-    await this.candlesConsumer.create();
-
-    logger.info("[Processor] TradesProcessor created");
-    await this.tradesConsumer.create();
-
-    logger.info("[Processor] OrderbookProcessor created");
-    await this.orderbookConsumer.create();
-
-    logger.info("[Processor] TickerProcessor created");
-    await this.tickerConsumer.create();
+    logger.info("[Market] MarketsStream created");
+    await this.marketStream.create();
 
     this.unsubscribeFromEventBus = this.subscribeToEventBus();
   }
@@ -72,17 +42,9 @@ export class Platform {
     logger.info("[Processor] OrdersProcessor destroyed");
     await this.ordersConsumer.destroy();
 
-    logger.info("[Processor] CandlesProcessor destroyed");
-    this.candlesConsumer.destroy();
-
-    logger.info("[Processor] TradesProcessor destroyed");
-    this.tradesConsumer.destroy();
-
-    logger.info("[Processor] OrderbookProcessor destroyed");
-    this.orderbookConsumer.destroy();
-
-    logger.info("[Processor] TickerProcessor destroyed");
-    this.tickerConsumer.destroy();
+    logger.info("[Market] MarketStream destroyed");
+    this.marketStream.off("market", this.handleMarketEvent);
+    this.marketStream.destroy();
 
     this.unsubscribeFromEventBus();
   }
@@ -139,13 +101,7 @@ export class Platform {
    */
   private subscribeToEventBus() {
     const onBotStarted = async (bot: TBotWithExchangeAccount) => {
-      const { strategyFn } = await findStrategy(bot.template);
-      const { watchTrades, watchOrderbook, watchTicker, watchCandles } = getWatchers(strategyFn, bot);
-
-      if (watchCandles.length > 0) await this.candlesConsumer.addBot(bot);
-      if (watchTrades.length > 0) await this.tradesConsumer.addBot(bot);
-      if (watchOrderbook.length > 0) await this.orderbookConsumer.addBot(bot);
-      if (watchTicker.length > 0) await this.tickerConsumer.addBot(bot);
+      this.marketStream.add(bot);
 
       this.enabledBots = await xprisma.bot.custom.findMany({
         where: { enabled: true },
@@ -159,10 +115,7 @@ export class Platform {
         include: { exchangeAccount: true },
       });
 
-      await this.candlesConsumer.cleanStaleChannels(this.enabledBots);
-      await this.tradesConsumer.cleanStaleChannels(this.enabledBots);
-      await this.orderbookConsumer.cleanStaleChannels(this.enabledBots);
-      await this.tickerConsumer.cleanStaleChannels(this.enabledBots);
+      await this.marketStream.clean(this.enabledBots);
     };
 
     const addExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) =>
@@ -194,7 +147,9 @@ export class Platform {
     };
   }
 
-  async handleProcess(event: ProcessingEvent) {
+  handleMarketEvent = async (event: MarketEvent) => {
+    store.updateMarket(event);
+
     for (const bot of this.enabledBots) {
       const { strategyFn } = await findStrategy(bot.template);
 
@@ -205,5 +160,5 @@ export class Platform {
         });
       }
     }
-  }
+  };
 }

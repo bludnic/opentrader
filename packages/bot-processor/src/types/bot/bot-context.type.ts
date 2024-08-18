@@ -1,5 +1,5 @@
 import type { IExchange } from "@opentrader/exchanges";
-import type { MarketData, StrategyTriggerEventType } from "@opentrader/types";
+import type { MarketData, MarketId, StrategyTriggerEventType } from "@opentrader/types";
 import type { IBotControl } from "./bot-control.interface.js";
 import type { IBotConfiguration } from "./bot-configuration.interface.js";
 import type { BotState } from "./bot.state.js";
@@ -30,7 +30,11 @@ export type TBotContext<T extends IBotConfiguration, S extends BotState = BotSta
   onStop: boolean;
   onProcess: boolean;
   /**
-   * Marked data
+   * Default market from `bot.symbol`
    */
   market: MarketData;
+  /**
+   * Additional markets
+   */
+  markets: Record<MarketId, MarketData>;
 };

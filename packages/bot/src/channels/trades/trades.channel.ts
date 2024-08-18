@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import type { IExchange } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import { ITrade } from "@opentrader/types";
+import { ITrade, MarketId } from "@opentrader/types";
 import type { TradeEvent } from "./types.js";
 import { TradesWatcher } from "./trades.watcher.js";
 
@@ -51,6 +51,8 @@ export class TradesChannel extends EventEmitter {
 
   handleTrade = (trade: ITrade) => {
     const tradeEvent: TradeEvent = {
+      exchangeCode: this.exchangeCode,
+      marketId: `${this.exchangeCode}:${trade.symbol}` as MarketId,
       symbol: trade.symbol,
       trade,
     };

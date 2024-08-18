@@ -1,5 +1,5 @@
 {
-  "name": "@opentrader/bot",
+  "name": "@opentrader/bot-store",
   "version": "0.0.0",
   "private": true,
   "description": "",
@@ -18,24 +18,14 @@
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/async": "^3.2.24",
     "@types/node": "^20.14.15",
     "eslint": "8.57.0",
-    "ts-node": "10.9.2",
     "typescript": "5.5.4",
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "@opentrader/bot-store": "workspace:*",
-    "@opentrader/bot-templates": "workspace:*",
+    "@opentrader/bot-processor": "workspace:*",
     "@opentrader/db": "workspace:*",
-    "@opentrader/event-bus": "workspace:*",
-    "@opentrader/exchanges": "workspace:*",
-    "@opentrader/logger": "workspace:*",
-    "@opentrader/processing": "workspace:*",
-    "@opentrader/tools": "workspace:*",
-    "async": "^3.2.5",
-    "ccxt": "4.3.59",
-    "cron": "^3.1.7"
+    "@opentrader/event-bus": "workspace:*"
   }
 }

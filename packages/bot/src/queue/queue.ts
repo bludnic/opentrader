@@ -2,6 +2,7 @@ import { cargoQueue, QueueObject } from "async";
 import type { TBot } from "@opentrader/db";
 import { BotProcessing } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
+import { store } from "@opentrader/bot-store";
 import { QueueEvent } from "./types.js";
 
 async function queueHandler(tasks: QueueEvent[]) {
@@ -15,51 +16,11 @@ async function queueHandler(tasks: QueueEvent[]) {
 
   const botProcessor = new BotProcessing(event.bot);
 
-  switch (event.type) {
-    case "onOrderFilled":
-      await botProcessor.process({
-        triggerEventType: event.type,
-      });
-      break;
-    case "onCandleClosed":
-      await botProcessor.process({
-        triggerEventType: event.type,
-        market: {
-          candle: event.candle,
-          candles: event.candles,
-        },
-      });
-      break;
-    case "onPublicTrade":
-      await botProcessor.process({
-        triggerEventType: event.type,
-        market: {
-          trade: event.trade,
-          candles: [],
-        },
-      });
-      break;
-    case "onOrderbookChange":
-      await botProcessor.process({
-        triggerEventType: event.type,
-        market: {
-          orderbook: event.orderbook,
-          candles: [],
-        },
-      });
-      break;
-    case "onTickerChange":
-      await botProcessor.process({
-        triggerEventType: event.type,
-        market: {
-          ticker: event.ticker,
-          candles: [],
-        },
-      });
-      break;
-    default:
-      throw new Error(`❗ Unknown event type: ${event}`);
-  }
+  await botProcessor.process({
+    triggerEventType: event.type,
+    market: store.getMarket(event.marketId),
+    markets: store.markets,
+  });
 
   await botProcessor.placePendingOrders();
 }

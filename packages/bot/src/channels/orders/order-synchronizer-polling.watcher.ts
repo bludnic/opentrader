@@ -19,6 +19,7 @@ import { NetworkError, RequestTimeout } from "ccxt";
 import { ExchangeAccountProcessor } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract.js";
+import { ExchangeCode } from "@opentrader/types";
 
 /**
  * This is a fallback for `OrderSynchronizerWsWatcher`.
@@ -40,27 +41,21 @@ export class OrderSynchronizerPollingWatcher extends OrderSynchronizerWatcher {
   }
 
   private async syncOrders() {
-    logger.debug(
-      `PollingWatcher: Start syncing order statuses of "${this.exchange.name}"`,
-    );
+    logger.debug(`PollingWatcher: Start syncing order statuses of "${this.exchange.name}"`);
     const processor = new ExchangeAccountProcessor(this.exchange);
 
     try {
       await processor.syncOrders({
         onFilled: (exchangeOrder, order) =>
-          this.emit("onFilled", [exchangeOrder, order]),
+          this.emit("onFilled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]),
         onCanceled: (exchangeOrder, order) =>
-          this.emit("onCanceled", [exchangeOrder, order]),
+          this.emit("onCanceled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]),
       });
     } catch (err) {
       if (err instanceof NetworkError) {
-        logger.info(
-          `❕ NetworkError during ExchangeAccountProcessor.syncOrders(): ${err.message}`,
-        );
+        logger.info(`❕ NetworkError during ExchangeAccountProcessor.syncOrders(): ${err.message}`);
       } else if (err instanceof RequestTimeout) {
-        logger.info(
-          `❗ RequestTimeout during ExchangeAccountProcessor.syncOrders(): ${err.message}`,
-        );
+        logger.info(`❗ RequestTimeout during ExchangeAccountProcessor.syncOrders(): ${err.message}`);
         logger.info(err);
       } else {
         throw err;

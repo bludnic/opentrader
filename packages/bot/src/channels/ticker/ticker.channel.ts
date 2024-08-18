@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import type { IExchange } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import { ITicker } from "@opentrader/types";
+import { ITicker, MarketId } from "@opentrader/types";
 import type { TickerEvent } from "./types.js";
 import { TickerWatcher } from "./ticker.watcher.js";
 
@@ -51,6 +51,8 @@ export class TickerChannel extends EventEmitter {
 
   handleTicker = (ticker: ITicker) => {
     const event: TickerEvent = {
+      exchangeCode: this.exchangeCode,
+      marketId: `${this.exchangeCode}:${ticker.symbol}` as MarketId,
       symbol: ticker.symbol,
       ticker,
     };

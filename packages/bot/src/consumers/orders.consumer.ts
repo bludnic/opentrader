@@ -1,5 +1,5 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
-import type { IWatchOrder } from "@opentrader/types";
+import type { ExchangeCode, IWatchOrder, MarketId } from "@opentrader/types";
 import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
@@ -69,7 +69,7 @@ export class OrdersConsumer {
     }
   }
 
-  private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
+  private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade, exchangeCode: ExchangeCode) {
     logger.info(
       `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
     );
@@ -88,11 +88,13 @@ export class OrdersConsumer {
     }
 
     const bot = botProcessor.getBot();
+    const marketId: MarketId = `${exchangeCode}:${order.smartTrade.baseCurrency}/${order.smartTrade.quoteCurrency}`;
     const { strategyFn } = await findStrategy(bot.template);
 
     if (shouldRunStrategy(strategyFn, bot, "onOrderFilled")) {
       processingQueue.push({
         type: "onOrderFilled",
+        marketId,
         bot,
         orderId: order.id,
       });

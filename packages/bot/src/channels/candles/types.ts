@@ -1,7 +1,9 @@
-import type { BarSize, ICandlestick } from "@opentrader/types";
+import type { BarSize, ExchangeCode, ICandlestick, MarketId } from "@opentrader/types";
 
 export type CandleEvent = {
+  exchangeCode: ExchangeCode;
   symbol: string;
+  marketId: MarketId;
   timeframe: BarSize;
   /**
    * Last closed candle

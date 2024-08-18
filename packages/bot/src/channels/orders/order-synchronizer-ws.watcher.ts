@@ -19,6 +19,7 @@ import { xprisma } from "@opentrader/db";
 import { ExchangeClosedByUser, NetworkError, RequestTimeout } from "ccxt";
 import { logger } from "@opentrader/logger";
 import { OrderSynchronizerWatcher } from "./order-synchronizer-watcher.abstract.js";
+import { ExchangeCode } from "@opentrader/types";
 
 export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
   protocol = "ws" as const;
@@ -56,18 +57,18 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
               symbol: smartTrade.exchangeSymbolId,
             });
 
-            this.emit("onPlaced", [actualExchangeOrder, order]);
+            this.emit("onPlaced", [actualExchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
           } else if (exchangeOrder.status === "filled") {
             const statusChanged = order.status !== "Filled";
 
             if (statusChanged) {
-              this.emit("onFilled", [exchangeOrder, order]);
+              this.emit("onFilled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
             }
           } else if (exchangeOrder.status === "canceled") {
             const statusChanged = order.status !== "Canceled";
 
             if (statusChanged) {
-              this.emit("onCanceled", [exchangeOrder, order]);
+              this.emit("onCanceled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
             }
           }
         }

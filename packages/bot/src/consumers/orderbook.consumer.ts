@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
-import type { TBot } from "@opentrader/db";
+import type { TBotWithExchangeAccount } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { getWatchers, getTimeframe } from "@opentrader/processing";
@@ -16,9 +16,9 @@ import { OrderbookChannel } from "../channels/index.js";
  */
 export class OrderbookConsumer extends EventEmitter {
   private channels: OrderbookChannel[] = [];
-  private bots: TBot[] = [];
+  private bots: TBotWithExchangeAccount[] = [];
 
-  constructor(bots: TBot[]) {
+  constructor(bots: TBotWithExchangeAccount[]) {
     super();
     this.bots = bots;
   }
@@ -37,7 +37,7 @@ export class OrderbookConsumer extends EventEmitter {
    * @param bot Bot to add
    * @returns
    */
-  async addBot(bot: TBot) {
+  async addBot(bot: TBotWithExchangeAccount) {
     const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
       where: {
         id: bot.exchangeAccountId,
@@ -67,7 +67,7 @@ export class OrderbookConsumer extends EventEmitter {
    * Remove unused channels that are no longer used by any bots.
    * Triggered when any bot was stopped.
    */
-  async cleanStaleChannels(bots: TBot[]) {
+  async cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
       const { strategyFn } = await findStrategy(bot.template);

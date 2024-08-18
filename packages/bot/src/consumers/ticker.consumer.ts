@@ -3,7 +3,7 @@ import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { getTimeframe, getWatchers } from "@opentrader/processing";
 import { logger } from "@opentrader/logger";
-import type { TBot } from "@opentrader/db";
+import type { TBotWithExchangeAccount } from "@opentrader/db";
 import { decomposeSymbolId } from "@opentrader/tools";
 import { BarSize, ExchangeCode } from "@opentrader/types";
 import type { TickerEvent } from "../channels/index.js";
@@ -15,9 +15,9 @@ import { TickerChannel } from "../channels/index.js";
  */
 export class TickerConsumer extends EventEmitter {
   private channels: TickerChannel[] = [];
-  private bots: TBot[] = [];
+  private bots: TBotWithExchangeAccount[] = [];
 
-  constructor(bots: TBot[]) {
+  constructor(bots: TBotWithExchangeAccount[]) {
     super();
     this.bots = bots;
   }
@@ -34,7 +34,7 @@ export class TickerConsumer extends EventEmitter {
    * Subscribes the bot to the ticker channel.
    * It will create the channel if necessary or reusing it if it already exists.
    */
-  async addBot(bot: TBot) {
+  async addBot(bot: TBotWithExchangeAccount) {
     const { strategyFn } = await findStrategy(bot.template);
     const { watchTicker: symbols } = getWatchers(strategyFn, bot);
 
@@ -73,7 +73,7 @@ export class TickerConsumer extends EventEmitter {
    * Remove unused channels that are no longer used by any bots.
    * Triggered when any bot was stopped.
    */
-  async cleanStaleChannels(bots: TBot[]) {
+  async cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
       const { strategyFn } = await findStrategy(bot.template);

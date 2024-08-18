@@ -5,13 +5,14 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import type { ExchangeCode, MarketData, StrategyTriggerEventType } from "@opentrader/types";
+import type { ExchangeCode, MarketData, MarketId, StrategyTriggerEventType } from "@opentrader/types";
 import { SmartTradeExecutor } from "../executors/index.js";
 import { BotStoreAdapter } from "./bot-store-adapter.js";
 
 type ProcessParams = {
   triggerEventType?: StrategyTriggerEventType;
-  market?: MarketData;
+  market?: MarketData; // default market
+  markets?: Record<MarketId, MarketData>; // aditional markets
 };
 
 export class BotProcessing {
@@ -56,7 +57,7 @@ export class BotProcessing {
   }
 
   private async processCommand(command: "start" | "stop" | "process", params: ProcessParams) {
-    const { market, triggerEventType } = params;
+    const { triggerEventType, market, markets } = params;
 
     console.log(`🤖 Exec "${command}" command`, {
       context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0} trade=${JSON.stringify(market?.trade)}`,
@@ -79,7 +80,7 @@ export class BotProcessing {
       } else if (command === "stop") {
         await processor.stop(botState);
       } else if (command === "process") {
-        await processor.process(botState, triggerEventType, market);
+        await processor.process(botState, triggerEventType, market, markets);
       }
     } catch (err) {
       await xprisma.bot.setProcessing(false, this.bot.id);

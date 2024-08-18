@@ -1,5 +1,5 @@
 import type { IExchange } from "@opentrader/exchanges";
-import type { MarketData, StrategyTriggerEventType } from "@opentrader/types";
+import type { MarketData, MarketId, StrategyTriggerEventType } from "@opentrader/types";
 import type { BotState, IBotConfiguration, IBotControl, TBotContext } from "../types/index.js";
 
 export function createContext<T extends IBotConfiguration>(
@@ -11,6 +11,7 @@ export function createContext<T extends IBotConfiguration>(
   market: MarketData = {
     candles: [],
   },
+  markets: Record<MarketId, MarketData> = {},
   event?: StrategyTriggerEventType,
 ): TBotContext<T> {
   return {
@@ -23,6 +24,7 @@ export function createContext<T extends IBotConfiguration>(
     onProcess: command === "process",
     state,
     market,
+    markets,
     event,
   };
 }
