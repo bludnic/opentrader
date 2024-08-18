@@ -104,7 +104,7 @@ export class BotStore {
       // @todo strategy event type -> market event type
       case StrategyTriggerEventType.onCandleClosed:
         this.markets[marketId].candle = data.candle;
-        this.markets[marketId].candles.push(data.candle);
+        this.markets[marketId].candles = data.candles;
         break;
       case StrategyTriggerEventType.onOrderbookChange:
         this.markets[marketId].orderbook = data.orderbook;
