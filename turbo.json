@@ -12,6 +12,7 @@
     },
     "lint": {},
     "lint:fix": {},
+    "typecheck": {},
     "dev": {},
     "start": {},
     "prisma:migrate": {},

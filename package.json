@@ -22,6 +22,7 @@
   "scripts": {
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
+    "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "front": "turbo run dev --filter=frontend",
     "postinstall": "pnpm link --global",

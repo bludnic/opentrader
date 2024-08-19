@@ -7,6 +7,7 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:generate": "prisma generate",

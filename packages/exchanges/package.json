@@ -15,7 +15,8 @@
   "scripts": {
     "?build": "Internal package",
     "lint": "eslint . --quiet",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "author": "bludnic",
   "license": "Apache-2.0",

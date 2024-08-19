@@ -15,6 +15,7 @@
     "?build": "Internal package",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "jest"
   },
   "author": "bludnic",
