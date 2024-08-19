@@ -8,8 +8,8 @@ import { store } from "@opentrader/bot-store";
 import { MarketEvent } from "@opentrader/types";
 import { processingQueue } from "./queue/index.js";
 
-import { MarketsStream } from "./consumers/markets.stream.js";
-import { OrdersConsumer } from "./consumers/orders.consumer.js";
+import { MarketsStream } from "./streams/markets.stream.js";
+import { OrdersStream } from "./streams/orders.stream.js";
 
 export class Platform {
   private ordersConsumer;
@@ -18,7 +18,7 @@ export class Platform {
   private enabledBots: TBotWithExchangeAccount[] = [];
 
   constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBotWithExchangeAccount[]) {
-    this.ordersConsumer = new OrdersConsumer(exchangeAccounts);
+    this.ordersConsumer = new OrdersStream(exchangeAccounts);
 
     this.marketStream = new MarketsStream(this.enabledBots);
     this.marketStream.on("market", this.handleMarketEvent);

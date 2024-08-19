@@ -7,7 +7,7 @@ import { logger } from "@opentrader/logger";
 import { OrdersChannel } from "../channels/index.js";
 import { processingQueue } from "../queue/index.js";
 
-export class OrdersConsumer {
+export class OrdersStream {
   private channels: OrdersChannel[] = [];
   private initialExchangeAccounts: ExchangeAccountWithCredentials[];
 

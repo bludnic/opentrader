@@ -8,10 +8,10 @@ import {
   PublicTradeMarketEvent,
   TickerChangeMarketEvent,
 } from "@opentrader/types";
-import { CandlesConsumer } from "./candles.consumer.js";
-import { OrderbookConsumer } from "./orderbook.consumer.js";
-import { TradesConsumer } from "./trades.consumer.js";
-import { TickerConsumer } from "./ticker.consumer.js";
+import { CandlesStream } from "./candles.stream.js";
+import { OrderbookStream } from "./orderbook.stream.js";
+import { TradesStream } from "./trades.stream.js";
+import { TickerStream } from "./ticker.stream.js";
 import { CandleEvent, OrderbookEvent, TradeEvent, TickerEvent } from "../channels/index.js";
 
 /**
@@ -21,18 +21,18 @@ import { CandleEvent, OrderbookEvent, TradeEvent, TickerEvent } from "../channel
 export class MarketsStream extends EventEmitter {
   private unsubscribeAll = () => {};
 
-  candlesStream: CandlesConsumer;
-  orderbookStream: OrderbookConsumer;
-  tradesStream: TradesConsumer;
-  tickerStream: TickerConsumer;
+  candlesStream: CandlesStream;
+  orderbookStream: OrderbookStream;
+  tradesStream: TradesStream;
+  tickerStream: TickerStream;
 
   constructor(bots: TBotWithExchangeAccount[]) {
     super();
 
-    this.candlesStream = new CandlesConsumer(bots);
-    this.orderbookStream = new OrderbookConsumer(bots);
-    this.tradesStream = new TradesConsumer(bots);
-    this.tickerStream = new TickerConsumer(bots);
+    this.candlesStream = new CandlesStream(bots);
+    this.orderbookStream = new OrderbookStream(bots);
+    this.tradesStream = new TradesStream(bots);
+    this.tickerStream = new TickerStream(bots);
 
     this.unsubscribeAll = this.subscribe();
   }
