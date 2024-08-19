@@ -1,5 +1,5 @@
 import type { ZodObject } from "zod";
-import { BarSize, StrategyTriggerEventType } from "@opentrader/types";
+import { BarSize, MarketEventType } from "@opentrader/types";
 import type { TBotContext } from "./bot-context.type.js";
 import type { IBotConfiguration } from "./bot-configuration.interface.js";
 
@@ -88,10 +88,10 @@ export interface BotTemplate<T extends IBotConfiguration> {
      * The size of the candle is determined by `timeframe` property above.
      * If not provided, the channel will listen to 1m candles.
      */
-    [StrategyTriggerEventType.onCandleClosed]?: boolean | ((botConfig: T) => boolean);
-    [StrategyTriggerEventType.onPublicTrade]?: boolean | ((botConfig: T) => boolean);
-    [StrategyTriggerEventType.onOrderbookChange]?: boolean | ((botConfig: T) => boolean);
-    [StrategyTriggerEventType.onTickerChange]?: boolean | ((botConfig: T) => boolean);
-    [StrategyTriggerEventType.onOrderFilled]?: boolean | ((botConfig: T) => boolean);
+    [MarketEventType.onCandleClosed]?: boolean | ((botConfig: T) => boolean);
+    [MarketEventType.onPublicTrade]?: boolean | ((botConfig: T) => boolean);
+    [MarketEventType.onOrderbookChange]?: boolean | ((botConfig: T) => boolean);
+    [MarketEventType.onTickerChange]?: boolean | ((botConfig: T) => boolean);
+    [MarketEventType.onOrderFilled]?: boolean | ((botConfig: T) => boolean);
   };
 }

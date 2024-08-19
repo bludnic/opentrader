@@ -5,12 +5,12 @@ import { exchangeProvider } from "@opentrader/exchanges";
 import type { TBot } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
-import type { ExchangeCode, MarketData, MarketId, StrategyTriggerEventType } from "@opentrader/types";
+import type { ExchangeCode, MarketData, MarketId, MarketEventType } from "@opentrader/types";
 import { SmartTradeExecutor } from "../executors/index.js";
 import { BotStoreAdapter } from "./bot-store-adapter.js";
 
 type ProcessParams = {
-  triggerEventType?: StrategyTriggerEventType;
+  triggerEventType?: MarketEventType;
   market?: MarketData; // default market
   markets?: Record<MarketId, MarketData>; // aditional markets
 };

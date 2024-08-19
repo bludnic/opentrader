@@ -18,7 +18,7 @@
 
 import { TBotWithExchangeAccount, xprisma } from "@opentrader/db";
 import { BotState } from "@opentrader/bot-processor";
-import { MarketData, MarketEvent, MarketId, StrategyTriggerEventType } from "@opentrader/types";
+import { MarketData, MarketEvent, MarketId, MarketEventType } from "@opentrader/types";
 import { eventBus } from "@opentrader/event-bus";
 
 type BotId = number;
@@ -101,18 +101,17 @@ export class BotStore {
     }
 
     switch (data.type) {
-      // @todo strategy event type -> market event type
-      case StrategyTriggerEventType.onCandleClosed:
+      case MarketEventType.onCandleClosed:
         this.markets[marketId].candle = data.candle;
         this.markets[marketId].candles = data.candles;
         break;
-      case StrategyTriggerEventType.onOrderbookChange:
+      case MarketEventType.onOrderbookChange:
         this.markets[marketId].orderbook = data.orderbook;
         break;
-      case StrategyTriggerEventType.onTickerChange:
+      case MarketEventType.onTickerChange:
         this.markets[marketId].ticker = data.ticker;
         break;
-      case StrategyTriggerEventType.onPublicTrade:
+      case MarketEventType.onPublicTrade:
         this.markets[marketId].trade = data.trade;
         break;
       default:

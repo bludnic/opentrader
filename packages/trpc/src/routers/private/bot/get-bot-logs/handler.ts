@@ -1,5 +1,5 @@
 import { xprisma, TBotLog } from "@opentrader/db";
-import { MarketData, StrategyAction, StrategyError, StrategyTriggerEventType } from "@opentrader/types";
+import { MarketData, StrategyAction, StrategyError, MarketEventType } from "@opentrader/types";
 import type { Context } from "../../../../utils/context.js";
 import type { TGetBotLogs } from "./schema.js";
 
@@ -33,7 +33,7 @@ export async function getBotLogs({ input }: Options) {
   const logs: TBotLog[] = botLogs.map((log) => ({
     ...log,
     action: log.action as StrategyAction,
-    triggerEventType: log.triggerEventType as StrategyTriggerEventType,
+    triggerEventType: log.triggerEventType as MarketEventType,
     context: parseJson<MarketData>(log.context),
     error: parseJson<StrategyError>(log.error),
   }));

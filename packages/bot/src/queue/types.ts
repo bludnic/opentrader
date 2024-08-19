@@ -1,8 +1,8 @@
 import type { TBot } from "@opentrader/db";
-import { MarketEvent, MarketId, StrategyTriggerEventType } from "@opentrader/types";
+import { MarketEvent, MarketId, MarketEventType } from "@opentrader/types";
 
 export type OrderFilledEvent = {
-  type: typeof StrategyTriggerEventType.onOrderFilled;
+  type: typeof MarketEventType.onOrderFilled;
   marketId: MarketId;
   orderId: number;
 };

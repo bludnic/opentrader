@@ -17,14 +17,14 @@ export type StrategyAction = (typeof StrategyAction)[keyof typeof StrategyAction
 /**
  * Event that triggers strategy execution
  */
-export const StrategyTriggerEventType = {
+export const MarketEventType = {
   onOrderFilled: "onOrderFilled",
   onCandleClosed: "onCandleClosed",
   onPublicTrade: "onPublicTrade",
   onOrderbookChange: "onOrderbookChange",
   onTickerChange: "onTickerChange",
 } as const;
-export type StrategyTriggerEventType = (typeof StrategyTriggerEventType)[keyof typeof StrategyTriggerEventType];
+export type MarketEventType = (typeof MarketEventType)[keyof typeof MarketEventType];
 
 /**
  * An error occurred during strategy execution

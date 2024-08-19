@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zt } from "@opentrader/prisma";
-import { StrategyAction, StrategyTriggerEventType } from "@opentrader/types";
+import { StrategyAction, MarketEventType } from "@opentrader/types";
 
 const ZCandlestick = z.object({
   open: z.number(),
@@ -22,7 +22,7 @@ const ZStrategyError = z.object({
 
 export const ZBotLog = zt.BotLogSchema.extend({
   action: z.nativeEnum(StrategyAction),
-  triggerEventType: z.nativeEnum(StrategyTriggerEventType),
+  triggerEventType: z.nativeEnum(MarketEventType),
   context: ZMarketData.optional(),
   error: ZStrategyError.optional(),
 });

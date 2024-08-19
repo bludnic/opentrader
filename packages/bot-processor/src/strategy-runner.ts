@@ -16,7 +16,7 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import type { IExchange } from "@opentrader/exchanges";
-import type { MarketData, MarketId, StrategyTriggerEventType } from "@opentrader/types";
+import type { MarketData, MarketId, MarketEventType } from "@opentrader/types";
 import { BotControl } from "./bot-control.js";
 import { effectRunnerMap } from "./effect-runner.js";
 import { isEffect } from "./effects/index.js";
@@ -45,7 +45,7 @@ export class StrategyRunner<T extends IBotConfiguration> {
 
   async process(
     state: BotState,
-    event?: StrategyTriggerEventType,
+    event?: MarketEventType,
     market?: MarketData,
     markets: Record<MarketId, MarketData> = {},
   ) {

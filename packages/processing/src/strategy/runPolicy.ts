@@ -1,4 +1,4 @@
-import { StrategyTriggerEventType } from "@opentrader/types";
+import { MarketEventType } from "@opentrader/types";
 import { BotTemplate, IBotConfiguration } from "@opentrader/bot-processor";
 
 /**
@@ -15,7 +15,7 @@ import { BotTemplate, IBotConfiguration } from "@opentrader/bot-processor";
 export function shouldRunStrategy<T extends IBotConfiguration>(
   strategyFn: BotTemplate<T>,
   botConfig: T,
-  eventType?: StrategyTriggerEventType,
+  eventType?: MarketEventType,
 ): boolean {
   if (!strategyFn.runPolicy) {
     console.warn(`Strategy ${strategyFn.name} does not have a run policy`);

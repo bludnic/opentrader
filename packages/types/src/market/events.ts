@@ -1,28 +1,28 @@
-import { StrategyTriggerEventType } from "../strategy-runner/context.js";
+import { MarketEventType } from "../strategy-runner/context.js";
 import { ICandlestick, IOrderbook, ITicker, ITrade } from "../exchange/index.js";
 import { MarketId } from "./common.js";
 
 export type CandleClosedMarketEvent = {
-  type: typeof StrategyTriggerEventType.onCandleClosed;
+  type: typeof MarketEventType.onCandleClosed;
   marketId: MarketId;
   candle: ICandlestick; // current closed candle
   candles: ICandlestick[]; // previous candles history
 };
 
 export type PublicTradeMarketEvent = {
-  type: typeof StrategyTriggerEventType.onPublicTrade;
+  type: typeof MarketEventType.onPublicTrade;
   marketId: MarketId;
   trade: ITrade;
 };
 
 export type OrderbookChangeMarketEvent = {
-  type: typeof StrategyTriggerEventType.onOrderbookChange;
+  type: typeof MarketEventType.onOrderbookChange;
   marketId: MarketId;
   orderbook: IOrderbook;
 };
 
 export type TickerChangeMarketEvent = {
-  type: typeof StrategyTriggerEventType.onTickerChange;
+  type: typeof MarketEventType.onTickerChange;
   marketId: MarketId;
   ticker: ITicker;
 };
