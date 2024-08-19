@@ -21,22 +21,20 @@ type Options = {
    * Is demo account?
    */
   demo: boolean;
+  /**
+   * Is paper account?
+   */
+  paper: boolean;
 };
 
 const daemonRpc = createDaemonRpcClient();
 
-export async function updateExchangeAccount(
-  options: Options,
-): Promise<CommandResult> {
+export async function updateExchangeAccount(options: Options): Promise<CommandResult> {
   const exchangeAccounts = await daemonRpc.exchangeAccount.list.query();
-  const exchangeAccount = exchangeAccounts.find(
-    (account) => account.label === options.label,
-  );
+  const exchangeAccount = exchangeAccounts.find((account) => account.label === options.label);
 
   if (!exchangeAccount) {
-    logger.error(
-      `Exchange account with label "${options.label}" not found in DB. Create it first.`,
-    );
+    logger.error(`Exchange account with label "${options.label}" not found in DB. Create it first.`);
     return {
       result: undefined,
     };
@@ -51,6 +49,7 @@ export async function updateExchangeAccount(
       secretKey: options.secret,
       password: options.password,
       isDemoAccount: options.demo,
+      isPaperAccount: options.paper,
     },
   });
 
