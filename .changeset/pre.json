@@ -6,6 +6,7 @@
     "@opentrader/backtesting": "0.0.0",
     "@opentrader/bot": "0.0.0",
     "@opentrader/bot-processor": "0.0.0",
+    "@opentrader/bot-store": "0.0.0",
     "@opentrader/bot-templates": "0.0.0",
     "@opentrader/daemon": "0.0.0",
     "@opentrader/db": "0.0.0",
@@ -24,6 +25,7 @@
     "processor": "1.0.0-alpha.38"
   },
   "changesets": [
+    "beige-rocks-agree",
     "brave-poets-hang",
     "chilly-clouds-explode",
     "few-planets-reflect",
