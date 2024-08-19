@@ -42,6 +42,9 @@ import {
 import { PaperOrder, xprisma } from "@opentrader/db";
 import { CCXTExchange } from "./exchange.js";
 
+const ORDER_PLACEMENT_DELAY = 100;
+const ORDER_FULFILLMENT_DELAY = 200;
+
 export class PaperExchange extends CCXTExchange {
   /**
    * @override
@@ -216,9 +219,13 @@ export class PaperExchange extends CCXTExchange {
         price: params.price,
       },
     });
-    this.emitOrder(order);
     await this.pullOpenOrders();
-    void this.match();
+
+    // simulate order execution by delaying it
+    setTimeout(() => {
+      this.emitOrder(order);
+      void this.match();
+    }, ORDER_PLACEMENT_DELAY);
 
     return {
       orderId: `${order.id}`,
@@ -238,8 +245,6 @@ export class PaperExchange extends CCXTExchange {
       },
     });
 
-    this.emitOrder(order); // emit opened order
-
     const ticker = await this.ccxt.fetchTicker(params.symbol);
     const filledOrder = await xprisma.paperOrder.update({
       where: { id: order.id },
@@ -250,7 +255,13 @@ export class PaperExchange extends CCXTExchange {
       },
     });
 
-    this.emitOrder(filledOrder); // then fill it immediately
+    setTimeout(() => {
+      this.emitOrder(order);
+    }, ORDER_PLACEMENT_DELAY);
+
+    setTimeout(() => {
+      this.emitOrder(filledOrder);
+    }, ORDER_FULFILLMENT_DELAY);
 
     return {
       orderId: `${filledOrder.id}`,

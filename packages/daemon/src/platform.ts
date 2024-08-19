@@ -10,6 +10,7 @@ export async function bootstrapPlatform() {
     where: {
       label: "default",
     },
+    include: { exchangeAccount: true },
   });
   logger.info(`Found bot: ${bot ? bot.label : "none"}`);
 

@@ -16,7 +16,7 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 
-import { ExchangeAccountWithCredentials, TBot, xprisma } from "@opentrader/db";
+import { ExchangeAccountWithCredentials, TBotWithExchangeAccount } from "@opentrader/db";
 import { EventEmitter } from "node:events";
 
 export const EVENT = {
@@ -48,38 +48,16 @@ class EventBus extends EventEmitter {
     this.emit(EVENT.onExchangeAccountUpdated, exchangeAccount);
   }
 
-  botCreated(bot: TBot) {
+  botCreated(bot: TBotWithExchangeAccount) {
     this.emit(EVENT.onBotCreated, bot);
   }
 
-  botStarted(botId: number) {
-    xprisma.bot
-      .findUniqueOrThrow({
-        where: {
-          id: botId,
-        },
-      })
-      .then((bot) => {
-        this.emit(EVENT.onBotStarted, bot);
-      })
-      .catch((error) => {
-        console.error("EventBus: Error in botStarted", error);
-      });
+  botStarted(bot: TBotWithExchangeAccount) {
+    this.emit(EVENT.onBotStarted, bot);
   }
 
-  botStopped(botId: number) {
-    xprisma.bot
-      .findUniqueOrThrow({
-        where: {
-          id: botId,
-        },
-      })
-      .then((bot) => {
-        this.emit(EVENT.onBotStopped, bot);
-      })
-      .catch((error) => {
-        console.error("EventBus: Error in botStopped", error);
-      });
+  botStopped(bot: TBotWithExchangeAccount) {
+    this.emit(EVENT.onBotStopped, bot);
   }
 }
 

@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 import type { IExchange } from "@opentrader/exchanges";
-import type { BarSize, ICandlestick } from "@opentrader/types";
+import type { BarSize, ICandlestick, MarketId } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 import type { CandleEvent } from "./types.js";
 import { CandlesWatcher } from "./candles.watcher.js";
@@ -68,7 +68,9 @@ export class CandlesChannel extends EventEmitter {
     aggregator = new CandlesAggregator(timeframe, watcher, this.exchange);
     aggregator.on("candle", (candle: ICandlestick, history: ICandlestick[]) => {
       const candleEvent: CandleEvent = {
+        exchangeCode: this.exchangeCode,
         symbol,
+        marketId: `${this.exchangeCode}:${symbol}` as MarketId,
         timeframe,
         candle,
         history,

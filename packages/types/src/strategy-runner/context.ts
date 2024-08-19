@@ -1,4 +1,4 @@
-import type { ICandlestick, ITrade } from "../exchange/index.js";
+import type { ICandlestick, IOrderbook, ITicker, ITrade } from "../exchange/index.js";
 
 /**
  * Action that strategy should perform:
@@ -17,12 +17,14 @@ export type StrategyAction = (typeof StrategyAction)[keyof typeof StrategyAction
 /**
  * Event that triggers strategy execution
  */
-export const StrategyTriggerEventType = {
+export const MarketEventType = {
   onOrderFilled: "onOrderFilled",
   onCandleClosed: "onCandleClosed",
   onPublicTrade: "onPublicTrade",
+  onOrderbookChange: "onOrderbookChange",
+  onTickerChange: "onTickerChange",
 } as const;
-export type StrategyTriggerEventType = (typeof StrategyTriggerEventType)[keyof typeof StrategyTriggerEventType];
+export type MarketEventType = (typeof MarketEventType)[keyof typeof MarketEventType];
 
 /**
  * An error occurred during strategy execution
@@ -46,4 +48,6 @@ export interface MarketData {
    * Last public trade
    */
   trade?: ITrade;
+  orderbook?: IOrderbook;
+  ticker?: ITicker;
 }

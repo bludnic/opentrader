@@ -15,12 +15,7 @@
  *
  * Repository URL: https://github.com/bludnic/opentrader
  */
-import type {
-  IBotConfiguration,
-  StrategyRunner,
-  BotTemplate,
-  BotState,
-} from "@opentrader/bot-processor";
+import type { IBotConfiguration, StrategyRunner, BotTemplate, BotState } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import type { ICandlestick } from "@opentrader/types";
 import { logger, format } from "@opentrader/logger";
@@ -59,11 +54,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     for (const [index, candle] of candlesticks.entries()) {
       this.marketSimulator.nextCandle(candle);
 
-      logger.info(
-        `Process candle ${format.candletime(candle.timestamp)}: ${format.candle(
-          candle,
-        )}`,
-      );
+      logger.info(`Process candle ${format.candletime(candle.timestamp)}: ${format.candle(candle)}`);
 
       // const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
 
@@ -78,7 +69,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
         // last candle
         await this.processor.stop(this.botState);
       } else {
-        await this.processor.process(this.botState, {
+        await this.processor.process(this.botState, undefined, {
           candle,
           candles: candlesticks.slice(0, index + 1),
         });

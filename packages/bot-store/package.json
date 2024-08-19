@@ -1,0 +1,31 @@
+{
+  "name": "@opentrader/bot-store",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "?build": "Internal package",
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
+  },
+  "author": "bludnic",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@opentrader/eslint": "workspace:*",
+    "@opentrader/tsconfig": "workspace:*",
+    "@opentrader/types": "workspace:*",
+    "@types/node": "^20.14.15",
+    "eslint": "8.57.0",
+    "typescript": "5.5.4",
+    "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "@opentrader/bot-processor": "workspace:*",
+    "@opentrader/db": "workspace:*",
+    "@opentrader/event-bus": "workspace:*"
+  }
+}

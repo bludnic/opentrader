@@ -1,9 +1,9 @@
-import type { TBot } from "@opentrader/db";
+import type { TBotWithExchangeAccount } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { TRPCError } from "@trpc/server";
 
 export class BotService {
-  constructor(public bot: TBot) {}
+  constructor(public bot: TBotWithExchangeAccount) {}
 
   static async fromId(id: number) {
     const bot = await xprisma.bot.custom.findUniqueOrThrow({

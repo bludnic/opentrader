@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { MarketData, StrategyAction, StrategyError, StrategyTriggerEventType } from "@opentrader/types";
+import { MarketData, StrategyAction, StrategyError, MarketEventType } from "@opentrader/types";
 import { gridBotModel } from "./extension/models/grid-bot.model.js";
 import { orderModel } from "./extension/models/order.model.js";
 import { smartTradeModel } from "./extension/models/smart-trade.model.js";
@@ -54,7 +54,7 @@ const xprismaClient = prismaClient.$extends({
         endedAt: Date;
         botId: number;
         action: StrategyAction;
-        triggerEventType?: StrategyTriggerEventType;
+        triggerEventType?: MarketEventType;
         context?: MarketData;
         error?: StrategyError;
       }) {

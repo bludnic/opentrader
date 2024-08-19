@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { buy, cancelSmartTrade, sell, type TBotContext } from "@opentrader/bot-processor";
+import { buy, cancelSmartTrade, IBotConfiguration, sell, type TBotContext } from "@opentrader/bot-processor";
 import { logger } from "@opentrader/logger";
 
 export function* testBuySell(ctx: TBotContext<any>) {
@@ -39,3 +39,9 @@ export function* testBuySell(ctx: TBotContext<any>) {
 
 testBuySell.schema = z.object({});
 testBuySell.hidden = true;
+testBuySell.watchers = {
+  watchCandles: ({ baseCurrency, quoteCurrency }: IBotConfiguration) => `${baseCurrency}/${quoteCurrency}`,
+};
+testBuySell.runPolicy = {
+  onCandleClosed: true,
+};

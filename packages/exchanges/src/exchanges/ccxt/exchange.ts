@@ -43,6 +43,8 @@ import type {
   ExchangeCode,
   IWatchTradesRequest,
   IWatchTradesResponse,
+  IOrderbook,
+  ITicker,
 } from "@opentrader/types";
 import { pro } from "ccxt";
 import type { Dictionary, Market, Exchange } from "ccxt";
@@ -218,5 +220,19 @@ export class CCXTExchange implements IExchange {
     const data = await this.ccxt.watchTrades(...args);
 
     return normalize.watchTrades.response(data);
+  }
+
+  async watchOrderbook(symbol: string): Promise<IOrderbook> {
+    const args = normalize.watchOrderbook.request(symbol);
+    const data = await this.ccxt.watchOrderBook(...args);
+
+    return normalize.watchOrderbook.response(data);
+  }
+
+  async watchTicker(symbol: string): Promise<ITicker> {
+    const args = normalize.watchTicker.request(symbol);
+    const data = await this.ccxt.watchTicker(...args);
+
+    return normalize.watchTicker.response(data);
   }
 }

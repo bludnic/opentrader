@@ -26,6 +26,7 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
+    "@opentrader/bot-store": "workspace:*",
     "@opentrader/bot-templates": "workspace:*",
     "@opentrader/db": "workspace:*",
     "@opentrader/event-bus": "workspace:*",

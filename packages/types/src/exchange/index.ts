@@ -2,6 +2,8 @@ export * from "./account/common.js";
 export * from "./account/get-trading-fee-rates.js";
 export * from "./market-data/get-candlesticks.js";
 export * from "./market-data/get-trades.js";
+export * from "./market-data/get-orderbook.js";
+export * from "./market-data/get-ticker.js";
 export * from "./public-data/get-market-price.js";
 export * from "./public-data/get-symbols-info.js";
 export * from "./trade/common/enums.js";

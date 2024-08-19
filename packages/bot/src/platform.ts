@@ -1,21 +1,27 @@
-import { xprisma, type ExchangeAccountWithCredentials, type TBot } from "@opentrader/db";
+import { findStrategy } from "@opentrader/bot-templates/server";
+import { xprisma, type ExchangeAccountWithCredentials, TBotWithExchangeAccount } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { exchangeProvider } from "@opentrader/exchanges";
-import { BotProcessing } from "@opentrader/processing";
+import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
+import { store } from "@opentrader/bot-store";
+import { MarketEvent } from "@opentrader/types";
+import { processingQueue } from "./queue/index.js";
 
-import { CandlesConsumer } from "./consumers/candles.consumer.js";
-import { OrdersConsumer } from "./consumers/orders.consumer.js";
+import { MarketsStream } from "./streams/markets.stream.js";
+import { OrdersStream } from "./streams/orders.stream.js";
 
 export class Platform {
-  private ordersConsumer: OrdersConsumer;
-  private candlesConsumer: CandlesConsumer;
-
+  private ordersConsumer;
+  private marketStream: MarketsStream;
   private unsubscribeFromEventBus = () => {};
+  private enabledBots: TBotWithExchangeAccount[] = [];
 
-  constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBot[]) {
-    this.ordersConsumer = new OrdersConsumer(exchangeAccounts);
-    this.candlesConsumer = new CandlesConsumer(bots);
+  constructor(exchangeAccounts: ExchangeAccountWithCredentials[], bots: TBotWithExchangeAccount[]) {
+    this.ordersConsumer = new OrdersStream(exchangeAccounts);
+
+    this.marketStream = new MarketsStream(this.enabledBots);
+    this.marketStream.on("market", this.handleMarketEvent);
   }
 
   async bootstrap() {
@@ -24,11 +30,8 @@ export class Platform {
     logger.info("[Processor] OrdersProcessor created");
     await this.ordersConsumer.create();
 
-    // logger.info("[Processor] TimeframeProcessor created");
-    // this.timeframeCron.create();
-
-    logger.info("[Processor] CandlesProcessor created");
-    await this.candlesConsumer.create();
+    logger.info("[Market] MarketsStream created");
+    await this.marketStream.create();
 
     this.unsubscribeFromEventBus = this.subscribeToEventBus();
   }
@@ -39,11 +42,9 @@ export class Platform {
     logger.info("[Processor] OrdersProcessor destroyed");
     await this.ordersConsumer.destroy();
 
-    // logger.info("[Processor] TimeframeProcessor destroyed");
-    // this.timeframeCron.destroy();
-
-    logger.info("[Processor] CandlesProcessor destroyed");
-    this.candlesConsumer.destroy();
+    logger.info("[Market] MarketStream destroyed");
+    this.marketStream.off("market", this.handleMarketEvent);
+    this.marketStream.destroy();
 
     this.unsubscribeFromEventBus();
   }
@@ -99,8 +100,23 @@ export class Platform {
    * - When an exchange account was updated → Resubcribe to orders channel with new credentials
    */
   private subscribeToEventBus() {
-    const onBotStarted = async (bot: TBot) => await this.candlesConsumer.addBot(bot);
-    const onBotStopped = async (bot: TBot) => await this.candlesConsumer.cleanStaleChannels();
+    const onBotStarted = async (bot: TBotWithExchangeAccount) => {
+      this.marketStream.add(bot);
+
+      this.enabledBots = await xprisma.bot.custom.findMany({
+        where: { enabled: true },
+        include: { exchangeAccount: true },
+      });
+    };
+
+    const onBotStopped = async (bot: TBotWithExchangeAccount) => {
+      this.enabledBots = await xprisma.bot.custom.findMany({
+        where: { enabled: true },
+        include: { exchangeAccount: true },
+      });
+
+      await this.marketStream.clean(this.enabledBots);
+    };
 
     const addExchangeAccount = async (exchangeAccount: ExchangeAccountWithCredentials) =>
       await this.ordersConsumer.addExchangeAccount(exchangeAccount);
@@ -130,4 +146,19 @@ export class Platform {
       eventBus.off("onExchangeAccountUpdated", updateExchangeAccount);
     };
   }
+
+  handleMarketEvent = async (event: MarketEvent) => {
+    store.updateMarket(event);
+
+    for (const bot of this.enabledBots) {
+      const { strategyFn } = await findStrategy(bot.template);
+
+      if (shouldRunStrategy(strategyFn, bot, event.type)) {
+        processingQueue.push({
+          ...event,
+          bot,
+        });
+      }
+    }
+  };
 }

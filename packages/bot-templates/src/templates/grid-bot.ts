@@ -69,5 +69,8 @@ gridBot.schema = z.object({
     }),
   ),
 });
+gridBot.runPolicy = {
+  onOrderFilled: true,
+};
 
 export type GridBotConfig = IBotConfiguration<z.infer<typeof gridBot.schema>>;

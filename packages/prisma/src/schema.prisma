@@ -107,10 +107,10 @@ model ExchangeAccount {
   exchangeCode String // ExchangeCode
 
   // Credentials
-  apiKey        String
-  secretKey     String
-  password      String?
-  isDemoAccount Boolean @default(false)
+  apiKey         String
+  secretKey      String
+  password       String?
+  isDemoAccount  Boolean @default(false)
   isPaperAccount Boolean @default(false)
 
   owner     User     @relation(fields: [ownerId], references: [id])
@@ -218,7 +218,7 @@ model Bot {
 model BotLog {
   id               Int      @id @default(autoincrement())
   action           String // type StrategyAction
-  triggerEventType String? // type StrategyTriggerEventType
+  triggerEventType String? // type MarketEventType
   context          String? // type MarketData, JSON stringified
   error            String? // type StrategyError, An error occured during the strategy execution, JSON striginfied
   startedAt        DateTime // start execution time
@@ -235,20 +235,20 @@ model Markets {
 }
 
 model PaperAsset {
-  currency   String @id
-  balance Float
+  currency String @id
+  balance  Float
 }
 
 model PaperOrder {
-  id Int @id @default(autoincrement())
-  type String // OrderType
-  symbol String
-  side String // OrderSide
-  quantity Float
-  price Float?
-  filledPrice Float?
+  id                 Int      @id @default(autoincrement())
+  type               String // OrderType
+  symbol             String
+  side               String // OrderSide
+  quantity           Float
+  price              Float?
+  filledPrice        Float?
   lastTradeTimestamp DateTime @default(now())
-  status String @default("open") // OrderStatus
-  fee Float @default(0)
-  createdAt DateTime @default(now())
+  status             String   @default("open") // OrderStatus
+  fee                Float    @default(0)
+  createdAt          DateTime @default(now())
 }

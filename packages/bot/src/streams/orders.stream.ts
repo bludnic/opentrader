@@ -1,12 +1,13 @@
-import type { IWatchOrder } from "@opentrader/types";
-import { BotProcessing } from "@opentrader/processing";
+import { findStrategy } from "@opentrader/bot-templates/server";
+import type { ExchangeCode, IWatchOrder, MarketId } from "@opentrader/types";
+import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { OrdersChannel } from "../channels/index.js";
 import { processingQueue } from "../queue/index.js";
 
-export class OrdersConsumer {
+export class OrdersStream {
   private channels: OrdersChannel[] = [];
   private initialExchangeAccounts: ExchangeAccountWithCredentials[];
 
@@ -68,7 +69,7 @@ export class OrdersConsumer {
     }
   }
 
-  private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
+  private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade, exchangeCode: ExchangeCode) {
     logger.info(
       `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
     );
@@ -86,18 +87,18 @@ export class OrdersConsumer {
       return;
     }
 
-    if (botProcessor.getTimeframe()) {
-      logger.error(
-        `❕ The bot #${botProcessor.getId()} is timeframe-based: ${botProcessor.getTimeframe()}. Skip processing`,
-      );
-      return;
-    }
+    const bot = botProcessor.getBot();
+    const marketId: MarketId = `${exchangeCode}:${order.smartTrade.baseCurrency}/${order.smartTrade.quoteCurrency}`;
+    const { strategyFn } = await findStrategy(bot.template);
 
-    processingQueue.push({
-      type: "onOrderFilled",
-      bot: botProcessor.getBot(),
-      orderId: order.id,
-    });
+    if (shouldRunStrategy(strategyFn, bot, "onOrderFilled")) {
+      processingQueue.push({
+        type: "onOrderFilled",
+        marketId,
+        bot,
+        orderId: order.id,
+      });
+    }
   }
 
   private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
