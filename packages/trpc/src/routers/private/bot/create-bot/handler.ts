@@ -65,6 +65,7 @@ export async function createBot({ ctx, input }: Options) {
         },
       },
     },
+    include: { exchangeAccount: true },
   });
   eventBus.botCreated(bot);
 
