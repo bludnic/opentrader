@@ -9,7 +9,7 @@ async function queueHandler(tasks: QueueEvent[]) {
   const event = tasks[tasks.length - 1]; // getting last task from the queue
 
   if (tasks.length > 1) {
-    logger.info(`📠 Processing ${tasks.length} tasks of bot [id: ${event.bot.id} name: ${event.bot.name}]`);
+    logger.info(`📠 Batching ${tasks.length} tasks of bot [id: ${event.bot.id} name: ${event.bot.name}]`);
   } else {
     logger.info(`📠 Processing ${tasks.length} task of bot [id: ${event.bot.id} name: ${event.bot.name}]`);
   }
