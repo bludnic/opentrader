@@ -2,7 +2,6 @@ import { EventEmitter } from "node:events";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
 import type { TBotWithExchangeAccount } from "@opentrader/db";
-import { xprisma } from "@opentrader/db";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { getWatchers, getTimeframe } from "@opentrader/processing";
 import { decomposeSymbolId } from "@opentrader/tools";
@@ -38,29 +37,38 @@ export class OrderbookStream extends EventEmitter {
    * @returns
    */
   async addBot(bot: TBotWithExchangeAccount) {
-    const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
-      where: {
-        id: bot.exchangeAccountId,
-      },
-    });
-    const exchange = exchangeProvider.fromAccount(exchangeAccount);
-    const symbol = bot.symbol;
+    const { strategyFn } = await findStrategy(bot.template);
+    const { watchOrderbook: symbols } = getWatchers(strategyFn, bot);
 
-    let channel = this.channels.find((channel) => channel.exchangeCode === exchange.exchangeCode);
+    for (const symbolId of symbols) {
+      const { exchangeCode, currencyPairSymbol: symbol } = decomposeSymbolId(symbolId);
+
+      const channel = this.getChannel(exchangeCode);
+      await channel.add(symbol);
+      logger.info(
+        `[OrderbookStream]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchangeCode}:${symbol} channel`,
+      );
+    }
+  }
+
+  /**
+   * Return existing channel or create a new one.
+   */
+  private getChannel(exchangeCode: ExchangeCode) {
+    let channel = this.channels.find((channel) => channel.exchangeCode === exchangeCode);
     if (!channel) {
+      const exchange = exchangeProvider.fromCode(exchangeCode);
+
       channel = new OrderbookChannel(exchange);
       this.channels.push(channel);
 
-      logger.info(`[OrderbookConsumer] Created ${exchange.exchangeCode}:${symbol} channel`);
+      logger.info(`[OrderbookStream] Created ${exchangeCode} channel`);
 
       // @todo type
       channel.on("orderbook", this.handleOrderbook);
     }
 
-    await channel.add(symbol);
-    logger.info(
-      `[OrderbookConsumer]: Subscribed bot [${bot.id}:"${bot.name}"] to the ${exchange.exchangeCode}:${symbol} channel`,
-    );
+    return channel;
   }
 
   /**
