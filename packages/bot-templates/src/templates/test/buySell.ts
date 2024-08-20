@@ -40,7 +40,7 @@ export function* testBuySell(ctx: TBotContext<any>) {
 testBuySell.schema = z.object({});
 testBuySell.hidden = true;
 testBuySell.watchers = {
-  watchCandles: ({ baseCurrency, quoteCurrency }: IBotConfiguration) => `${baseCurrency}/${quoteCurrency}`,
+  watchCandles: ({ symbol }: IBotConfiguration) => symbol,
 };
 testBuySell.runPolicy = {
   onCandleClosed: true,

@@ -9,45 +9,20 @@ import { toPrismaOrder } from "./toPrismaOrder.js";
 
 type Params = {
   ref: string;
-  exchangeSymbolId: string;
-  baseCurrency: string;
-  quoteCurrency: string;
+  symbol: string;
 
   exchangeAccountId: number;
   ownerId: number;
   botId: number;
 };
 
-export function toPrismaSmartTrade(
-  smartTrade: UseSmartTradePayload,
-  params: Params,
-): Prisma.SmartTradeCreateInput {
+export function toPrismaSmartTrade(smartTrade: UseSmartTradePayload, params: Params): Prisma.SmartTradeCreateInput {
   const { buy, sell, quantity } = smartTrade;
-  const {
-    ref,
-    exchangeSymbolId,
-    baseCurrency,
-    quoteCurrency,
-    exchangeAccountId,
-    ownerId,
-    botId,
-  } = params;
+  const { ref, symbol, exchangeAccountId, ownerId, botId } = params;
 
-  const buyOrderData = toPrismaOrder(
-    buy,
-    quantity,
-    XOrderSide.Buy,
-    XEntityType.EntryOrder,
-  );
+  const buyOrderData = toPrismaOrder(buy, quantity, XOrderSide.Buy, XEntityType.EntryOrder);
 
-  const sellOrderData = sell
-    ? toPrismaOrder(
-        sell,
-        quantity,
-        XOrderSide.Sell,
-        XEntityType.TakeProfitOrder,
-      )
-    : undefined;
+  const sellOrderData = sell ? toPrismaOrder(sell, quantity, XOrderSide.Sell, XEntityType.TakeProfitOrder) : undefined;
 
   return {
     entryType: "Order",
@@ -55,9 +30,7 @@ export function toPrismaSmartTrade(
 
     ref,
     type: XSmartTradeType.Trade,
-    exchangeSymbolId,
-    baseCurrency,
-    quoteCurrency,
+    symbol,
 
     orders: {
       createMany: {

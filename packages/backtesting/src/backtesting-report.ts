@@ -1,12 +1,8 @@
 import { table } from "table";
-import type {
-  BotTemplate,
-  IBotConfiguration,
-  Order,
-  SmartTrade,
-} from "@opentrader/bot-processor";
+import type { BotTemplate, IBotConfiguration, Order, SmartTrade } from "@opentrader/bot-processor";
 import { ICandlestick, OrderStatusEnum } from "@opentrader/types";
 import { format } from "@opentrader/logger";
+import { decomposeSymbol } from "@opentrader/tools";
 import { buyOrder } from "./report/buyOrder.js";
 import { buyTransaction } from "./report/buyTransaction.js";
 import { sellOrder } from "./report/sellOrder.js";
@@ -28,28 +24,22 @@ export class BacktestingReport {
 
   create(): string {
     const startDate = format.datetime(this.candlesticks[0]!.timestamp);
-    const endDate = format.datetime(
-      this.candlesticks[this.candlesticks.length - 1]!.timestamp,
-    );
+    const endDate = format.datetime(this.candlesticks[this.candlesticks.length - 1]!.timestamp);
 
     const strategyParams = JSON.stringify(this.botConfig.settings, null, 2);
     const strategyName = this.template.name;
 
     const exchange = this.botConfig.exchangeCode;
-    const baseCurrency = this.botConfig.baseCurrency;
-    const quoteCurrency = this.botConfig.quoteCurrency;
-    const pair = `${baseCurrency}/${quoteCurrency}`;
+    const symbol = this.botConfig.symbol;
+    const { baseCurrency, quoteCurrency } = decomposeSymbol(symbol);
 
-    const backtestData: Array<any[]> = [
-      ["Date", "Action", "Price", "Quantity", "Amount", "Profit"],
-    ];
+    const backtestData: Array<any[]> = [["Date", "Action", "Price", "Quantity", "Amount", "Profit"]];
 
     const trades = this.getOrders().map((order) => {
       const amount = order.filledPrice! * order.trade.quantity;
       const profit =
         order.side === "sell" && order.trade.sell
-          ? (order.trade.sell.filledPrice! - order.trade.buy.filledPrice!) *
-            order.trade.quantity
+          ? (order.trade.sell.filledPrice! - order.trade.buy.filledPrice!) * order.trade.quantity
           : "-";
 
       return [
@@ -75,7 +65,7 @@ Strategy params:
 ${strategyParams}
 
 Exchange: ${exchange}
-Pair: ${pair}
+Pair: ${symbol}
 
 Start date: ${startDate}
 End date: ${endDate}
@@ -145,9 +135,7 @@ Total Profit: ${totalProfit} ${quoteCurrency}
   private calcTotalProfit(): number {
     return this.smartTrades.reduce((acc, curr) => {
       const priceDiff =
-        curr.buy.filledPrice && curr.sell?.filledPrice
-          ? curr.sell.filledPrice - curr.buy.filledPrice
-          : 0;
+        curr.buy.filledPrice && curr.sell?.filledPrice ? curr.sell.filledPrice - curr.buy.filledPrice : 0;
       const profit = priceDiff * curr.quantity;
 
       return acc + profit;
@@ -157,17 +145,13 @@ Total Profit: ${totalProfit} ${quoteCurrency}
   private getActiveSmartTrades() {
     return this.smartTrades.filter(
       (smartTrade) =>
-        smartTrade.buy.status === OrderStatusEnum.Placed ||
-        smartTrade.sell?.status === OrderStatusEnum.Placed,
+        smartTrade.buy.status === OrderStatusEnum.Placed || smartTrade.sell?.status === OrderStatusEnum.Placed,
     );
   }
 
   private getFinishedSmartTrades() {
     return this.smartTrades.filter((smartTrade) => {
-      return (
-        smartTrade.buy.status === OrderStatusEnum.Filled &&
-        smartTrade.sell?.status === OrderStatusEnum.Filled
-      );
+      return smartTrade.buy.status === OrderStatusEnum.Filled && smartTrade.sell?.status === OrderStatusEnum.Filled;
     });
   }
 }

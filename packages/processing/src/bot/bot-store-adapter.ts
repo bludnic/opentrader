@@ -1,8 +1,4 @@
-import type {
-  IStore,
-  SmartTrade,
-  UseSmartTradePayload,
-} from "@opentrader/bot-processor";
+import type { IStore, SmartTrade, UseSmartTradePayload } from "@opentrader/bot-processor";
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
@@ -38,11 +34,7 @@ export class BotStoreAdapter implements IStore {
     }
   }
 
-  async createSmartTrade(
-    ref: string,
-    payload: UseSmartTradePayload,
-    botId: number,
-  ) {
+  async createSmartTrade(ref: string, payload: UseSmartTradePayload, botId: number) {
     const bot = await xprisma.bot.findUnique({
       where: {
         id: botId,
@@ -56,12 +48,9 @@ export class BotStoreAdapter implements IStore {
       throw new Error("Bot not found");
     }
 
-    const exchangeSymbolId = `${bot.baseCurrency}/${bot.quoteCurrency}`;
     const data = toPrismaSmartTrade(payload, {
       ref,
-      exchangeSymbolId,
-      baseCurrency: bot.baseCurrency,
-      quoteCurrency: bot.quoteCurrency,
+      symbol: bot.symbol,
       exchangeAccountId: bot.exchangeAccountId,
       ownerId: bot.ownerId,
       botId: bot.id,
@@ -129,21 +118,15 @@ export class BotStoreAdapter implements IStore {
           exchangeAccount: true,
         },
       });
-      const entryOrder = smartTrade.orders.find(
-        (order) => order.entityType === "EntryOrder",
-      );
+      const entryOrder = smartTrade.orders.find((order) => order.entityType === "EntryOrder");
 
       if (!entryOrder) {
         throw new Error("EntryOrder not found in SmartTrade");
       }
 
-      const tpOrder = smartTrade.orders.find(
-        (order) => order.entityType === "TakeProfitOrder",
-      );
+      const tpOrder = smartTrade.orders.find((order) => order.entityType === "TakeProfitOrder");
       if (tpOrder) {
-        logger.info(
-          `BotStoreAdapter: Updating SmartTrade with "${ref}". TakeProfitOrder already placed. Skipping.`,
-        );
+        logger.info(`BotStoreAdapter: Updating SmartTrade with "${ref}". TakeProfitOrder already placed. Skipping.`);
 
         return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
       }
@@ -184,9 +167,7 @@ export class BotStoreAdapter implements IStore {
         },
       });
 
-      logger.info(
-        `BotStoreAdapter: SmartTrade with ref "${ref}" updated. TakeProfitOrder placed.`,
-      );
+      logger.info(`BotStoreAdapter: SmartTrade with ref "${ref}" updated. TakeProfitOrder placed.`);
 
       return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
     } catch (err) {
@@ -223,16 +204,11 @@ export class BotStoreAdapter implements IStore {
       },
     });
     if (!smartTrade) {
-      logger.warn(
-        `BotStoreAdapter: Cannot cancel SmartTrade with ref "${ref}". Reason: SmartTrade not found`,
-      );
+      logger.warn(`BotStoreAdapter: Cannot cancel SmartTrade with ref "${ref}". Reason: SmartTrade not found`);
       return false;
     }
 
-    const smartTradeExecutor = SmartTradeExecutor.create(
-      smartTrade,
-      smartTrade.exchangeAccount,
-    );
+    const smartTradeExecutor = SmartTradeExecutor.create(smartTrade, smartTrade.exchangeAccount);
     await smartTradeExecutor.cancelOrders();
 
     return true;
@@ -246,9 +222,7 @@ export class BotStoreAdapter implements IStore {
     });
 
     if (!exchangeAccount) {
-      logger.error(
-        `BotStoreAdapter: ExchangeAccount with label "${label}" not found`,
-      );
+      logger.error(`BotStoreAdapter: ExchangeAccount with label "${label}" not found`);
       return null;
     }
 

@@ -131,10 +131,8 @@ model SmartTrade {
   entryType      String // EntryType
   takeProfitType String // TakeProfitType
 
-  baseCurrency     String
-  quoteCurrency    String
-  exchangeSymbolId String // BTC/USDT, for future usage with Margin/Futures the symbolId may differ from patter `baseCurrency/quoteCurrency`
-  orders           Order[]
+  symbol String
+  orders Order[]
 
   ref String? // user provided reference value
 
@@ -176,13 +174,12 @@ model Order {
 }
 
 model Bot {
-  id            Int     @id @default(autoincrement())
-  type          String // BotType
-  name          String
-  label         String? @unique
-  baseCurrency  String
-  quoteCurrency String
-  enabled       Boolean @default(false)
+  id      Int     @id @default(autoincrement())
+  type    String // BotType
+  name    String
+  label   String? @unique
+  symbol  String
+  enabled Boolean @default(false)
 
   // Template name that will be executed by the bot
   // e.g. `gridBot`, see templates in @opentrader/templates

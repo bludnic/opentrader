@@ -5,13 +5,10 @@ export const ZUpdateGridBotInputSchema = z.object({
   botId: z.number(),
   data: ZGridBot.pick({
     name: true,
-    baseCurrency: true,
-    quoteCurrency: true,
+    symbol: true,
     settings: true,
     exchangeAccountId: true,
   }),
 });
 
-export type TUpdateGridBotInputSchema = z.infer<
-  typeof ZUpdateGridBotInputSchema
->;
+export type TUpdateGridBotInputSchema = z.infer<typeof ZUpdateGridBotInputSchema>;

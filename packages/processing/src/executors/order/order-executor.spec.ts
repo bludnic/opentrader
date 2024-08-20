@@ -1,8 +1,4 @@
-import {
-  ExchangeAccountWithCredentials,
-  SmartTradeWithOrders,
-  xprisma,
-} from "@opentrader/db";
+import { ExchangeAccountWithCredentials, SmartTradeWithOrders, xprisma } from "@opentrader/db";
 import { exchangeProvider, IExchange } from "@opentrader/exchanges";
 import { Order } from "@opentrader/db";
 import { OrderExecutor } from "./order.executor.js";
@@ -34,7 +30,7 @@ describe("OrderExecutor", () => {
       },
     });
     order = smartTrade.orders.find((o) => o.entityType === "EntryOrder")!;
-    symbol = `${smartTrade.baseCurrency}/${smartTrade.quoteCurrency}`;
+    symbol = smartTrade.symbol;
   });
 
   afterEach(async () => {

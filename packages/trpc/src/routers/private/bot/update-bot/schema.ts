@@ -5,8 +5,7 @@ export const ZUpdateBotInputSchema = z.object({
   botId: z.number(),
   data: ZBot.pick({
     name: true,
-    baseCurrency: true,
-    quoteCurrency: true,
+    symbol: true,
     settings: true,
     template: true,
     timeframe: true,

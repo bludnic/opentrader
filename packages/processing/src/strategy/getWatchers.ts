@@ -15,8 +15,7 @@ const extractSymbols = (
   if (typeof watchCondition === "function") {
     symbols = watchCondition({
       id: bot.id,
-      baseCurrency: bot.baseCurrency,
-      quoteCurrency: bot.quoteCurrency,
+      symbol: bot.symbol,
       settings: bot.settings,
       timeframe: bot.timeframe as BarSize | null,
       exchangeCode: bot.exchangeAccount.exchangeCode as ExchangeCode,

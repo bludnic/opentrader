@@ -107,7 +107,7 @@ export class SmartTradeSynchronizer {
     try {
       const exchangeOrder = await this.exchange.getLimitOrder({
         orderId: order.exchangeOrderId,
-        symbol: this.smartTrade.exchangeSymbolId,
+        symbol: this.smartTrade.symbol,
       });
 
       await xprisma.order.updateSyncedAt(order.id);

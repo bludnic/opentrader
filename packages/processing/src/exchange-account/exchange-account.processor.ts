@@ -151,7 +151,7 @@ export class ExchangeAccountProcessor {
   }
 
   private async fetchClosedOrder(order: OrderWithSmartTrade) {
-    const symbol = order.smartTrade.exchangeSymbolId;
+    const { symbol } = order.smartTrade;
 
     const cachedOrder = await this.findFromCache(order);
     if (cachedOrder) {
@@ -169,7 +169,7 @@ export class ExchangeAccountProcessor {
   }
 
   private async findFromCache(order: OrderWithSmartTrade) {
-    const symbol = order.smartTrade.exchangeSymbolId;
+    const { symbol } = order.smartTrade;
 
     const cachedOrders = await this.getOrders(symbol);
     const cachedOrder = cachedOrders.find(

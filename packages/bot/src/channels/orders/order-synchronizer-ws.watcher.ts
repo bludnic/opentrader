@@ -54,7 +54,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
             // get the actual status of the order (it may be stalled, if was filled immediately)
             const actualExchangeOrder = await this.exchangeService.getLimitOrder({
               orderId: exchangeOrder.exchangeOrderId,
-              symbol: smartTrade.exchangeSymbolId,
+              symbol: smartTrade.symbol,
             });
 
             this.emit("onPlaced", [actualExchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);

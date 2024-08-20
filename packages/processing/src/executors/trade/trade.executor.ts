@@ -103,7 +103,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       const orderExecutor = new OrderExecutor(
         entryOrder,
         this.exchange,
-        this.smartTrade.exchangeSymbolId,
+        this.smartTrade.symbol,
       );
       await orderExecutor.place();
       await this.pull();
@@ -120,7 +120,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       const orderExecutor = new OrderExecutor(
         takeProfitOrder,
         this.exchange,
-        this.smartTrade.exchangeSymbolId,
+        this.smartTrade.symbol,
       );
       await orderExecutor.place();
       await this.pull();
@@ -149,7 +149,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       const orderExecutor = new OrderExecutor(
         order,
         this.exchange,
-        this.smartTrade.exchangeSymbolId,
+        this.smartTrade.symbol,
       );
 
       const cancelled = await orderExecutor.cancel();

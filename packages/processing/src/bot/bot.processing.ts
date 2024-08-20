@@ -167,8 +167,7 @@ export class BotProcessing {
 
     const configuration: IBotConfiguration = {
       id: this.bot.id,
-      baseCurrency: this.bot.baseCurrency,
-      quoteCurrency: this.bot.quoteCurrency,
+      symbol: this.bot.symbol,
       settings: this.bot.settings,
       exchangeCode: exchangeAccount.exchangeCode as ExchangeCode,
     };
@@ -211,7 +210,7 @@ export class BotProcessing {
       const { exchangeAccount } = smartTrade;
 
       logger.info(
-        `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.exchangeSymbolId}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
+        `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.symbol}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
       );
 
       const smartTradeExecutor = SmartTradeExecutor.create(smartTrade, exchangeAccount);

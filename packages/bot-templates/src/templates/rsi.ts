@@ -113,7 +113,7 @@ rsi.runPolicy = {
   onCandleClosed: true,
 };
 rsi.watchers = {
-  watchCandles: ({ baseCurrency, quoteCurrency }: IBotConfiguration) => `${baseCurrency}/${quoteCurrency}`,
+  watchCandles: ({ symbol }: IBotConfiguration) => symbol,
 };
 
 type RsiState = {

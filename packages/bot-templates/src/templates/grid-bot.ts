@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { IExchange } from "@opentrader/exchanges";
 import type { IBotConfiguration, SmartTradeService, TBotContext } from "@opentrader/bot-processor";
 import { cancelSmartTrade, useExchange, useSmartTrade } from "@opentrader/bot-processor";
-import { computeGridLevelsFromCurrentAssetPrice } from "@opentrader/tools";
+import { computeGridLevelsFromCurrentAssetPrice, decomposeSymbol } from "@opentrader/tools";
 import type { IGetMarketPriceResponse } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 
@@ -12,17 +12,18 @@ import { logger } from "@opentrader/logger";
  */
 export function* gridBot(ctx: TBotContext<GridBotConfig>) {
   const { config: bot, onStart, onStop } = ctx;
-  const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
+  const symbol = bot.symbol;
+  const { quoteCurrency } = decomposeSymbol(symbol);
 
   const exchange: IExchange = yield useExchange();
 
   let price = 0;
   if (onStart) {
     const { price: markPrice }: IGetMarketPriceResponse = yield exchange.getMarketPrice({
-      symbol: `${bot.baseCurrency}/${bot.quoteCurrency}`,
+      symbol,
     });
     price = markPrice;
-    logger.info(`[Grid] Bot strategy started on ${symbol} pair. Current price is ${price} ${bot.quoteCurrency}`);
+    logger.info(`[Grid] Bot strategy started on ${symbol} pair. Current price is ${price} ${quoteCurrency}`);
   }
 
   const gridLevels = computeGridLevelsFromCurrentAssetPrice(bot.settings.gridLines, price);

@@ -44,7 +44,7 @@ export class OrderbookStream extends EventEmitter {
       },
     });
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
-    const symbol = `${bot.baseCurrency}/${bot.quoteCurrency}`;
+    const symbol = bot.symbol;
 
     let channel = this.channels.find((channel) => channel.exchangeCode === exchange.exchangeCode);
     if (!channel) {

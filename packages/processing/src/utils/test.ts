@@ -1,15 +1,7 @@
 // Only for testing purposes. Don't export this file.
-import type {
-  ExchangeAccountWithCredentials,
-  SmartTradeWithOrders,
-} from "@opentrader/db";
+import type { ExchangeAccountWithCredentials, SmartTradeWithOrders } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
-import type {
-  XEntityType,
-  XOrderSide,
-  XOrderStatus,
-  XOrderType,
-} from "@opentrader/types";
+import type { XEntityType, XOrderSide, XOrderStatus, XOrderType } from "@opentrader/types";
 
 export const TEST_ACCOUNT_LABEL = "TEST";
 
@@ -31,7 +23,6 @@ export async function createTrade(
   exchangeLabel = TEST_ACCOUNT_LABEL,
 ): Promise<SmartTradeWithOrders> {
   const { symbol, entry, takeProfit } = params;
-  const [baseCurrency, quoteCurrency] = symbol.split("/");
 
   const exchangeAccount = await xprisma.exchangeAccount.findFirstOrThrow({
     where: {
@@ -59,9 +50,7 @@ export async function createTrade(
 
       ref: null,
       type: "Trade",
-      exchangeSymbolId: params.symbol,
-      baseCurrency,
-      quoteCurrency,
+      symbol,
 
       orders: {
         createMany: {
@@ -88,9 +77,7 @@ export async function createTrade(
   });
 }
 
-export async function getExchangeAccount(
-  label = TEST_ACCOUNT_LABEL,
-): Promise<ExchangeAccountWithCredentials> {
+export async function getExchangeAccount(label = TEST_ACCOUNT_LABEL): Promise<ExchangeAccountWithCredentials> {
   return xprisma.exchangeAccount.findFirstOrThrow({
     where: {
       label,
@@ -106,14 +93,8 @@ type UpdateOrderParams = {
   status?: XOrderStatus;
 };
 
-export async function updateOrder(
-  params: UpdateOrderParams,
-  trade: SmartTradeWithOrders,
-  entityType: XEntityType,
-) {
-  const entryOrder = trade.orders.find(
-    (order) => order.entityType === "EntryOrder",
-  );
+export async function updateOrder(params: UpdateOrderParams, trade: SmartTradeWithOrders, entityType: XEntityType) {
+  const entryOrder = trade.orders.find((order) => order.entityType === "EntryOrder");
 
   if (!entryOrder) {
     throw new Error("Entry order not found");
@@ -129,16 +110,10 @@ export async function updateOrder(
   });
 }
 
-export async function updateEntryOrder(
-  params: UpdateOrderParams,
-  trade: SmartTradeWithOrders,
-) {
+export async function updateEntryOrder(params: UpdateOrderParams, trade: SmartTradeWithOrders) {
   return updateOrder(params, trade, "EntryOrder");
 }
 
-export async function updateTakeProfitOrder(
-  params: UpdateOrderParams,
-  trade: SmartTradeWithOrders,
-) {
+export async function updateTakeProfitOrder(params: UpdateOrderParams, trade: SmartTradeWithOrders) {
   return updateOrder(params, trade, "TakeProfitOrder");
 }
