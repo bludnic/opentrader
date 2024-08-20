@@ -1,19 +1,15 @@
 import type { IExchange } from "@opentrader/exchanges";
-import type { UseSmartTradePayload } from "../../effects/index.js";
 import type { SmartTrade } from "../smart-trade/index.js";
+import { CreateSmartTradePayload } from "./types.js";
 
 export interface IStore {
   stopBot: (botId: number) => Promise<void>;
   getSmartTrade: (ref: string, botId: number) => Promise<SmartTrade | null>;
-  createSmartTrade: (
-    ref: string,
-    payload: UseSmartTradePayload,
-    botId: number,
-  ) => Promise<SmartTrade>;
+  createSmartTrade: (ref: string, payload: CreateSmartTradePayload, botId: number) => Promise<SmartTrade>;
 
   updateSmartTrade: (
     ref: string,
-    payload: Pick<UseSmartTradePayload, "sell">,
+    payload: Pick<CreateSmartTradePayload, "sell">,
     botId: number,
   ) => Promise<SmartTrade | null>;
 

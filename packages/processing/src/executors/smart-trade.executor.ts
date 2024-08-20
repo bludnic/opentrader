@@ -1,11 +1,10 @@
-import type {
-  ExchangeAccountWithCredentials,
-  SmartTradeWithOrders,
-} from "@opentrader/db";
+import type { ExchangeAccountWithCredentials, SmartTradeWithOrders } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
 import type { ISmartTradeExecutor } from "./smart-trade-executor.interface.js";
 import { TradeExecutor } from "./trade/trade.executor.js";
+import { ArbExecutor } from "./arb/arb.executor.js";
+import { XSmartTradeType } from "@opentrader/types";
 
 /**
  * Combine all type of SmartTrades into one executor.
@@ -17,9 +16,11 @@ export class SmartTradeExecutor {
   ): ISmartTradeExecutor {
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
 
-    switch (smartTrade.type) {
+    switch (smartTrade.type as XSmartTradeType) {
       case "Trade":
         return new TradeExecutor(smartTrade, exchange);
+      case "ARB":
+        return new ArbExecutor(smartTrade, exchange);
       default:
         throw new Error(`Unknown SmartTrade type: ${smartTrade.type}`);
     }
@@ -37,9 +38,11 @@ export class SmartTradeExecutor {
     });
     const exchange = exchangeProvider.fromAccount(smartTrade.exchangeAccount);
 
-    switch (smartTrade.type) {
+    switch (smartTrade.type as XSmartTradeType) {
       case "Trade":
         return new TradeExecutor(smartTrade, exchange);
+      case "ARB":
+        return new ArbExecutor(smartTrade, exchange);
       default:
         throw new Error(`Unknown SmartTrade type: ${smartTrade.type}`);
     }

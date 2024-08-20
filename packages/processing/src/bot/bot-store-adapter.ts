@@ -1,4 +1,4 @@
-import type { IStore, SmartTrade, UseSmartTradePayload } from "@opentrader/bot-processor";
+import { CreateSmartTradePayload, IStore, SmartTrade } from "@opentrader/bot-processor";
 import { xprisma, toSmartTradeEntity } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
@@ -34,7 +34,7 @@ export class BotStoreAdapter implements IStore {
     }
   }
 
-  async createSmartTrade(ref: string, payload: UseSmartTradePayload, botId: number) {
+  async createSmartTrade(ref: string, payload: CreateSmartTradePayload, botId: number) {
     const bot = await xprisma.bot.findUnique({
       where: {
         id: botId,
@@ -48,13 +48,7 @@ export class BotStoreAdapter implements IStore {
       throw new Error("Bot not found");
     }
 
-    const data = toPrismaSmartTrade(payload, {
-      ref,
-      symbol: bot.symbol,
-      exchangeAccountId: bot.exchangeAccountId,
-      ownerId: bot.ownerId,
-      botId: bot.id,
-    });
+    const data = toPrismaSmartTrade(payload, bot, ref);
 
     // Clear old ref in case of `SmartTrade.replace()`
     // @todo db transaction
@@ -82,7 +76,7 @@ export class BotStoreAdapter implements IStore {
 
   async updateSmartTrade(
     ref: string,
-    payload: Pick<UseSmartTradePayload, "sell">,
+    payload: Pick<CreateSmartTradePayload, "sell">,
     botId: number,
   ): Promise<SmartTrade | null> {
     if (!payload.sell) {
@@ -131,6 +125,9 @@ export class BotStoreAdapter implements IStore {
         return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
       }
 
+      const symbol = payload.sell.symbol || bot.symbol;
+      const exchangeAccountId = payload.sell.exchange || bot.exchangeAccountId;
+
       await xprisma.order.create({
         data: {
           entityType: "TakeProfitOrder",
@@ -138,7 +135,7 @@ export class BotStoreAdapter implements IStore {
           side: "Sell",
           price: payload.sell.price,
           quantity: entryOrder.quantity, // @todo multiply by 0.99 for safety amount
-          symbol: smartTrade.symbol,
+          symbol,
           smartTrade: {
             connect: {
               id: smartTrade.id,
@@ -146,9 +143,9 @@ export class BotStoreAdapter implements IStore {
           },
           exchangeAccount: {
             connect: {
-              id: smartTrade.exchangeAccountId,
-            }
-          }
+              id: exchangeAccountId,
+            },
+          },
         },
         include: {
           smartTrade: {

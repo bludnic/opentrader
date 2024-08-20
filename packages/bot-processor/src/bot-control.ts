@@ -1,11 +1,5 @@
 import { OrderStatusEnum } from "@opentrader/types";
-import type { UseSmartTradePayload } from "./effects/index.js";
-import type {
-  IBotConfiguration,
-  IBotControl,
-  SmartTrade,
-  IStore,
-} from "./types/index.js";
+import type { IBotConfiguration, IBotControl, SmartTrade, IStore, CreateSmartTradePayload } from "./types/index.js";
 
 export class BotControl<T extends IBotConfiguration> implements IBotControl {
   constructor(
@@ -21,21 +15,15 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
     return this.store.getSmartTrade(ref, this.bot.id);
   }
 
-  async createSmartTrade(ref: string, payload: UseSmartTradePayload) {
+  async createSmartTrade(ref: string, payload: CreateSmartTradePayload) {
     return this.store.createSmartTrade(ref, payload, this.bot.id);
   }
 
-  async updateSmartTrade(
-    ref: string,
-    payload: Pick<UseSmartTradePayload, "sell">,
-  ) {
+  async updateSmartTrade(ref: string, payload: Pick<CreateSmartTradePayload, "sell">) {
     return this.store.updateSmartTrade(ref, payload, this.bot.id);
   }
 
-  async getOrCreateSmartTrade(
-    ref: string,
-    payload: UseSmartTradePayload,
-  ): Promise<SmartTrade> {
+  async getOrCreateSmartTrade(ref: string, payload: CreateSmartTradePayload): Promise<SmartTrade> {
     const smartTrade = await this.store.getSmartTrade(ref, this.bot.id);
 
     if (smartTrade) {
@@ -45,11 +33,9 @@ export class BotControl<T extends IBotConfiguration> implements IBotControl {
     return this.store.createSmartTrade(ref, payload, this.bot.id);
   }
 
-  async replaceSmartTrade(
-    ref: string,
-    smartTrade: SmartTrade,
-  ): Promise<SmartTrade> {
-    const payload: UseSmartTradePayload = {
+  async replaceSmartTrade(ref: string, smartTrade: SmartTrade): Promise<SmartTrade> {
+    const payload: CreateSmartTradePayload = {
+      type: smartTrade.type,
       buy: {
         type: smartTrade.buy.type,
         price: smartTrade.buy.price,

@@ -6,5 +6,6 @@ export * from "./sell.js";
 export * from "./useExchange.js";
 export * from "./useIndicators.js";
 export * from "./useTrade.js";
+export * from "./useArbTrade.js";
 export * from "./market.js";
 export * from "./indicators.js";

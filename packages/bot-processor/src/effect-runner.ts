@@ -23,6 +23,7 @@ import type { BaseEffect, EffectType } from "./effects/types/index.js";
 import type {
   buy,
   useTrade,
+  useArbTrade,
   sell,
   useExchange,
   useSmartTrade,
@@ -45,6 +46,7 @@ import {
   USE_INDICATORS,
   USE_SMART_TRADE,
   USE_TRADE,
+  USE_ARB_TRADE,
   USE_MARKET,
   USE_CANDLE,
   USE_RSI_INDICATOR,
@@ -60,6 +62,7 @@ export const effectRunnerMap: Record<
   [CREATE_SMART_TRADE]: runCreateSmartTradeEffect,
   [REPLACE_SMART_TRADE]: runReplaceSmartTradeEffect,
   [USE_TRADE]: runUseTradeEffect,
+  [USE_ARB_TRADE]: runUseArbTradeEffect,
   [BUY]: runBuyEffect,
   [SELL]: runSellEffect,
   [USE_EXCHANGE]: runUseExchangeEffect,
@@ -75,58 +78,40 @@ async function runUseSmartTradeEffect(
   effect: ReturnType<typeof useSmartTrade>,
   ctx: TBotContext<any>,
 ): Promise<SmartTradeService> {
-  const smartTrade = await ctx.control.getOrCreateSmartTrade(
-    effect.ref,
-    effect.payload,
-  );
+  const smartTrade = await ctx.control.getOrCreateSmartTrade(effect.ref, {
+    ...effect.payload,
+    type: "Trade",
+  });
 
   return new SmartTradeService(effect.ref, smartTrade);
 }
 
-async function runGetSmartTradeEffect(
-  effect: ReturnType<typeof getSmartTrade>,
-  ctx: TBotContext<any>,
-) {
+async function runGetSmartTradeEffect(effect: ReturnType<typeof getSmartTrade>, ctx: TBotContext<any>) {
   const smartTrade = await ctx.control.getSmartTrade(effect.ref);
 
   return smartTrade ? new SmartTradeService(effect.ref, smartTrade) : null;
 }
 
-async function runCancelSmartTradeEffect(
-  effect: ReturnType<typeof cancelSmartTrade>,
-  ctx: TBotContext<any>,
-) {
+async function runCancelSmartTradeEffect(effect: ReturnType<typeof cancelSmartTrade>, ctx: TBotContext<any>) {
   return ctx.control.cancelSmartTrade(effect.ref);
 }
 
-async function runCreateSmartTradeEffect(
-  effect: ReturnType<typeof createSmartTrade>,
-  ctx: TBotContext<any>,
-) {
-  const smartTrade = await ctx.control.createSmartTrade(
-    effect.ref,
-    effect.payload,
-  );
+async function runCreateSmartTradeEffect(effect: ReturnType<typeof createSmartTrade>, ctx: TBotContext<any>) {
+  const smartTrade = await ctx.control.createSmartTrade(effect.ref, {
+    ...effect.payload,
+    type: "Trade",
+  });
 
   return new SmartTradeService(effect.ref, smartTrade);
 }
 
-async function runReplaceSmartTradeEffect(
-  effect: ReturnType<typeof replaceSmartTrade>,
-  ctx: TBotContext<any>,
-) {
-  const smartTrade = await ctx.control.replaceSmartTrade(
-    effect.ref,
-    effect.payload,
-  );
+async function runReplaceSmartTradeEffect(effect: ReturnType<typeof replaceSmartTrade>, ctx: TBotContext<any>) {
+  const smartTrade = await ctx.control.replaceSmartTrade(effect.ref, effect.payload);
 
   return new SmartTradeService(effect.ref, smartTrade);
 }
 
-async function runUseTradeEffect(
-  effect: ReturnType<typeof useTrade>,
-  ctx: TBotContext<any>,
-) {
+async function runUseTradeEffect(effect: ReturnType<typeof useTrade>, ctx: TBotContext<any>) {
   const { payload, ref } = effect;
 
   let buy;
@@ -188,6 +173,7 @@ async function runUseTradeEffect(
   }
 
   const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
+    type: "Trade",
     quantity: payload.quantity,
     buy,
     sell,
@@ -196,10 +182,32 @@ async function runUseTradeEffect(
   return new SmartTradeService(effect.ref, smartTrade);
 }
 
-async function runBuyEffect(
-  effect: ReturnType<typeof buy>,
-  ctx: TBotContext<any>,
-) {
+async function runUseArbTradeEffect(effect: ReturnType<typeof useArbTrade>, ctx: TBotContext<any>) {
+  const { payload, ref } = effect;
+
+  const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
+    type: "ARB",
+    quantity: payload.quantity,
+    buy: {
+      exchange: payload.exchange1,
+      symbol: payload.symbol,
+      type: payload.price ? OrderType.Limit : OrderType.Market,
+      price: payload.price,
+      status: OrderStatusEnum.Idle,
+    },
+    sell: {
+      exchange: payload.exchange2,
+      symbol: payload.symbol,
+      type: payload.tp ? OrderType.Limit : OrderType.Market,
+      price: payload.tp,
+      status: OrderStatusEnum.Idle,
+    },
+  });
+
+  return new SmartTradeService(effect.ref, smartTrade);
+}
+
+async function runBuyEffect(effect: ReturnType<typeof buy>, ctx: TBotContext<any>) {
   const { payload, ref } = effect;
 
   let buy;
@@ -223,6 +231,7 @@ async function runBuyEffect(
   }
 
   let smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
+    type: "Trade",
     quantity: payload.quantity,
     buy,
   });
@@ -231,6 +240,7 @@ async function runBuyEffect(
     console.info("Trade replaced. Reason: Sell filled");
 
     smartTrade = await ctx.control.createSmartTrade(ref, {
+      type: "Trade",
       quantity: payload.quantity,
       buy,
     });
@@ -239,10 +249,7 @@ async function runBuyEffect(
   return new TradeService(ref, smartTrade);
 }
 
-async function runSellEffect(
-  effect: ReturnType<typeof sell>,
-  ctx: TBotContext<any>,
-) {
+async function runSellEffect(effect: ReturnType<typeof sell>, ctx: TBotContext<any>) {
   const { payload, ref } = effect;
 
   let smartTrade = await ctx.control.getSmartTrade(ref);
@@ -252,10 +259,7 @@ async function runSellEffect(
     return null;
   }
 
-  if (
-    smartTrade.buy.status === OrderStatusEnum.Idle ||
-    smartTrade.buy.status === OrderStatusEnum.Placed
-  ) {
+  if (smartTrade.buy.status === OrderStatusEnum.Idle || smartTrade.buy.status === OrderStatusEnum.Placed) {
     console.info("Skip selling effect. Reason: Buy order not filled yet");
 
     return null;
@@ -288,10 +292,7 @@ async function runSellEffect(
   return new TradeService(effect.ref, smartTrade);
 }
 
-async function runUseExchangeEffect(
-  effect: ReturnType<typeof useExchange>,
-  ctx: TBotContext<any>,
-) {
+async function runUseExchangeEffect(effect: ReturnType<typeof useExchange>, ctx: TBotContext<any>) {
   const label = effect.payload;
 
   if (label) {
@@ -303,17 +304,11 @@ async function runUseExchangeEffect(
   return ctx.exchange;
 }
 
-async function runUseMarketEffect(
-  _effect: ReturnType<typeof useMarket>,
-  ctx: TBotContext<any>,
-) {
+async function runUseMarketEffect(_effect: ReturnType<typeof useMarket>, ctx: TBotContext<any>) {
   return ctx.market;
 }
 
-async function runUseCandleEffect(
-  effect: ReturnType<typeof useCandle>,
-  ctx: TBotContext<any>,
-) {
+async function runUseCandleEffect(effect: ReturnType<typeof useCandle>, ctx: TBotContext<any>) {
   const index = effect.payload;
 
   if (index >= 0) {
@@ -323,14 +318,9 @@ async function runUseCandleEffect(
   return ctx.market.candles[ctx.market.candles.length + index];
 }
 
-async function runUseRsiIndicatorEffect(
-  effect: ReturnType<typeof useRSI>,
-  ctx: TBotContext<any>,
-): Promise<number> {
+async function runUseRsiIndicatorEffect(effect: ReturnType<typeof useRSI>, ctx: TBotContext<any>): Promise<number> {
   if (ctx.market.candles.length === 0) {
-    console.warn(
-      "[UseRSI] Candles are empty. Skipping RSI calculation. Returned NaN.",
-    );
+    console.warn("[UseRSI] Candles are empty. Skipping RSI calculation. Returned NaN.");
 
     return NaN;
   }

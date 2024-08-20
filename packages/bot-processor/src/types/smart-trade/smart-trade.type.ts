@@ -1,4 +1,4 @@
-import type { OrderStatusEnum, OrderType } from "@opentrader/types";
+import type { OrderStatusEnum, OrderType, XSmartTradeType } from "@opentrader/types";
 
 type OrderBuilder<T extends OrderType, S extends OrderStatusEnum> = {
   type: T;
@@ -23,10 +23,7 @@ export type MarketOrderPlaced = OrderBuilder<"Market", "placed">;
 export type MarketOrderFilled = OrderBuilder<"Market", "filled">;
 
 export type LimitOrder = LimitOrderIdle | LimitOrderPlaced | LimitOrderFilled;
-export type MarketOrder =
-  | MarketOrderIdle
-  | MarketOrderPlaced
-  | MarketOrderFilled;
+export type MarketOrder = MarketOrderIdle | MarketOrderPlaced | MarketOrderFilled;
 
 export type Order = LimitOrder | MarketOrder;
 
@@ -36,6 +33,7 @@ type SmartTradeBuilder<WithSell extends boolean> = {
   quantity: number;
   buy: Order;
   sell: WithSell extends true ? Order : undefined;
+  type: XSmartTradeType;
 };
 
 export type SmartTradeBuyOnly = SmartTradeBuilder<false>;

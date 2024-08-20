@@ -35,6 +35,7 @@ export type XUserRole = (typeof XUserRole)[keyof typeof XUserRole];
 export const XSmartTradeType = {
   Trade: "Trade",
   DCA: "DCA",
+  ARB: "ARB",
 } as const;
 
 export type XSmartTradeType = (typeof XSmartTradeType)[keyof typeof XSmartTradeType];

@@ -1,9 +1,4 @@
-import {
-  IStore,
-  Order,
-  SmartTrade,
-  UseSmartTradePayload,
-} from "@opentrader/bot-processor";
+import { IStore, Order, SmartTrade, CreateSmartTradePayload } from "@opentrader/bot-processor";
 import type { IExchange } from "@opentrader/exchanges";
 import { OrderStatusEnum, OrderType } from "@opentrader/types";
 import { uniqueId } from "lodash";
@@ -22,9 +17,7 @@ export class MemoryStore implements IStore {
     // Return only used smartTrades by the bot.
     // The smartTrade that doesn't contain a ref
     // was replaced by other smartTrade.
-    const smartTrades = this.marketSimulator.smartTrades.filter(
-      (smartTrade) => !!smartTrade.ref,
-    );
+    const smartTrades = this.marketSimulator.smartTrades.filter((smartTrade) => !!smartTrade.ref);
 
     return [...smartTrades].sort((left, right) => {
       return (left.buy?.price || 0) - (right.buy?.price || 0);
@@ -36,22 +29,16 @@ export class MemoryStore implements IStore {
   }
 
   async getSmartTrade(ref: string, _botId: number): Promise<SmartTrade | null> {
-    const smartTrade = this.marketSimulator.smartTrades.find(
-      (smartTrade) => smartTrade.ref === ref,
-    );
+    const smartTrade = this.marketSimulator.smartTrades.find((smartTrade) => smartTrade.ref === ref);
 
     return smartTrade || null;
   }
 
-  async createSmartTrade(
-    ref: string,
-    payload: UseSmartTradePayload,
-    _botId: number,
-  ): Promise<SmartTrade> {
+  async createSmartTrade(ref: string, payload: CreateSmartTradePayload, _botId: number): Promise<SmartTrade> {
     const candlestick = this.marketSimulator.currentCandle;
 
     const docId = uniqueId("id_");
-    const { buy, sell, quantity } = payload;
+    const { type, buy, sell, quantity } = payload;
     const createdAt = candlestick.timestamp;
 
     let buyOrder: Order;
@@ -169,6 +156,7 @@ export class MemoryStore implements IStore {
 
     const smartTrade: SmartTrade = {
       id: docId,
+      type,
       ref,
       buy: buyOrder,
       sell: sellOrder,
@@ -180,15 +168,9 @@ export class MemoryStore implements IStore {
     return smartTrade;
   }
 
-  async updateSmartTrade(
-    ref: string,
-    payload: Pick<UseSmartTradePayload, "sell">,
-    botId: number,
-  ) {
+  async updateSmartTrade(ref: string, payload: Pick<CreateSmartTradePayload, "sell">, botId: number) {
     if (!payload.sell) {
-      console.log(
-        "MemoryStore: Unable to update smart trade. Reason: `payload.sell` not provided.",
-      );
+      console.log("MemoryStore: Unable to update smart trade. Reason: `payload.sell` not provided.");
       return null;
     }
 
@@ -202,9 +184,7 @@ export class MemoryStore implements IStore {
     const updatedAt = candlestick.timestamp;
 
     if (smartTrade.sell) {
-      console.log(
-        "MemoryStore: SmartTrade already has a sell order. Skipping.",
-      );
+      console.log("MemoryStore: SmartTrade already has a sell order. Skipping.");
       return smartTrade;
     }
 

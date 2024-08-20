@@ -6,3 +6,4 @@ export * from "./rsi.js";
 export * from "./state.js";
 export * from "./trades.js";
 export * from "./testSimpleArb.js";
+export * from "./testArb.js";

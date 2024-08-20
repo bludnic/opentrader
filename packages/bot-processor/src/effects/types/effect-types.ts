@@ -1,5 +1,6 @@
 export const USE_SMART_TRADE = "USE_SMART_TRADE";
 export const USE_TRADE = "USE_TRADE";
+export const USE_ARB_TRADE = "USE_ARB_TRADE";
 export const BUY = "BUY";
 export const SELL = "SELL";
 export const REPLACE_SMART_TRADE = "REPLACE_SMART_TRADE";
@@ -15,6 +16,7 @@ export const USE_RSI_INDICATOR = "USE_RSI_INDICATOR";
 export type EffectType =
   | typeof USE_SMART_TRADE
   | typeof USE_TRADE
+  | typeof USE_ARB_TRADE
   | typeof BUY
   | typeof SELL
   | typeof REPLACE_SMART_TRADE
