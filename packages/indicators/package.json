@@ -10,7 +10,7 @@
     "?build": "Internal package",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit --skipLibCheck",
+    "typecheck": "tsc --noEmit",
     "test": "jest"
   },
   "author": "bludnic",

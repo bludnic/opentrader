@@ -10,7 +10,7 @@
     "build": "tsup --dts",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
