@@ -8,9 +8,7 @@ import { BotConfig, ExchangeConfig } from "../types.js";
  * Save exchange accounts to DB if not exists
  * @param exchangesConfig - Exchange accounts configuration
  */
-export async function createOrUpdateExchangeAccounts(
-  exchangesConfig: Record<string, ExchangeConfig>,
-) {
+export async function createOrUpdateExchangeAccounts(exchangesConfig: Record<string, ExchangeConfig>) {
   const exchangeAccounts: ExchangeAccountWithCredentials[] = [];
 
   for (const [exchangeLabel, exchangeData] of Object.entries(exchangesConfig)) {
@@ -21,9 +19,7 @@ export async function createOrUpdateExchangeAccounts(
     });
 
     if (exchangeAccount) {
-      logger.info(
-        `Exchange account "${exchangeLabel}" found in DB. Updating credentials...`,
-      );
+      logger.info(`Exchange account "${exchangeLabel}" found in DB. Updating credentials...`);
 
       exchangeAccount = await xprisma.exchangeAccount.update({
         where: {
@@ -42,9 +38,7 @@ export async function createOrUpdateExchangeAccounts(
 
       logger.info(`Exchange account "${exchangeLabel}" updated`);
     } else {
-      logger.info(
-        `Exchange account "${exchangeLabel}" not found. Adding to DB...`,
-      );
+      logger.info(`Exchange account "${exchangeLabel}" not found. Adding to DB...`);
 
       exchangeAccount = await xprisma.exchangeAccount.create({
         data: {
@@ -87,15 +81,10 @@ export async function createOrUpdateBot<T = any>(
   const botTemplate = strategyName || botConfig.template;
   const botTimeframe = options.timeframe || botConfig.timeframe || null;
   const botPair = options.pair || botConfig.pair;
-  const [baseCurrency, quoteCurrency] = botPair.split("/");
 
-  const exchangeAccount = exchangeAccounts.find(
-    (exchangeAccount) => exchangeAccount.label === exchangeLabel,
-  );
+  const exchangeAccount = exchangeAccounts.find((exchangeAccount) => exchangeAccount.label === exchangeLabel);
   if (!exchangeAccount) {
-    throw new Error(
-      `Exchange account with label "${exchangeLabel}" not found. Check the exchanges config file.`,
-    );
+    throw new Error(`Exchange account with label "${exchangeLabel}" not found. Check the exchanges config file.`);
   }
 
   let bot = await xprisma.bot.custom.findFirst({
@@ -117,8 +106,7 @@ export async function createOrUpdateBot<T = any>(
         label: botLabel,
         template: botTemplate,
         timeframe: botTimeframe,
-        baseCurrency,
-        quoteCurrency,
+        symbol: botPair,
         settings: JSON.stringify(botConfig.settings),
         state: JSON.stringify({}), // resets bot state
         exchangeAccount: {
@@ -144,8 +132,7 @@ export async function createOrUpdateBot<T = any>(
         label: botLabel,
         template: strategyName,
         timeframe: botTimeframe,
-        baseCurrency,
-        quoteCurrency,
+        symbol: botPair,
         settings: JSON.stringify(botConfig.settings),
         exchangeAccount: {
           connect: {
