@@ -204,8 +204,8 @@ const watchOrderbook: Normalize["watchOrderbook"] = {
     symbol: orderbook.symbol!,
     timestamp: orderbook.timestamp!,
 
-    bids: orderbook.bids.map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
-    asks: orderbook.asks.map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
+    bids: [...orderbook.bids].map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
+    asks: [...orderbook.asks].map(([price, quantity]) => ({ price: price!, quantity: quantity! })),
   }),
 };
 
