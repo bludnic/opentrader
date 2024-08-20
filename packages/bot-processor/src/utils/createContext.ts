@@ -6,6 +6,7 @@ export function createContext<T extends IBotConfiguration>(
   control: IBotControl,
   config: T,
   exchange: IExchange,
+  additionalExchanges: IExchange[],
   command: "start" | "stop" | "process", // @todo add type in file
   state: BotState,
   market: MarketData = {
@@ -18,6 +19,7 @@ export function createContext<T extends IBotConfiguration>(
     control,
     config,
     exchange,
+    additionalExchanges,
     command,
     onStart: command === "start",
     onStop: command === "stop",

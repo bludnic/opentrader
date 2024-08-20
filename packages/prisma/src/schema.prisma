@@ -120,7 +120,10 @@ model ExchangeAccount {
 
   smartTrades SmartTrade[]
   orders      Order[]
-  bots        Bot[]
+
+  // Will include the only the bots that uses this account as primary
+  primaryBots Bot[]
+  bots        Bot[] @relation(name: "AdditionalExchangeAccounts")
 
   expired Boolean @default(false)
 }
@@ -208,6 +211,8 @@ model Bot {
 
   exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
   exchangeAccountId Int
+
+  additionalExchangeAccounts ExchangeAccount[] @relation(name: "AdditionalExchangeAccounts")
 
   owner   User     @relation(fields: [ownerId], references: [id])
   ownerId Int

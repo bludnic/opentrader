@@ -9,6 +9,7 @@ export type TBotContext<T extends IBotConfiguration, S extends BotState = BotSta
    * Default exchange instance.
    */
   exchange: IExchange;
+  additionalExchanges: IExchange[];
   /**
    * Bot control panel
    */

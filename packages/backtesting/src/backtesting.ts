@@ -45,6 +45,7 @@ export class Backtesting<T extends IBotConfiguration<T>> {
     this.processor = createStrategyRunner({
       store: this.store,
       exchange: this.exchange,
+      additionalExchanges: [], // @todo not supported yet
       botConfig,
       botTemplate,
     });

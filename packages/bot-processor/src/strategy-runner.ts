@@ -28,17 +28,25 @@ export class StrategyRunner<T extends IBotConfiguration> {
     private control: IBotControl,
     private botConfig: T,
     private exchange: IExchange,
+    private additionalExchanges: IExchange[],
     private botTemplate: BotTemplate<T>,
   ) {}
 
   async start(state: BotState) {
-    const context = createContext(this.control, this.botConfig, this.exchange, "start", state);
+    const context = createContext(
+      this.control,
+      this.botConfig,
+      this.exchange,
+      this.additionalExchanges,
+      "start",
+      state,
+    );
 
     await this.runTemplate(context);
   }
 
   async stop(state: BotState) {
-    const context = createContext(this.control, this.botConfig, this.exchange, "stop", state);
+    const context = createContext(this.control, this.botConfig, this.exchange, this.additionalExchanges, "stop", state);
 
     await this.runTemplate(context);
   }
@@ -53,6 +61,7 @@ export class StrategyRunner<T extends IBotConfiguration> {
       this.control,
       this.botConfig,
       this.exchange,
+      this.additionalExchanges,
       "process",
       state,
       market,
@@ -89,12 +98,13 @@ export class StrategyRunner<T extends IBotConfiguration> {
 export function createStrategyRunner<T extends IBotConfiguration>(options: {
   store: IStore;
   exchange: IExchange;
+  additionalExchanges: IExchange[];
   botConfig: T;
   botTemplate: BotTemplate<T>;
 }) {
-  const { botConfig, store, exchange, botTemplate } = options;
+  const { botConfig, store, exchange, additionalExchanges, botTemplate } = options;
 
   const botControl = new BotControl(store, botConfig);
 
-  return new StrategyRunner(botControl, botConfig, exchange, botTemplate);
+  return new StrategyRunner(botControl, botConfig, exchange, additionalExchanges, botTemplate);
 }

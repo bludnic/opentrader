@@ -163,7 +163,18 @@ export class BotProcessing {
       },
     });
 
+    const additionalExchangeAccounts = await xprisma.exchangeAccount.findMany({
+      where: {
+        bots: {
+          some: { id: this.bot.id },
+        },
+      },
+    });
+
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
+    const additionalExchanges = additionalExchangeAccounts.map((exchangeAccount) =>
+      exchangeProvider.fromAccount(exchangeAccount),
+    );
 
     const configuration: IBotConfiguration = {
       id: this.bot.id,
@@ -178,6 +189,7 @@ export class BotProcessing {
     const processor = createStrategyRunner({
       store: storeAdapter,
       exchange,
+      additionalExchanges,
       botConfig: configuration,
       botTemplate: strategyFn,
     });
