@@ -20,9 +20,11 @@ export function toPrismaSmartTrade(smartTrade: UseSmartTradePayload, params: Par
   const { buy, sell, quantity } = smartTrade;
   const { ref, symbol, exchangeAccountId, ownerId, botId } = params;
 
-  const buyOrderData = toPrismaOrder(buy, quantity, XOrderSide.Buy, XEntityType.EntryOrder);
+  const buyOrderData = toPrismaOrder(buy, quantity, XOrderSide.Buy, XEntityType.EntryOrder, exchangeAccountId, symbol);
 
-  const sellOrderData = sell ? toPrismaOrder(sell, quantity, XOrderSide.Sell, XEntityType.TakeProfitOrder) : undefined;
+  const sellOrderData = sell
+    ? toPrismaOrder(sell, quantity, XOrderSide.Sell, XEntityType.TakeProfitOrder, exchangeAccountId, symbol)
+    : undefined;
 
   return {
     entryType: "Order",

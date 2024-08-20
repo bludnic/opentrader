@@ -138,11 +138,17 @@ export class BotStoreAdapter implements IStore {
           side: "Sell",
           price: payload.sell.price,
           quantity: entryOrder.quantity, // @todo multiply by 0.99 for safety amount
+          symbol: smartTrade.symbol,
           smartTrade: {
             connect: {
               id: smartTrade.id,
             },
           },
+          exchangeAccount: {
+            connect: {
+              id: smartTrade.exchangeAccountId,
+            }
+          }
         },
         include: {
           smartTrade: {

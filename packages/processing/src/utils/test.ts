@@ -1,6 +1,7 @@
 // Only for testing purposes. Don't export this file.
 import type { ExchangeAccountWithCredentials, SmartTradeWithOrders } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
+import { Prisma } from "@prisma/client";
 import type { XEntityType, XOrderSide, XOrderStatus, XOrderType } from "@opentrader/types";
 
 export const TEST_ACCOUNT_LABEL = "TEST";
@@ -31,15 +32,19 @@ export async function createTrade(
   });
 
   // @todo Array
-  const orders: (OrderParams & { entityType: XEntityType })[] = [];
+  const orders: Prisma.OrderCreateManySmartTradeInput[] = [];
   orders.push({
-    entityType: "EntryOrder",
     ...entry,
+    symbol,
+    entityType: "EntryOrder",
+    exchangeAccountId: exchangeAccount.id,
   });
   if (takeProfit) {
     orders.push({
-      entityType: "TakeProfitOrder",
       ...takeProfit,
+      symbol,
+      entityType: "TakeProfitOrder",
+      exchangeAccountId: exchangeAccount.id,
     });
   }
 

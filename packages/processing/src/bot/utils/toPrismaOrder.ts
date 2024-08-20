@@ -11,6 +11,8 @@ export function toPrismaOrder(
   quantity: number,
   side: XOrderSide,
   entityType: XEntityType,
+  exchangeAccountId: number,
+  symbol: string,
 ): Prisma.OrderCreateManySmartTradeInput {
   return {
     status: toPrismaOrderStatus(order.status || OrderStatusEnum.Idle),
@@ -25,7 +27,9 @@ export function toPrismaOrder(
     filledPrice: order.status === OrderStatusEnum.Filled ? order.price : null,
     placedAt: new Date(), // we don't know this information
     filledAt: new Date(), // we don't know this information
+    symbol,
     side,
     quantity,
+    exchangeAccountId,
   };
 }

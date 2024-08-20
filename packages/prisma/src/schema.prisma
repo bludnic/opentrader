@@ -119,6 +119,7 @@ model ExchangeAccount {
   updatedAt DateTime @updatedAt
 
   smartTrades SmartTrade[]
+  orders      Order[]
   bots        Bot[]
 
   expired Boolean @default(false)
@@ -131,7 +132,7 @@ model SmartTrade {
   entryType      String // EntryType
   takeProfitType String // TakeProfitType
 
-  symbol String
+  symbol String // Optional in case of multiple symbols trading, e.g. for Triangular Arbitrage
   orders Order[]
 
   ref String? // user provided reference value
@@ -150,14 +151,17 @@ model SmartTrade {
 }
 
 model Order {
-  id          Int    @id @default(autoincrement())
-  status      String @default("Idle") // OrderStatus
-  type        String // OrderType
-  entityType  String // EntityType
-  side        String // OrderSide
-  price       Float? // Market orders doesn't require price to be specified
-  filledPrice Float?
-  fee         Float?
+  id                Int             @id @default(autoincrement())
+  status            String          @default("Idle") // OrderStatus
+  type              String // OrderType
+  entityType        String // EntityType
+  side              String // OrderSide
+  price             Float? // Market orders doesn't require price to be specified
+  filledPrice       Float?
+  fee               Float?
+  symbol            String
+  exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id])
+  exchangeAccountId Int
 
   exchangeOrderId String?
 
