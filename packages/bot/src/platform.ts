@@ -2,10 +2,10 @@ import { findStrategy } from "@opentrader/bot-templates/server";
 import { xprisma, type ExchangeAccountWithCredentials, TBotWithExchangeAccount } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { exchangeProvider } from "@opentrader/exchanges";
-import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
+import { BotProcessing, getWatchers, shouldRunStrategy } from "@opentrader/processing";
 import { eventBus } from "@opentrader/event-bus";
 import { store } from "@opentrader/bot-store";
-import { MarketEvent } from "@opentrader/types";
+import { MarketEvent, MarketId } from "@opentrader/types";
 import { processingQueue } from "./queue/index.js";
 
 import { MarketsStream } from "./streams/markets.stream.js";
@@ -152,11 +152,23 @@ export class Platform {
 
     for (const bot of this.enabledBots) {
       const { strategyFn } = await findStrategy(bot.template);
+      const { watchOrderbook, watchCandles, watchTrades, watchTicker } = getWatchers(strategyFn, bot);
 
-      if (shouldRunStrategy(strategyFn, bot, event.type)) {
+      const isWatchingOrderbook = event.type === "onOrderbookChange" && watchOrderbook.includes(event.marketId);
+      const isWatchingTicker = event.type === "onTickerChange" && watchTicker.includes(event.marketId);
+      const isWatchingTrades = event.type === "onPublicTrade" && watchTrades.includes(event.marketId);
+      const isWatchingCandles = event.type === "onCandleClosed" && watchCandles.includes(event.marketId);
+      const isWatchingAny = isWatchingOrderbook || isWatchingTicker || isWatchingTrades || isWatchingCandles;
+
+      const subscribedMarkets = [
+        ...new Set([...watchOrderbook, ...watchCandles, ...watchTrades, ...watchTicker]),
+      ] as MarketId[];
+
+      if (isWatchingAny && shouldRunStrategy(strategyFn, bot, event.type)) {
         processingQueue.push({
           ...event,
           bot,
+          subscribedMarkets,
         });
       }
     }

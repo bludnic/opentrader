@@ -19,7 +19,7 @@ async function queueHandler(tasks: QueueEvent[]) {
   await botProcessor.process({
     triggerEventType: event.type,
     market: store.getMarket(event.marketId),
-    markets: store.markets,
+    markets: store.getMarkets(event.subscribedMarkets),
   });
 
   await botProcessor.placePendingOrders();

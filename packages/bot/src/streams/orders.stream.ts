@@ -1,6 +1,6 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
 import type { ExchangeCode, IWatchOrder, MarketId } from "@opentrader/types";
-import { BotProcessing, shouldRunStrategy } from "@opentrader/processing";
+import { BotProcessing, getWatchers, shouldRunStrategy } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
@@ -90,6 +90,10 @@ export class OrdersStream {
     const bot = botProcessor.getBot();
     const marketId = `${exchangeCode}:${order.smartTrade.symbol}` as MarketId;
     const { strategyFn } = await findStrategy(bot.template);
+    const { watchOrderbook, watchCandles, watchTrades, watchTicker } = getWatchers(strategyFn, bot);
+    const subscribedMarkets = [
+      ...new Set([...watchOrderbook, ...watchCandles, ...watchTrades, ...watchTicker]),
+    ] as MarketId[];
 
     if (shouldRunStrategy(strategyFn, bot, "onOrderFilled")) {
       processingQueue.push({
@@ -97,6 +101,7 @@ export class OrdersStream {
         marketId,
         bot,
         orderId: order.id,
+        subscribedMarkets,
       });
     }
   }

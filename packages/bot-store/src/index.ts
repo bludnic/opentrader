@@ -86,6 +86,22 @@ export class BotStore {
     this.processing[botId] = value;
   }
 
+  /**
+   * Returns filtered markets for specific bot.
+   */
+  getMarkets(marketIds: MarketId[]) {
+    return marketIds
+      .filter((marketId) => this.markets[marketId])
+      .map((marketId) => [marketId, this.markets[marketId]] as const)
+      .reduce(
+        (acc, [marketId, market]) => {
+          acc[marketId] = market;
+          return acc;
+        },
+        {} as Record<MarketId, MarketData>,
+      );
+  }
+
   getMarket(marketId: MarketId): MarketData | undefined {
     return this.markets[marketId];
   }
