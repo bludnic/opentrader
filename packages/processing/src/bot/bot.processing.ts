@@ -2,7 +2,7 @@ import type { BotState, IBotConfiguration } from "@opentrader/bot-processor";
 import { createStrategyRunner } from "@opentrader/bot-processor";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { exchangeProvider } from "@opentrader/exchanges";
-import type { TBot } from "@opentrader/db";
+import type { TBotWithExchangeAccount } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import type { ExchangeCode, MarketData, MarketId, MarketEventType } from "@opentrader/types";
@@ -16,7 +16,7 @@ type ProcessParams = {
 };
 
 export class BotProcessing {
-  constructor(private bot: TBot) {}
+  constructor(private bot: TBotWithExchangeAccount) {}
 
   static async fromId(id: number) {
     const bot = await xprisma.bot.custom.findUniqueOrThrow({
