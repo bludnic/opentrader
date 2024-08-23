@@ -5,12 +5,18 @@ import { normalizeOrderStatus } from "../../utils/normalizeOrderStatus.js";
 
 const accountAssets: Normalize["accountAssets"] = {
   response: (data) =>
-    Object.entries(data).map(([currency, balance]) => {
-      return {
-        currency,
-        balance: Number(balance.total),
-        availableBalance: Number(balance.free),
-      };
+    Object.entries(data).flatMap(([currency, balance]) => {
+      // exclude non-coin keys like "timestamp", "info", etc.
+      const isCoin = balance?.total && balance?.free;
+      if (!isCoin) return [];
+
+      return [
+        {
+          currency,
+          balance: Number(balance.total),
+          availableBalance: Number(balance.free),
+        },
+      ];
     }),
 };
 
