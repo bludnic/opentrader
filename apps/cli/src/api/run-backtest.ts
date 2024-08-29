@@ -18,10 +18,7 @@ type Options = {
   exchange: ExchangeCode;
 };
 
-export async function runBacktest(
-  strategyName: keyof typeof templates,
-  options: Options,
-): Promise<CommandResult> {
+export async function runBacktest(strategyName: keyof typeof templates, options: Options): Promise<CommandResult> {
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
@@ -37,13 +34,10 @@ export async function runBacktest(
   }
 
   // Validate strategy params
-  const { success: isValidSchema, error } =
-    strategy.strategyFn.schema.safeParse(botConfig.settings);
+  const { success: isValidSchema, error } = strategy.strategyFn.schema.safeParse(botConfig.settings);
   if (!isValidSchema) {
     logger.error(error.message);
-    logger.error(
-      `The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`,
-    );
+    logger.error(`The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`);
 
     return {
       result: undefined,
@@ -52,21 +46,18 @@ export async function runBacktest(
 
   const botTimeframe = options.timeframe || botConfig.timeframe || null;
   const botPair = options.pair || botConfig.pair;
-  const [baseCurrency, quoteCurrency] = botPair.split("/");
 
   const ccxtExchange = exchangeCodeMapCCXT[options.exchange];
   const exchange = new ccxt[ccxtExchange]();
 
-  logger.info(
-    `Using ${botPair} on ${options.exchange} exchange with ${botTimeframe} timeframe`,
-  );
+  logger.info(`Using ${botPair} on ${options.exchange} exchange with ${botTimeframe} timeframe`);
   const backtesting = new Backtesting({
     botConfig: {
       id: 0,
-      baseCurrency,
-      quoteCurrency,
+      symbol: botPair,
       exchangeCode: options.exchange,
       settings: botConfig.settings,
+      timeframe: botTimeframe,
     },
     botTemplate: strategy.strategyFn,
   });

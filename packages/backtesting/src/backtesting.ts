@@ -24,16 +24,16 @@ import { MarketSimulator } from "./market-simulator.js";
 import { MemoryExchange } from "./exchange/memory-exchange.js";
 import { MemoryStore } from "./store/memory-store.js";
 
-export class Backtesting<T extends IBotConfiguration<T>> {
+export class Backtesting<S = any> {
   private marketSimulator: MarketSimulator;
   private store: MemoryStore;
   private exchange: MemoryExchange;
-  private processor: StrategyRunner<T>;
+  private processor: StrategyRunner<IBotConfiguration<S>>;
   private botState: BotState = {};
-  private botTemplate: BotTemplate<T>;
-  private botConfig: T;
+  private botTemplate: BotTemplate<IBotConfiguration<S>>;
+  private botConfig: IBotConfiguration<S>;
 
-  constructor(options: { botConfig: T; botTemplate: BotTemplate<T> }) {
+  constructor(options: { botConfig: IBotConfiguration<S>; botTemplate: BotTemplate<IBotConfiguration<T>> }) {
     const { botConfig, botTemplate } = options;
 
     this.marketSimulator = new MarketSimulator();
