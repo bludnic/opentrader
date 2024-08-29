@@ -13,24 +13,16 @@ export function addBacktestCommand(program: Command) {
     .addOption(
       new Option("--from <from>", "Start date")
         .argParser((dateISO) => new Date(dateISO))
-        .default(new Date("2024-01-01")),
+        .default(new Date("2024-03-01")),
     )
     .addOption(
-      new Option("--to <to>", "End date")
-        .argParser((dateISO) => new Date(dateISO))
-        .default(new Date("2024-01-07")),
+      new Option("--to <to>", "End date").argParser((dateISO) => new Date(dateISO)).default(new Date("2024-03-31")),
     )
-    .addOption(
-      new Option("-p, --pair <pair>", "Trading pair").argParser(validatePair),
-    )
-    .addOption(
-      new Option("-t, --timeframe <timeframe>", "Timeframe").default("1h"),
-    )
+    .addOption(new Option("-p, --pair <pair>", "Trading pair").argParser(validatePair))
+    .addOption(new Option("-t, --timeframe <timeframe>", "Timeframe").default("1h"))
     .addOption(new Option("-c, --config <config>", "Config file"))
     .addOption(
-      new Option("-e, --exchange <exchange>", "Exchange")
-        .argParser(validateExchange)
-        .default(ExchangeCode.OKX),
+      new Option("-e, --exchange <exchange>", "Exchange").argParser(validateExchange).default(ExchangeCode.OKX),
     )
     .action(handle(runBacktest));
 }
