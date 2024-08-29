@@ -34,7 +34,7 @@ export async function runBacktest(strategyName: keyof typeof templates, options:
   }
 
   // Validate strategy params
-  const { success: isValidSchema, error } = strategy.strategyFn.schema.safeParse(botConfig.settings);
+  const { success: isValidSchema, error } = strategy.strategyFn.schema.strict().safeParse(botConfig.settings);
   if (!isValidSchema) {
     logger.error(error.message);
     logger.error(`The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`);
