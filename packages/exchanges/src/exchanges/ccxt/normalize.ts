@@ -139,10 +139,10 @@ const getSymbol: Normalize["getSymbol"] = {
     symbolId: composeSymbolIdFromPair(exchangeCode, market!.symbol),
     currencyPair: market!.symbol,
     exchangeCode,
-    exchangeSymbolId: market!.id,
+    exchangeSymbolId: market!.id!,
 
-    baseCurrency: market!.base,
-    quoteCurrency: market!.quote,
+    baseCurrency: market!.base!,
+    quoteCurrency: market!.quote!,
 
     filters: {
       precision: market!.precision,
