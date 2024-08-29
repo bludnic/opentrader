@@ -25,7 +25,8 @@ export class Platform {
   }
 
   async bootstrap() {
-    await this.loadCustomStrategies();
+    const customStrategiesPath = process.env.CUSTOM_STRATEGIES_PATH;
+    if (customStrategiesPath) await this.loadCustomStrategies(customStrategiesPath);
 
     await this.cleanOrphanedBots();
 
@@ -94,18 +95,17 @@ export class Platform {
 
   /**
    * Loads custom strategies from the specified directory.
+   * @param fullPath Absolute path to the directory with custom strategies
    */
-  async loadCustomStrategies() {
-    if (process.env.CUSTOM_STRATEGIES_DIR) {
-      logger.info(`Loading custom strategies from dir: ${process.env.CUSTOM_STRATEGIES_DIR}`);
-      const customStrategies = await loadCustomStrategies(process.env.CUSTOM_STRATEGIES_DIR);
-      const customStrategiesCount = Object.keys(customStrategies).length;
+  async loadCustomStrategies(fullPath: string) {
+    logger.info(`Loading custom strategies from dir: ${fullPath}`);
+    const customStrategies = await loadCustomStrategies(fullPath);
+    const customStrategiesCount = Object.keys(customStrategies).length;
 
-      if (customStrategiesCount > 0) {
-        logger.info(`Loaded ${customStrategiesCount} custom strategies`);
-      } else {
-        logger.warn("No custom strategies found");
-      }
+    if (customStrategiesCount > 0) {
+      logger.info(`Loaded ${customStrategiesCount} custom strategies`);
+    } else {
+      logger.warn("No custom strategies found");
     }
   }
 

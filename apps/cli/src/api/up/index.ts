@@ -10,12 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-function getAbsoluteStrategiesPath(strategiesPath?: string) {
-  if (!strategiesPath) {
-    // using defaults custom strategies path if not specified
-    return join(appPath, "./strategies");
-  }
-
+function getAbsoluteStrategiesPath(strategiesPath: string) {
   const isAbsoluePath = strategiesPath.startsWith("/");
 
   return isAbsoluePath ? strategiesPath : join(process.cwd(), strategiesPath);
@@ -28,7 +23,7 @@ type Options = {
 
 export async function up(options: Options): Promise<CommandResult> {
   const pid = getPid();
-  const strategiesPath = getAbsoluteStrategiesPath(options.strategiesDir);
+  const strategiesPath = options.strategiesDir ? getAbsoluteStrategiesPath(options.strategiesDir) : undefined;
 
   if (pid) {
     logger.warn(`Daemon process is already running with PID: ${pid}`);

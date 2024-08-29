@@ -26,7 +26,7 @@ export const customStrategies: Record<string, BotTemplate<any>> = {};
 /**
  * Every file should default export a strategy function.
  *
- * @param path Absolute path from which to load custom strategies
+ * @param path Absolute path from where to load custom strategies
  */
 export async function loadCustomStrategies(path: string) {
   let files: string[] = [];
@@ -34,10 +34,9 @@ export async function loadCustomStrategies(path: string) {
   try {
     files = await readdir(path);
   } catch (error) {
-    logger.error(
-      `Failed to read custom strategies from path "${path}". Ensure the directory exists. Error: ${(error as Error).message}`,
+    logger.warn(
+      `Failed to load custom strategies from path "${path}". Ensure the directory exists. Error: ${(error as Error).message}`,
     );
-    process.exit(1);
   }
 
   for (const file of files) {
