@@ -57,7 +57,7 @@ export class Backtesting<S = any> {
 
       logger.info(`Process candle ${format.candletime(candle.timestamp)}: ${format.candle(candle)}`);
 
-      // const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
+      const anyOrderFulfilled = this.marketSimulator.fulfillOrders();
 
       // if (anyOrderFulfilled) {
       //   console.log("Fulfilled Table");
@@ -76,7 +76,7 @@ export class Backtesting<S = any> {
         });
       }
 
-      // const anyOrderPlaced = this.marketSimulator.placeOrders();
+      const anyOrderPlaced = this.marketSimulator.placeOrders();
       // if (anyOrderPlaced) {
       //   console.log("Placed Table");
       //   console.table(gridTable(this.store.getSmartTrades()));
