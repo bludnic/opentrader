@@ -69,8 +69,8 @@ importers:
         specifier: ^10.45.2
         version: 10.45.2
       ccxt:
-        specifier: 4.3.59
-        version: 4.3.59
+        specifier: 4.3.89
+        version: 4.3.89
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -209,8 +209,8 @@ importers:
         specifier: ^3.2.6
         version: 3.2.6
       ccxt:
-        specifier: 4.3.59
-        version: 4.3.59
+        specifier: 4.3.89
+        version: 4.3.89
       cron:
         specifier: ^3.1.7
         version: 3.1.7
@@ -516,8 +516,8 @@ importers:
         specifier: workspace:*
         version: link:../tools
       ccxt:
-        specifier: 4.3.59
-        version: 4.3.59
+        specifier: 4.3.89
+        version: 4.3.89
     devDependencies:
       '@opentrader/eslint':
         specifier: workspace:*
@@ -673,8 +673,8 @@ importers:
         specifier: 5.19.0
         version: 5.19.0(prisma@5.19.0)
       ccxt:
-        specifier: 4.3.59
-        version: 4.3.59
+        specifier: 4.3.89
+        version: 4.3.89
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -777,8 +777,8 @@ importers:
         specifier: ^10.45.2
         version: 10.45.2
       ccxt:
-        specifier: 4.3.59
-        version: 4.3.59
+        specifier: 4.3.89
+        version: 4.3.89
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
@@ -2119,8 +2119,8 @@ packages:
   caniuse-lite@1.0.30001651:
     resolution: {integrity: sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==}
 
-  ccxt@4.3.59:
-    resolution: {integrity: sha512-10wSovFgZjTt9R4thW6oFwkuXCBCxH65U2FcINnGXJ2+xf54OZeRP8ECBp+1bcKHdJ0yA6CcEyKm6Tl0DP0ULA==}
+  ccxt@4.3.89:
+    resolution: {integrity: sha512-uJZ3okutMdUsbyGJGmEdKiFqiJPVFwNc1jqwBBXWWal/+05Uh4LGVayunVrDYmu5mZsGcht9vNqoV8ZqIq3HEg==}
     engines: {node: '>=15.0.0'}
     hasBin: true
 
@@ -5756,7 +5756,7 @@ snapshots:
 
   caniuse-lite@1.0.30001651: {}
 
-  ccxt@4.3.59:
+  ccxt@4.3.89:
     dependencies:
       ws: 8.18.0
     transitivePeerDependencies:
