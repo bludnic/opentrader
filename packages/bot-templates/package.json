@@ -16,21 +16,18 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "test": "jest"
+    "test": "vitest"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/jest": "^29.5.12",
     "@types/node": "^20.16.2",
     "eslint": "8.57.0",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "@opentrader/bot-processor": "workspace:*",

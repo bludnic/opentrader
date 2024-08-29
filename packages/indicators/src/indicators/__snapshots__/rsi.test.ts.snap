@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rsi should calculate RSI 1`] = `
+exports[`rsi > should calculate RSI 1`] = `
 [
   NaN,
   NaN,
@@ -204,7 +204,7 @@ exports[`rsi should calculate RSI 1`] = `
 ]
 `;
 
-exports[`rsi should calculate RSI for 1h candles 1`] = `
+exports[`rsi > should calculate RSI for 1h candles 1`] = `
 [
   NaN,
   NaN,

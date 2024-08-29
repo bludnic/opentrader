@@ -1,15 +1,8 @@
-import {
-  ExchangeAccountWithCredentials,
-  SmartTradeWithOrders,
-  xprisma,
-} from "@opentrader/db";
+import { describe, it, expect, beforeAll, beforeEach, afterEach } from "vitest";
+import { ExchangeAccountWithCredentials, SmartTradeWithOrders, xprisma } from "@opentrader/db";
 import { exchangeProvider, IExchange } from "@opentrader/exchanges";
 import { TradeExecutor } from "./trade.executor.js";
-import {
-  createTrade,
-  getExchangeAccount,
-  updateEntryOrder,
-} from "../../utils/test.js";
+import { createTrade, getExchangeAccount, updateEntryOrder } from "../../utils/test.js";
 
 describe("TradeExecutor", () => {
   let exchangeAccount: ExchangeAccountWithCredentials;

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ICandlestick } from "@opentrader/types";
@@ -5,9 +6,7 @@ import type { ICandlestick } from "@opentrader/types";
 import { rsi } from "./rsi.js";
 
 const loadCandles = (filename: string): ICandlestick[] => {
-  return JSON.parse(
-    readFileSync(join(__dirname, `./__mocks__/${filename}`), "utf-8"),
-  );
+  return JSON.parse(readFileSync(join(__dirname, `./__mocks__/${filename}`), "utf-8"));
 };
 
 describe("rsi", () => {
@@ -21,15 +20,11 @@ describe("rsi", () => {
   });
 
   it("should throw an error if there a less than 2 periods", async () => {
-    await expect(rsi({ periods: 1 }, candles)).rejects.toThrow(
-      "RSI requires at least 2 periods",
-    );
+    await expect(rsi({ periods: 1 }, candles)).rejects.toThrow("RSI requires at least 2 periods");
   });
 
   it("should throw an error if no candles provided", async () => {
-    await expect(rsi({ periods: 14 }, [])).rejects.toThrow(
-      "No candles provided",
-    );
+    await expect(rsi({ periods: 14 }, [])).rejects.toThrow("No candles provided");
   });
 
   it("the length of RSI values must be equal to the number of candles", async () => {
