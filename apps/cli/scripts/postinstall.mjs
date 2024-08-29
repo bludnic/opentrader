@@ -1,6 +1,6 @@
 import { homedir } from "node:os";
 import { execSync } from "node:child_process";
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { generate } from "random-words";
 
@@ -8,6 +8,7 @@ const APP_DIR = ".opentrader";
 export const appPath = join(homedir(), APP_DIR);
 export const passFilePath = join(appPath, "pass");
 export const dbFilePath = join(appPath, "dev.db");
+export const customStrategiesPath = join(appPath, "strategies");
 
 function runMigrations() {
   const commands = [
@@ -55,5 +56,12 @@ function savePassword() {
   console.log(`🔒 Password: ${password}`);
 }
 
+function createCustomStrategiesDir() {
+  if (!existsSync(customStrategiesPath)) {
+    mkdirSync(customStrategiesPath, { recursive: true });
+  }
+}
+
 runMigrations();
 savePassword();
+createCustomStrategiesDir();

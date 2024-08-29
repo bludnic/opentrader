@@ -7,9 +7,7 @@ import { createDaemonRpcClient } from "../daemon-rpc.js";
 
 const daemonRpc = createDaemonRpcClient();
 
-export async function stopCommand(options: {
-  config: string;
-}): Promise<CommandResult> {
+export async function stopCommand(options: { config: string }): Promise<CommandResult> {
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 
@@ -34,7 +32,7 @@ export async function stopCommand(options: {
 
   // check if bot strategy file exists
   try {
-    await findStrategy(bot.template);
+    findStrategy(bot.template);
   } catch (err) {
     logger.info((err as Error).message);
 

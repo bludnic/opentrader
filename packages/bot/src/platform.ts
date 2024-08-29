@@ -1,4 +1,4 @@
-import { findStrategy } from "@opentrader/bot-templates/server";
+import { findStrategy, loadCustomStrategies } from "@opentrader/bot-templates/server";
 import { xprisma, type ExchangeAccountWithCredentials, TBotWithExchangeAccount } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
 import { exchangeProvider } from "@opentrader/exchanges";
@@ -25,6 +25,8 @@ export class Platform {
   }
 
   async bootstrap() {
+    await this.loadCustomStrategies();
+
     await this.cleanOrphanedBots();
 
     logger.info("[Processor] OrdersProcessor created");
@@ -91,6 +93,23 @@ export class Platform {
   }
 
   /**
+   * Loads custom strategies from the specified directory.
+   */
+  async loadCustomStrategies() {
+    if (process.env.CUSTOM_STRATEGIES_DIR) {
+      logger.info(`Loading custom strategies from dir: ${process.env.CUSTOM_STRATEGIES_DIR}`);
+      const customStrategies = await loadCustomStrategies(process.env.CUSTOM_STRATEGIES_DIR);
+      const customStrategiesCount = Object.keys(customStrategies).length;
+
+      if (customStrategiesCount > 0) {
+        logger.info(`Loaded ${customStrategiesCount} custom strategies`);
+      } else {
+        logger.warn("No custom strategies found");
+      }
+    }
+  }
+
+  /**
    * Subscribes to event bus events:
    *
    * - When a bot started → Subscribe to candles channel
@@ -147,11 +166,11 @@ export class Platform {
     };
   }
 
-  handleMarketEvent = async (event: MarketEvent) => {
+  handleMarketEvent = (event: MarketEvent) => {
     store.updateMarket(event);
 
     for (const bot of this.enabledBots) {
-      const { strategyFn } = await findStrategy(bot.template);
+      const { strategyFn } = findStrategy(bot.template);
       const { watchOrderbook, watchCandles, watchTrades, watchTicker } = getWatchers(strategyFn, bot);
 
       const isWatchingOrderbook = event.type === "onOrderbookChange" && watchOrderbook.includes(event.marketId);

@@ -38,7 +38,7 @@ export class MarketsStream extends EventEmitter {
   }
 
   async add(bot: TBotWithExchangeAccount) {
-    const { strategyFn } = await findStrategy(bot.template);
+    const { strategyFn } = findStrategy(bot.template);
     const { watchTrades, watchOrderbook, watchTicker, watchCandles } = getWatchers(strategyFn, bot);
 
     if (watchCandles.length > 0) await this.candlesStream.addBot(bot);
@@ -89,10 +89,10 @@ export class MarketsStream extends EventEmitter {
   }
 
   async clean(bots: TBotWithExchangeAccount[]) {
-    await this.candlesStream.cleanStaleChannels(bots);
-    await this.orderbookStream.cleanStaleChannels(bots);
-    await this.tradesStream.cleanStaleChannels(bots);
-    await this.tickerStream.cleanStaleChannels(bots);
+    this.candlesStream.cleanStaleChannels(bots);
+    this.orderbookStream.cleanStaleChannels(bots);
+    this.tradesStream.cleanStaleChannels(bots);
+    this.tickerStream.cleanStaleChannels(bots);
   }
 
   destroy() {

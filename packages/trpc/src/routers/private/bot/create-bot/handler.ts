@@ -31,9 +31,9 @@ export async function createBot({ ctx, input }: Options) {
     });
   }
 
-  let strategy: Awaited<ReturnType<typeof findStrategy>>;
+  let strategy: ReturnType<typeof findStrategy>;
   try {
-    strategy = await findStrategy(data.template);
+    strategy = findStrategy(data.template);
   } catch (err) {
     throw new TRPCError({
       message: `Strategy ${data.template} not found`,

@@ -67,10 +67,10 @@ export class TradesStream extends EventEmitter {
    * Remove unused channels that are no longer used by any bots.
    * Triggered when any bot was stopped.
    */
-  async cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
+  cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
-      const { strategyFn } = await findStrategy(bot.template);
+      const { strategyFn } = findStrategy(bot.template);
       const { watchCandles } = getWatchers(strategyFn, bot);
 
       botsInUse.push({

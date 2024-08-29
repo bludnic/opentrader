@@ -89,7 +89,7 @@ export class OrdersStream {
 
     const bot = botProcessor.getBot();
     const marketId = `${exchangeCode}:${order.smartTrade.symbol}` as MarketId;
-    const { strategyFn } = await findStrategy(bot.template);
+    const { strategyFn } = findStrategy(bot.template);
     const { watchOrderbook, watchCandles, watchTrades, watchTicker } = getWatchers(strategyFn, bot);
     const subscribedMarkets = [
       ...new Set([...watchOrderbook, ...watchCandles, ...watchTrades, ...watchTicker]),

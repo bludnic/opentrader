@@ -184,7 +184,7 @@ export class BotProcessing {
     };
 
     const storeAdapter = new BotStoreAdapter(() => this.stop());
-    const { strategyFn } = await findStrategy(this.bot.template);
+    const { strategyFn } = findStrategy(this.bot.template);
 
     const processor = createStrategyRunner({
       store: storeAdapter,

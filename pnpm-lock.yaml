@@ -749,6 +749,9 @@ importers:
       zod:
         specifier: 3.23.8
         version: 3.23.8
+      zod-to-json-schema:
+        specifier: ^3.23.2
+        version: 3.23.2(zod@3.23.8)
     devDependencies:
       '@opentrader/eslint':
         specifier: workspace:*
@@ -3469,6 +3472,11 @@ packages:
     resolution: {integrity: sha512-5oe0ays3ur4u2GtuUqlhgCraKBcsuMaMI8o7VMV4YAnFeOuVid7K2zGvjI19V0ue9PeNF2ICyVREQVohaQm5dw==}
     hasBin: true
 
+  zod-to-json-schema@3.23.2:
+    resolution: {integrity: sha512-uSt90Gzc/tUfyNqxnjlfBs8W6WSGpNBv0rVsNxP/BVSMHMKGdthPYff4xtCHYloJGM0CFxFsb3NbC0eqPhfImw==}
+    peerDependencies:
+      zod: ^3.23.3
+
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
@@ -6185,6 +6193,10 @@ snapshots:
       '@prisma/generator-helper': 5.18.0
       code-block-writer: 12.0.0
       lodash: 4.17.21
+      zod: 3.23.8
+
+  zod-to-json-schema@3.23.2(zod@3.23.8):
+    dependencies:
       zod: 3.23.8
 
   zod@3.23.8: {}

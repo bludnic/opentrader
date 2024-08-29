@@ -1,4 +1,3 @@
-import { templates } from "@opentrader/bot-templates";
 import { BarSize } from "@opentrader/types";
 import { logger } from "@opentrader/logger";
 import { findStrategy } from "@opentrader/bot-templates/server";
@@ -6,11 +5,7 @@ import { ExchangeAccountWithCredentials, xprisma } from "@opentrader/db";
 import type { CommandResult } from "../types.js";
 import { createDaemonRpcClient } from "../daemon-rpc.js";
 import { readBotConfig, readExchangesConfig } from "../config.js";
-import {
-  createOrUpdateBot,
-  createOrUpdateExchangeAccounts,
-  resetProcessing,
-} from "src/utils/bot.js";
+import { createOrUpdateBot, createOrUpdateExchangeAccounts, resetProcessing } from "src/utils/bot.js";
 import { tServer } from "../trpc.js";
 
 type Options = {
@@ -22,19 +17,16 @@ type Options = {
 
 const daemonRpc = createDaemonRpcClient();
 
-export async function runTrading(
-  strategyName: keyof typeof templates,
-  options: Options,
-): Promise<CommandResult> {
+export async function runTrading(strategyName: string, options: Options): Promise<CommandResult> {
   const config = readBotConfig(options.config);
   logger.debug(config, "Parsed bot config");
 
   const exchangesConfig = readExchangesConfig(options.config);
   logger.debug(exchangesConfig, "Parsed exchanges config");
 
-  let strategy: Awaited<ReturnType<typeof findStrategy>>;
+  let strategy: ReturnType<typeof findStrategy>;
   try {
-    strategy = await findStrategy(strategyName);
+    strategy = findStrategy(strategyName);
   } catch (err) {
     logger.info((err as Error).message);
 
@@ -44,13 +36,10 @@ export async function runTrading(
   }
 
   // Validate strategy params
-  const { success: isValidSchema, error } =
-    strategy.strategyFn.schema.safeParse(config.settings);
+  const { success: isValidSchema, error } = strategy.strategyFn.schema.safeParse(config.settings);
   if (!isValidSchema) {
     logger.error(error.message);
-    logger.error(
-      `The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`,
-    );
+    logger.error(`The params for "${strategyName}" strategy are invalid. Check the "config.dev.json5"`);
 
     return {
       result: undefined,
@@ -65,9 +54,7 @@ export async function runTrading(
 
   const isDaemonRunning = await checkDaemonHealth();
   if (!isDaemonRunning) {
-    logger.info(
-      "Daemon is not running. Please start it before running the bot",
-    );
+    logger.info("Daemon is not running. Please start it before running the bot");
 
     return {
       result: undefined,
@@ -75,30 +62,20 @@ export async function runTrading(
   }
 
   if (bot?.processing) {
-    logger.warn(
-      `Bot "${bot.label}" is already processing. It could happen because previous process was interrupted.`,
-    );
+    logger.warn(`Bot "${bot.label}" is already processing. It could happen because previous process was interrupted.`);
     await resetProcessing(bot.id);
     logger.warn(`The bot processing state was cleared`);
   }
 
   if (bot?.enabled) {
-    logger.info(
-      `Bot "${bot.label}" is already enabled. Cancelling previous orders...`,
-    );
+    logger.info(`Bot "${bot.label}" is already enabled. Cancelling previous orders...`);
     await tServer.bot.stop({ botId: bot.id });
 
     logger.info(`The bot was stoped`);
   }
 
-  const exchangeAccounts: ExchangeAccountWithCredentials[] =
-    await createOrUpdateExchangeAccounts(exchangesConfig);
-  bot = await createOrUpdateBot(
-    strategy.isCustom ? strategy.strategyFilePath : strategyName,
-    options,
-    config,
-    exchangeAccounts,
-  );
+  const exchangeAccounts: ExchangeAccountWithCredentials[] = await createOrUpdateExchangeAccounts(exchangesConfig);
+  bot = await createOrUpdateBot(strategyName, options, config, exchangeAccounts);
 
   const result = await daemonRpc.bot.start.mutate({ botId: bot.id });
 

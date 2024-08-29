@@ -1,5 +1,4 @@
 import { pro as ccxt } from "ccxt";
-import { templates } from "@opentrader/bot-templates";
 import { findStrategy } from "@opentrader/bot-templates/server";
 import { Backtesting } from "@opentrader/backtesting";
 import { CCXTCandlesProvider } from "@opentrader/bot";
@@ -18,13 +17,13 @@ type Options = {
   exchange: ExchangeCode;
 };
 
-export async function runBacktest(strategyName: keyof typeof templates, options: Options): Promise<CommandResult> {
+export async function runBacktest(strategyName: string, options: Options): Promise<CommandResult> {
   const botConfig = readBotConfig(options.config);
   logger.debug(botConfig, "Parsed bot config");
 
-  let strategy: Awaited<ReturnType<typeof findStrategy>>;
+  let strategy: ReturnType<typeof findStrategy>;
   try {
-    strategy = await findStrategy(strategyName);
+    strategy = findStrategy(strategyName);
   } catch (err) {
     logger.info((err as Error).message);
 

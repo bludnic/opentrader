@@ -29,8 +29,9 @@ import { cronPlacePendingOrders } from "./cron-place-pending-orders/handler.js";
 import { ZCronPlacePendingOrdersInputSchema } from "./cron-place-pending-orders/schema.js";
 import { syncOrders } from "./sync-orders/handler.js";
 import { ZSyncGridBotOrdersInputSchema } from "./sync-orders/schema.js";
-import { getBotLogs } from './get-bot-logs/handler.js';
-import { ZGetBotLogs } from './get-bot-logs/schema.js';
+import { getBotLogs } from "./get-bot-logs/handler.js";
+import { ZGetBotLogs } from "./get-bot-logs/schema.js";
+import { getStrategies } from "./get-strategies/handler.js";
 
 export const botRouter = router({
   list: authorizedProcedure.query(getBots),
@@ -38,37 +39,16 @@ export const botRouter = router({
   create: authorizedProcedure.input(ZCreateBotInputSchema).mutation(createBot),
   delete: authorizedProcedure.input(ZDeleteBotInputSchema).mutation(deleteBot),
   update: authorizedProcedure.input(ZUpdateBotInputSchema).mutation(updateBot),
-  start: authorizedProcedure
-    .input(ZStartGridBotInputSchema)
-    .mutation(startGridBot),
-  stop: authorizedProcedure
-    .input(ZStopGridBotInputSchema)
-    .mutation(stopGridBot),
-  manualProcess: authorizedProcedure
-    .input(ZManualProcessGridBotInputSchema)
-    .mutation(manualProcessGridBot),
-  cronPlaceLimitOrders: authorizedProcedure
-    .input(ZCronPlacePendingOrdersInputSchema)
-    .mutation(cronPlacePendingOrders),
-  syncOrders: authorizedProcedure
-    .input(ZSyncGridBotOrdersInputSchema)
-    .mutation(syncOrders),
-  activeSmartTrades: authorizedProcedure
-    .input(ZGetActiveSmartTradesInputSchema)
-    .query(getActiveSmartTrades),
-  openSmartTrades: authorizedProcedure
-    .input(ZGetOpenSmartTradesInputSchema)
-    .query(getOpenSmartTrades),
-  pendingSmartTrades: authorizedProcedure
-    .input(ZGetPendingSmartTradesInputSchema)
-    .query(getPendingSmartTrades),
-  completedSmartTrades: authorizedProcedure
-    .input(ZGetCompletedSmartTradesInputSchema)
-    .query(getCompletedSmartTrades),
-  orders: authorizedProcedure
-    .input(ZGetGridBotOrdersInputSchema)
-    .query(getGridBotOrders),
-  getBotLogs: authorizedProcedure
-    .input(ZGetBotLogs)
-    .query(getBotLogs),
+  start: authorizedProcedure.input(ZStartGridBotInputSchema).mutation(startGridBot),
+  stop: authorizedProcedure.input(ZStopGridBotInputSchema).mutation(stopGridBot),
+  manualProcess: authorizedProcedure.input(ZManualProcessGridBotInputSchema).mutation(manualProcessGridBot),
+  cronPlaceLimitOrders: authorizedProcedure.input(ZCronPlacePendingOrdersInputSchema).mutation(cronPlacePendingOrders),
+  syncOrders: authorizedProcedure.input(ZSyncGridBotOrdersInputSchema).mutation(syncOrders),
+  activeSmartTrades: authorizedProcedure.input(ZGetActiveSmartTradesInputSchema).query(getActiveSmartTrades),
+  openSmartTrades: authorizedProcedure.input(ZGetOpenSmartTradesInputSchema).query(getOpenSmartTrades),
+  pendingSmartTrades: authorizedProcedure.input(ZGetPendingSmartTradesInputSchema).query(getPendingSmartTrades),
+  completedSmartTrades: authorizedProcedure.input(ZGetCompletedSmartTradesInputSchema).query(getCompletedSmartTrades),
+  orders: authorizedProcedure.input(ZGetGridBotOrdersInputSchema).query(getGridBotOrders),
+  getBotLogs: authorizedProcedure.input(ZGetBotLogs).query(getBotLogs),
+  getStrategies: authorizedProcedure.query(getStrategies),
 });

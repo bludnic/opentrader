@@ -35,7 +35,7 @@ export class TickerStream extends EventEmitter {
    * It will create the channel if necessary or reusing it if it already exists.
    */
   async addBot(bot: TBotWithExchangeAccount) {
-    const { strategyFn } = await findStrategy(bot.template);
+    const { strategyFn } = findStrategy(bot.template);
     const { watchTicker: symbols } = getWatchers(strategyFn, bot);
 
     for (const symbolId of symbols) {
@@ -73,10 +73,10 @@ export class TickerStream extends EventEmitter {
    * Remove unused channels that are no longer used by any bots.
    * Triggered when any bot was stopped.
    */
-  async cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
+  cleanStaleChannels(bots: TBotWithExchangeAccount[]) {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
-      const { strategyFn } = await findStrategy(bot.template);
+      const { strategyFn } = findStrategy(bot.template);
       const { watchCandles } = getWatchers(strategyFn, bot);
 
       botsInUse.push({
