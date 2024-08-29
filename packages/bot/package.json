@@ -20,7 +20,7 @@
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
     "@types/async": "^3.2.24",
-    "@types/node": "^20.14.15",
+    "@types/node": "^20.16.2",
     "eslint": "8.57.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4",
@@ -35,7 +35,7 @@
     "@opentrader/logger": "workspace:*",
     "@opentrader/processing": "workspace:*",
     "@opentrader/tools": "workspace:*",
-    "async": "^3.2.5",
+    "async": "^3.2.6",
     "ccxt": "4.3.59",
     "cron": "^3.1.7"
   }
