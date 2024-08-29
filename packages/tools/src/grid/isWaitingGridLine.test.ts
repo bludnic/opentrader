@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import type { IGridLine } from "@opentrader/types";
 import { isWaitingGridLine } from "./isWaitingGridLine.js";
 

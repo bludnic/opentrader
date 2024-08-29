@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { isWaitingPriceLine } from "./isWaitingPriceLine.js";
 
 const priceLines = [1, 3, 2, 4, 5];

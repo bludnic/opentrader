@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { areGridLinesPricesSortedInAscOrder } from "./areGridLinesPricesSortedInAscOrder.js";
 
 describe("areGridLinesPricesSortedInAscOrder", () => {
@@ -6,9 +7,7 @@ describe("areGridLinesPricesSortedInAscOrder", () => {
   });
 
   it("should return `true` when only one grid line is preset", () => {
-    expect(
-      areGridLinesPricesSortedInAscOrder([{ price: 10, quantity: 1 }]),
-    ).toBe(true);
+    expect(areGridLinesPricesSortedInAscOrder([{ price: 10, quantity: 1 }])).toBe(true);
   });
 
   it("should return `false` when grid lines are not sorted", () => {

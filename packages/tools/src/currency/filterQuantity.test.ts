@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { ETH_SYMBOL_FILTER } from "../mocks/symbols.js";
 import { filterQuantity } from "./filterQuantity.js";
 

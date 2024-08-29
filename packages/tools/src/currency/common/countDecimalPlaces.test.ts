@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { countDecimalPlaces } from "./countDecimalPlaces.js";
 
 describe(countDecimalPlaces.name, () => {

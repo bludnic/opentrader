@@ -1,18 +1,12 @@
+import { describe, expect, it } from "vitest";
 import type { IGridBotLevel } from "@opentrader/types";
-import {
-  CURRENT_ASSET_PRICE,
-  GRID_LINES,
-  GRID_LEVELS,
-} from "../mocks/grid-bot.js";
+import { CURRENT_ASSET_PRICE, GRID_LINES, GRID_LEVELS } from "../mocks/grid-bot.js";
 import { calcGridLines } from "./calcGridLines.js";
 import { computeGridLevelsFromCurrentAssetPrice } from "./computeGridLevelsFromCurrentAssetPrice.js";
 
 describe("computeGridLevelsFromCurrentAssetPrice", () => {
   it("should calculate initial grid levels", () => {
-    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
-      GRID_LINES,
-      CURRENT_ASSET_PRICE,
-    );
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(GRID_LINES, CURRENT_ASSET_PRICE);
     const expectedGridLevels: IGridBotLevel[] = GRID_LEVELS;
 
     expect(gridLevels).toStrictEqual(expectedGridLevels);
@@ -22,10 +16,7 @@ describe("computeGridLevelsFromCurrentAssetPrice", () => {
     const currentAssetPrice = 1.13;
     const gridLines = calcGridLines(1.14, 1.11, 4, 5);
 
-    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
-      gridLines,
-      currentAssetPrice,
-    );
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(gridLines, currentAssetPrice);
 
     expect(gridLevels).toMatchObject([
       { sell: { price: 1.12 } },
@@ -38,10 +29,7 @@ describe("computeGridLevelsFromCurrentAssetPrice", () => {
     const currentAssetPrice = 2610;
     const gridLines = calcGridLines(2800, 2500, 16, 0.1);
 
-    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
-      gridLines,
-      currentAssetPrice,
-    );
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(gridLines, currentAssetPrice);
 
     expect(gridLevels).toHaveLength(15);
     expect(gridLevels).toMatchObject([
@@ -68,10 +56,7 @@ describe("computeGridLevelsFromCurrentAssetPrice", () => {
     const currentAssetPrice = 9.8;
     const gridLines = calcGridLines(12, 7.5, 10, 10);
 
-    const gridLevels = computeGridLevelsFromCurrentAssetPrice(
-      gridLines,
-      currentAssetPrice,
-    );
+    const gridLevels = computeGridLevelsFromCurrentAssetPrice(gridLines, currentAssetPrice);
 
     expect(gridLevels).toHaveLength(9);
     expect(gridLevels).toMatchObject([

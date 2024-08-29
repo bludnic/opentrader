@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { getExponentAbs } from "./getExponentAbs.js";
 
 describe("getExponentAbs", () => {
