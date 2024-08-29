@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@opentrader/prisma": "workspace:*",
-    "@prisma/client": "5.17.0",
+    "@prisma/client": "5.19.0",
     "zod": "3.23.8"
   }
 }
