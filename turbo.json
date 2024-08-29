@@ -2,13 +2,8 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "dist"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist"]
     },
     "lint": {},
     "lint:fix": {},
@@ -17,6 +12,7 @@
     "start": {},
     "prisma:migrate": {},
     "prisma:deploy": {},
-    "prisma:seed": {}
+    "prisma:seed": {},
+    "test": {}
   }
 }
