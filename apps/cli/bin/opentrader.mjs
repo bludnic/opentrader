@@ -36,6 +36,7 @@ async function main() {
     ...process.env,
     ADMIN_PASSWORD: adminPassword,
     DATABASE_URL: `file:${dbFilePath}`,
+    CUSTOM_STRATEGIES_PATH: process.env.CUSTOM_STRATEGIES_PATH,
   };
 
   // Run the Node.js script

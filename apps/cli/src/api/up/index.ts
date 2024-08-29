@@ -18,12 +18,10 @@ function getAbsoluteStrategiesPath(strategiesPath: string) {
 
 type Options = {
   detach: boolean;
-  strategiesDir?: string;
 };
 
 export async function up(options: Options): Promise<CommandResult> {
   const pid = getPid();
-  const strategiesPath = options.strategiesDir ? getAbsoluteStrategiesPath(options.strategiesDir) : undefined;
 
   if (pid) {
     logger.warn(`Daemon process is already running with PID: ${pid}`);
@@ -37,16 +35,10 @@ export async function up(options: Options): Promise<CommandResult> {
     ? spawn("ts-node", [join(__dirname, "daemon.ts")], {
         detached: options.detach,
         stdio: options.detach ? "ignore" : undefined,
-        env: {
-          CUSTOM_STRATEGIES_PATH: strategiesPath,
-        },
       })
     : spawn("node", [join(__dirname, "daemon.mjs")], {
         detached: options.detach,
         stdio: options.detach ? "ignore" : undefined,
-        env: {
-          CUSTOM_STRATEGIES_PATH: strategiesPath,
-        },
       });
 
   if (daemonProcess.pid === undefined) {
