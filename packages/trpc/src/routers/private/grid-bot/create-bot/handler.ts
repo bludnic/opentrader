@@ -38,6 +38,13 @@ export async function createGridBot({ ctx, input }: Options) {
     });
   }
 
+  if (data.settings.gridLines.length === 0) {
+    throw new TRPCError({
+      message: "The bot has no configured grid lines. Please set at least one grid line",
+      code: "PARSE_ERROR",
+    });
+  }
+
   const bot = await xprisma.bot.grid.create({
     data: {
       ...data,
