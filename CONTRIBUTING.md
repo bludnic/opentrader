@@ -2,68 +2,92 @@
 
 ```bash
 # NodeJS v20 or higher
-$ node -v
+node -v
 
 # `pnpm` must be installed
-$ pnpm -v
+pnpm -v
 
 # Install Turborepo globally
-$ pnpm install turbo --global
+pnpm install turbo --global
 
 # Docker (optional)
-$ docker -v
+docker -v
 ```
 
 ## Environment variables
 
-The project uses a single `.env` file located in the root directory.
-Frameworks like Next.js requires `.env` file to be located in the project dir itself.
-To solve this some apps/packages may contain a symlink to the root `.env`.
+The project uses a single `.env` file located in the root directory. Some packages may contain a symlink to the root `.env`.
 
 1. Create environment file `.env` in the root directory
 
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 
-2. Update the `ADMIN_PASSWORD`. The password is required to authorize later in the Opentrader UI.
+2. Update the `ADMIN_PASSWORD` if you are going to expose the app externally.
 
 # Installation
 
 1. Install dependencies
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-2. Build `/packages/**`
+2. Run database migrations
 
 ```bash
-$ turbo run build --filter='./packages/*'
+turbo run prisma:migrate
 ```
 
-3. Run db migrations
+3. Seed the database
 
 ```bash
-$ turbo run prisma:migrate
+turbo run prisma:seed
 ```
 
-4. Seed the database
+4. Build the project
 
 ```bash
-$ turbo run prisma:seed
+turbo run build
 ```
-
-> ⚠️ **Note**: Due to that fact that packages doesn't have a `dev` server itself, the `build` command is mandatory on first run.
->
-> If you made changes inside a package, don't forget to run `build` command again.
 
 # Development
 
-**Option 1**: Run both `frontend` and `processor` apps in a single terminal
+## CLI
+
+You can interact with the bot by using CLI.
+If you made changes in the code, don't forget to rebuild the project `turbo run build`.
 
 ```bash
-$ turbo run dev
+# List of commands
+./bin/cli.sh --help
+
+# Start the daemon
+./bin/cli.sh up
+
+# Running Grid bot strategy
+./bin/cli.sh trade grid
+
+# Running RSI strategy
+./bin/cli.sh trade rsi
+```
+
+> [!NOTE]
+> See the [CLI](/README.md#cli) section in the README.md on how to connect an exchange and configure the strategy params.
+
+## UI
+
+The UI allows managing multiple bots and strategies, viewing backtest results, and monitoring live trading.
+
+> [!IMPORTANT]
+> Currently, the UI resides in a private repo until I decide on the licensing and funding model,
+> so this option is not available to the public yet.
+
+**Option 1**: Run both `frontend` and `backend` apps in a single terminal
+
+```bash
+turbo run dev
 ```
 
 **Option 2**: Run each app in a separate terminal
@@ -71,21 +95,22 @@ $ turbo run dev
 First Terminal
 
 ```bash
-$ cd apps/frontend
-$ pnpm run dev
+cd pro/frontend
+pnpm run dev
 ```
 
 Second Terminal
 
 ```bash
-$ cd apps/processor
-$ pnpm run dev
+cd pro/backend
+pnpm run dev
 ```
 
 # Apps
 
 - Frontend: http://localhost:3000
-- Processor: http://localhost:4000
+- Backend: http://localhost:4000
+- CLI: http://localhost:8000
 
 # Project structure
 
