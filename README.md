@@ -10,12 +10,20 @@
 
 [OpenTrader](https://github.com/bludnic/opentrader) is an advanced cryptocurrency trading bot offering high-frequency, cross-exchange arbitrage and event-based strategies, including technical analysis with indicators. Features a user-friendly management UI, robust backtesting capabilities, and support for 100+ exchanges via CCXT.
 
+**Features:**
+
+- **✨ Robust UI**: A user-friendly interface for managing the bots.
+- **🌐 Multiple Exchanges:** Trade across various cryptocurrency exchanges.
+- **📝 Paper Trading**: Test your strategies without risking real money.
+- **⚙️ Easy Installation:** Install effortlessly via NPM for a streamlined setup process.
+
 **Strategies:**
 
 - [x] [Grid](packages/bot-templates/src/templates/grid-bot.ts): A grid trading strategy that profits from the price fluctuation of an asset.
 - [x] [RSI](packages/bot-templates/src/templates/rsi.ts): A Relative Strength Index (RSI) strategy that buys and sells based on the RSI indicator.
 - [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
 - [ ] `ARB`: Arbitrage strategy that takes advantage of price differences through cross-exchange trading.
+- [ ] `CUSTOM`: Build your own strategy in just a few lines of code
 
 # 🤖 State of the Project
 
