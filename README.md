@@ -52,7 +52,7 @@ npm install -g opentrader
 opentrader set-password <password>
 ```
 
-2. Start the OpenTrader app
+3. Start the OpenTrader app
 
 ```bash
 opentrader up
