@@ -17,6 +17,15 @@
 - [ ] `DCA`: Dollar-Cost Averaging (DCA) strategy that buys an asset at regular intervals.
 - [ ] `ARB`: Arbitrage strategy that takes advantage of price differences through cross-exchange trading.
 
+# 🤖 State of the Project
+
+This project is a personal passion, developed in my free time, and currently not monetized. If you find it useful, please give it a ⭐️. Your support means a lot and motivates me to keep improving the bot. If you'd like to make a donation, see the options below. 💖
+
+> [!NOTE]
+If you choose to build the project from source, please note that you'll only be able to interact with the bot via the CLI, and you can run only one bot instance. Running multiple bots requires the UI, which currently resides in a private repo until I finalize the licensing and funding options.
+
+Currently, the NPM version includes the full bot functionality, including the UI, and I'm offering it for free to early adopters. 🎉
+
 # Quick start
 
 Get started with OpenTrader in just a few steps. Follow this quick guide to install, configure, and run your crypto trading bot.
