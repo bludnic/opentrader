@@ -65,6 +65,25 @@ export class Platform {
     logger.info(`[Processor] Stopping ${bots.length} bots gracefully…`);
 
     for (const bot of bots) {
+      // Check if the strategy function exists
+      // If not, just mark the bot as disabled
+      try {
+        findStrategy(bot.template);
+      } catch (err) {
+        logger.warn(
+          `[Processor] Strategy "${bot.template}" not found. ` +
+            "The strategy may have been removed, or the CUSTOM_STRATEGIES_PATH env is incorrect. " +
+            `Marking the bot as disabled [Bot ID: ${bot.id}, Name: ${bot.name}]`,
+        );
+
+        await xprisma.bot.custom.update({
+          where: { id: bot.id },
+          data: { enabled: false, processing: false },
+        });
+
+        continue;
+      }
+
       const botProcessor = new BotProcessing(bot);
       await botProcessor.processStopCommand();
 
