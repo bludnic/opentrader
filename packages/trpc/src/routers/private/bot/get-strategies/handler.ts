@@ -17,6 +17,15 @@ type StrategyInfo = { schema: JsonSchema7Type; isCustom: boolean } & Pick<
   "displayName" | "hidden" | "runPolicy" | "watchers" | "requiredHistory"
 >;
 
+// Helper function to check if the schema is a ZodObject
+function isZodObject(schema: any): schema is ZodObject<any> {
+  // Using `instance of ZodObject` will not work because
+  // in custom strategies the `z` is imported from a different package
+  // TODO: Maybe export the `z` instance to allow importing it as `import { z } from "opentrader";`
+
+  return schema?._def?.typeName === "ZodObject";
+}
+
 export async function getStrategies({ ctx }: Options) {
   const strategies: Record<StrategyName, BotTemplate<any>> = {
     ...customStrategies,
@@ -25,7 +34,7 @@ export async function getStrategies({ ctx }: Options) {
 
   const result: Record<StrategyName, StrategyInfo> = {};
   for (const [strategyName, strategy] of Object.entries(strategies)) {
-    const zodSchema = strategy.schema instanceof ZodObject ? strategy.schema : z.object({});
+    const zodSchema = isZodObject(strategy.schema) ? strategy.schema : z.object({});
 
     result[strategyName] = {
       schema: zodToJsonSchema(zodSchema),
