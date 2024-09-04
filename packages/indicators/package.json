@@ -19,7 +19,7 @@
     "@opentrader/eslint": "workspace:*",
     "@opentrader/tsconfig": "workspace:*",
     "@opentrader/types": "workspace:*",
-    "@types/node": "^20.16.2",
+    "@types/node": "^20.16.5",
     "eslint": "8.57.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.4",
