@@ -33,7 +33,7 @@ export class Backtesting<S = any> {
   private botTemplate: BotTemplate<IBotConfiguration<S>>;
   private botConfig: IBotConfiguration<S>;
 
-  constructor(options: { botConfig: IBotConfiguration<S>; botTemplate: BotTemplate<IBotConfiguration<T>> }) {
+  constructor(options: { botConfig: IBotConfiguration<S>; botTemplate: BotTemplate<IBotConfiguration<S>> }) {
     const { botConfig, botTemplate } = options;
 
     this.marketSimulator = new MarketSimulator();
