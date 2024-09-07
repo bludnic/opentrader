@@ -71,7 +71,7 @@ export class OrdersStream {
 
   private async onOrderFilled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade, exchangeCode: ExchangeCode) {
     logger.info(
-      `🔋 onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
+      `🔋 [${exchangeCode}] onOrderFilled: Order #${order.id}: ${order.exchangeOrderId} was filled with price ${exchangeOrder.filledPrice} at ${exchangeOrder.lastTradeTimestamp} timestamp`,
     );
     await xprisma.order.updateStatusToFilled({
       orderId: order.id,
@@ -114,7 +114,7 @@ export class OrdersStream {
 
   private async onOrderPlaced(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
     // Edge case: the user could change the price of the order on the Exchange
-    logger.info(`⬆️ onOrderPlaced: Order #${order.id}: ${order.exchangeOrderId}`);
+    logger.info(`⬆️ onOrderPlaced: Order #${order.id}: ${order.exchangeOrderId} placed at ${exchangeOrder.price}`);
 
     // Order was possibly replaced.
     // This means that the user changed the order price on the Exchange.
