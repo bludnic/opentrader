@@ -29,6 +29,8 @@ export class SmartTradeService {
   }
 
   isCompleted(): boolean {
-    return this.smartTrade.sell?.status === OrderStatusEnum.Filled;
+    return (
+      this.smartTrade.buy.status === OrderStatusEnum.Filled && this.smartTrade.sell?.status === OrderStatusEnum.Filled
+    );
   }
 }
