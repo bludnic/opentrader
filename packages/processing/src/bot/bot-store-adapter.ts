@@ -16,7 +16,6 @@ export class BotStoreAdapter implements IStore {
     try {
       const smartTrade = await xprisma.smartTrade.findFirstOrThrow({
         where: {
-          type: "Trade",
           ref,
           bot: {
             id: botId,
@@ -101,7 +100,6 @@ export class BotStoreAdapter implements IStore {
     try {
       let smartTrade = await xprisma.smartTrade.findFirstOrThrow({
         where: {
-          type: "Trade",
           ref,
           bot: {
             id: bot.id,
@@ -195,7 +193,6 @@ export class BotStoreAdapter implements IStore {
 
     const smartTrade = await xprisma.smartTrade.findFirst({
       where: {
-        type: "Trade",
         ref,
         bot: {
           id: botId,
