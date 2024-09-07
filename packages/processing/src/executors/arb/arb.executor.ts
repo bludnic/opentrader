@@ -1,6 +1,5 @@
 import { xprisma } from "@opentrader/db";
-import type { SmartTradeWithOrders, ExchangeAccountWithCredentials } from "@opentrader/db";
-import type { IExchange } from "@opentrader/exchanges";
+import type { SmartTradeWithOrders } from "@opentrader/db";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
 import type { ISmartTradeExecutor } from "../smart-trade-executor.interface.js";
@@ -8,17 +7,13 @@ import { OrderExecutor } from "../order/order.executor.js";
 
 export class ArbExecutor implements ISmartTradeExecutor {
   smartTrade: SmartTradeWithOrders;
-  exchange: IExchange;
 
-  constructor(smartTrade: SmartTradeWithOrders, exchange: IExchange) {
+  constructor(smartTrade: SmartTradeWithOrders) {
     this.smartTrade = smartTrade;
-    this.exchange = exchange;
   }
 
-  static create(smartTrade: SmartTradeWithOrders, exchangeAccount: ExchangeAccountWithCredentials) {
-    const exchange = exchangeProvider.fromAccount(exchangeAccount);
-
-    return new ArbExecutor(smartTrade, exchange);
+  static create(smartTrade: SmartTradeWithOrders) {
+    return new ArbExecutor(smartTrade);
   }
 
   static async fromId(id: number) {
@@ -32,9 +27,7 @@ export class ArbExecutor implements ISmartTradeExecutor {
       },
     });
 
-    const exchange = exchangeProvider.fromAccount(smartTrade.exchangeAccount);
-
-    return new ArbExecutor(smartTrade, exchange);
+    return new ArbExecutor(smartTrade);
   }
 
   static async fromOrderId(orderId: number) {
@@ -52,9 +45,7 @@ export class ArbExecutor implements ISmartTradeExecutor {
       },
     });
 
-    const exchange = exchangeProvider.fromAccount(order.smartTrade.exchangeAccount);
-
-    return new ArbExecutor(order.smartTrade, exchange);
+    return new ArbExecutor(order.smartTrade);
   }
 
   static async fromExchangeOrderId(exchangeOrderId: string) {
@@ -72,9 +63,7 @@ export class ArbExecutor implements ISmartTradeExecutor {
       },
     });
 
-    const exchange = exchangeProvider.fromAccount(order.smartTrade.exchangeAccount);
-
-    return new ArbExecutor(order.smartTrade, exchange);
+    return new ArbExecutor(order.smartTrade);
   }
 
   /**
@@ -84,8 +73,17 @@ export class ArbExecutor implements ISmartTradeExecutor {
     const entryOrder = this.smartTrade.orders.find((order) => order.entityType === "EntryOrder")!;
     const takeProfitOrder = this.smartTrade.orders.find((order) => order.entityType === "TakeProfitOrder")!;
 
-    const entryOrderExecutor = new OrderExecutor(entryOrder, this.exchange, entryOrder.symbol);
-    const tpOrderExecutor = new OrderExecutor(takeProfitOrder, this.exchange, takeProfitOrder.symbol);
+    const exchangeAccount1 = await xprisma.exchangeAccount.findUniqueOrThrow({
+      where: { id: entryOrder.exchangeAccountId },
+    });
+    const exchangeAccount2 = await xprisma.exchangeAccount.findUniqueOrThrow({
+      where: { id: takeProfitOrder.exchangeAccountId },
+    });
+    const exchange1 = exchangeProvider.fromAccount(exchangeAccount1);
+    const exchange2 = exchangeProvider.fromAccount(exchangeAccount2);
+
+    const entryOrderExecutor = new OrderExecutor(entryOrder, exchange1, entryOrder.symbol);
+    const tpOrderExecutor = new OrderExecutor(takeProfitOrder, exchange2, takeProfitOrder.symbol);
 
     if (entryOrder.status === "Idle" && takeProfitOrder.status === "Idle") {
       await Promise.all([entryOrderExecutor.place(), tpOrderExecutor.place()]);
@@ -110,7 +108,12 @@ export class ArbExecutor implements ISmartTradeExecutor {
     const allOrders = [];
 
     for (const order of this.smartTrade.orders) {
-      const orderExecutor = new OrderExecutor(order, this.exchange, order.symbol);
+      const exchangeAccount = await xprisma.exchangeAccount.findUniqueOrThrow({
+        where: { id: order.exchangeAccountId },
+      });
+      const exchange = exchangeProvider.fromAccount(exchangeAccount);
+
+      const orderExecutor = new OrderExecutor(order, exchange, order.symbol);
 
       const cancelled = await orderExecutor.cancel();
       allOrders.push(cancelled);
