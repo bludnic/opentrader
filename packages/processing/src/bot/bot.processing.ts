@@ -59,10 +59,13 @@ export class BotProcessing {
   private async processCommand(command: "start" | "stop" | "process", params: ProcessParams) {
     const { triggerEventType, market, markets } = params;
 
-    console.log(`🤖 Exec "${command}" command`, {
-      context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0} trade=${JSON.stringify(market?.trade)}`,
-      bot: `id=${this.bot.id} name="${this.bot.name}"`,
-    });
+    logger.debug(
+      {
+        context: `candle=${JSON.stringify(market?.candle)} candlesHistory=${market?.candles.length || 0} trade=${JSON.stringify(market?.trade)}`,
+        bot: `id=${this.bot.id} name="${this.bot.name}"`,
+      },
+      `🤖 Exec "${command}" command`,
+    );
     const t0 = Date.now();
 
     if (this.isBotProcessing()) {
@@ -114,10 +117,13 @@ export class BotProcessing {
     const t1 = Date.now();
     const duration = (t1 - t0) / 1000;
 
-    console.log(`🤖 Exec "${command}" command finished in ${duration}s`, {
-      botId: this.bot.id,
-      botName: this.bot.name,
-    });
+    logger.debug(
+      {
+        botId: this.bot.id,
+        botName: this.bot.name,
+      },
+      `🤖 Exec "${command}" command finished in ${duration}s`,
+    );
   }
 
   async processStartCommand() {
@@ -211,7 +217,7 @@ export class BotProcessing {
       },
     });
 
-    logger.info(`BotProcessing: Found ${smartTrades.length} pending orders for placement`);
+    logger.debug(`BotProcessing: Found ${smartTrades.length} pending orders for placement`);
 
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
