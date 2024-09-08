@@ -50,25 +50,40 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
 
           logger.debug(`Order #${order.id} is linked to SmartTrade with ID: ${smartTrade.id}`);
 
-          if (exchangeOrder.status === "open") {
-            // get the actual status of the order (it may be stalled, if was filled immediately)
-            const actualExchangeOrder = await this.exchangeService.getLimitOrder({
-              orderId: exchangeOrder.exchangeOrderId,
-              symbol: smartTrade.symbol,
-            });
+          // Orders what are emitted with status "open" may be stalled.
+          // For example, if the order was filled immediately (typically with market orders),
+          // the exchange may emit only "open" status, and skip "filled" status.
+          let actualExchangeOrder = exchangeOrder;
+          if (actualExchangeOrder.status === "open") {
+            logger.info(
+              actualExchangeOrder,
+              `[WS] Emitted order ID:${actualExchangeOrder.exchangeOrderId} with status "open". It may be stalled, fetching actual status by REST...`,
+            );
 
+            // get the actual status of the order (it may be stalled, if was filled immediately)
+            actualExchangeOrder = await this.exchangeService.getLimitOrder({
+              orderId: exchangeOrder.exchangeOrderId,
+              symbol: order.symbol,
+            });
+            logger.info(
+              actualExchangeOrder,
+              `[WS] Fetched order ID:${actualExchangeOrder.exchangeOrderId} with status: ${actualExchangeOrder.status}`,
+            );
+          }
+
+          if (actualExchangeOrder.status === "open") {
             this.emit("onPlaced", [actualExchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
-          } else if (exchangeOrder.status === "filled") {
+          } else if (actualExchangeOrder.status === "filled") {
             const statusChanged = order.status !== "Filled";
 
             if (statusChanged) {
-              this.emit("onFilled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
+              this.emit("onFilled", [actualExchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
             }
-          } else if (exchangeOrder.status === "canceled") {
+          } else if (actualExchangeOrder.status === "canceled") {
             const statusChanged = order.status !== "Canceled";
 
             if (statusChanged) {
-              this.emit("onCanceled", [exchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
+              this.emit("onCanceled", [actualExchangeOrder, order, this.exchange.exchangeCode as ExchangeCode]);
             }
           }
         }
