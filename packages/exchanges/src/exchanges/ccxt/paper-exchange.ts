@@ -83,6 +83,10 @@ export class PaperExchange extends CCXTExchange {
 
         for (const order of this.openOrders) {
           const ticker = tickers[order.symbol];
+          if (!ticker) {
+            // console.warn(`[PaperExchange ${this.exchangeCode}] Ticker not found for symbol: ${order.symbol}`);
+            continue;
+          }
 
           if (order.side === "buy" && order.price! >= ticker.ask!) {
             const filledOrder = await xprisma.paperOrder.update({
