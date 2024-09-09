@@ -13,7 +13,6 @@ type Options = {
 export async function getCompletedSmartTrades({ ctx, input }: Options) {
   const smartTrades = await xprisma.smartTrade.findMany({
     where: {
-      type: "Trade",
       entryType: "Order",
       takeProfitType: "Order",
       owner: {
@@ -37,9 +36,7 @@ export async function getCompletedSmartTrades({ ctx, input }: Options) {
     },
   });
 
-  const smartTradesDto = smartTrades.map(
-    toSmartTradeEntity,
-  ) as SmartTradeEntity_Order_Order[]; // more concrete type (need to add a generic prop to "toSmartTradeEntity()")
+  const smartTradesDto = smartTrades.map(toSmartTradeEntity) as SmartTradeEntity_Order_Order[]; // more concrete type (need to add a generic prop to "toSmartTradeEntity()")
 
   return smartTradesDto;
 }
