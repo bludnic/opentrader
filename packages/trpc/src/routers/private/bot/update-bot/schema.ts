@@ -10,6 +10,7 @@ export const ZUpdateBotInputSchema = z.object({
     template: true,
     timeframe: true,
     exchangeAccountId: true,
+    logging: true,
   }),
 });
 

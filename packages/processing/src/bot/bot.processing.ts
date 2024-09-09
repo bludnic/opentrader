@@ -105,14 +105,17 @@ export class BotProcessing {
 
     await xprisma.bot.setProcessing(false, this.bot.id);
     await xprisma.bot.updateState(botState, this.bot.id);
-    await xprisma.botLog.log({
-      startedAt: new Date(t0),
-      endedAt: new Date(),
-      botId: this.bot.id,
-      context: market,
-      action: command,
-      triggerEventType,
-    });
+
+    if (this.bot.logging) {
+      await xprisma.botLog.log({
+        startedAt: new Date(t0),
+        endedAt: new Date(),
+        botId: this.bot.id,
+        context: market,
+        action: command,
+        triggerEventType,
+      });
+    }
 
     const t1 = Date.now();
     const duration = (t1 - t0) / 1000;

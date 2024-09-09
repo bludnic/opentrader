@@ -187,6 +187,7 @@ model Bot {
   label   String? @unique
   symbol  String
   enabled Boolean @default(false)
+  logging Boolean @default(true)
 
   // Template name that will be executed by the bot
   // e.g. `gridBot`, see templates in @opentrader/templates

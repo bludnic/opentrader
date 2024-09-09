@@ -9,6 +9,7 @@ export const ZCreateBotInputSchema = z.object({
     settings: true,
     template: true,
     timeframe: true,
+    logging: true,
   }),
 });
 
