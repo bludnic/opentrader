@@ -33,7 +33,7 @@ testMarketOrder.schema = z.object({
 });
 testMarketOrder.timeframe = ({ timeframe }: IBotConfiguration) => timeframe;
 testMarketOrder.watchers = {
-  watchCandles: true,
+  watchCandles: ({ symbol }: IBotConfiguration) => symbol,
 };
 testMarketOrder.runPolicy = {
   onCandleClosed: true,
