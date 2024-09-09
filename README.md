@@ -5,6 +5,7 @@
 </p>
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bludnic/opentrader/dev.yml)](https://github.com/bludnic/opentrader/actions)
+[![NPM Version](https://img.shields.io/npm/v/opentrader?color=blue)](https://www.npmjs.com/package/opentrader)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/bludnic/opentrader)](https://github.com/bludnic/opentrader/graphs/contributors)
 [![Static Badge](https://img.shields.io/badge/Discord-white?logo=Discord)](https://discord.gg/RS7y3ffvvG)
 [![Static Badge](https://img.shields.io/badge/Telegram-white?logo=Telegram)](https://t.me/+cJLNxLSjcW83Njgy)
@@ -31,7 +32,7 @@
 This project is a personal passion, developed in my free time, and currently not monetized. If you find it useful, please give it a ⭐️. Your support means a lot and motivates me to keep improving the bot. If you'd like to make a donation, see the options below. 💖
 
 > [!NOTE]
-If you choose to build the project from source, please note that you'll only be able to interact with the bot via the CLI, and you can run only one bot instance. Running multiple bots requires the UI, which currently resides in a private repo until I finalize the licensing and funding options.
+> If you choose to build the project from source, please note that you'll only be able to interact with the bot via the CLI, and you can run only one bot instance. Running multiple bots requires the UI, which currently resides in a private repo until I finalize the licensing and funding options.
 
 Currently, the NPM version includes the full bot functionality, including the UI, and I'm offering it for free to early adopters. 🎉
 
