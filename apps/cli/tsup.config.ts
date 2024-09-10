@@ -7,6 +7,7 @@ export default defineConfig({
   entry: {
     main: "./src/index.ts",
     daemon: "./src/api/up/daemon.ts",
+    effects: "./src/effects.ts",
   }, // Adjust this to your entry file
   format: ["esm"],
   outDir: "dist",

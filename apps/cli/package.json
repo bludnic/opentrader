@@ -16,6 +16,10 @@
   "type": "module",
   "main": "dist/main.mjs",
   "types": "src/index.ts",
+  "exports": {
+    ".": "./dist/main.mjs",
+    "./effects": "./dist/effects.mjs"
+  },
   "scripts": {
     "build": "tsup",
     "build:release": "rimraf ./release && tsup -d release/dist && cp -r ./bin ./release/bin && cp -r ./scripts ./release/scripts",
