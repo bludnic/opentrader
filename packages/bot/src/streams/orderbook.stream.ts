@@ -79,12 +79,12 @@ export class OrderbookStream extends EventEmitter {
     const botsInUse: Array<{ timeframe: BarSize | null; symbols: string[]; exchangeCodes: ExchangeCode[] }> = [];
     for (const bot of bots) {
       const { strategyFn } = findStrategy(bot.template);
-      const { watchCandles } = getWatchers(strategyFn, bot);
+      const { watchOrderbook } = getWatchers(strategyFn, bot);
 
       botsInUse.push({
         timeframe: getTimeframe(strategyFn, bot), // override
-        symbols: watchCandles,
-        exchangeCodes: [...new Set(watchCandles.map((symbolId) => decomposeSymbolId(symbolId).exchangeCode))],
+        symbols: watchOrderbook,
+        exchangeCodes: [...new Set(watchOrderbook.map((symbolId) => decomposeSymbolId(symbolId).exchangeCode))],
       });
     }
 
