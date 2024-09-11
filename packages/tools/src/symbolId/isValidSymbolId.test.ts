@@ -17,4 +17,8 @@ describe("isValidSymbolId", () => {
   it("test existing exchange with a symbol starting with a number", () => {
     expect(isValidSymbolId("OKX:1INCH/USDT")).toBe(true);
   });
+
+  it("test symbol on FUTURES exchange", () => {
+    expect(isValidSymbolId("OKX:BTC/USDT:USDT")).toBe(true);
+  });
 });
