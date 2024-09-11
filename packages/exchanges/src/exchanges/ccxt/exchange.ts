@@ -40,6 +40,7 @@ import type {
   IWatchOrdersRequest,
   IWatchOrdersResponse,
   IPlaceMarketOrderRequest,
+  IPlaceMarketOrderResponse,
   ExchangeCode,
   IWatchTradesRequest,
   IWatchTradesResponse,
@@ -117,7 +118,7 @@ export class CCXTExchange implements IExchange {
     return normalize.placeLimitOrder.response(data);
   }
 
-  async placeMarketOrder(params: IPlaceMarketOrderRequest) {
+  async placeMarketOrder(params: IPlaceMarketOrderRequest): Promise<IPlaceMarketOrderResponse> {
     const args = normalize.placeMarketOrder.request(params);
     const data = await this.ccxt.createMarketOrder(...args);
 
