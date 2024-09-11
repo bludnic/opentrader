@@ -296,8 +296,6 @@ async function runUseExchangeEffect(effect: ReturnType<typeof useExchange>, ctx:
   const label = effect.payload;
 
   if (label) {
-    console.log(`[UseExchange] Using external exchange with label: ${label}`);
-
     return ctx.control.getExchange(label);
   }
 
