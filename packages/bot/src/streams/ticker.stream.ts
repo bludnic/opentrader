@@ -98,7 +98,7 @@ export class TickerStream extends EventEmitter {
       // Clean up stale watchers
       for (const watcher of channel.getWatchers()) {
         const isWatcherUsedByAnyBot = botsInUse.some((bot) =>
-          bot.symbols.includes(`${channel.exchangeCode}/${watcher.symbol}`),
+          bot.symbols.includes(`${channel.exchangeCode}:${watcher.symbol}`),
         );
 
         if (!isWatcherUsedByAnyBot) {

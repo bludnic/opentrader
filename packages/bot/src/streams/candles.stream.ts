@@ -121,7 +121,7 @@ export class CandlesStream extends EventEmitter {
       for (const aggregator of channel.getAggregators()) {
         const isAggregatorUsedByAnyBot = botsInUse.some(
           (bot) =>
-            bot.symbols.includes(`${channel.exchangeCode}/${aggregator.symbol}`) &&
+            bot.symbols.includes(`${channel.exchangeCode}:${aggregator.symbol}`) &&
             bot.timeframe === aggregator.timeframe,
         );
 
