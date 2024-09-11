@@ -141,17 +141,11 @@ export class Platform {
     const onBotStarted = async (bot: TBotWithExchangeAccount) => {
       this.marketStream.add(bot);
 
-      this.enabledBots = await xprisma.bot.custom.findMany({
-        where: { enabled: true },
-        include: { exchangeAccount: true },
-      });
+      this.enabledBots.push(bot);
     };
 
     const onBotStopped = async (bot: TBotWithExchangeAccount) => {
-      this.enabledBots = await xprisma.bot.custom.findMany({
-        where: { enabled: true },
-        include: { exchangeAccount: true },
-      });
+      this.enabledBots = this.enabledBots.filter((b) => b.id !== bot.id);
 
       await this.marketStream.clean(this.enabledBots);
     };
