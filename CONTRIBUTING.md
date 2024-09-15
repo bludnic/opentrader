@@ -14,6 +14,27 @@ pnpm install turbo --global
 docker -v
 ```
 
+> [!WARNING]
+> Due to a [bug](https://github.com/bludnic/opentrader/issues/53) in turbo that makes the Frontend app inaccessible in the browser, please use version `2.0.9` as a workaround.
+
+```bash
+pnpm i -g turbo@2.0.9
+```
+
+## Setup
+
+1. Clone the repository:
+
+```bash
+git clone git@github.com:bludnic/opentrader.git
+```
+
+2. Clone Git submodules (optional). Run this only if you have access to the [opentrader-pro](https://github.com/bludnic/opentrader-pro) repository (private). Refer to the [UI](/CONTRIBUTING.md#UI) section below.
+
+```bash
+git submodule update --init
+```
+
 ## Environment variables
 
 The project uses a single `.env` file located in the root directory. Some packages may contain a symlink to the root `.env`.
