@@ -20,3 +20,7 @@ dev.db-journal
 /out
 
 /k8s
+
+# moon
+.moon/cache
+.moon/docker
