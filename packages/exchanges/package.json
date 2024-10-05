@@ -12,12 +12,6 @@
     "./server": "./src/server/cache/providers/prisma-cache.provider.ts",
     "./dist": "./src/index.ts"
   },
-  "scripts": {
-    "?build": "Internal package",
-    "lint": "eslint . --quiet",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
-  },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {

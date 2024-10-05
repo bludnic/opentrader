@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "resolveJsonModule": true,
-    "target": "es2021"
+    "target": "es2021",
+    "composite": true
   }
 }

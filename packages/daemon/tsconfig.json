@@ -2,7 +2,70 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/daemon",
+    "paths": {
+      "@opentrader/bot": [
+        "../bot/src/index.ts"
+      ],
+      "@opentrader/bot/*": [
+        "../bot/src/*"
+      ],
+      "@opentrader/db": [
+        "../db/src/index.ts"
+      ],
+      "@opentrader/db/*": [
+        "../db/src/*"
+      ],
+      "@opentrader/eslint/*": [
+        "../eslint/*"
+      ],
+      "@opentrader/logger": [
+        "../logger/src/index.ts"
+      ],
+      "@opentrader/logger/*": [
+        "../logger/src/*"
+      ],
+      "@opentrader/trpc": [
+        "../trpc/src/index.ts"
+      ],
+      "@opentrader/trpc/*": [
+        "../trpc/src/*"
+      ],
+      "@opentrader/tsconfig/*": [
+        "../tsconfig/*"
+      ],
+      "@opentrader/types": [
+        "../types/src/index.ts"
+      ],
+      "@opentrader/types/*": [
+        "../types/src/*"
+      ]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../bot"
+    },
+    {
+      "path": "../db"
+    },
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../trpc"
+    },
+    {
+      "path": "../tsconfig"
+    },
+    {
+      "path": "../types"
+    }
+  ]
 }

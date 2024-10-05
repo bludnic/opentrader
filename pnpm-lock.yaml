@@ -11,6 +11,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.27.8
         version: 2.27.8
+      '@moonrepo/cli':
+        specifier: ^1.28.3
+        version: 1.28.3
       execa:
         specifier: ^9.3.1
         version: 9.3.1
@@ -20,9 +23,12 @@ importers:
       ts-node:
         specifier: 10.9.2
         version: 10.9.2(@types/node@20.16.5)(typescript@5.5.4)
-      turbo:
-        specifier: 2.0.9
-        version: 2.0.9
+      tsconfig-moon:
+        specifier: ^1.3.0
+        version: 1.3.0
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
 
   apps/cli:
     dependencies:
@@ -1212,6 +1218,45 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
+  '@moonrepo/cli@1.28.3':
+    resolution: {integrity: sha512-/zBs8RPOsGddZ5KmzQsoE9DPWN67+nVcF6nPFipNNe7ufC876SoVR7n4kkyMOzcgfoF+c/NEv+5fFPweKsmAsA==}
+    hasBin: true
+
+  '@moonrepo/core-linux-arm64-gnu@1.28.3':
+    resolution: {integrity: sha512-nf+V/0yuMftZHPoQObzpLQJSh4g3tdF3ssgNSxoEBaY0JZaYiEvdGx0M9VYCg9WlJEFquH3NErhapqEi5pV+Sg==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@moonrepo/core-linux-arm64-musl@1.28.3':
+    resolution: {integrity: sha512-mzUfVbjxL+/GESTO/4WwS7zpXwmiOKFmRJjpBjBv2kxplbj46jQUXyvGXm2VjB40+0EYJjq+9g3rhKeE5mmzTQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@moonrepo/core-linux-x64-gnu@1.28.3':
+    resolution: {integrity: sha512-UbHtZK+NS9T76uNEvw66RjaCPUwkkekIWBn7ma88W8LXC7onoKfPsQtMHO7XD50XlRuGonzZONY7Wq4wSJprcA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@moonrepo/core-linux-x64-musl@1.28.3':
+    resolution: {integrity: sha512-vbg9Wih32mYShTinPDU7A5Yg/5XWojFjMc8IQ8KPVNdCPGEuk2f6s6yWMc5iOX9s0LCkZ88kZpGMhWi2EaPWaw==}
+    cpu: [x64]
+    os: [linux]
+
+  '@moonrepo/core-macos-arm64@1.28.3':
+    resolution: {integrity: sha512-d8FOQyOW77AolThZqFYFVabWTAr+4GsVY0nybZR3zIKd47++hCPCGnus2XA5uuf08chsYK3wi5w2TkHSKtN7gw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@moonrepo/core-macos-x64@1.28.3':
+    resolution: {integrity: sha512-0iEfr2JvE4JVEG6CoA9rWD5zUI5xQev9gnOdTmGeXvrrzOASM3bnp8C9jqDu++o4K3jMRWpgNFTIyz5vWIAXKw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@moonrepo/core-windows-x64-msvc@1.28.3':
+    resolution: {integrity: sha512-ix+82sXXq4dH9CSM2xYLlQ1wqFHX1l+rsw86YjoSy+K48vbpvTvKqkQP7trs0EQMlrW25sNJRiuEebdtm9/CLg==}
+    cpu: [x64]
+    os: [win32]
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1885,6 +1930,10 @@ packages:
 
   detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
+    engines: {node: '>=8'}
+
+  detect-libc@2.0.3:
+    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
     engines: {node: '>=8'}
 
   diff@4.0.2:
@@ -3169,6 +3218,9 @@ packages:
       '@swc/wasm':
         optional: true
 
+  tsconfig-moon@1.3.0:
+    resolution: {integrity: sha512-OVa+cjaKIsXIQqEWVqvF3xH6xmFOjKnbwiCmAKx2J8uq7M1KTX/NFFi/YXZdKb6YjHJhq8tvg2JsGSBTxTANcQ==}
+
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
@@ -3194,40 +3246,6 @@ packages:
   tsx@4.19.0:
     resolution: {integrity: sha512-bV30kM7bsLZKZIOCHeMNVMJ32/LuJzLVajkQI/qf92J2Qr08ueLQvW00PUZGiuLPP760UINwupgUj8qrSCPUKg==}
     engines: {node: '>=18.0.0'}
-    hasBin: true
-
-  turbo-darwin-64@2.0.9:
-    resolution: {integrity: sha512-owlGsOaExuVGBUfrnJwjkL1BWlvefjSKczEAcpLx4BI7Oh6ttakOi+JyomkPkFlYElRpjbvlR2gP8WIn6M/+xQ==}
-    cpu: [x64]
-    os: [darwin]
-
-  turbo-darwin-arm64@2.0.9:
-    resolution: {integrity: sha512-XAXkKkePth5ZPPE/9G9tTnPQx0C8UTkGWmNGYkpmGgRr8NedW+HrPsi9N0HcjzzIH9A4TpNYvtiV+WcwdaEjKA==}
-    cpu: [arm64]
-    os: [darwin]
-
-  turbo-linux-64@2.0.9:
-    resolution: {integrity: sha512-l9wSgEjrCFM1aG16zItBsZ206ZlhSSx1owB8Cgskfv0XyIXRGHRkluihiaxkp+UeU5WoEfz4EN5toc+ICA0q0w==}
-    cpu: [x64]
-    os: [linux]
-
-  turbo-linux-arm64@2.0.9:
-    resolution: {integrity: sha512-gRnjxXRne18B27SwxXMqL3fJu7jw/8kBrOBTBNRSmZZiG1Uu3nbnP7b4lgrA/bCku6C0Wligwqurvtpq6+nFHA==}
-    cpu: [arm64]
-    os: [linux]
-
-  turbo-windows-64@2.0.9:
-    resolution: {integrity: sha512-ZVo0apxUvaRq4Vm1qhsfqKKhtRgReYlBVf9MQvVU1O9AoyydEQvLDO1ryqpXDZWpcHoFxHAQc9msjAMtE5K2lA==}
-    cpu: [x64]
-    os: [win32]
-
-  turbo-windows-arm64@2.0.9:
-    resolution: {integrity: sha512-sGRz7c5Pey6y7y9OKi8ypbWNuIRPF9y8xcMqL56OZifSUSo+X2EOsOleR9MKxQXVaqHPGOUKWsE6y8hxBi9pag==}
-    cpu: [arm64]
-    os: [win32]
-
-  turbo@2.0.9:
-    resolution: {integrity: sha512-QaLaUL1CqblSKKPgLrFW3lZWkWG4pGBQNW+q1ScJB5v1D/nFWtsrD/yZljW/bdawg90ihi4/ftQJ3h6fz1FamA==}
     hasBin: true
 
   type-check@0.4.0:
@@ -3829,6 +3847,39 @@ snapshots:
       fs-extra: 8.1.0
       globby: 11.1.0
       read-yaml-file: 1.1.0
+
+  '@moonrepo/cli@1.28.3':
+    dependencies:
+      detect-libc: 2.0.3
+    optionalDependencies:
+      '@moonrepo/core-linux-arm64-gnu': 1.28.3
+      '@moonrepo/core-linux-arm64-musl': 1.28.3
+      '@moonrepo/core-linux-x64-gnu': 1.28.3
+      '@moonrepo/core-linux-x64-musl': 1.28.3
+      '@moonrepo/core-macos-arm64': 1.28.3
+      '@moonrepo/core-macos-x64': 1.28.3
+      '@moonrepo/core-windows-x64-msvc': 1.28.3
+
+  '@moonrepo/core-linux-arm64-gnu@1.28.3':
+    optional: true
+
+  '@moonrepo/core-linux-arm64-musl@1.28.3':
+    optional: true
+
+  '@moonrepo/core-linux-x64-gnu@1.28.3':
+    optional: true
+
+  '@moonrepo/core-linux-x64-musl@1.28.3':
+    optional: true
+
+  '@moonrepo/core-macos-arm64@1.28.3':
+    optional: true
+
+  '@moonrepo/core-macos-x64@1.28.3':
+    optional: true
+
+  '@moonrepo/core-windows-x64-msvc@1.28.3':
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -4510,6 +4561,8 @@ snapshots:
   destroy@1.2.0: {}
 
   detect-indent@6.1.0: {}
+
+  detect-libc@2.0.3: {}
 
   diff@4.0.2: {}
 
@@ -5834,6 +5887,8 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
+  tsconfig-moon@1.3.0: {}
+
   tslib@2.7.0: {}
 
   tsup@8.2.4(postcss@8.4.41)(tsx@4.19.0)(typescript@5.5.4):
@@ -5869,33 +5924,6 @@ snapshots:
       get-tsconfig: 4.7.6
     optionalDependencies:
       fsevents: 2.3.3
-
-  turbo-darwin-64@2.0.9:
-    optional: true
-
-  turbo-darwin-arm64@2.0.9:
-    optional: true
-
-  turbo-linux-64@2.0.9:
-    optional: true
-
-  turbo-linux-arm64@2.0.9:
-    optional: true
-
-  turbo-windows-64@2.0.9:
-    optional: true
-
-  turbo-windows-arm64@2.0.9:
-    optional: true
-
-  turbo@2.0.9:
-    optionalDependencies:
-      turbo-darwin-64: 2.0.9
-      turbo-darwin-arm64: 2.0.9
-      turbo-linux-64: 2.0.9
-      turbo-linux-arm64: 2.0.9
-      turbo-windows-64: 2.0.9
-      turbo-windows-arm64: 2.0.9
 
   type-check@0.4.0:
     dependencies:

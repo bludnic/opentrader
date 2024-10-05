@@ -38,11 +38,7 @@ const program = new Command();
 program
   .name("@opentrader/cli")
   .description("CLI for OpenTrader")
-  .version(
-    packageJSON.version,
-    "-v, --version",
-    "Output the OpenTrader version",
-  );
+  .version(packageJSON.version, "-v, --version", "Output the OpenTrader version");
 
 setPasswordCommand(program);
 addExchangeAccountCommand(program);
@@ -57,3 +53,5 @@ dbCommands(program);
 addLogsCommand(program);
 
 program.parse();
+
+export * from "@opentrader/bot-processor";

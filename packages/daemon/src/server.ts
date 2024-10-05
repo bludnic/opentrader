@@ -40,7 +40,7 @@ export function useTrpc(app: Express) {
   );
 }
 
-export const app = express();
+export const app: Express = express();
 
 app.use(cors());
 useTrpc(app);

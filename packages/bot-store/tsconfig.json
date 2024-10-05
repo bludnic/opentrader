@@ -2,7 +2,39 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/bot-store",
+    "paths": {
+      "@opentrader/bot-processor": ["../bot-processor/src/index.ts"],
+      "@opentrader/bot-processor/*": ["../bot-processor/src/*"],
+      "@opentrader/db": ["../db/src/index.ts"],
+      "@opentrader/db/*": ["../db/src/*"],
+      "@opentrader/eslint/*": ["../eslint/*"],
+      "@opentrader/event-bus": ["../event-bus/src/index.ts"],
+      "@opentrader/event-bus/*": ["../event-bus/src/*"],
+      "@opentrader/tsconfig/*": ["../tsconfig/*"],
+      "@opentrader/types": ["../types/src/index.ts"],
+      "@opentrader/types/*": ["../types/src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../bot-processor"
+    },
+    {
+      "path": "../db"
+    },
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../tsconfig"
+    },
+    {
+      "path": "../types"
+    }
+  ]
 }
