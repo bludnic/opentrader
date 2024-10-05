@@ -10,10 +10,12 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 # Set working directory
 WORKDIR /app
-RUN pnpm add turbo -g
+RUN pnpm add @moonrepo/cli -g
 COPY . .
 
-RUN turbo prune --scope=processor --scope=frontend --docker
+RUN moon docker scaffold processor frontend
+# Install toolchain and dependencies
+RUN moon docker setup
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -21,25 +23,23 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
 
-# Install pnpm & turbo
+# Install pnpm & moonrepo
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN pnpm add turbo -g
+RUN pnpm add @moonrepo/cli -g
 
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /app/.moon/docker/workspace .
 # Copy Prisma Schema as it is not included in `/json` dir
-COPY --from=builder /app/out/full/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
+COPY --from=builder /app/.moon/docker/sources/packages/prisma/src/schema.prisma ./packages/prisma/src/schema.prisma
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
 # Overriding the lockfile may not be necessary because the current image doesn't include additional dependencies from the pro module
 RUN pnpm install --prefer-offline --lockfile
 
 # Build the project and its dependencies
-COPY --from=builder /app/out/full/ .
-COPY turbo.json turbo.json
+COPY --from=builder /app/.moon/docker/sources/ .
 
 # ENV vars
 ARG DATABASE_URL
@@ -57,8 +57,7 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-# RUN --mount=type=cache,id=turbo-cache,target=/app/node_modules/.cache turbo run build
-RUN turbo run build
+RUN moon run :build
 
 FROM base AS optimizer
 # Intall only production deps

@@ -13,7 +13,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 # Set working directory
 WORKDIR /app
-RUN pnpm add turbo -g
+RUN pnpm add @moonrepo/cli -g
 COPY . .
 
 # Install opentrader-pro git submodule
@@ -23,7 +23,9 @@ RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "htt
 RUN rm -rf pro
 RUN git clone https://github.com/bludnic/opentrader-pro.git pro
 
-RUN turbo prune --scope=processor --scope=frontend --docker
+RUN moon docker scaffold processor frontend
+# Install toolchain and dependencies
+RUN moon docker setup
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -31,15 +33,15 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
 
-# Install pnpm & turbo
+# Install pnpm & moonrepo
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN pnpm add turbo -g
+RUN pnpm add @moonrepo/cli -g
 
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/full/ .
+COPY --from=builder /app/.moon/docker/workspace .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch
 # The param --lockfile is required to write pro module dependencies to pnpm-lock.yaml
 # This overrides the param from .npmrc
@@ -61,8 +63,7 @@ ENV NEXT_PUBLIC_STATIC=$NEXT_PUBLIC_STATIC
 ARG ADMIN_PASSWORD
 ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-# RUN --mount=type=cache,id=turbo-cache,target=/app/node_modules/.cache turbo run build
-RUN turbo run build
+RUN moon run :build
 
 FROM base AS optimizer
 # Intall only production deps
