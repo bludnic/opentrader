@@ -1,6 +1,6 @@
 {
   "name": "opentrader",
-  "version": "1.0.0-beta.18",
+  "version": "1.0.0-beta.19",
   "description": "OpenTrader is a powerful open-source crypto trading bot designated to automate your trading strategies on various cryptocurrency exchanges.",
   "keywords": [
     "bot",
@@ -20,12 +20,8 @@
     ".": "./dist/main.mjs",
     "./effects": "./dist/effects.mjs"
   },
-  "scripts": {
-    "build": "tsup",
-    "build:release": "rimraf ./release && tsup -d release/dist && cp -r ./bin ./release/bin && cp -r ./scripts ./release/scripts",
-    "lint": "eslint . --quiet",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+  "bin": {
+    "opentrader": "./bin/opentrader.mjs"
   },
   "author": "bludnic",
   "license": "Apache-2.0",
@@ -76,8 +72,5 @@
     "random-words": "^2.0.1",
     "superjson": "^2.2.1",
     "zod": "3.23.8"
-  },
-  "bin": {
-    "opentrader": "./bin/opentrader.mjs"
   }
 }

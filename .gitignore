@@ -1,7 +1,6 @@
 .idea
 node_modules
 .DS_Store
-.turbo
 playground
 .env
 .env.production
@@ -11,6 +10,7 @@ exchanges.json5
 
 # Release build for publishing on NPM
 /release
+/dts
 
 # Prisma SQLite database files
 dev.db
@@ -20,3 +20,10 @@ dev.db-journal
 /out
 
 /k8s
+
+# TS
+tsconfig.tsbuildinfo
+
+# moon
+.moon/cache
+.moon/docker

@@ -6,13 +6,6 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:deploy": "prisma migrate deploy",
-    "prisma:generate": "prisma generate",
-    "prisma:seed": "prisma db seed",
-    "prisma:format": "prisma format",
     "postinstall": "prisma generate"
   },
   "author": "bludnic",

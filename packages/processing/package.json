@@ -6,13 +6,6 @@
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "scripts": {
-    "?build": "Internal package",
-    "lint": "eslint . --quiet",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest"
-  },
   "author": "bludnic",
   "license": "Apache-2.0",
   "devDependencies": {

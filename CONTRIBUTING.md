@@ -7,18 +7,11 @@ node -v
 # `pnpm` must be installed
 pnpm -v
 
-# Install Turborepo globally
-pnpm install turbo --global
+# `moonrepo` must be installed
+moon --version
 
 # Docker (optional)
 docker -v
-```
-
-> [!WARNING]
-> Due to a [bug](https://github.com/bludnic/opentrader/issues/53) in turbo that makes the Frontend app inaccessible in the browser, please use version `2.0.9` as a workaround.
-
-```bash
-pnpm i -g turbo@2.0.9
 ```
 
 ## Setup
@@ -58,19 +51,19 @@ pnpm install
 2. Run database migrations
 
 ```bash
-turbo run prisma:migrate
+moon run prisma:migrate
 ```
 
 3. Seed the database
 
 ```bash
-turbo run prisma:seed
+moon run prisma:seed
 ```
 
 4. Build the project
 
 ```bash
-turbo run build
+moon run :build
 ```
 
 # Development
@@ -78,7 +71,7 @@ turbo run build
 ## CLI
 
 You can interact with the bot by using CLI.
-If you made changes in the code, don't forget to rebuild the project `turbo run build`.
+If you made changes in the code, don't forget to rebuild the project `moon run :build`.
 
 ```bash
 # List of commands
@@ -108,7 +101,7 @@ The UI allows managing multiple bots and strategies, viewing backtest results, a
 **Option 1**: Run both `frontend` and `backend` apps in a single terminal
 
 ```bash
-turbo run dev
+moon run :dev
 ```
 
 **Option 2**: Run each app in a separate terminal
@@ -116,15 +109,13 @@ turbo run dev
 First Terminal
 
 ```bash
-cd pro/frontend
-pnpm run dev
+moon run frontend:dev
 ```
 
 Second Terminal
 
 ```bash
-cd pro/backend
-pnpm run dev
+moon run backend:dev
 ```
 
 # Apps

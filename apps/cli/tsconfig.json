@@ -2,9 +2,81 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist",
-    "paths": {},
+    "outDir": "../../dts/apps/cli",
+    "paths": {
+      "@opentrader/backtesting": ["../../packages/backtesting/src/index.ts"],
+      "@opentrader/backtesting/*": ["../../packages/backtesting/src/*"],
+      "@opentrader/bot": ["../../packages/bot/src/index.ts"],
+      "@opentrader/bot/*": ["../../packages/bot/src/*"],
+      "@opentrader/bot-processor": ["../../packages/bot-processor/src/index.ts"],
+      "@opentrader/bot-processor/*": ["../../packages/bot-processor/src/*"],
+      "@opentrader/bot-templates": ["../../packages/bot-templates/src/index.ts"],
+      "@opentrader/bot-templates/*": ["../../packages/bot-templates/src/*"],
+      "@opentrader/daemon": ["../../packages/daemon/src/index.ts"],
+      "@opentrader/daemon/*": ["../../packages/daemon/src/*"],
+      "@opentrader/db": ["../../packages/db/src/index.ts"],
+      "@opentrader/db/*": ["../../packages/db/src/*"],
+      "@opentrader/eslint/*": ["../../packages/eslint/*"],
+      "@opentrader/exchanges": ["../../packages/exchanges/src/index.ts"],
+      "@opentrader/exchanges/*": ["../../packages/exchanges/src/*"],
+      "@opentrader/logger": ["../../packages/logger/src/index.ts"],
+      "@opentrader/logger/*": ["../../packages/logger/src/*"],
+      "@opentrader/processing": ["../../packages/processing/src/index.ts"],
+      "@opentrader/processing/*": ["../../packages/processing/src/*"],
+      "@opentrader/tools": ["../../packages/tools/src/index.ts"],
+      "@opentrader/tools/*": ["../../packages/tools/src/*"],
+      "@opentrader/trpc": ["../../packages/trpc/src/index.ts"],
+      "@opentrader/trpc/*": ["../../packages/trpc/src/*"],
+      "@opentrader/tsconfig/*": ["../../packages/tsconfig/*"],
+      "@opentrader/types": ["../../packages/types/src/index.ts"],
+      "@opentrader/types/*": ["../../packages/types/src/*"]
+    },
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "files": ["package.json"],
+  "references": [
+    {
+      "path": "../../packages/backtesting"
+    },
+    {
+      "path": "../../packages/bot"
+    },
+    {
+      "path": "../../packages/bot-processor"
+    },
+    {
+      "path": "../../packages/bot-templates"
+    },
+    {
+      "path": "../../packages/daemon"
+    },
+    {
+      "path": "../../packages/db"
+    },
+    {
+      "path": "../../packages/eslint"
+    },
+    {
+      "path": "../../packages/exchanges"
+    },
+    {
+      "path": "../../packages/logger"
+    },
+    {
+      "path": "../../packages/processing"
+    },
+    {
+      "path": "../../packages/tools"
+    },
+    {
+      "path": "../../packages/trpc"
+    },
+    {
+      "path": "../../packages/tsconfig"
+    },
+    {
+      "path": "../../packages/types"
+    }
+  ]
 }

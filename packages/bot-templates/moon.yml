@@ -1,0 +1,9 @@
+tasks:
+  lint:
+    command: eslint . --quiet
+  lint-fix:
+    command: eslint . --fix
+  typecheck:
+    command: tsc --noEmit
+  test:
+    command: vitest

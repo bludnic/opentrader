@@ -2,7 +2,43 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/event-bus",
+    "paths": {
+      "@opentrader/db": [
+        "../db/src/index.ts"
+      ],
+      "@opentrader/db/*": [
+        "../db/src/*"
+      ],
+      "@opentrader/eslint/*": [
+        "../eslint/*"
+      ],
+      "@opentrader/tsconfig/*": [
+        "../tsconfig/*"
+      ],
+      "@opentrader/types": [
+        "../types/src/index.ts"
+      ],
+      "@opentrader/types/*": [
+        "../types/src/*"
+      ]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../db"
+    },
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../tsconfig"
+    },
+    {
+      "path": "../types"
+    }
+  ]
 }

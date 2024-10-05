@@ -2,7 +2,39 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/bot-processor",
+    "paths": {
+      "@opentrader/eslint/*": ["../eslint/*"],
+      "@opentrader/exchanges": ["../exchanges/src/index.ts"],
+      "@opentrader/exchanges/*": ["../exchanges/src/*"],
+      "@opentrader/indicators": ["../indicators/src/index.ts"],
+      "@opentrader/indicators/*": ["../indicators/src/*"],
+      "@opentrader/tools": ["../tools/src/index.ts"],
+      "@opentrader/tools/*": ["../tools/src/*"],
+      "@opentrader/tsconfig/*": ["../tsconfig/*"],
+      "@opentrader/types": ["../types/src/index.ts"],
+      "@opentrader/types/*": ["../types/src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../exchanges"
+    },
+    {
+      "path": "../indicators"
+    },
+    {
+      "path": "../tools"
+    },
+    {
+      "path": "../tsconfig"
+    },
+    {
+      "path": "../types"
+    }
+  ]
 }

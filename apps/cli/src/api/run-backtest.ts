@@ -47,7 +47,7 @@ export async function runBacktest(strategyName: string, options: Options): Promi
   const botPair = options.pair || botConfig.pair;
 
   const ccxtExchange = exchangeCodeMapCCXT[options.exchange];
-  const exchange = new ccxt[ccxtExchange]();
+  const exchange = new ccxt[ccxtExchange as keyof typeof ccxt]();
 
   logger.info(`Using ${botPair} on ${options.exchange} exchange with ${botTimeframe} timeframe`);
   const backtesting = new Backtesting({

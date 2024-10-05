@@ -2,7 +2,106 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/trpc",
+    "paths": {
+      "@opentrader/bot-processor": [
+        "../bot-processor/src/index.ts"
+      ],
+      "@opentrader/bot-processor/*": [
+        "../bot-processor/src/*"
+      ],
+      "@opentrader/bot-templates": [
+        "../bot-templates/src/index.ts"
+      ],
+      "@opentrader/bot-templates/*": [
+        "../bot-templates/src/*"
+      ],
+      "@opentrader/db": [
+        "../db/src/index.ts"
+      ],
+      "@opentrader/db/*": [
+        "../db/src/*"
+      ],
+      "@opentrader/eslint/*": [
+        "../eslint/*"
+      ],
+      "@opentrader/event-bus": [
+        "../event-bus/src/index.ts"
+      ],
+      "@opentrader/event-bus/*": [
+        "../event-bus/src/*"
+      ],
+      "@opentrader/exchanges": [
+        "../exchanges/src/index.ts"
+      ],
+      "@opentrader/exchanges/*": [
+        "../exchanges/src/*"
+      ],
+      "@opentrader/prisma": [
+        "../prisma/src/index.ts"
+      ],
+      "@opentrader/prisma/*": [
+        "../prisma/src/*"
+      ],
+      "@opentrader/processing": [
+        "../processing/src/index.ts"
+      ],
+      "@opentrader/processing/*": [
+        "../processing/src/*"
+      ],
+      "@opentrader/tools": [
+        "../tools/src/index.ts"
+      ],
+      "@opentrader/tools/*": [
+        "../tools/src/*"
+      ],
+      "@opentrader/tsconfig/*": [
+        "../tsconfig/*"
+      ],
+      "@opentrader/types": [
+        "../types/src/index.ts"
+      ],
+      "@opentrader/types/*": [
+        "../types/src/*"
+      ]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../bot-processor"
+    },
+    {
+      "path": "../bot-templates"
+    },
+    {
+      "path": "../db"
+    },
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../exchanges"
+    },
+    {
+      "path": "../prisma"
+    },
+    {
+      "path": "../processing"
+    },
+    {
+      "path": "../tools"
+    },
+    {
+      "path": "../tsconfig"
+    },
+    {
+      "path": "../types"
+    }
+  ]
 }

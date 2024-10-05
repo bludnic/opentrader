@@ -2,7 +2,25 @@
   "extends": "@opentrader/tsconfig/esm.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "../../dts/packages/types",
+    "paths": {
+      "@opentrader/eslint/*": [
+        "../eslint/*"
+      ],
+      "@opentrader/tsconfig/*": [
+        "../tsconfig/*"
+      ]
+    }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../eslint"
+    },
+    {
+      "path": "../tsconfig"
+    }
+  ]
 }

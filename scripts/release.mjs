@@ -11,6 +11,10 @@ await $`mkdir release`;
 await $`cp -r apps/cli/dist release/`;
 console.log("Copied ./dist");
 
+// Copy TypeScript declaration files
+await $`cp -r dts release/`
+console.log("Copied ./dts");
+
 // Copy binaries and scripts
 await $`cp -r apps/cli/bin release/`;
 await $`cp -r apps/cli/scripts release/`;

@@ -1,0 +1,40 @@
+tasks:
+  build:
+    command: tsup
+    platform: node
+    inputs:
+      - 'src/**/*'
+      - '/packages/*/src/**'
+    outputs:
+      - 'dist'
+  dts:
+    command: |
+      rm -rf ../../dts &&
+      tsc --build --emitDeclarationOnly &&
+      resolve-tspaths --src . &&
+      resolve-tspaths --project packages/backtesting/tsconfig.json --src . &&
+      resolve-tspaths --project packages/bot/tsconfig.json --src . &&
+      resolve-tspaths --project packages/bot-processor/tsconfig.json --src . &&
+      resolve-tspaths --project packages/bot-store/tsconfig.json --src . &&
+      resolve-tspaths --project packages/bot-templates/tsconfig.json --src . &&
+      resolve-tspaths --project packages/daemon/tsconfig.json --src . &&
+      resolve-tspaths --project packages/db/tsconfig.json --src . &&
+      resolve-tspaths --project packages/event-bus/tsconfig.json --src . &&
+      resolve-tspaths --project packages/exchanges/tsconfig.json --src . &&
+      resolve-tspaths --project packages/indicators/tsconfig.json --src . &&
+      resolve-tspaths --project packages/logger/tsconfig.json --src . &&
+      resolve-tspaths --project packages/prisma/tsconfig.json --src . &&
+      resolve-tspaths --project packages/processing/tsconfig.json --src . &&
+      resolve-tspaths --project packages/tools/tsconfig.json --src . &&
+      resolve-tspaths --project packages/trpc/tsconfig.json --src . &&
+      resolve-tspaths --project packages/types/tsconfig.json --src .
+    inputs:
+      - 'src/**/*'
+    outputs:
+      - '/dts'
+  lint:
+    command: eslint . --quiet
+  lint-fix:
+    command: eslint . --fix
+  typecheck:
+    command: tsc --noEmit
