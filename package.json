@@ -17,6 +17,7 @@
     "@moonrepo/cli": "^1.28.3",
     "execa": "^9.3.1",
     "prettier": "^3.3.3",
+    "resolve-tspaths": "^0.8.22",
     "ts-node": "10.9.2",
     "tsconfig-moon": "^1.3.0",
     "typescript": "5.5.4"
@@ -29,7 +30,7 @@
     "typecheck": "moon run :typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "pnpm link --global",
-    "release": "./scripts/release.mjs",
+    "release": "moon run :build && moon run :dts && ./scripts/release.mjs",
     "debug": "ts-node --transpile-only packages/cli/src/index.ts trade debug"
   },
   "bin": {
