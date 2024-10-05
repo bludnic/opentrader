@@ -53,5 +53,3 @@ dbCommands(program);
 addLogsCommand(program);
 
 program.parse();
-
-export * from "@opentrader/bot-processor";
