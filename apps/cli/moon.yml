@@ -4,6 +4,7 @@ tasks:
     platform: node
     inputs:
       - 'src/**/*'
+      - 'package.json'
       - '/packages/*/src/**'
     outputs:
       - 'dist'
