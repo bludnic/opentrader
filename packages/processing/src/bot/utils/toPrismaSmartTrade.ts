@@ -27,6 +27,18 @@ export function toPrismaSmartTrade(
     ? toPrismaOrder(sell, quantity, XOrderSide.Sell, XEntityType.TakeProfitOrder, sellExchangeAccountId, sellSymbol)
     : undefined;
 
+  const additionalOrders =
+    smartTrade.additionalOrders?.map((order) =>
+      toPrismaOrder(
+        order,
+        order.quantity,
+        order.side,
+        order.entityType,
+        order.exchange || bot.exchangeAccountId,
+        order.symbol || bot.symbol,
+      ),
+    ) || [];
+
   return {
     entryType: "Order",
     takeProfitType: sell ? "Order" : "None",
@@ -37,7 +49,7 @@ export function toPrismaSmartTrade(
 
     orders: {
       createMany: {
-        data: sellOrderData ? [buyOrderData, sellOrderData] : [buyOrderData],
+        data: sellOrderData ? [buyOrderData, sellOrderData, ...additionalOrders] : [buyOrderData, ...additionalOrders],
       },
     },
 

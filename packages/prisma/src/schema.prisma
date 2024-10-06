@@ -160,6 +160,7 @@ model Order {
   entityType        String // EntityType
   side              String // OrderSide
   price             Float? // Market orders doesn't require price to be specified
+  relativePrice     Float? // Percentage deviation calculated from the entry price for orders where the exact price is unknown (e.g., DCA orders)
   filledPrice       Float?
   fee               Float?
   symbol            String

@@ -1,6 +1,6 @@
 import { findStrategy } from "@opentrader/bot-templates/server";
 import type { ExchangeCode, IWatchOrder, MarketId } from "@opentrader/types";
-import { BotProcessing, getWatchers, shouldRunStrategy } from "@opentrader/processing";
+import { BotProcessing, getWatchers, shouldRunStrategy, SmartTradeExecutor } from "@opentrader/processing";
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
@@ -104,6 +104,9 @@ export class OrdersStream {
         subscribedMarkets,
       });
     }
+
+    const smartTradeExecutor = await SmartTradeExecutor.fromId(order.smartTrade.id);
+    await smartTradeExecutor.next();
   }
 
   private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {

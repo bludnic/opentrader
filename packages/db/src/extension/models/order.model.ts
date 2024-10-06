@@ -31,23 +31,13 @@ export const orderModel = (prisma: PrismaClient) => ({
    * This method is meant to just update the `status` in the DB when
    * synchronizing with the Exchange.
    */
-  async updateStatus(
-    status: Extract<XOrderStatus, "Canceled" | "Revoked" | "Deleted">,
-    orderId: number,
-  ) {
-    const resetSmartTradeRef = {
-      update: {
-        ref: null,
-      },
-    };
-
+  async updateStatus(status: Extract<XOrderStatus, "Canceled" | "Revoked" | "Deleted">, orderId: number) {
     return prisma.order.update({
       where: {
         id: orderId,
       },
       data: {
         status,
-        smartTrade: resetSmartTradeRef,
       },
     });
   },
@@ -60,21 +50,15 @@ export const orderModel = (prisma: PrismaClient) => ({
     const { orderId, filledPrice, filledAt, fee } = data;
 
     if (filledPrice === null) {
-      throw new Error(
-        'Cannot update order status to "filled" without specifying "filledPrice"',
-      );
+      throw new Error('Cannot update order status to "filled" without specifying "filledPrice"');
     }
 
     if (fee === null) {
-      throw new Error(
-        'Cannot update order status to "filled" without specifying "fee"',
-      );
+      throw new Error('Cannot update order status to "filled" without specifying "fee"');
     }
 
     if (filledAt === null) {
-      throw new Error(
-        'Cannot update order status to "filled" without specifying "filledAt"',
-      );
+      throw new Error('Cannot update order status to "filled" without specifying "filledAt"');
     }
 
     return prisma.order.update({

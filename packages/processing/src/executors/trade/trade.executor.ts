@@ -1,8 +1,5 @@
 import { xprisma } from "@opentrader/db";
-import type {
-  SmartTradeWithOrders,
-  ExchangeAccountWithCredentials,
-} from "@opentrader/db";
+import type { SmartTradeWithOrders, ExchangeAccountWithCredentials } from "@opentrader/db";
 import type { IExchange } from "@opentrader/exchanges";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
@@ -18,10 +15,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
     this.exchange = exchange;
   }
 
-  static create(
-    smartTrade: SmartTradeWithOrders,
-    exchangeAccount: ExchangeAccountWithCredentials,
-  ) {
+  static create(smartTrade: SmartTradeWithOrders, exchangeAccount: ExchangeAccountWithCredentials) {
     const exchange = exchangeProvider.fromAccount(exchangeAccount);
 
     return new TradeExecutor(smartTrade, exchange);
@@ -58,9 +52,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       },
     });
 
-    const exchange = exchangeProvider.fromAccount(
-      order.smartTrade.exchangeAccount,
-    );
+    const exchange = exchangeProvider.fromAccount(order.smartTrade.exchangeAccount);
 
     return new TradeExecutor(order.smartTrade, exchange);
   }
@@ -80,9 +72,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       },
     });
 
-    const exchange = exchangeProvider.fromAccount(
-      order.smartTrade.exchangeAccount,
-    );
+    const exchange = exchangeProvider.fromAccount(order.smartTrade.exchangeAccount);
 
     return new TradeExecutor(order.smartTrade, exchange);
   }
@@ -92,36 +82,19 @@ export class TradeExecutor implements ISmartTradeExecutor {
    * Returns `true` if the order was placed successfully.
    */
   async next(): Promise<boolean> {
-    const entryOrder = this.smartTrade.orders.find(
-      (order) => order.entityType === "EntryOrder",
-    )!;
-    const takeProfitOrder = this.smartTrade.orders.find(
-      (order) => order.entityType === "TakeProfitOrder",
-    );
+    const entryOrder = this.smartTrade.orders.find((order) => order.entityType === "EntryOrder")!;
+    const takeProfitOrder = this.smartTrade.orders.find((order) => order.entityType === "TakeProfitOrder");
 
     if (entryOrder.status === "Idle") {
-      const orderExecutor = new OrderExecutor(
-        entryOrder,
-        this.exchange,
-        this.smartTrade.symbol,
-      );
+      const orderExecutor = new OrderExecutor(entryOrder, this.exchange, this.smartTrade.symbol);
       await orderExecutor.place();
       await this.pull();
 
-      logger.info(
-        `Entry order was placed: Position { id: ${this.smartTrade.id} }`,
-      );
+      logger.info(`Entry order was placed: Position { id: ${this.smartTrade.id} }`);
 
       return true;
-    } else if (
-      entryOrder.status === "Filled" &&
-      takeProfitOrder?.status === "Idle"
-    ) {
-      const orderExecutor = new OrderExecutor(
-        takeProfitOrder,
-        this.exchange,
-        this.smartTrade.symbol,
-      );
+    } else if (entryOrder.status === "Filled" && takeProfitOrder?.status === "Idle") {
+      const orderExecutor = new OrderExecutor(takeProfitOrder, this.exchange, this.smartTrade.symbol);
       await orderExecutor.place();
       await this.pull();
 
@@ -146,16 +119,13 @@ export class TradeExecutor implements ISmartTradeExecutor {
     const allOrders = [];
 
     for (const order of this.smartTrade.orders) {
-      const orderExecutor = new OrderExecutor(
-        order,
-        this.exchange,
-        this.smartTrade.symbol,
-      );
+      const orderExecutor = new OrderExecutor(order, this.exchange, this.smartTrade.symbol);
 
       const cancelled = await orderExecutor.cancel();
       allOrders.push(cancelled);
     }
 
+    await xprisma.smartTrade.clearRef(this.smartTrade.id);
     await this.pull();
 
     const cancelledOrders = allOrders.filter((cancelled) => cancelled);
@@ -167,12 +137,8 @@ export class TradeExecutor implements ISmartTradeExecutor {
   }
 
   get status(): "Entering" | "Exiting" | "Finished" {
-    const entryOrder = this.smartTrade.orders.find(
-      (order) => order.entityType === "EntryOrder",
-    )!;
-    const takeProfitOrder = this.smartTrade.orders.find(
-      (order) => order.entityType === "TakeProfitOrder",
-    );
+    const entryOrder = this.smartTrade.orders.find((order) => order.entityType === "EntryOrder")!;
+    const takeProfitOrder = this.smartTrade.orders.find((order) => order.entityType === "TakeProfitOrder");
 
     if (entryOrder.status === "Idle" || entryOrder.status === "Placed") {
       return "Entering";
@@ -180,8 +146,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
 
     if (
       entryOrder.status === "Filled" &&
-      (takeProfitOrder?.status === "Idle" ||
-        takeProfitOrder?.status === "Placed")
+      (takeProfitOrder?.status === "Idle" || takeProfitOrder?.status === "Placed")
     ) {
       return "Exiting";
     }

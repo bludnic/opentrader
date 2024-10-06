@@ -15,9 +15,10 @@ export function toSmartTradeIteratorResult(smartTrade: SmartTradeEntity): Proces
     throw new Error("SmartTrade is missing ref");
   }
 
-  if (smartTrade.type === "DCA") {
-    throw new Error("toSmartTradeIteratorResult: DCA trade is not supported yet");
-  }
+  // @todo handle relativePrice
+  // if (smartTrade.type === "DCA") {
+  //   throw new Error("toSmartTradeIteratorResult: DCA trade is not supported yet");
+  // }
 
   if (smartTrade.entryType === "Ladder") {
     throw new Error('toSmartTradeIteratorResult: SmartTrade with "entryType = Ladder" is not supported yet');

@@ -1,12 +1,9 @@
 import type { IExchange } from "@opentrader/exchanges";
+import { XOrderStatus } from "@opentrader/types";
 import type { Order } from "@prisma/client";
 import { logger } from "@opentrader/logger";
 import type { OrderEntity } from "@opentrader/db";
-import {
-  assertHasExchangeOrderId,
-  toOrderEntity,
-  xprisma,
-} from "@opentrader/db";
+import { assertHasExchangeOrderId, toOrderEntity, xprisma } from "@opentrader/db";
 import { OrderNotFound } from "ccxt";
 
 export class OrderExecutor {
@@ -90,6 +87,24 @@ export class OrderExecutor {
   }
 
   /**
+   * Cancels the current order and replace a new order with new price.
+   */
+  async modify(newOrder: Order): Promise<boolean> {
+    await this.cancel();
+
+    const order = await xprisma.order.update({
+      where: { id: newOrder.id },
+      data: {
+        ...newOrder,
+        status: XOrderStatus.Idle,
+      },
+    });
+    this.order = toOrderEntity(order);
+
+    return this.place();
+  }
+
+  /**
    * Returns true if the order was canceled successfully.
    */
   async cancel(): Promise<boolean> {
@@ -105,9 +120,7 @@ export class OrderExecutor {
       await xprisma.order.updateStatus("Revoked", this.order.id);
       await this.pullOrder();
 
-      logger.info(
-        `Order was canceled (Idle → Revoked): Order { id: ${this.order.id}, status: ${this.order.status} }`,
-      );
+      logger.info(`Order was canceled (Idle → Revoked): Order { id: ${this.order.id}, status: ${this.order.status} }`);
 
       return true;
     }
@@ -151,11 +164,10 @@ export class OrderExecutor {
     }
 
     if (this.order.status === "Filled") {
-      await xprisma.order.removeRef(this.order.id);
       await this.pullOrder();
 
       logger.info(
-        `Cannot cancel order because it is already Filled: Order { id: ${this.order.id}, status: ${this.order.status}. Removed ref.`,
+        `Cannot cancel order because it is already Filled: Order { id: ${this.order.id}, status: ${this.order.status}.`,
       );
 
       return false;

@@ -1,7 +1,7 @@
 import { XOrderStatus, XOrderType } from "@opentrader/types";
 import type { Order as OrderModel } from "@prisma/client";
 
-type GenericOrderProps = "type" | "status" | "price" | "filledPrice" | "filledAt" | "placedAt";
+type GenericOrderProps = "type" | "status" | "price" | "relativePrice" | "filledPrice" | "filledAt" | "placedAt";
 
 type OrderEntityBuilder<
   OrderType extends XOrderType,
@@ -11,6 +11,7 @@ type OrderEntityBuilder<
   type: OrderType;
   status: OrderStatus;
   price: OrderType extends "Limit" ? NonNullable<O["price"]> : null;
+  relativePrice: O["relativePrice"];
   filledPrice: OrderStatus extends "Filled" ? NonNullable<O["filledPrice"]> : null;
   filledAt: OrderStatus extends "Filled" ? NonNullable<O["filledAt"]> : null;
   placedAt: OrderStatus extends "Placed" | "Filled" | "Canceled" ? NonNullable<O["placedAt"]> : null;
@@ -60,7 +61,8 @@ export function toOrderEntity<T extends OrderModel>(order: T): OrderEntity<T> {
           type,
           status,
 
-          price: assertNonNullable(price, "price"),
+          // Skip price checking for relative price orders
+          price: baseProps.relativePrice ? price || -1 : assertNonNullable(price, "price"),
           filledPrice: null,
           filledAt: null,
           placedAt: null,
@@ -105,7 +107,8 @@ export function toOrderEntity<T extends OrderModel>(order: T): OrderEntity<T> {
           type,
           status,
 
-          price: assertNonNullable(price, "price"),
+          // Skip price checking for relative price orders
+          price: baseProps.relativePrice ? price || -1 : assertNonNullable(price, "price"),
           filledPrice: null,
           filledAt: null,
           placedAt: null,

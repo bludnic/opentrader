@@ -16,11 +16,11 @@
  * Repository URL: https://github.com/bludnic/opentrader
  */
 import { rsi } from "@opentrader/indicators";
-import { OrderStatusEnum, OrderType } from "@opentrader/types";
+import { OrderStatusEnum, OrderType, XEntityType, XOrderSide } from "@opentrader/types";
 import { TradeService, SmartTradeService } from "./types/index.js";
 import type { TBotContext } from "./types/index.js";
-import type { BaseEffect, EffectType } from "./effects/types/index.js";
-import type {
+import { BaseEffect, EffectType, USE_DCA } from "./effects/types/index.js";
+import {
   buy,
   useTrade,
   useArbTrade,
@@ -34,6 +34,7 @@ import type {
   useMarket,
   useCandle,
   useRSI,
+  useDca,
 } from "./effects/index.js";
 import {
   BUY,
@@ -63,6 +64,7 @@ export const effectRunnerMap: Record<
   [REPLACE_SMART_TRADE]: runReplaceSmartTradeEffect,
   [USE_TRADE]: runUseTradeEffect,
   [USE_ARB_TRADE]: runUseArbTradeEffect,
+  [USE_DCA]: runUseDcaEffect,
   [BUY]: runBuyEffect,
   [SELL]: runSellEffect,
   [USE_EXCHANGE]: runUseExchangeEffect,
@@ -202,6 +204,38 @@ async function runUseArbTradeEffect(effect: ReturnType<typeof useArbTrade>, ctx:
       price: payload.tp,
       status: OrderStatusEnum.Idle,
     },
+  });
+
+  return new SmartTradeService(effect.ref, smartTrade);
+}
+
+async function runUseDcaEffect(effect: ReturnType<typeof useDca>, ctx: TBotContext<any>) {
+  const { payload, ref } = effect;
+
+  const smartTrade = await ctx.control.getOrCreateSmartTrade(ref, {
+    type: "DCA",
+    quantity: payload.quantity,
+    buy: {
+      symbol: payload.symbol,
+      type: payload.price ? OrderType.Limit : OrderType.Market,
+      price: payload.price,
+      status: OrderStatusEnum.Idle,
+    },
+    sell: {
+      symbol: payload.symbol,
+      type: OrderType.Limit,
+      relativePrice: payload.tpPercent,
+      status: OrderStatusEnum.Idle,
+    },
+    // Safety orders
+    additionalOrders: payload.safetyOrders.map((order) => ({
+      relativePrice: order.relativePrice,
+      quantity: order.quantity,
+      symbol: payload.symbol,
+      type: OrderType.Limit,
+      side: XOrderSide.Buy,
+      entityType: XEntityType.SafetyOrder,
+    })),
   });
 
   return new SmartTradeService(effect.ref, smartTrade);

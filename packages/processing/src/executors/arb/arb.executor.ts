@@ -119,6 +119,7 @@ export class ArbExecutor implements ISmartTradeExecutor {
       allOrders.push(cancelled);
     }
 
+    await xprisma.smartTrade.clearRef(this.smartTrade.id);
     await this.pull();
 
     const cancelledOrders = allOrders.filter((cancelled) => cancelled);
