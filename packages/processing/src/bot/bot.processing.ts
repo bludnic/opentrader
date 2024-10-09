@@ -209,9 +209,7 @@ export class BotProcessing {
   async placePendingOrders() {
     const smartTrades = await xprisma.smartTrade.findMany({
       where: {
-        orders: {
-          some: { status: "Idle" },
-        },
+        ref: { not: null },
         bot: { id: this.bot.id },
       },
       include: {

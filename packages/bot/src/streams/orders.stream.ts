@@ -104,9 +104,6 @@ export class OrdersStream {
         subscribedMarkets,
       });
     }
-
-    const smartTradeExecutor = await SmartTradeExecutor.fromId(order.smartTrade.id);
-    await smartTradeExecutor.next();
   }
 
   private async onOrderCanceled(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
