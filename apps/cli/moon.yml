@@ -5,6 +5,8 @@ tasks:
     inputs:
       - 'src/**/*'
       - 'package.json'
+      - 'tsconfig.json'
+      - 'tsup.config.ts'
       - '/packages/*/src/**'
     outputs:
       - 'dist'
