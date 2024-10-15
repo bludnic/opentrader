@@ -223,7 +223,7 @@ export class BotProcessing {
     for (const smartTrade of smartTrades) {
       const { exchangeAccount } = smartTrade;
 
-      logger.info(
+      logger.debug(
         `Executed next() for SmartTrade { id: ${smartTrade.id}, symbol: ${smartTrade.symbol}, exchangeCode: ${exchangeAccount.exchangeCode} }`,
       );
 

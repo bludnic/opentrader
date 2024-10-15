@@ -29,11 +29,7 @@ export class Platform {
     if (customStrategiesPath) await this.loadCustomStrategies(customStrategiesPath);
 
     await this.cleanOrphanedBots();
-
-    logger.info("[Processor] OrdersProcessor created");
     await this.ordersConsumer.create();
-
-    logger.info("[Market] MarketsStream created");
     await this.marketStream.create();
 
     this.unsubscribeFromEventBus = this.subscribeToEventBus();
@@ -42,10 +38,8 @@ export class Platform {
   async shutdown() {
     await this.stopEnabledBots();
 
-    logger.info("[Processor] OrdersProcessor destroyed");
     await this.ordersConsumer.destroy();
 
-    logger.info("[Market] MarketStream destroyed");
     this.marketStream.off("market", this.handleMarketEvent);
     this.marketStream.destroy();
 

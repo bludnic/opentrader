@@ -59,9 +59,9 @@ export class ExchangeProvider {
 
     this.privateExchanges[id] = newExchange; // cache it
 
-    console.debug(
-      `ExchangeProvider: Created a new private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (ID: ${exchangeAccount.id})`,
-    );
+    // console.debug(
+    //   `ExchangeProvider: Created a new private instance of ${exchangeAccount.exchangeCode}: ${exchangeAccount.name} (ID: ${exchangeAccount.id})`,
+    // );
 
     return newExchange;
   }
@@ -81,9 +81,9 @@ export class ExchangeProvider {
 
     this.publicExchanges[exchangeCode] = newExchange; // cache it
 
-    console.debug(
-      `ExchangeProvider: Created a new public instance of ${exchangeCode}`,
-    );
+    // console.debug(
+    //   `ExchangeProvider: Created a new public instance of ${exchangeCode}`,
+    // );
 
     return newExchange;
   }
@@ -92,7 +92,7 @@ export class ExchangeProvider {
     const exchange = this.privateExchanges[id];
     if (!exchange) {
       console.warn(
-        `ExchangeProvider: Cannot remove exchange instance with ID: ${id}. Reason: not found.`,
+        `⚠️ Unable to remove private exchange instance: No exchange found with ID "${id}".`
       );
       return;
     }
@@ -100,9 +100,9 @@ export class ExchangeProvider {
     void exchange.destroy();
     delete this.privateExchanges[id];
 
-    console.log(
-      `ExchangeProvider: Removed private instance of ${exchange.exchangeCode} (ID: ${id})`,
-    );
+    // console.log(
+    //   `ExchangeProvider: Removed private instance of ${exchange.exchangeCode} (ID: ${id})`,
+    // );
   }
 }
 

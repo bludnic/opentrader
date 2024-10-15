@@ -23,8 +23,6 @@ export class CandlesStream extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[CandlesProcessor] Creating candles channel for ${this.bots.length} timeframe based bots`);
-
     for (const bot of this.bots) {
       await this.addBot(bot);
     }

@@ -35,7 +35,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
         const exchangeOrders = await this.exchangeService.watchOrders();
 
         for (const exchangeOrder of exchangeOrders) {
-          logger.info(
+          logger.debug(
             `Websocket: OrderID ${exchangeOrder.exchangeOrderId}: Price: ${exchangeOrder.price}: Status: ${exchangeOrder.status}`,
           );
 
@@ -55,7 +55,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
           // the exchange may emit only "open" status, and skip "filled" status.
           let actualExchangeOrder = exchangeOrder;
           if (actualExchangeOrder.status === "open") {
-            logger.info(
+            logger.debug(
               actualExchangeOrder,
               `[WS] Emitted order ID:${actualExchangeOrder.exchangeOrderId} with status "open". It may be stalled, fetching actual status by REST...`,
             );
@@ -65,7 +65,7 @@ export class OrderSynchronizerWsWatcher extends OrderSynchronizerWatcher {
               orderId: exchangeOrder.exchangeOrderId,
               symbol: order.symbol,
             });
-            logger.info(
+            logger.debug(
               actualExchangeOrder,
               `[WS] Fetched order ID:${actualExchangeOrder.exchangeOrderId} with status: ${actualExchangeOrder.status}`,
             );

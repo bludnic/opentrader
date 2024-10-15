@@ -4,7 +4,7 @@ import { Platform } from "@opentrader/bot";
 
 export async function bootstrapPlatform() {
   const exchangeAccounts = await xprisma.exchangeAccount.findMany();
-  logger.info(`Found ${exchangeAccounts.length} exchange accounts`);
+  logger.info(`🏛️  Loaded ${exchangeAccounts.length} exchange account(s)`);
 
   const bot = await xprisma.bot.custom.findFirst({
     where: {
@@ -12,9 +12,10 @@ export async function bootstrapPlatform() {
     },
     include: { exchangeAccount: true },
   });
-  logger.info(`Found bot: ${bot ? bot.label : "none"}`);
+  logger.info(`🤖 Default bot: ${bot ? bot.label : "none"}`);
 
   const platform = new Platform(exchangeAccounts, bot ? [bot] : []);
+
   await platform.bootstrap();
 
   return platform;

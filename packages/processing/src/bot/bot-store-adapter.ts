@@ -68,7 +68,7 @@ export class BotStoreAdapter implements IStore {
       },
     });
 
-    logger.info(`BotStoreAdapter: SmartTrade with ref "${ref}" created`);
+    logger.debug(`BotStoreAdapter: SmartTrade with ref "${ref}" created`);
 
     return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
   }
@@ -118,7 +118,7 @@ export class BotStoreAdapter implements IStore {
 
       const tpOrder = smartTrade.orders.find((order) => order.entityType === "TakeProfitOrder");
       if (tpOrder) {
-        logger.info(`BotStoreAdapter: Updating SmartTrade with "${ref}". TakeProfitOrder already placed. Skipping.`);
+        logger.debug(`BotStoreAdapter: Updating SmartTrade with "${ref}". TakeProfitOrder already placed. Skipping.`);
 
         return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
       }
@@ -168,7 +168,7 @@ export class BotStoreAdapter implements IStore {
         },
       });
 
-      logger.info(`BotStoreAdapter: SmartTrade with ref "${ref}" updated. TakeProfitOrder placed.`);
+      logger.debug(`BotStoreAdapter: SmartTrade with ref "${ref}" updated. TakeProfitOrder placed.`);
 
       return toSmartTradeIteratorResult(toSmartTradeEntity(smartTrade));
     } catch (err) {
@@ -204,7 +204,7 @@ export class BotStoreAdapter implements IStore {
       },
     });
     if (!smartTrade) {
-      logger.warn(`BotStoreAdapter: Cannot cancel SmartTrade with ref "${ref}". Reason: SmartTrade not found`);
+      logger.debug(`BotStoreAdapter: Cannot cancel SmartTrade with ref "${ref}". Reason: SmartTrade not found`);
       return false;
     }
 

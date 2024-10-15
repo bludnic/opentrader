@@ -23,8 +23,6 @@ export class TickerStream extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[TickerConsumer] Creating ticker channel for ${this.bots.length} bots`);
-
     for (const bot of this.bots) {
       await this.addBot(bot);
     }

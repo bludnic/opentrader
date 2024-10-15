@@ -24,8 +24,6 @@ export class TradesStream extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[TradesConsumer] Creating trades channel for ${this.bots.length} bots`);
-
     for (const bot of this.bots) {
       await this.addBot(bot);
     }

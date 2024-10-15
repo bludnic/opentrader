@@ -166,7 +166,7 @@ export class OrderExecutor {
     if (this.order.status === "Filled") {
       await this.pullOrder();
 
-      logger.info(
+      logger.debug(
         `Cannot cancel order because it is already Filled: Order { id: ${this.order.id}, status: ${this.order.status}.`,
       );
 

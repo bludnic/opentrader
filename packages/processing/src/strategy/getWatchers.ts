@@ -41,7 +41,7 @@ const extractSymbols = (
  */
 export function getWatchers(strategyFn: BotTemplate<any>, bot: TBotWithExchangeAccount): Record<Watcher, string[]> {
   if (!strategyFn.watchers) {
-    console.warn(`Strategy ${strategyFn.name} does not contain any watcher`);
+    // console.warn(`Strategy ${strategyFn.name} does not contain any watcher`);
 
     return {
       [Watcher.watchTrades]: [],

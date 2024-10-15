@@ -45,7 +45,7 @@ export async function up(options: Options): Promise<CommandResult> {
     throw new Error("Failed to start daemon process");
   }
 
-  logger.info(`OpenTrader daemon started with PID: ${daemonProcess.pid}`);
+  logger.debug(`OpenTrader daemon started with PID: ${daemonProcess.pid}`);
 
   if (options.detach) {
     daemonProcess.unref();
@@ -56,8 +56,8 @@ export async function up(options: Options): Promise<CommandResult> {
     daemonProcess.stderr?.pipe(process.stderr);
   }
 
-  console.log("Main process PID:", process.pid);
-  console.log("Daemon process PID:", daemonProcess.pid);
+  // console.log("Main process PID:", process.pid);
+  // console.log("Daemon process PID:", daemonProcess.pid);
 
   return {
     result: undefined,

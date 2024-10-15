@@ -3,6 +3,7 @@ import type { SmartTradeWithOrders, ExchangeAccountWithCredentials } from "@open
 import type { IExchange } from "@opentrader/exchanges";
 import { exchangeProvider } from "@opentrader/exchanges";
 import { logger } from "@opentrader/logger";
+import { XOrderType } from "@opentrader/types";
 import type { ISmartTradeExecutor } from "../smart-trade-executor.interface.js";
 import { OrderExecutor } from "../order/order.executor.js";
 
@@ -90,7 +91,7 @@ export class TradeExecutor implements ISmartTradeExecutor {
       await orderExecutor.place();
       await this.pull();
 
-      logger.info(`Entry order was placed: Position { id: ${this.smartTrade.id} }`);
+      logger.info(`Entry ${entryOrder.type} order placed for ${this.smartTrade.symbol} (qty: ${entryOrder.quantity}, price: ${entryOrder.type === XOrderType.Market ? 'market' : entryOrder.price})`);
 
       return true;
     } else if (entryOrder.status === "Filled" && takeProfitOrder?.status === "Idle") {
@@ -98,14 +99,12 @@ export class TradeExecutor implements ISmartTradeExecutor {
       await orderExecutor.place();
       await this.pull();
 
-      logger.info(
-        `Take profit order was placed: Position { id: ${this.smartTrade.id}, entryOrderStatus: ${entryOrder.status}, takeProfitOrderStatus: ${takeProfitOrder.status} }`,
-      );
+      logger.info(`TP ${takeProfitOrder.type} order placed for ${this.smartTrade.symbol} (qty: ${takeProfitOrder.quantity}, price: ${takeProfitOrder.type === XOrderType.Market ? 'market' : takeProfitOrder.price})`);
 
       return true;
     }
 
-    logger.info(
+    logger.debug(
       `Nothing to do: Position { id: ${this.smartTrade.id}, entryOrderStatus: ${entryOrder.status}, takeProfitOrderStatus: ${takeProfitOrder?.status} }`,
     );
     return false;

@@ -4,6 +4,7 @@ import { BotProcessing, getWatchers, shouldRunStrategy, SmartTradeExecutor } fro
 import type { OrderWithSmartTrade, ExchangeAccountWithCredentials } from "@opentrader/db";
 import { xprisma } from "@opentrader/db";
 import { logger } from "@opentrader/logger";
+import { decomposeSymbol } from "@opentrader/tools";
 import { OrdersChannel } from "../channels/index.js";
 import { processingQueue } from "../queue/index.js";
 
@@ -24,7 +25,7 @@ export class OrdersStream {
   async addExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
     const watcherExists = this.channels.find((channel) => channel.exchangeAccount.id === exchangeAccount.id);
     if (watcherExists) {
-      logger.error(`❗ Exchange account #${exchangeAccount.id} already exists in the ordersWatchers`);
+      logger.warn(`⚠️ Already watching exchange account with ID ${exchangeAccount.id}.`);
       return;
     }
 
@@ -37,7 +38,7 @@ export class OrdersStream {
 
     await ordersWatcher.enable();
 
-    logger.info(`🔋 Exchange account #${exchangeAccount.id} added to the ordersWatchers`);
+    logger.debug(`${exchangeAccount.exchangeCode} exchange account with ID ${exchangeAccount.id} subscribed to OrdersWatcher`);
   }
 
   async removeExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
@@ -54,7 +55,7 @@ export class OrdersStream {
     // exclude the watcher from the list
     this.channels = this.channels.filter((channel) => channel.exchangeAccount.id !== exchangeAccount.id);
 
-    logger.info(`🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`);
+    logger.debug(`🗑️ Exchange account #${exchangeAccount.id} removed from the ordersWatchers`);
   }
 
   async updateExchangeAccount(exchangeAccount: ExchangeAccountWithCredentials) {
@@ -114,7 +115,8 @@ export class OrdersStream {
 
   private async onOrderPlaced(exchangeOrder: IWatchOrder, order: OrderWithSmartTrade) {
     // Edge case: the user could change the price of the order on the Exchange
-    logger.info(`⬆️ onOrderPlaced: Order #${order.id}: ${order.exchangeOrderId} placed at ${exchangeOrder.price}`);
+    const { quoteCurrency } = decomposeSymbol(order.symbol);
+    logger.info(`⬆️  onOrderPlaced: Placed ${order.symbol} order at ${exchangeOrder.price} ${quoteCurrency} (id: ${order.id}, eid: ${order.exchangeOrderId})`);
 
     // Order was possibly replaced.
     // This means that the user changed the order price on the Exchange.

@@ -29,11 +29,10 @@ export class Daemon {
 
   static async create() {
     const platform = await bootstrapPlatform();
-    logger.info("Processor created");
+    logger.info("✅ Platform bootstrapped successfully");
 
     const server = createServer().listen(8000);
-    logger.info("RPC Server started on port 8000");
-
+    logger.info("RPC Server listening on port 8000");
     logger.info("OpenTrader UI: http://localhost:8000");
 
     return new Daemon(platform, server);

@@ -42,9 +42,9 @@ export class MemoryCacheProvider implements ICacheProvider {
     const endTime = Date.now();
     const duration = (endTime - startTime) / 1000;
 
-    console.info(
-      `MemoryCacheProvider: Fetched ${Object.keys(markets).length} markets on ${exchangeCode} exchange in ${duration}s`,
-    );
+    // console.info(
+    //   `MemoryCacheProvider: Fetched ${Object.keys(markets).length} markets on ${exchangeCode} exchange in ${duration}s`,
+    // );
 
     return this.cacheMarkets(markets, exchangeCode);
   }

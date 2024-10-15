@@ -23,8 +23,6 @@ export class OrderbookStream extends EventEmitter {
   }
 
   async create() {
-    logger.info(`[OrderbookConsumer] Creating orderbook channel for ${this.bots.length} bots`);
-
     for (const bot of this.bots) {
       await this.addBot(bot);
     }
