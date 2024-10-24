@@ -1,5 +1,6 @@
-import { ZGridBot } from "@opentrader/db";
 import { z } from "zod";
+
+import { ZGridBot } from "@opentrader/db";
 
 export const ZCreateGridBotInputSchema = z.object({
   exchangeAccountId: z.number(),

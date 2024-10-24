@@ -18,6 +18,7 @@
 export * from "./common/index.js";
 export * from "./exchange/index.js";
 export * from "./grid-bot/index.js";
+export * from "./dca-bot/index.js";
 export * from "./market/common.js";
 export * from "./market/events.js";
 export * from "./smart-trade/enums.js";

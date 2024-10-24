@@ -1,5 +1,6 @@
-import { zt } from "@opentrader/prisma";
 import type { z } from "zod";
+
+import { zt } from "@opentrader/prisma";
 import { ZGridBotSettings } from "./grid-bot-settings.schema.js";
 import { ZBotState } from "../bot/bot-state.schema.js";
 

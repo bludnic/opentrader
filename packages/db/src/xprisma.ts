@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { MarketData, StrategyAction, StrategyError, MarketEventType } from "@opentrader/types";
+import { dcaBotModel } from "./extension/models/dca-bot.model.js";
 import { gridBotModel } from "./extension/models/grid-bot.model.js";
 import { orderModel } from "./extension/models/order.model.js";
 import { smartTradeModel } from "./extension/models/smart-trade.model.js";
@@ -22,6 +23,7 @@ const xprismaClient = prismaClient.$extends({
   model: {
     bot: {
       grid: gridBotModel(prismaClient),
+      dca: dcaBotModel(prismaClient),
       custom: customBotModel(prismaClient),
 
       /**

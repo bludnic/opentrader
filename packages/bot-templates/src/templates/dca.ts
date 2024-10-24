@@ -14,7 +14,7 @@ export function* dca(ctx: TBotContext<DCABotConfig>) {
       quantity: settings.entry.quantity,
       tpPercent: settings.tp.percent / 100,
       safetyOrders: settings.safetyOrders.map((so) => ({
-        relativePrice: -so.deviation / 100,
+        relativePrice: -so.priceDeviation / 100,
         quantity: so.quantity,
       })),
     });
@@ -33,7 +33,7 @@ export function* dca(ctx: TBotContext<DCABotConfig>) {
       quantity: settings.entry.quantity,
       tpPercent: settings.tp.percent / 100,
       safetyOrders: settings.safetyOrders.map((so) => ({
-        relativePrice: -so.deviation / 100,
+        relativePrice: -so.priceDeviation / 100,
         quantity: so.quantity,
       })),
     },
@@ -48,6 +48,7 @@ dca.schema = z.object({
     quantity: z.number().positive().describe("Quantity of the Entry Order in base currency").default(0.001),
     type: z.nativeEnum(XOrderType).describe("Entry with Limit or Market order").default(XOrderType.Market),
     price: z.number().optional(),
+    conditions: z.any().optional(), // @todo schema validation
   }),
   tp: z.object({
     percent: z.number().positive().describe("Take Profit from entry order price in %").default(3),
@@ -56,15 +57,16 @@ dca.schema = z.object({
     .array(
       z.object({
         quantity: z.number().positive().positive("Quantity of the Safety Order in base currency"),
-        deviation: z.number().positive().positive("Price deviation from the Entry Order price in %"),
+        priceDeviation: z.number().positive().positive("Price deviation from the Entry Order price in %"),
       }),
     )
     .default([
-      { quantity: 0.002, deviation: 1 },
-      { quantity: 0.003, deviation: 2 },
-      { quantity: 0.004, deviation: 3 },
+      { quantity: 0.002, priceDeviation: 1 },
+      { quantity: 0.003, priceDeviation: 2 },
+      { quantity: 0.004, priceDeviation: 3 },
     ]),
 });
+
 dca.runPolicy = {
   onOrderFilled: true,
 };

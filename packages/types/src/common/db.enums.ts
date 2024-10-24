@@ -1,5 +1,6 @@
 export const XBotType = {
   Bot: "Bot",
+  DcaBot: "DcaBot",
   GridBot: "GridBot",
 } as const;
 export type XBotType = (typeof XBotType)[keyof typeof XBotType];
