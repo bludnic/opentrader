@@ -150,6 +150,76 @@ opentrader trade grid
 
 > To stop the live trading, run `opentrader stop`
 
+# Deployment
+
+The [quick start](#️-quick-start) above installs OpenTrader globally via npm. For a VPS, container, or cloud dev environment, use one of the options below.
+
+## PM2
+
+[PM2](https://pm2.keymetrics.io/) keeps the bot running after logout and can restart it on crash or reboot. Works with the global npm install.
+
+```bash
+npm install -g opentrader pm2
+opentrader set-password <password>
+pm2 start opentrader --name opentrader -- up
+```
+
+Open the UI at http://localhost:8000.
+
+Useful commands:
+
+```bash
+pm2 logs opentrader    # tail logs
+pm2 restart opentrader
+pm2 stop opentrader
+pm2 save               # persist process list
+pm2 startup            # generate boot script (run once, then follow its output)
+```
+
+> `opentrader up -d` also runs in the background, but PM2 adds supervision and survives SSH disconnects more reliably on a VPS.
+
+## Docker
+
+Build and run from a cloned repository. The `dev` service ships the CLI/UI in a single container with SQLite data on a host volume.
+
+```bash
+git clone https://github.com/Open-Trader/opentrader.git
+cd opentrader
+docker compose up -d --build dev
+```
+
+- UI: http://localhost:5000
+- Default password: `opentrader` (set `ADMIN_PASSWORD` in `docker-compose.yml` before first run)
+- Database and config persist in `./opentrader_data`
+
+Stop and remove:
+
+```bash
+docker compose down
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full multi-service layout (`processor`, `monolith`, etc.).
+
+## GitHub Codespaces
+
+The repo includes a [dev container](.devcontainer/devcontainer.json) with Node, pnpm, and Docker-in-Docker preconfigured.
+
+1. On GitHub: **Code → Codespaces → Create codespace on `dev`**
+2. In the codespace terminal:
+
+```bash
+cp .env.example .env
+pnpm install
+moon run prisma:migrate
+moon run prisma:seed
+moon run :build
+./bin/cli.sh up
+```
+
+3. Open the forwarded port for `8000` when VS Code prompts you.
+
+For UI/backend development, use `moon run :dev` instead — see [CONTRIBUTING.md](CONTRIBUTING.md#ui).
+
 # Project structure
 
 - Strategies dir: [packages/bot-templates](/packages/bot-templates/src/templates)
