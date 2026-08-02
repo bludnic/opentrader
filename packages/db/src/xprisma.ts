@@ -5,6 +5,7 @@ import { gridBotModel } from "./extension/models/grid-bot.model.js";
 import { orderModel } from "./extension/models/order.model.js";
 import { smartTradeModel } from "./extension/models/smart-trade.model.js";
 import { customBotModel } from "./extension/models/custom-bot.model.js";
+import { encryptExchangeAccountFields, decryptExchangeAccountRow } from "./encryption.js";
 
 function newPrismaClientInstance() {
   // console.log("❕ DB: Created new instance of PrismaClient");
@@ -18,7 +19,52 @@ const globalForPrisma = globalThis as unknown as {
 
 const prismaClient = globalForPrisma.prisma || newPrismaClientInstance();
 
-const xprismaClient = prismaClient.$extends({
+/**
+ * Encrypts apiKey/secretKey/password on the way into the DB and decrypts them on the way
+ * out, so every caller of xprisma.exchangeAccount.* gets plaintext credentials in memory
+ * exactly like before, while the DB itself only ever stores ciphertext. This is layered
+ * before the rest of the xprisma extensions (below) so their computed `credentials` field
+ * sees already-decrypted values.
+ */
+const encryptedPrismaClient = prismaClient.$extends({
+  name: "xprisma-credentials-encryption",
+  query: {
+    exchangeAccount: {
+      async create({ args, query }) {
+        if (args.data) encryptExchangeAccountFields(args.data);
+        const result = await query(args);
+        return decryptExchangeAccountRow(result);
+      },
+      async update({ args, query }) {
+        if (args.data) encryptExchangeAccountFields(args.data as Record<string, unknown>);
+        const result = await query(args);
+        return decryptExchangeAccountRow(result);
+      },
+      async findUnique({ args, query }) {
+        const result = await query(args);
+        return result ? decryptExchangeAccountRow(result) : result;
+      },
+      async findUniqueOrThrow({ args, query }) {
+        const result = await query(args);
+        return decryptExchangeAccountRow(result);
+      },
+      async findFirst({ args, query }) {
+        const result = await query(args);
+        return result ? decryptExchangeAccountRow(result) : result;
+      },
+      async findFirstOrThrow({ args, query }) {
+        const result = await query(args);
+        return decryptExchangeAccountRow(result);
+      },
+      async findMany({ args, query }) {
+        const results = await query(args);
+        return results.map(decryptExchangeAccountRow);
+      },
+    },
+  },
+});
+
+const xprismaClient = encryptedPrismaClient.$extends({
   name: "xprisma",
   model: {
     bot: {
